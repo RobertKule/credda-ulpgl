@@ -1,11 +1,11 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["driverAdapters"] 
+  // previewFeatures = ["driverAdapters"] 
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // url      = env("DATABASE_URL")
 }
 
 
@@ -147,17 +147,50 @@ model MemberTranslation {
   @@unique([memberId, language])
 }
 // --- MESSAGES DE CONTACT ---
+// prisma/schema.prisma - Modèle ContactMessage mis à jour
+
 model ContactMessage {
   id           String    @id @default(cuid())
   name         String
   email        String
   subject      String
   message      String    
-  isRead       Boolean   @default(false)
   
-  // NOUVEAUX CHAMPS
+  // STATUTS (utilisation d'enum au lieu de boolean)
+  status       ContactStatus @default(UNREAD)  // UNREAD, READ, ARCHIVED
+  
+  // POUR LES RÉPONSES
   replyContent String?   
   repliedAt    DateTime?
   
+  // METADATA
   createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // INDEX pour les recherches
+  @@index([status])
+  @@index([createdAt])
+  @@index([email])
+}
+
+// ÉNUMÉRATION POUR LE STATUT
+enum ContactStatus {
+  UNREAD
+  READ
+  ARCHIVED
+}
+
+model GalleryImage {
+  id          String   @id @default(cuid())
+  src         String   // Chemin de l'image
+  title       String   // Titre de l'image
+  category    String   // Catégorie (Événement, Terrain, etc.)
+  description String?  // Description optionnelle
+  order       Int      @default(0) // Ordre d'affichage
+  featured    Boolean  @default(false) // Mettre en avant
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+  @@index([featured])
 }
