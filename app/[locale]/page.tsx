@@ -46,7 +46,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     // 4. Galerie Images
     db.galleryImage.findMany({
       where: { featured: true },
-      take: 10,
+      take: 8,
       orderBy: { order: 'asc' },
       select: { id: true, src: true, title: true, category: true, description: true }
     }),
@@ -69,7 +69,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   }));
 
   const stats = {
-    totalResources: totalArticles + totalPubs, // Somme totale des documents
+    totalResources: totalArticles + totalPubs,
     publications: totalPubs,
     members: totalMembers,
     researchArticles: researchCount,
