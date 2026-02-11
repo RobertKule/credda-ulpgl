@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import { Play, Pause, Volume2, VolumeX, ArrowRight, ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -49,7 +49,7 @@ export default function HeroSection() {
     };
 
     // Animation variants
-    const containerVariants = {
+    const containerVariants: Variants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
@@ -60,12 +60,12 @@ export default function HeroSection() {
         },
     };
 
-    const itemVariants = {
+    const itemVariants: Variants = {
         hidden: { opacity: 0, y: 30 },
         visible: {
             opacity: 1,
             y: 0,
-            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+            transition: { duration: 0.8, ease: "easeOut" },
         },
     };
 
