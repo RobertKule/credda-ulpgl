@@ -1,0 +1,16 @@
+{
+  "Navigation": {
+    "research": "Utafiti",
+    "clinical": "Kliniki ya Sheria",
+    "publications": "Machapisho",
+    "about": "Kuhusu sisi",
+    "contact": "Wasiliana nasi"
+  },
+  "HomePage": {
+    "badge": "Kituo cha Utafiti na Kliniki ya Sheria",
+    "heroTitle": "Sayansi kwa Demokrasia na Maendeleo.",
+    "heroDesc": "CREDDA-ULPGL inaunganisha utafiti wa kitaaluma wa hali ya juu na utaalamu wa kliniki ili kukabiliana na changamoto za utawala barani Afrika.",
+    "ctaResearch": "Gundua utafiti wetu",
+    "ctaClinical": "Kliniki ya Sheria"
+  }
+}

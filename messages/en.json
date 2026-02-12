@@ -1,0 +1,16 @@
+{
+  "Navigation": {
+    "research": "Research",
+    "clinical": "Legal Clinic",
+    "publications": "Publications",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "HomePage": {
+    "badge": "Research Center & Legal Clinic",
+    "heroTitle": "Science for Democracy and Development.",
+    "heroDesc": "CREDDA-ULPGL combines cutting-edge academic research and clinical expertise to meet governance challenges in Africa.",
+    "ctaResearch": "Explore our research",
+    "ctaClinical": "The Legal Clinic"
+  }
+}

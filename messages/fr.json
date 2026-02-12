@@ -1,0 +1,16 @@
+{
+  "Navigation": {
+    "research": "Recherche",
+    "clinical": "Clinique Juridique",
+    "publications": "Publications",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "HomePage": {
+    "badge": "Centre de Recherche & Clinique Juridique",
+    "heroTitle": "La Science pour la Démocratie et le Développement.",
+    "heroDesc": "Le CREDDA-ULPGL allie recherche académique de pointe et expertise clinique pour relever les défis de la gouvernance en Afrique.",
+    "ctaResearch": "Découvrir nos recherches",
+    "ctaClinical": "La Clinique Juridique"
+  }
+}
