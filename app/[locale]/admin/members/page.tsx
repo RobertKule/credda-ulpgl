@@ -1,11 +1,12 @@
+// AdminMembersPage.tsx
+"use client"; // <-- ajoute ça tout en haut
 import { db } from "@/lib/db";
 import { Link } from "@/navigation";
 import { Button } from "@/components/ui/button";
 import { UserPlus, UserCircle, Mail, GripVertical, Edit } from "lucide-react";
 import Image from "next/image";
 import DeleteButton from "@/components/admin/DeleteButton";
-// AdminMembersPage.tsx
-"use client"; // <-- ajoute ça tout en haut
+
 
 import { useState } from "react";
 
