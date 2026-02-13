@@ -1,52 +1,33 @@
-// app/[locale]/layout.tsx
-import { Inter, Playfair_Display } from "next/font/google";
-import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import { notFound } from "next/navigation";
-import "./../../app/globals.css";
+import { NextIntlClientProvider } from "next-intl";
+import "../globals.css";
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
 
-import Navbar from "./../../components/shared/Navbar";
-import Footer from "./../../components/shared/Footer";
-import ToasterClient from "@/components/shared/ToasterClient";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-serif",
-});
+export const metadata = {
+  title: "CREDDa - ULPGL",
+  description: "Centre de Recherche en Droit et Développement de l'ULPGL",
+};
 
 export default async function RootLayout({
   children,
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>; // ✅ DOIT être Promise
+  params: Promise<{ locale: string }>; // ✅ Promise ici
 }) {
-  const { locale } = await params; // ✅ OBLIGATOIRE en Next 16
+  const { locale } = await params; // ✅ await pour déstructurer
 
-  if (!["fr", "en", "sw"].includes(locale)) {
-    notFound();
-  }
-
-  const messages = await getMessages();
+  // ✅ getMessages attend un objet { locale: string }
+  const messages = await getMessages({ locale });
 
   return (
-    <html
-      lang={locale}
-      className={`${inter.variable} ${playfair.variable} scroll-smooth`}
-    >
-      <body className="font-sans antialiased bg-white text-slate-900">
+    <html lang={locale}>
+      <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <div className="relative flex min-h-screen flex-col">
-            <Navbar />
-            <main className="flex-1 pt-20 md:pt-28">{children}</main>
-            <ToasterClient />
-            <Footer />
-          </div>
+          <Navbar />
+          {children}
+          <Footer />
         </NextIntlClientProvider>
       </body>
     </html>
