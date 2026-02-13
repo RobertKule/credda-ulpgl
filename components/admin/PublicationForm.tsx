@@ -71,7 +71,10 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
       ? await updatePublication(initialData.id, payload)
       : await createPublication(payload);
 
-    if (res.success) router.push(`/${locale}/admin/publications`);
+    if (res.success) {
+  router.push(`/${locale}/admin/publications?updated=true`);
+}
+
     else setLoading(false);
   };
 
