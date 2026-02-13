@@ -43,7 +43,9 @@ const TESTIMONIALS = [
     text: "I visited ULPGL in 2015 to conduct research for my PhD. Professor Kennedy KIHANGI BINDU was an excellent host that helped to get in contact with other researchers and organisations."
   }
 ];
-
+const renderIcon = (Icon: React.ElementType, className: string = "w-7 h-7 sm:w-8 sm:h-8") => {
+    return <Icon className={className} strokeWidth={1.2} />;
+  };
 const PARTNERS = [
   "Amnesty.webp", "McCain.webp", "Northwestern.webp", "TWB.webp",
   "worldbank.webp", "Ceni.webp", "Monusco.webp", "Oxford.webp",
@@ -214,11 +216,8 @@ export default function HomeClient({ locale, featuredResearch, latestReports, te
         >
           {/* Icône stylisée - On augmente la taille et on affine le trait (strokeWidth) */}
           <div className="text-blue-600 transition-transform duration-500 group-hover:scale-110 shrink-0">
-            {React.cloneElement(s.i as React.ReactElement, { 
-              className: "w-7 h-7 sm:w-8 sm:h-8", 
-              strokeWidth: 1.2 
-            })}
-          </div>
+                  {renderIcon(s.i)}
+                </div>
 
           <div className="flex flex-col">
             {/* Chiffre large et bleu */}
