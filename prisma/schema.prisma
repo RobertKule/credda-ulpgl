@@ -100,24 +100,25 @@ model ArticleTranslation {
   @@unique([articleId, language])
 }
 
-// --- PUBLICATIONS SCIENTIFIQUES ---
-
 model Publication {
   id           String                   @id @default(cuid())
+  slug         String                   @unique // ✅ AJOUTEZ CETTE LIGNE
   year         Int
-  doi          String?                  @unique // Identifiant numérique objet
-  pdfUrl       String // Fichier principal
+  doi          String?                  @unique
+  pdfUrl       String
   domain       Domain                   @default(RESEARCH)
   translations PublicationTranslation[]
   createdAt    DateTime                 @default(now())
 }
 
+// prisma/schema.prisma - AJOUTEZ LE CHAMP content
 model PublicationTranslation {
   id            String      @id @default(cuid())
   language      String
   title         String
-  authors       String // "Pr. Kibombo, et al."
-  description   String      
+  authors       String
+  description   String
+  content       String? 
   publicationId String
   publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
 
