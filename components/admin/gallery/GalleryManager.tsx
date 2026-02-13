@@ -1,0 +1,1 @@
+// Composant GalleryManager à implémenter
