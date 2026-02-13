@@ -42,15 +42,26 @@ export default function ContactPage() {
     try {
       const response = await sendContactMessage(data);
       
-      // Mettre à jour le state avec la réponse
-      setResult(response);
+      // ✅ CORRECTION: Vérifier le type de réponse et normaliser
+      let resultData: ContactFormResult;
       
-      if (response.success) {
+      if (typeof response === 'object' && response !== null) {
+        resultData = {
+          success: response.success ?? false,
+          error: response.error ?? undefined
+        };
+      } else {
+        resultData = { success: false, error: "Réponse invalide du serveur" };
+      }
+      
+      setResult(resultData);
+      
+      if (resultData.success) {
         setIsSent(true);
         // Réinitialiser le formulaire
         (e.target as HTMLFormElement).reset();
       } else {
-        setError(response.error || "Une erreur est survenue lors de l'envoi du message.");
+        setError(resultData.error || "Une erreur est survenue lors de l'envoi du message.");
       }
     } catch (err) {
       setError("Erreur de connexion au serveur. Veuillez réessayer plus tard.");
@@ -59,6 +70,7 @@ export default function ContactPage() {
       setIsSubmitting(false);
     }
   };
+
 
   return (
     <main className="min-h-screen bg-white overflow-x-hidden">
