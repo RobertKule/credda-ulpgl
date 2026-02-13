@@ -6,13 +6,23 @@
     "about": "À propos",
     "contact": "Contact"
   },
+
   "HomePage": {
     "hero": {
       "badge": "CREDDA - ULPGL Excellence",
       "slides": [
-        { "title": "L'excellence au service de la Démocratie.", "desc": "Le CREDDA produit une recherche-action de pointe pour transformer les institutions africaines." },
-        { "title": "Clinique Juridique Environnementale.", "desc": "Nous protégeons les droits des communautés et la biodiversité par le droit." },
-        { "title": "Hub de Coopération Internationale.", "desc": "Partenaire des plus grandes universités pour un impact local durable." }
+        {
+          "title": "L'excellence au service de la Démocratie.",
+          "desc": "Le CREDDA produit une recherche-action de pointe pour transformer les institutions africaines."
+        },
+        {
+          "title": "Clinique Juridique Environnementale.",
+          "desc": "Nous protégeons les droits des communautés et la biodiversité par le droit."
+        },
+        {
+          "title": "Hub de Coopération Internationale.",
+          "desc": "Partenaire des plus grandes universités pour un impact local durable."
+        }
       ]
     },
     "stats": {
@@ -25,6 +35,107 @@
       "recentPubs": "Dernières Publications",
       "upcomingEvents": "Événements à venir"
     }
+  },
+
+  "AboutPage": {
+    "mission": {
+      "title": "Notre Mission",
+      "desc": "Le CREDDA - ULPGL Excellence est dédié à la recherche-action de pointe pour renforcer les institutions démocratiques en Afrique. Nous produisons des connaissances innovantes et appliquées pour transformer les systèmes politiques, économiques et sociaux du continent."
+    },
+    "vision": {
+      "title": "Notre Vision",
+      "desc": "Nous aspirons à un avenir où les institutions africaines sont résilientes, inclusives et efficaces, soutenant le développement durable et la prospérité pour tous les citoyens."
+    },
+    "values": {
+      "title": "Nos Valeurs",
+      "desc": [
+        {
+          "name": "Excellence",
+          "desc": "Nous nous engageons à produire une recherche de la plus haute qualité, rigoureuse et pertinente."
+        },
+        {
+          "name": "Impact",
+          "desc": "Nous visons à générer des résultats concrets qui améliorent les institutions et la vie des citoyens."
+        },
+        {
+          "name": "Collaboration",
+          "desc": "Nous croyons en la puissance du partenariat avec les universités, les gouvernements et la société civile."
+        },
+        {
+          "name": "Innovation",
+          "desc": "Nous encourageons la créativité et l'innovation dans nos approches de recherche et d'action."
+        }
+      ]
+    }
+  },
+
+  "ContactPage": {
+    "title": "Contactez-nous",
+    "desc": "Nous serions ravis de vous entendre ! Que vous ayez des questions, des suggestions ou que vous souhaitiez collaborer, n'hésitez pas à nous contacter.",
+    "form": {
+      "name": "Votre nom",
+      "email": "Votre adresse e-mail",
+      "message": "Votre message",
+      "submit": "Envoyer"
+    },
+    "address": {
+      "title": "Notre adresse",
+      "line1": "Université Libre des Pays des Grands Lacs (ULPGL)",
+      "line2": "Goma, République Démocratique du Congo"
+    },
+    "email": {
+      "title": "Notre e-mail",
+      "address": "contact@credda-ulpgl.org"
+    },
+    "phone": {
+      "title": "Notre téléphone",
+      "number": "+243 XXX XXX XXX"
+    }
+  },
+
+  "PublicationsPage": {
+    "title": "Nos Publications",
+    "desc": "Découvrez nos dernières recherches et analyses sur les institutions démocratiques en Afrique. Nos publications couvrent une variété de sujets, allant de la gouvernance à l'économie, en passant par les droits humains et l'environnement.",
+    "filters": {
+      "all": "Toutes les publications",
+      "research": "Recherche",
+      "clinical": "Clinique Juridique"
+    },
+    "searchPlaceholder": "Rechercher une publication..."
+  },
+
+  "PublicationDetailPage": {
+    "back": "Retour aux publications",
+    "download": "Télécharger le PDF",
+    "metadata": {
+      "authors": "Auteurs",
+      "publishedOn": "Publié le",
+      "type": "Type de publication"
+    }
+  },
+
+  "TeamPage": {
+    "title": "Notre Équipe",
+    "desc": "Rencontrez les chercheurs, cliniciens et collaborateurs passionnés qui composent le CREDDA - ULPGL Excellence."
+  },
+
+  "TeamMember": {
+    "researcher": "Chercheur",
+    "clinician": "Clinicien Juridique",
+    "partner": "Partenaire"
+  },
+
+  "NotFound": {
+    "badge": "Erreur",
+    "title": "Page non trouvée",
+    "description": "La ressource que vous recherchez n'existe pas ou a été déplacée.",
+    "explore": "Explorer",
+    "home": "Accueil",
+    "research": "Recherche",
+    "clinical": "Clinique",
+    "team": "Équipe",
+    "back": "Retour",
+    "contact": "Contact",
+    "help": "Besoin d'aide ?"
   }
 }
-

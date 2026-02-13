@@ -6,11 +6,136 @@
     "about": "About",
     "contact": "Contact"
   },
+
   "HomePage": {
-    "badge": "Research Center & Legal Clinic",
-    "heroTitle": "Science for Democracy and Development.",
-    "heroDesc": "CREDDA-ULPGL combines cutting-edge academic research and clinical expertise to meet governance challenges in Africa.",
-    "ctaResearch": "Explore our research",
-    "ctaClinical": "The Legal Clinic"
+    "hero": {
+      "badge": "CREDDA - ULPGL Excellence",
+      "slides": [
+        {
+          "title": "Excellence in the service of Democracy.",
+          "desc": "CREDDA produces cutting-edge research-action to transform African institutions."
+        },
+        {
+          "title": "Environmental Legal Clinic.",
+          "desc": "We protect community rights and biodiversity through the law."
+        },
+        {
+          "title": "International Cooperation Hub.",
+          "desc": "Partnering with leading universities for sustainable local impact."
+        }
+      ]
+    },
+    "stats": {
+      "years": "Years of Expertise",
+      "pubs": "Scientific Publications",
+      "partners": "International Partners",
+      "cases": "Clinic Beneficiaries"
+    },
+    "sections": {
+      "recentPubs": "Latest Publications",
+      "upcomingEvents": "Upcoming Events"
+    }
+  },
+
+  "AboutPage": {
+    "mission": {
+      "title": "Our Mission",
+      "desc": "CREDDA - ULPGL Excellence is dedicated to cutting-edge research-action to strengthen democratic institutions in Africa."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "desc": "We aspire to a future where African institutions are resilient, inclusive, and effective."
+    },
+    "values": {
+      "title": "Our Values",
+      "desc": [
+        {
+          "name": "Excellence",
+          "desc": "We are committed to producing research of the highest quality."
+        },
+        {
+          "name": "Impact",
+          "desc": "We aim to generate concrete results that improve institutions."
+        },
+        {
+          "name": "Collaboration",
+          "desc": "We believe in strong partnerships."
+        },
+        {
+          "name": "Innovation",
+          "desc": "We encourage creativity in research and action."
+        }
+      ]
+    }
+  },
+
+  "ContactPage": {
+    "title": "Contact Us",
+    "desc": "We would love to hear from you.",
+    "form": {
+      "name": "Your Name",
+      "email": "Your Email Address",
+      "message": "Your Message",
+      "submit": "Send"
+    },
+    "address": {
+      "title": "Our Address",
+      "line1": "Université Libre des Pays des Grands Lacs (ULPGL)",
+      "line2": "Goma, Democratic Republic of Congo"
+    },
+    "email": {
+      "title": "Our Email",
+      "address": "contact@credda-ulpgl.org"
+    },
+    "phone": {
+      "title": "Our Phone",
+      "number": "+243 XXX XXX XXX"
+    }
+  },
+
+  "PublicationsPage": {
+    "title": "Our Publications",
+    "desc": "Explore our latest research and policy briefs.",
+    "filters": {
+      "all": "All Publications",
+      "research": "Research",
+      "clinical": "Legal Clinic"
+    },
+    "searchPlaceholder": "Search a publication..."
+  },
+
+  "PublicationDetailPage": {
+    "back": "Back to publications",
+    "download": "Download PDF",
+    "metadata": {
+      "authors": "Authors",
+      "publishedOn": "Published on",
+      "type": "Publication Type"
+    }
+  },
+
+  "TeamPage": {
+    "title": "Our Team",
+    "desc": "Meet the researchers and clinicians of CREDDA."
+  },
+
+  "TeamMember": {
+    "researcher": "Researcher",
+    "clinician": "Legal Clinician",
+    "partner": "Partner"
+  },
+
+  "NotFound": {
+    "badge": "Error",
+    "title": "Page not found",
+    "description": "The resource you are looking for does not exist or has been moved.",
+    "explore": "Explore",
+    "home": "Home",
+    "research": "Research",
+    "clinical": "Clinic",
+    "team": "Team",
+    "back": "Back",
+    "contact": "Contact",
+    "help": "Need help?"
   }
 }

@@ -3,14 +3,83 @@
     "research": "Utafiti",
     "clinical": "Kliniki ya Sheria",
     "publications": "Machapisho",
-    "about": "Kuhusu sisi",
-    "contact": "Wasiliana nasi"
+    "about": "Kuhusu Sisi",
+    "contact": "Wasiliana"
   },
+
   "HomePage": {
-    "badge": "Kituo cha Utafiti na Kliniki ya Sheria",
-    "heroTitle": "Sayansi kwa Demokrasia na Maendeleo.",
-    "heroDesc": "CREDDA-ULPGL inaunganisha utafiti wa kitaaluma wa hali ya juu na utaalamu wa kliniki ili kukabiliana na changamoto za utawala barani Afrika.",
-    "ctaResearch": "Gundua utafiti wetu",
-    "ctaClinical": "Kliniki ya Sheria"
+    "hero": {
+      "badge": "CREDDA - ULPGL Ubora",
+      "slides": [
+        {
+          "title": "Ubora kwa ajili ya Demokrasia.",
+          "desc": "CREDDA huzalisha utafiti wa hali ya juu kubadilisha taasisi za Afrika."
+        },
+        {
+          "title": "Kliniki ya Sheria ya Mazingira.",
+          "desc": "Tunalinda haki za jamii na bioanuwai kupitia sheria."
+        },
+        {
+          "title": "Kitovu cha Ushirikiano wa Kimataifa.",
+          "desc": "Tunashirikiana na vyuo vikuu vikubwa kwa maendeleo endelevu."
+        }
+      ]
+    },
+    "stats": {
+      "years": "Miaka ya Uzoefu",
+      "pubs": "Machapisho ya Kisayansi",
+      "partners": "Washirika wa Kimataifa",
+      "cases": "Wanufaika wa Kliniki"
+    },
+    "sections": {
+      "recentPubs": "Machapisho ya Hivi Karibuni",
+      "upcomingEvents": "Matukio Yanayokuja"
+    }
+  },
+
+  "AboutPage": {
+    "mission": {
+      "title": "Dhamira Yetu",
+      "desc": "CREDDA inalenga kuimarisha taasisi za kidemokrasia barani Afrika."
+    },
+    "vision": {
+      "title": "Maono Yetu",
+      "desc": "Tunatamani taasisi imara, jumuishi na zenye ufanisi."
+    },
+    "values": {
+      "title": "Maadili Yetu",
+      "desc": [
+        {
+          "name": "Ubora",
+          "desc": "Tunajitolea kwa utafiti wa hali ya juu."
+        },
+        {
+          "name": "Athari",
+          "desc": "Tunataka matokeo halisi kwa jamii."
+        },
+        {
+          "name": "Ushirikiano",
+          "desc": "Tunaamini katika nguvu ya ushirikiano."
+        },
+        {
+          "name": "Ubunifu",
+          "desc": "Tunakuza ubunifu katika utafiti."
+        }
+      ]
+    }
+  },
+
+  "NotFound": {
+    "badge": "Hitilafu",
+    "title": "Ukurasa haukupatikana",
+    "description": "Rasilimali unayotafuta haipo au imehamishwa.",
+    "explore": "Chunguza",
+    "home": "Mwanzo",
+    "research": "Utafiti",
+    "clinical": "Kliniki",
+    "team": "Timu",
+    "back": "Rudi",
+    "contact": "Wasiliana",
+    "help": "Unahitaji msaada?"
   }
 }
