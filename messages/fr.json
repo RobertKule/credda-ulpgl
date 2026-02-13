@@ -7,10 +7,24 @@
     "contact": "Contact"
   },
   "HomePage": {
-    "badge": "Centre de Recherche & Clinique Juridique",
-    "heroTitle": "La Science pour la Démocratie et le Développement.",
-    "heroDesc": "Le CREDDA-ULPGL allie recherche académique de pointe et expertise clinique pour relever les défis de la gouvernance en Afrique.",
-    "ctaResearch": "Découvrir nos recherches",
-    "ctaClinical": "La Clinique Juridique"
+    "hero": {
+      "badge": "CREDDA - ULPGL Excellence",
+      "slides": [
+        { "title": "L'excellence au service de la Démocratie.", "desc": "Le CREDDA produit une recherche-action de pointe pour transformer les institutions africaines." },
+        { "title": "Clinique Juridique Environnementale.", "desc": "Nous protégeons les droits des communautés et la biodiversité par le droit." },
+        { "title": "Hub de Coopération Internationale.", "desc": "Partenaire des plus grandes universités pour un impact local durable." }
+      ]
+    },
+    "stats": {
+      "years": "Années d'Expertise",
+      "pubs": "Publications Scientifiques",
+      "partners": "Partenaires Internationaux",
+      "cases": "Bénéficiaires Clinique"
+    },
+    "sections": {
+      "recentPubs": "Dernières Publications",
+      "upcomingEvents": "Événements à venir"
+    }
   }
 }
+
