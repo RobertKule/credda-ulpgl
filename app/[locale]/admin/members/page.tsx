@@ -4,6 +4,10 @@ import { Button } from "@/components/ui/button";
 import { UserPlus, UserCircle, Mail, GripVertical, Edit } from "lucide-react";
 import Image from "next/image";
 import DeleteButton from "@/components/admin/DeleteButton";
+// AdminMembersPage.tsx
+"use client"; // <-- ajoute ça tout en haut
+
+import { useState } from "react";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -31,44 +35,51 @@ export default async function AdminMembersPage({ params }: Props) {
         </Button>
       </div>
 
-      <div className="grid gap-4">
-        {members.map((m) => (
-          <div key={m.id} className="bg-white border border-slate-200 p-4 flex items-center justify-between group hover:border-blue-200 transition-all shadow-sm">
-            <div className="flex items-center gap-6">
-              <div className="text-slate-300">
-                <GripVertical size={20} />
-              </div>
-              <div className="relative w-14 h-14 bg-slate-100 overflow-hidden border border-slate-100">
-                {m.image ? (
-                  <Image src={m.image} alt="Avatar" fill className="object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-slate-300">
-                    <UserCircle size={30} />
-                  </div>
-                )}
-              </div>
-              <div>
-                <h3 className="font-bold text-slate-900">{m.translations[0]?.name}</h3>
-                <p className="text-[10px] text-blue-600 font-bold uppercase tracking-widest">
-                  {m.translations[0]?.role}
-                </p>
-                <div className="flex items-center gap-2 text-[10px] text-slate-400 mt-1">
-                  <Mail size={10} /> {m.email || "Non renseigné"}
-                </div>
-              </div>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+  {members.map((m) => (
+    <div
+      key={m.id}
+      className="bg-white border border-slate-200 p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow duration-300 group"
+    >
+      {/* HEADER IMAGE + ROLE */}
+      <div className="flex items-center gap-4 mb-4">
+        <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-slate-200 bg-slate-100 flex-shrink-0">
+          {m.image ? (
+            <Image src={m.image} alt="Avatar" fill className="object-cover" />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-slate-300">
+              <UserCircle size={32} />
             </div>
-
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="icon" className="h-9 w-9 text-slate-400 hover:text-slate-900" asChild>
-  <Link href={`/admin/members/edit/${m.id}`}>
-    <Edit size={18} />
-  </Link>
-</Button>
-              <DeleteButton id={m.id} type="member" />
-            </div>
-          </div>
-        ))}
+          )}
+        </div>
+        <div className="flex-1">
+          <h3 className="font-serif font-bold text-lg text-slate-900 truncate">
+            {m.translations[0]?.name || "Nom inconnu"}
+          </h3>
+          <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full bg-blue-50 text-blue-600">
+            {m.translations[0]?.role || "Rôle non défini"}
+          </span>
+        </div>
       </div>
+
+      {/* EMAIL */}
+      <div className="flex items-center gap-2 text-[10px] text-slate-500 mb-4">
+        <Mail size={14} /> {m.email || "Non renseigné"}
+      </div>
+
+      {/* FOOTER ACTIONS */}
+      <div className="flex justify-between items-center">
+        <Button variant="outline" size="sm" asChild className="flex-1 mr-2">
+          <Link href={`/admin/members/${m.id}/edit`} className="text-[10px] font-bold">
+            Modifier
+          </Link>
+        </Button>
+        <DeleteButton id={m.id} type="member" />
+      </div>
+    </div>
+  ))}
+</div>
+
     </div>
   );
 }

@@ -2,18 +2,22 @@ import { db } from "@/lib/db";
 import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  FileText, Plus, Trash2, Edit, ExternalLink, 
-  Download, Hash, Calendar 
+import {
+  FileText, Plus, Trash2, Edit, ExternalLink,
+  Download, Hash, Calendar
 } from "lucide-react";
 import DeleteButton from "@/components/admin/DeleteButton"; // Composant générique
 
+
 interface Props {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ updated?: string }>;
 }
 
-export default async function AdminPublicationsPage({ params }: Props) {
+export default async function AdminPublicationsPage({ params, searchParams }: Props) {
   const { locale } = await params;
+  const { updated } = await searchParams;
+
 
   const publications = await db.publication.findMany({
     include: { translations: { where: { language: locale } } },
@@ -35,6 +39,12 @@ export default async function AdminPublicationsPage({ params }: Props) {
       </div>
 
       <div className="bg-white border border-slate-200 shadow-sm overflow-hidden">
+        {updated && (
+  <div className="bg-emerald-50 text-emerald-700 p-4">
+    Publication mise à jour avec succès
+  </div>
+)}
+
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-200">
@@ -45,39 +55,52 @@ export default async function AdminPublicationsPage({ params }: Props) {
               <th className="p-4 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
             </tr>
           </thead>
+          
           <tbody className="divide-y divide-slate-100">
-            {publications.map((p) => (
-              <tr key={p.id} className="hover:bg-slate-50/50 transition-colors">
-                <td className="p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-50 text-blue-600">
-                      <FileText size={20} />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-bold text-slate-900">{p.translations[0]?.title || "Sans titre"}</span>
-                      <span className="text-[10px] text-slate-400 italic">{p.translations[0]?.authors}</span>
-                    </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {publications.map((p) => (
+
+                <div
+                  key={p.id}
+                  className="bg-white border border-slate-200 p-6 shadow-sm hover:shadow-lg transition-all space-y-4"
+                >
+                  <div className="flex justify-between items-start">
+                    <Badge variant="outline">{p.year}</Badge>
+                    <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                      {p.domain}
+                    </span>
                   </div>
-                </td>
-                <td className="p-4">
-                   <Badge variant="outline" className="rounded-none border-slate-200 font-mono">{p.year}</Badge>
-                </td>
-                <td className="p-4 text-[10px] font-bold uppercase tracking-tight">
-                  {p.domain === "RESEARCH" ? "Scientifique" : "Clinique"}
-                </td>
-                <td className="p-4 font-mono text-[10px] text-slate-400">
-                  {p.doi || "N/A"}
-                </td>
-                <td className="p-4">
-                  <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400" asChild>
-                      <a href={p.pdfUrl} target="_blank"><Download size={16} /></a>
+
+                  <div>
+                    <h3 className="font-serif font-bold text-lg">
+                      {p.translations[0]?.title || "Sans titre"}
+                    </h3>
+                    <p className="text-xs text-slate-400 italic">
+                      {p.translations[0]?.authors}
+                    </p>
+                  </div>
+
+                  <div className="flex justify-between items-center pt-4 border-t">
+                    <Button size="sm" variant="outline" asChild>
+                      <Link href={`/admin/publications/${p.id}/edit`}>
+                        Modifier
+                      </Link>
                     </Button>
-                    <DeleteButton id={p.id} type="publication" />
+
+                    <div className="flex gap-2">
+                      <Button size="icon" variant="ghost" asChild>
+                        <a href={p.pdfUrl} target="_blank">
+                          <Download size={16} />
+                        </a>
+                      </Button>
+
+                      <DeleteButton id={p.id} type="publication" />
+                    </div>
                   </div>
-                </td>
-              </tr>
-            ))}
+                </div>
+              ))}
+            </div>
+
           </tbody>
         </table>
       </div>
