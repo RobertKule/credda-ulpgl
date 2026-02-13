@@ -7,6 +7,7 @@ import "./../../app/globals.css";
 
 import Navbar from "./../../components/shared/Navbar";
 import Footer from "./../../components/shared/Footer";
+import ToasterClient from "@/components/shared/ToasterClient";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -23,9 +24,9 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>; // ✅ Promise obligatoire en Next 16
+  params: Promise<{ locale: string }>; // ✅ DOIT être Promise
 }) {
-  const { locale } = await params; // ✅ OBLIGATOIRE
+  const { locale } = await params; // ✅ OBLIGATOIRE en Next 16
 
   if (!["fr", "en", "sw"].includes(locale)) {
     notFound();
@@ -41,15 +42,10 @@ export default async function RootLayout({
       <body className="font-sans antialiased bg-white text-slate-900">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <div className="relative flex min-h-screen flex-col">
-            
             <Navbar />
-
-            <main className="flex-1 pt-20 md:pt-28">
-              {children}
-            </main>
-
+            <main className="flex-1 pt-20 md:pt-28">{children}</main>
+            <ToasterClient />
             <Footer />
-
           </div>
         </NextIntlClientProvider>
       </body>
