@@ -1,3 +1,8 @@
+'use server';
+
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
