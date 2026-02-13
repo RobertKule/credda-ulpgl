@@ -8,6 +8,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
 // --- ÉNUMÉRATIONS ---
 
 enum Role {
@@ -91,8 +92,8 @@ model ArticleTranslation {
   id        String  @id @default(cuid())
   language  String // fr, en, sw
   title     String
-  content   String  @db.Text
-  excerpt   String? @db.Text
+  content   String  
+  excerpt   String? 
   articleId String
   article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
 
@@ -116,7 +117,7 @@ model PublicationTranslation {
   language      String
   title         String
   authors       String // "Pr. Kibombo, et al."
-  description   String      @db.Text
+  description   String      
   publicationId String
   publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
 
@@ -138,9 +139,24 @@ model MemberTranslation {
   language String
   name     String
   role     String // ex: Directeur de recherche
-  bio      String? @db.Text
+  bio      String? 
   memberId String
   member   Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
 
   @@unique([memberId, language])
+}
+// --- MESSAGES DE CONTACT ---
+model ContactMessage {
+  id           String    @id @default(cuid())
+  name         String
+  email        String
+  subject      String
+  message      String    
+  isRead       Boolean   @default(false)
+  
+  // NOUVEAUX CHAMPS
+  replyContent String?   
+  repliedAt    DateTime?
+  
+  createdAt    DateTime  @default(now())
 }

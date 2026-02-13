@@ -16,6 +16,15 @@ const LANGUAGES = [
 ]
 
 export function ArticleForm({ categories }: { categories: any[] }) {
+  // Interface pour les traductions
+interface TranslationData {
+  title: string;
+  excerpt: string;
+  content: string;
+}
+interface TranslationsState {
+  [key: string]: TranslationData;
+}
   const [loading, setLoading] = useState(false)
   const [baseData, setBaseData] = useState({
     slug: "",
@@ -24,12 +33,8 @@ export function ArticleForm({ categories }: { categories: any[] }) {
     videoUrl: ""
   })
 
-  const [translations, setTranslations] = useState(
-    LANGUAGES.reduce((acc, lang) => ({
-      ...acc,
-      [lang.code]: { title: "", content: "", excerpt: "" }
-    }), {})
-  )
+ const [translations, setTranslations] = useState<TranslationsState>({});
+    
 
   const handleSubmit = async () => {
     setLoading(true)

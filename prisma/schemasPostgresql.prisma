@@ -1,0 +1,147 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"] 
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+// --- ÉNUMÉRATIONS ---
+
+enum Role {
+  ADMIN
+  EDITOR
+  RESEARCHER
+}
+
+enum Domain {
+  RESEARCH
+  CLINICAL
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO_LINK // YouTube, Vimeo
+  DOCUMENT // PDF, DOCX annexes
+}
+
+// --- UTILISATEURS ---
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+}
+
+// --- SYSTÈME DE MÉDIAS ---
+// Centraliser les médias permet de les réutiliser
+model Media {
+  id        String    @id @default(cuid())
+  type      MediaType @default(IMAGE)
+  url       String // URL Cloudinary, S3 ou Lien Vidéo
+  title     String? // Légende ou titre du média
+  articleId String?
+  article   Article?  @relation(fields: [articleId], references: [id])
+  createdAt DateTime  @default(now())
+}
+
+// --- ARTICLES & ACTUALITÉS ---
+
+model Category {
+  id           String                @id @default(cuid())
+  slug         String                @unique
+  translations CategoryTranslation[]
+  articles     Article[]
+}
+
+model CategoryTranslation {
+  id         String   @id @default(cuid())
+  language   String // fr, en, sw
+  name       String
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, language])
+}
+
+model Article {
+  id           String               @id @default(cuid())
+  slug         String               @unique
+  domain       Domain               @default(RESEARCH)
+  published    Boolean              @default(false)
+  featured     Boolean              @default(false) // Pour mettre en avant sur l'accueil
+  mainImage    String? // Image principale
+  videoUrl     String? // Optionnel : Vidéo principale de l'article
+  categoryId   String
+  category     Category             @relation(fields: [categoryId], references: [id])
+  medias       Media[] // Galerie d'images ou documents annexes
+  translations ArticleTranslation[]
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  @@index([slug])
+}
+
+model ArticleTranslation {
+  id        String  @id @default(cuid())
+  language  String // fr, en, sw
+  title     String
+  content   String  @db.Text
+  excerpt   String? @db.Text
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, language])
+}
+
+// --- PUBLICATIONS SCIENTIFIQUES ---
+
+model Publication {
+  id           String                   @id @default(cuid())
+  year         Int
+  doi          String?                  @unique // Identifiant numérique objet
+  pdfUrl       String // Fichier principal
+  domain       Domain                   @default(RESEARCH)
+  translations PublicationTranslation[]
+  createdAt    DateTime                 @default(now())
+}
+
+model PublicationTranslation {
+  id            String      @id @default(cuid())
+  language      String
+  title         String
+  authors       String // "Pr. Kibombo, et al."
+  description   String      @db.Text
+  publicationId String
+  publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+
+  @@unique([publicationId, language])
+}
+
+// --- ÉQUIPE & PARTENAIRES ---
+
+model Member {
+  id           String              @id @default(cuid())
+  image        String?
+  email        String?
+  order        Int                 @default(0)
+  translations MemberTranslation[]
+}
+
+model MemberTranslation {
+  id       String  @id @default(cuid())
+  language String
+  name     String
+  role     String // ex: Directeur de recherche
+  bio      String? @db.Text
+  memberId String
+  member   Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([memberId, language])
+}
