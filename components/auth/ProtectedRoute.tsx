@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from '@/navigation';
 import { useEffect } from 'react';
 import { Role } from '@prisma/client';
+import { useLocale } from "next-intl";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -16,12 +17,13 @@ export default function ProtectedRoute({
 }: ProtectedRouteProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
+const locale = useLocale();
 
   useEffect(() => {
     if (status === 'loading') return;
     
     if (!session) {
-      router.push('/login');
+      router.push(`/${locale}/login`);
     } else if (session.user?.role && !allowedRoles.includes(session.user.role)) {
       router.push('/');
     }

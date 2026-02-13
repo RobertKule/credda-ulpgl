@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { PrismaAdapter } from '@auth/prisma-adapter';
+import { PrismaAdapter } from '@next-auth/prisma-adapter'; // ✅ CHANGEMENT ICI
 import { db } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import { Role } from '@prisma/client';
@@ -71,12 +71,13 @@ export const authOptions: NextAuthOptions = {
     }
   },
   pages: {
-    signIn: '/login',
-    error: '/login',
+    // Use locale-aware login paths to avoid middleware rewrite loops
+    signIn: '/fr/login',
+    error: '/fr/login',
   },
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 jours
+    maxAge: 30 * 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
