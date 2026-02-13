@@ -1,39 +1,30 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { PrismaAdapter } from '@next-auth/prisma-adapter'; // ✅ CHANGEMENT ICI
-import { db } from '@/lib/db';
-import bcrypt from 'bcryptjs';
-import { Role } from '@prisma/client';
-
-// Interface pour l'utilisateur
-interface User {
-  id: string;
-  email: string;
-  name: string | null;
-  role: Role;
-  password: string;
-}
+import NextAuth, { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { db } from "@/lib/db";
+import bcrypt from "bcryptjs";
+import { Role } from "@prisma/client";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   providers: [
     CredentialsProvider({
-      name: 'credentials',
+      name: "credentials",
       credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Mot de passe', type: 'password' }
+        email: { label: "Email", type: "email" },
+        password: { label: "Mot de passe", type: "password" }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          throw new Error('Email et mot de passe requis');
+          throw new Error("Email et mot de passe requis");
         }
 
         const user = await db.user.findUnique({
           where: { email: credentials.email }
-        }) as User | null;
+        });
 
         if (!user) {
-          throw new Error('Aucun utilisateur trouvé avec cet email');
+          throw new Error("Aucun utilisateur trouvé avec cet email");
         }
 
         const passwordMatch = await bcrypt.compare(
@@ -42,7 +33,7 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!passwordMatch) {
-          throw new Error('Mot de passe incorrect');
+          throw new Error("Mot de passe incorrect");
         }
 
         return {
@@ -71,12 +62,11 @@ export const authOptions: NextAuthOptions = {
     }
   },
   pages: {
-    // Use locale-aware login paths to avoid middleware rewrite loops
-    signIn: '/fr/login',
-    error: '/fr/login',
+    signIn: "/fr/login",
+    error: "/fr/login",
   },
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
