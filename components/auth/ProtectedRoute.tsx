@@ -1,18 +1,18 @@
-// components/auth/ProtectedRoute.tsx
 'use client';
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from '@/navigation';
 import { useEffect } from 'react';
+import { Role } from '@prisma/client';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles?: ('ADMIN' | 'EDITOR')[];
+  allowedRoles?: Role[];
 }
 
 export default function ProtectedRoute({ 
   children, 
-  allowedRoles = ['ADMIN', 'EDITOR'] 
+  allowedRoles = [Role.ADMIN, Role.EDITOR] 
 }: ProtectedRouteProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function ProtectedRoute({
     
     if (!session) {
       router.push('/login');
-    } else if (!allowedRoles.includes(session.user.role)) {
+    } else if (session.user?.role && !allowedRoles.includes(session.user.role)) {
       router.push('/');
     }
   }, [session, status, router, allowedRoles]);
@@ -35,7 +35,7 @@ export default function ProtectedRoute({
     );
   }
 
-  if (!session || !allowedRoles.includes(session.user.role)) {
+  if (!session || !session.user?.role || !allowedRoles.includes(session.user.role)) {
     return null;
   }
 

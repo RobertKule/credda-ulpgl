@@ -1,10 +1,20 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { db } from '@/lib/db';
 import bcrypt from 'bcryptjs';
+import { Role } from '@prisma/client';
 
-export const authOptions = {
+// Interface pour l'utilisateur
+interface User {
+  id: string;
+  email: string;
+  name: string | null;
+  role: Role;
+  password: string;
+}
+
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   providers: [
     CredentialsProvider({
@@ -15,15 +25,15 @@ export const authOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          throw new Error('Email et mot de passe requis');
         }
 
         const user = await db.user.findUnique({
           where: { email: credentials.email }
-        });
+        }) as User | null;
 
         if (!user) {
-          return null;
+          throw new Error('Aucun utilisateur trouvé avec cet email');
         }
 
         const passwordMatch = await bcrypt.compare(
@@ -32,7 +42,7 @@ export const authOptions = {
         );
 
         if (!passwordMatch) {
-          return null;
+          throw new Error('Mot de passe incorrect');
         }
 
         return {
@@ -54,21 +64,21 @@ export const authOptions = {
     },
     async session({ session, token }) {
       if (session?.user) {
-        session.user.role = token.role;
-        session.user.id = token.id;
+        session.user.role = token.role as Role;
+        session.user.id = token.id as string;
       }
       return session;
     }
   },
   pages: {
     signIn: '/login',
-    error: '/login'
+    error: '/login',
   },
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60 // 30 jours
+    maxAge: 30 * 24 * 60 * 60, // 30 jours
   },
-  secret: process.env.NEXTAUTH_SECRET
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);

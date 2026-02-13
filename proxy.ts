@@ -1,8 +1,8 @@
 // proxy.ts
 import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 import { withAuth } from 'next-auth/middleware';
+import { Role } from '@prisma/client';
 
 const intlMiddleware = createMiddleware({
   locales: ['fr', 'en', 'sw'],
@@ -44,80 +44,47 @@ const editorRoutes = [
 const matchesPattern = (pathname: string, patterns: string[]) => {
   return patterns.some(pattern => 
     pathname === pattern || 
-    pathname.startsWith(pattern + '/') ||
-    (pattern.includes('*') && pathname.match(new RegExp('^' + pattern.replace('*', '.*') + '$')))
+    pathname.startsWith(pattern + '/')
   );
 };
 
-export default async function proxy(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-  
-  // 1. BYPASS - Fichiers statiques, API, Next.js internals
-  if (
-    pathname.startsWith('/_next') || 
-    pathname.includes('.') || 
-    pathname.startsWith('/api')
-  ) {
-    return NextResponse.next();
-  }
-
-  // Extraire la locale de l'URL
-  const segments = pathname.split('/');
-  const locale = ['fr', 'en', 'sw'].includes(segments[1]) ? segments[1] : 'fr';
-  
-  // 2. RÉCUPÉRER LE TOKEN (NextAuth + Cookie personnalisé)
-  let token = null;
-  try {
-    // Essayer d'abord avec NextAuth
-    token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  } catch (error) {
-    // Fallback sur le cookie personnalisé
-    token = req.cookies.get('token')?.value ? { role: 'ADMIN' } : null;
-  }
-
-  const userRole = token?.role || null;
-  const isAuthenticated = !!token;
-
-  // 3. PAGE DE LOGIN - Pas de protection
-  if (pathname.includes('/login')) {
-    // Si déjà authentifié, rediriger vers admin
-    if (isAuthenticated) {
-      return NextResponse.redirect(new URL(`/${locale}/admin`, req.url));
-    }
+export default withAuth(
+  function middleware(req) {
     return intlMiddleware(req);
-  }
+  },
+  {
+    callbacks: {
+      authorized: ({ token, req }) => {
+        const { pathname } = req.nextUrl;
+        
+        // Extraire la locale de l'URL
+        const segments = pathname.split('/');
+        const pathWithoutLocale = '/' + segments.slice(2).join('/');
+        
+        // Routes publiques - toujours autorisées
+        if (matchesPattern(pathWithoutLocale, publicRoutes) || pathWithoutLocale === '/') {
+          return true;
+        }
 
-  // 4. PROTECTION ADMIN (Rôle ADMIN uniquement)
-  if (matchesPattern(pathname, adminRoutes)) {
-    if (!isAuthenticated) {
-      // Sauvegarder l'URL d'origine pour redirection après login
-      const redirectUrl = new URL(`/${locale}/login`, req.url);
-      redirectUrl.searchParams.set('callbackUrl', pathname);
-      return NextResponse.redirect(redirectUrl);
-    }
-    
-    if (userRole !== 'ADMIN') {
-      // Accès refusé - rediriger vers accueil
-      return NextResponse.redirect(new URL(`/${locale}/`, req.url));
-    }
-  }
+        // Routes admin - nécessite rôle ADMIN
+        if (matchesPattern(pathWithoutLocale, adminRoutes)) {
+          return token?.role === Role.ADMIN;
+        }
 
-  // 5. PROTECTION ÉDITEUR (Rôle ADMIN ou EDITOR)
-  if (matchesPattern(pathname, editorRoutes)) {
-    if (!isAuthenticated) {
-      const redirectUrl = new URL(`/${locale}/login`, req.url);
-      redirectUrl.searchParams.set('callbackUrl', pathname);
-      return NextResponse.redirect(redirectUrl);
-    }
-    
-    if (!['ADMIN', 'EDITOR'].includes(userRole || '')) {
-      return NextResponse.redirect(new URL(`/${locale}/`, req.url));
-    }
-  }
+        // Routes éditeur - nécessite rôle ADMIN ou EDITOR
+        if (matchesPattern(pathWithoutLocale, editorRoutes)) {
+          return token?.role === Role.ADMIN || token?.role === Role.EDITOR;
+        }
 
-  // 6. TOUTES LES AUTRES PAGES - Gestion normale des langues
-  return intlMiddleware(req);
-}
+        // Par défaut, pas d'authentification requise
+        return true;
+      }
+    },
+    pages: {
+      signIn: '/login',
+    },
+  }
+);
 
 export const config = {
   matcher: ['/((?!api|_next|.*\\..*).*)']
