@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useInView, useMotionValue, useTransform, animate } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { 
   Microscope, Scale, Users, FileText, Globe, ArrowRight, Quote, 
   Landmark, Mail, Volume2, VolumeX, Play, Pause, ChevronRight, 
   Linkedin, Calendar, Clock, BookOpen, Download, User, ShieldCheck, MapPin,
-  User2,
-  Eye
+  User2, Eye, LucideIcon
 } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -22,7 +21,6 @@ import {
 } from "@/components/ui/carousel";
 
 // --- CONSTANTES ---
-
 const TESTIMONIALS = [
   {
     name: "David MICHAEL PEYTON",
@@ -43,9 +41,7 @@ const TESTIMONIALS = [
     text: "I visited ULPGL in 2015 to conduct research for my PhD. Professor Kennedy KIHANGI BINDU was an excellent host that helped to get in contact with other researchers and organisations."
   }
 ];
-const renderIcon = (Icon: React.ElementType, className: string = "w-7 h-7 sm:w-8 sm:h-8") => {
-    return <Icon className={className} strokeWidth={1.2} />;
-  };
+
 const PARTNERS = [
   "Amnesty.webp", "McCain.webp", "Northwestern.webp", "TWB.webp",
   "worldbank.webp", "Ceni.webp", "Monusco.webp", "Oxford.webp",
@@ -53,7 +49,7 @@ const PARTNERS = [
 ];
 
 // --- COMPOSANT COMPTEUR ---
-const Counter = ({ value, duration = 2 }: { value: number | string, duration?: number }) => {
+const Counter = ({ value, duration = 2 }: { value: number | string; duration?: number }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const [displayValue, setDisplayValue] = useState("0");
@@ -64,7 +60,7 @@ const Counter = ({ value, duration = 2 }: { value: number | string, duration?: n
       const hasPlus = value.toString().includes("+");
       
       let start = 0;
-      const increment = numericValue / (duration * 60); // 60fps
+      const increment = numericValue / (duration * 60);
       const timer = setInterval(() => {
         start += increment;
         if (start >= numericValue) {
@@ -82,8 +78,19 @@ const Counter = ({ value, duration = 2 }: { value: number | string, duration?: n
   return <span ref={ref}>{displayValue}</span>;
 };
 
+// --- COMPOSANT ICÔNE (✅ CORRIGÉ) ---
+const StatIcon = ({ icon: Icon, className = "w-7 h-7 sm:w-8 sm:h-8" }: { icon: LucideIcon; className?: string }) => {
+  return <Icon className={className} strokeWidth={1.2} />;
+};
+
 // --- COMPOSANT PRINCIPAL ---
-export default function HomeClient({ locale, featuredResearch, latestReports, team, dbStats }: any) {
+export default function HomeClient({ 
+  locale, 
+  featuredResearch = [], 
+  latestReports = [], 
+  team = [], 
+  dbStats = { totalResources: 0, publications: 0, clinicalArticles: 0, researchArticles: 0 } 
+}: any) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
@@ -114,7 +121,6 @@ export default function HomeClient({ locale, featuredResearch, latestReports, te
         </video>
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/60 to-transparent z-10" />
 
-        {/* --- BOUTONS DE CONTRÔLE VIDÉO RESTAURÉS --- */}
         <div className="absolute bottom-10 right-10 z-30 flex gap-4">
           <button 
             onClick={togglePlay}
@@ -162,7 +168,6 @@ export default function HomeClient({ locale, featuredResearch, latestReports, te
             </motion.div>
           </AnimatePresence>
 
-          {/* Owl Progress Indicators */}
           <div className="absolute bottom-12 left-6 z-20 flex gap-6">
             {[0, 1, 2].map((i) => (
               <button key={i} onClick={() => setCurrentSlide(i)} className="flex items-center group">
@@ -177,204 +182,189 @@ export default function HomeClient({ locale, featuredResearch, latestReports, te
           </div>
         </div>
       </section>
-{/* --- SECTION 2: STATISTIQUES RÉELLES (DESIGN INSPIRÉ) --- */}
-<section className="bg-slate-50/50 py-12 sm:py-20 border-y border-slate-100 relative z-20">
-  <div className="container mx-auto px-6">
-    {/* La grille utilise divide-x pour créer les lignes de séparation entre les colonnes */}
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-200">
-      
-      {[
-        { 
-          v: new Date().getFullYear() - 2008, 
-          l: "Années d'Expertise en recherche-action", 
-          i: <Landmark className="text-blue-600 w-7 h-7 sm:w-8 sm:h-8" /> 
-        },
-        
-        { 
-          v: dbStats.totalResources, 
-          l: "Documents Scientifiques & Rapports", 
-          i: <FileText /> 
-        },
-        { 
-          v: 15, 
-          l: "Partenaires Académiques Mondiaux", 
-          i: <Globe /> 
-        },
-        { 
-          v: 12000, 
-          l: "Bénéficiaires de la Clinique Juridique", 
-          i: <Users /> 
-        },
-      ].map((s, i) => (
-        <motion.div 
-          key={i} 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.1 }}
-          className="flex items-center gap-6 px-8 py-10 md:py-4 lg:py-0 group"
-        >
-          {/* Icône stylisée - On augmente la taille et on affine le trait (strokeWidth) */}
-          <div className="text-blue-600 transition-transform duration-500 group-hover:scale-110 shrink-0">
-                  {renderIcon(s.i)}
+
+      {/* --- SECTION 2: STATISTIQUES (✅ CORRIGÉ) --- */}
+      <section className="bg-slate-50/50 py-12 sm:py-20 border-y border-slate-100 relative z-20">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+            
+            {[
+              { 
+                v: new Date().getFullYear() - 2008, 
+                l: "Années d'Expertise en recherche-action", 
+                icon: Landmark 
+              },
+              { 
+                v: dbStats?.totalResources || 0, 
+                l: "Documents Scientifiques & Rapports", 
+                icon: FileText 
+              },
+              { 
+                v: 15, 
+                l: "Partenaires Académiques Mondiaux", 
+                icon: Globe 
+              },
+              { 
+                v: 12000, 
+                l: "Bénéficiaires de la Clinique Juridique", 
+                icon: Users 
+              },
+            ].map((s, i) => (
+              <motion.div 
+                key={i} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="flex items-center gap-6 px-8 py-10 md:py-4 lg:py-0 group"
+              >
+                <div className="text-blue-600 transition-transform duration-500 group-hover:scale-110 shrink-0">
+                  <StatIcon icon={s.icon} />
                 </div>
 
-          <div className="flex flex-col">
-            {/* Chiffre large et bleu */}
-            <div className="text-3xl lg:text-4xl font-bold text-blue-600 leading-none mb-2">
-              <Counter value={s.v} />
-            </div>
-            {/* Description grise et fine */}
-            <div className="text-xs sm:text-sm font-medium text-slate-500 leading-snug max-w-[150px]">
-              {s.l}
-            </div>
+                <div className="flex flex-col">
+                  <div className="text-3xl lg:text-4xl font-bold text-blue-600 leading-none mb-2">
+                    <Counter value={s.v} />
+                  </div>
+                  <div className="text-xs sm:text-sm font-medium text-slate-500 leading-snug max-w-[150px]">
+                    {s.l}
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+            
           </div>
-        </motion.div>
-      ))}
-      
-    </div>
-  </div>
-</section>
-      {/* --- SECTION 3: RECHERCHE (BACKEND) - VERSION PREMIUM --- */}
-{/* --- SECTION 3: RECHERCHE (DESIGN SCIENTIFIQUE FLUIDE) --- */}
-<section className="py-32 bg-slate-50 relative overflow-hidden">
-  
-  {/* --- 1. ÉLÉMENTS DE DESIGN OVALES (BG) --- */}
-  {/* Ces formes bougent lentement pour briser la rigidité du site */}
-  <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
-    <motion.div 
-      animate={{ 
-        scale: [1, 1.1, 1],
-        rotate: [0, 5, 0],
-        x: [0, 20, 0] 
-      }}
-      transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      className="absolute -top-24 -left-24 w-[600px] h-[400px] bg-blue-600/5 rounded-[100%] blur-3xl"
-    />
-    <motion.div 
-      animate={{ 
-        scale: [1, 1.2, 1],
-        rotate: [0, -10, 0],
-        y: [0, 30, 0] 
-      }}
-      transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-      className="absolute bottom-0 right-[-10%] w-[800px] h-[500px] bg-emerald-600/5 rounded-[100%] blur-[120px]"
-    />
-  </div>
-
-  <div className="container mx-auto px-6 relative z-10">
-    
-    {/* --- 2. EN-TÊTE DYNAMIQUE --- */}
-    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-20 gap-8">
-      <motion.div 
-        initial={{ opacity: 0, x: -30 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        className="max-w-2xl space-y-6"
-      >
-        <div className="flex items-center gap-3">
-          <span className="h-[2px] w-12 bg-blue-600" />
-          <Badge className="bg-blue-600/10 text-blue-700 border-none rounded-none uppercase text-[10px] font-black tracking-[0.3em] px-3 py-1">
-            Recherche Active
-          </Badge>
         </div>
-        <h3 className="text-5xl lg:text-6xl font-serif font-bold text-slate-900 leading-[1.1]">
-          Explorer les <span className="italic text-blue-600">Frontières</span> du Savoir.
-        </h3>
-        <p className="text-slate-500 font-light text-lg max-w-xl">
-          Nos axes de recherche s'articulent autour des défis contemporains de la gouvernance en Afrique.
-        </p>
-      </motion.div>
+      </section>
 
-      <motion.div
-        initial={{ opacity: 0, x: 30 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-      >
-        <Link 
-          href="/research" 
-          className="group flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.4em] text-slate-900 hover:text-blue-600 transition-all"
-        >
-          <span className="border-b-2 border-slate-200 group-hover:border-blue-600 pb-2 transition-all">Consulter tout le domaine</span>
-          <div className="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
-            <ArrowRight size={16} />
-          </div>
-        </Link>
-      </motion.div>
-    </div>
+      {/* --- SECTION 3: RECHERCHE (✅ CORRIGÉ avec vérifications null-safe) --- */}
+      <section className="py-32 bg-slate-50 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.1, 1],
+              rotate: [0, 5, 0],
+              x: [0, 20, 0] 
+            }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            className="absolute -top-24 -left-24 w-[600px] h-[400px] bg-blue-600/5 rounded-[100%] blur-3xl"
+          />
+          <motion.div 
+            animate={{ 
+              scale: [1, 1.2, 1],
+              rotate: [0, -10, 0],
+              y: [0, 30, 0] 
+            }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+            className="absolute bottom-0 right-[-10%] w-[800px] h-[500px] bg-emerald-600/5 rounded-[100%] blur-[120px]"
+          />
+        </div>
 
-    {/* --- 3. GRILLE DE CARTES "FLOATING" --- */}
-    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-      {featuredResearch.map((article: any, idx: number) => (
-        <motion.div 
-          key={article.id}
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: idx * 0.1, duration: 0.7 }}
-          whileHover={{ y: -15 }}
-          className="group relative bg-white border border-slate-100 p-2 flex flex-col h-full hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-500"
-        >
-          {/* Image avec Overlay Oval au survol */}
-          <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
-             <Image 
-                src={article.mainImage || "/images/director3.webp"} 
-                fill 
-                alt="Research" 
-                className="object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0" 
-              />
-              <div className="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/20 transition-all duration-500" />
-              
-              {/* Badge flottant type "tag" */}
-              <div className="absolute top-6 left-6">
-                <div className="bg-white/90 backdrop-blur-md px-3 py-1 text-[8px] font-black uppercase tracking-widest text-slate-900 shadow-sm">
-                  {article.category?.translations[0]?.name || "Général"}
-                </div>
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-20 gap-8">
+            <motion.div 
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="max-w-2xl space-y-6"
+            >
+              <div className="flex items-center gap-3">
+                <span className="h-[2px] w-12 bg-blue-600" />
+                <Badge className="bg-blue-600/10 text-blue-700 border-none rounded-none uppercase text-[10px] font-black tracking-[0.3em] px-3 py-1">
+                  Recherche Active
+                </Badge>
               </div>
-          </div>
+              <h3 className="text-5xl lg:text-6xl font-serif font-bold text-slate-900 leading-[1.1]">
+                Explorer les <span className="italic text-blue-600">Frontières</span> du Savoir.
+              </h3>
+              <p className="text-slate-500 font-light text-lg max-w-xl">
+                Nos axes de recherche s'articulent autour des défis contemporains de la gouvernance en Afrique.
+              </p>
+            </motion.div>
 
-          <div className="p-8 flex flex-col flex-1">
-             {/* Titre avec soulignement dynamique */}
-             <h4 className="text-xl font-serif font-bold text-slate-950 mb-4 leading-snug group-hover:text-blue-600 transition-colors">
-               {article.translations[0]?.title}
-             </h4>
-             
-             <p className="text-xs text-slate-500 line-clamp-3 font-light leading-relaxed mb-8 italic">
-               "{article.translations[0]?.excerpt}"
-             </p>
-
-             {/* Footer de carte minimaliste */}
-             <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                   <div className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
-                   <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
-                     Rapport {new Date(article.createdAt).getFullYear()}
-                   </span>
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <Link 
+                href="/research" 
+                className="group flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.4em] text-slate-900 hover:text-blue-600 transition-all"
+              >
+                <span className="border-b-2 border-slate-200 group-hover:border-blue-600 pb-2 transition-all">Consulter tout le domaine</span>
+                <div className="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all">
+                  <ArrowRight size={16} />
                 </div>
-                <Link 
-                  href={`/research/${article.slug}`} 
-                  className="text-[9px] font-black uppercase tracking-tighter text-slate-900 overflow-hidden relative group/link"
-                >
-                  <span className="inline-block transition-transform duration-300 group-hover/link:-translate-y-full">Accéder</span>
-                  <span className="absolute top-0 left-0 inline-block translate-y-full transition-transform duration-300 group-hover/link:translate-y-0 text-blue-600">Accéder</span>
-                </Link>
-             </div>
+              </Link>
+            </motion.div>
           </div>
-        </motion.div>
-      ))}
-    </div>
-  </div>
 
-  {/* --- 4. PETIT DÉTAIL DÉCORATIF --- */}
-  <div className="container mx-auto px-6 mt-20">
-    <div className="flex items-center gap-4 text-[10px] font-bold text-slate-300 uppercase tracking-[0.5em]">
-      <div className="h-px w-20 bg-slate-200" />
-      <span>Scientific Excellence</span>
-    </div>
-  </div>
-</section>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {featuredResearch?.map((article: any, idx: number) => (
+              <motion.div 
+                key={article?.id || idx}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1, duration: 0.7 }}
+                whileHover={{ y: -15 }}
+                className="group relative bg-white border border-slate-100 p-2 flex flex-col h-full hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-500"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden bg-slate-100">
+                  <Image 
+                    src={article?.mainImage || "/images/director3.webp"} 
+                    fill 
+                    alt={article?.translations?.[0]?.title || "Research"} 
+                    className="object-cover transition-transform duration-1000 group-hover:scale-110 grayscale group-hover:grayscale-0" 
+                  />
+                  <div className="absolute inset-0 bg-blue-900/0 group-hover:bg-blue-900/20 transition-all duration-500" />
+                  
+                  <div className="absolute top-6 left-6">
+                    <div className="bg-white/90 backdrop-blur-md px-3 py-1 text-[8px] font-black uppercase tracking-widest text-slate-900 shadow-sm">
+                      {article?.category?.translations?.[0]?.name || "Général"}
+                    </div>
+                  </div>
+                </div>
 
-      {/* --- SECTION 4: IMPACT CLINIQUE (NOUVELLE) --- */}
+                <div className="p-8 flex flex-col flex-1">
+                  <h4 className="text-xl font-serif font-bold text-slate-950 mb-4 leading-snug group-hover:text-blue-600 transition-colors">
+                    {article?.translations?.[0]?.title || "Titre de recherche"}
+                  </h4>
+                  
+                  <p className="text-xs text-slate-500 line-clamp-3 font-light leading-relaxed mb-8 italic">
+                    "{article?.translations?.[0]?.excerpt || "Résumé non disponible"}"
+                  </p>
+
+                  <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
+                      <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                        Rapport {article?.createdAt ? new Date(article.createdAt).getFullYear() : "2025"}
+                      </span>
+                    </div>
+                    <Link 
+                      href={`/research/${article?.slug || article?.id || '#'}`} 
+                      className="text-[9px] font-black uppercase tracking-tighter text-slate-900 overflow-hidden relative group/link"
+                    >
+                      <span className="inline-block transition-transform duration-300 group-hover/link:-translate-y-full">Accéder</span>
+                      <span className="absolute top-0 left-0 inline-block translate-y-full transition-transform duration-300 group-hover/link:translate-y-0 text-blue-600">Accéder</span>
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        <div className="container mx-auto px-6 mt-20">
+          <div className="flex items-center gap-4 text-[10px] font-bold text-slate-300 uppercase tracking-[0.5em]">
+            <div className="h-px w-20 bg-slate-200" />
+            <span>Scientific Excellence</span>
+          </div>
+        </div>
+      </section>
+
+      {/* --- SECTION 4: IMPACT CLINIQUE --- */}
       <section className="py-28 bg-[#062c24] text-white overflow-hidden">
         <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
           <div className="relative aspect-video border-[15px] border-white/5 shadow-2xl overflow-hidden group">
@@ -418,15 +408,24 @@ export default function HomeClient({ locale, featuredResearch, latestReports, te
         <div className="container mx-auto px-6">
           <Carousel opts={{ align: "start", loop: true }} className="w-full">
             <CarouselContent>
-              {team.map((member: any) => (
-                <CarouselItem key={member.id} className="md:basis-1/2 lg:basis-1/4 pl-8">
+              {team?.map((member: any) => (
+                <CarouselItem key={member?.id} className="md:basis-1/2 lg:basis-1/4 pl-8">
                   <div className="group cursor-pointer">
                     <div className="aspect-[3/4] bg-slate-100 relative mb-6 grayscale group-hover:grayscale-0 transition-all duration-700 overflow-hidden shadow-xl">
-                      <Image src={member.image || "/images/director3.webp"} alt={member.translations[0]?.name} fill className="object-cover group-hover:scale-105" />
+                      <Image 
+                        src={member?.image || "/images/director3.webp"} 
+                        alt={member?.translations?.[0]?.name || "Membre"} 
+                        fill 
+                        className="object-cover group-hover:scale-105" 
+                      />
                       <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent" />
                     </div>
-                    <h4 className="font-serif font-bold text-2xl text-slate-900 tracking-tight">{member.translations[0]?.name}</h4>
-                    <p className="text-[10px] text-blue-700 font-black uppercase tracking-widest mt-1">{member.translations[0]?.role}</p>
+                    <h4 className="font-serif font-bold text-2xl text-slate-900 tracking-tight">
+                      {member?.translations?.[0]?.name || "Nom"}
+                    </h4>
+                    <p className="text-[10px] text-blue-700 font-black uppercase tracking-widest mt-1">
+                      {member?.translations?.[0]?.role || "Chercheur"}
+                    </p>
                   </div>
                 </CarouselItem>
               ))}
@@ -439,7 +438,7 @@ export default function HomeClient({ locale, featuredResearch, latestReports, te
         </div>
       </section>
 
-      {/* --- SECTION 6: TÉMOIGNAGES (INFINITY WALL) --- */}
+      {/* --- SECTION 6: TÉMOIGNAGES --- */}
       <section className="py-32 bg-[#121820] text-white relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-20">
           <div className="absolute top-1/4 -left-20 w-[500px] h-[500px] bg-blue-900 rounded-full blur-[120px]" />
@@ -454,7 +453,7 @@ export default function HomeClient({ locale, featuredResearch, latestReports, te
             {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
               <div key={i} className="w-[480px] bg-[#1a222c] border border-slate-700/50 p-12 flex flex-col justify-between hover:border-blue-500/50 transition-all group/card">
                 <Quote className="text-blue-600 opacity-30 group-hover/card:opacity-100 transition-opacity mb-8" size={40} />
-                <p className="text-lg font-serif italic text-slate-300 leading-relaxed italic">"{t.text}"</p>
+                <p className="text-lg font-serif italic text-slate-300 leading-relaxed">"{t.text}"</p>
                 <div className="mt-12 flex items-center gap-6 border-t border-slate-700/50 pt-8">
                   <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-blue-500/20 shadow-xl bg-slate-800">
                     <Image src={t.image} alt={t.name} fill className="object-cover" />
@@ -472,241 +471,200 @@ export default function HomeClient({ locale, featuredResearch, latestReports, te
         <div className="absolute top-0 right-0 w-40 h-full bg-gradient-to-l from-[#121820] to-transparent z-20 pointer-events-none" />
       </section>
 
-      {/* --- SECTION 7: BIBLIOTHÈQUE NUMÉRIQUE - RAPPORTS PDF (DESIGN PREMIUM) --- */}
-<section className="py-20 sm:py-24 lg:py-28 bg-slate-50 border-y border-slate-100 relative overflow-hidden">
-  
-  {/* Éléments décoratifs de fond */}
-  <div className="absolute top-0 left-0 w-96 h-96 bg-blue-600/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
-  <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-600/5 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl" />
-  
-  <div className="container mx-auto px-4 sm:px-6 relative z-10">
-    
-    {/* En-tête de section amélioré */}
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 sm:gap-0 mb-12 sm:mb-16">
-      <div className="space-y-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-[2px] bg-blue-600" />
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
-            Ressources
-          </span>
-        </div>
-        <h3 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-slate-900 leading-tight">
-          Bibliothèque <span className="italic text-blue-600">Numérique</span>
-        </h3>
-        <p className="text-base text-slate-500 font-light max-w-2xl">
-          Découvrez nos derniers rapports de recherche, analyses juridiques et études de cas.
-        </p>
-      </div>
-      <Link 
-        href="/publications" 
-        className="group inline-flex items-center gap-3 text-blue-600 font-black text-xs uppercase tracking-widest border-b-2 border-blue-600/30 pb-2 hover:border-blue-600 transition-all whitespace-nowrap"
-      >
-        <span>Explorer les archives</span>
-        <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
-      </Link>
-    </div>
-
-    {/* Grille des rapports - Design Cards Premium */}
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-      {latestReports.map((pub: any, index: number) => (
-        <motion.div
-          key={pub.id}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: index * 0.1 }}
-          whileHover={{ y: -8 }}
-          className="group relative"
-        >
-          {/* Card principale avec effet de profondeur */}
-          <div className="relative h-full bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden">
-            
-            {/* Barre de statut colorée dynamique selon le domaine */}
-            <div 
-              className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${
-                pub.domain === 'RESEARCH' 
-                  ? 'from-blue-600 to-blue-400' 
-                  : pub.domain === 'CLINICAL'
-                  ? 'from-emerald-600 to-emerald-400'
-                  : 'from-amber-600 to-amber-400'
-              }`} 
-            />
-
-            {/* Badge flottant "Nouveau" si récent */}
-            {new Date(pub.createdAt) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) && (
-              <div className="absolute top-4 right-4 z-20">
-                <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 rounded-full px-3 py-1.5 text-[8px] font-black uppercase tracking-wider shadow-lg animate-pulse">
-                  Nouveau
-                </Badge>
+      {/* --- SECTION 7: BIBLIOTHÈQUE NUMÉRIQUE --- */}
+      <section className="py-20 sm:py-24 lg:py-28 bg-slate-50 border-y border-slate-100 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-96 h-96 bg-blue-600/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-600/5 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl" />
+        
+        <div className="container mx-auto px-4 sm:px-6 relative z-10">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 sm:gap-0 mb-12 sm:mb-16">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-[2px] bg-blue-600" />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
+                  Ressources
+                </span>
               </div>
-            )}
+              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-slate-900 leading-tight">
+                Bibliothèque <span className="italic text-blue-600">Numérique</span>
+              </h3>
+              <p className="text-base text-slate-500 font-light max-w-2xl">
+                Découvrez nos derniers rapports de recherche, analyses juridiques et études de cas.
+              </p>
+            </div>
+            <Link 
+              href="/publications" 
+              className="group inline-flex items-center gap-3 text-blue-600 font-black text-xs uppercase tracking-widest border-b-2 border-blue-600/30 pb-2 hover:border-blue-600 transition-all whitespace-nowrap"
+            >
+              <span>Explorer les archives</span>
+              <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+            </Link>
+          </div>
 
-            {/* Contenu de la card */}
-            <div className="p-6 sm:p-8 lg:p-10">
-              
-              {/* Icône avec effet de glow */}
-              <div className="relative mb-6 sm:mb-8">
-                <div className="absolute inset-0 bg-blue-600/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center ${
-                  pub.domain === 'RESEARCH'
-                    ? 'bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600'
-                    : pub.domain === 'CLINICAL'
-                    ? 'bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-600'
-                    : 'bg-gradient-to-br from-amber-50 to-amber-100 text-amber-600'
-                } group-hover:scale-110 transition-transform duration-500`}>
-                  <FileText size={28} className="sm:w-8 sm:h-8" strokeWidth={1.5} />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {latestReports?.map((pub: any, index: number) => (
+              <motion.div
+                key={pub?.id || index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -8 }}
+                className="group relative"
+              >
+                <div className="relative h-full bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden">
+                  <div 
+                    className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${
+                      pub?.domain === 'RESEARCH' 
+                        ? 'from-blue-600 to-blue-400' 
+                        : pub?.domain === 'CLINICAL'
+                        ? 'from-emerald-600 to-emerald-400'
+                        : 'from-amber-600 to-amber-400'
+                    }`} 
+                  />
+
+                  {pub?.createdAt && new Date(pub.createdAt) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) && (
+                    <div className="absolute top-4 right-4 z-20">
+                      <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 rounded-full px-3 py-1.5 text-[8px] font-black uppercase tracking-wider shadow-lg animate-pulse">
+                        Nouveau
+                      </Badge>
+                    </div>
+                  )}
+
+                  <div className="p-6 sm:p-8 lg:p-10">
+                    <div className="relative mb-6 sm:mb-8">
+                      <div className="absolute inset-0 bg-blue-600/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      <div className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center ${
+                        pub?.domain === 'RESEARCH'
+                          ? 'bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600'
+                          : pub?.domain === 'CLINICAL'
+                          ? 'bg-gradient-to-br from-emerald-50 to-emerald-100 text-emerald-600'
+                          : 'bg-gradient-to-br from-amber-50 to-amber-100 text-amber-600'
+                      } group-hover:scale-110 transition-transform duration-500`}>
+                        <FileText size={28} className="sm:w-8 sm:h-8" strokeWidth={1.5} />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3 mb-4">
+                      <div className="flex items-center gap-2 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider">
+                        <Calendar size={12} className="text-slate-400" />
+                        <span className="text-slate-600">{pub?.year || '2025'}</span>
+                      </div>
+                      <span className="w-1 h-1 bg-slate-300 rounded-full" />
+                      <Badge 
+                        variant="outline" 
+                        className={`
+                          rounded-full px-3 py-1 text-[7px] sm:text-[8px] font-black uppercase tracking-widest border
+                          ${pub?.domain === 'RESEARCH' 
+                            ? 'border-blue-200 text-blue-700 bg-blue-50/50' 
+                            : pub?.domain === 'CLINICAL'
+                            ? 'border-emerald-200 text-emerald-700 bg-emerald-50/50'
+                            : 'border-amber-200 text-amber-700 bg-amber-50/50'
+                          }
+                        `}
+                      >
+                        {pub?.domain === 'RESEARCH' ? 'Recherche' : pub?.domain === 'CLINICAL' ? 'Clinique' : 'Rapport'}
+                      </Badge>
+                    </div>
+
+                    <h4 className="text-lg sm:text-xl lg:text-2xl font-serif font-bold text-slate-900 leading-tight mb-4 line-clamp-2 group-hover:text-blue-700 transition-colors">
+                      {pub?.translations?.[0]?.title || 'Rapport de recherche CREDDA'}
+                    </h4>
+
+                    {pub?.translations?.[0]?.excerpt && (
+                      <p className="text-sm text-slate-500 font-light leading-relaxed line-clamp-2 mb-6">
+                        {pub.translations[0].excerpt}
+                      </p>
+                    )}
+
+                    {pub?.authors && (
+                      <div className="flex items-center gap-2 text-xs text-slate-500 mb-6">
+                        <User2 size={14} className="text-slate-400" />
+                        <span className="font-medium line-clamp-1">{pub.authors}</span>
+                      </div>
+                    )}
+
+                    <div className="w-12 h-0.5 bg-gradient-to-r from-blue-600/60 to-transparent mb-6 group-hover:w-20 transition-all duration-500" />
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <motion.a
+                          href={pub?.pdfUrl || '#'}
+                          download
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-blue-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl group/btn"
+                        >
+                          <Download size={14} className="group-hover/btn:animate-bounce" />
+                          <span>PDF</span>
+                        </motion.a>
+                      </div>
+
+                      <Link
+                        href={`/publications/${pub?.slug || pub?.id || '#'}`}
+                        className="text-blue-600 hover:text-blue-700 transition-colors p-2"
+                      >
+                        <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-16 sm:mt-20 pt-12 sm:pt-16 border-t border-slate-200">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+              <div className="text-center group">
+                <div className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                  <Counter value={dbStats?.publications || 0} />
+                </div>
+                <div className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">
+                  Rapports Archivés
                 </div>
               </div>
 
-              {/* Métadonnées */}
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <div className="flex items-center gap-2 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider">
-                  <Calendar size={12} className="text-slate-400" />
-                  <span className="text-slate-600">{pub.year || '2025'}</span>
+              <div className="text-center group">
+                <div className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
+                  <Counter value={dbStats?.clinicalArticles || 0} />
                 </div>
-                <span className="w-1 h-1 bg-slate-300 rounded-full" />
-                <Badge 
-                  variant="outline" 
-                  className={`
-                    rounded-full px-3 py-1 text-[7px] sm:text-[8px] font-black uppercase tracking-widest border
-                    ${pub.domain === 'RESEARCH' 
-                      ? 'border-blue-200 text-blue-700 bg-blue-50/50' 
-                      : pub.domain === 'CLINICAL'
-                      ? 'border-emerald-200 text-emerald-700 bg-emerald-50/50'
-                      : 'border-amber-200 text-amber-700 bg-amber-50/50'
-                    }
-                  `}
-                >
-                  {pub.domain === 'RESEARCH' ? 'Recherche' : pub.domain === 'CLINICAL' ? 'Clinique' : 'Rapport'}
-                </Badge>
+                <div className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">
+                  Cas Cliniques
+                </div>
               </div>
 
-              {/* Titre */}
-              <h4 className="text-lg sm:text-xl lg:text-2xl font-serif font-bold text-slate-900 leading-tight mb-4 line-clamp-2 group-hover:text-blue-700 transition-colors">
-                {pub.translations[0]?.title || 'Rapport de recherche CREDDA'}
-              </h4>
-
-              {/* Résumé / Excerpt */}
-              {pub.translations[0]?.excerpt && (
-                <p className="text-sm text-slate-500 font-light leading-relaxed line-clamp-2 mb-6">
-                  {pub.translations[0].excerpt}
-                </p>
-              )}
-
-              {/* Auteur / Affiliation */}
-              {pub.authors && (
-                <div className="flex items-center gap-2 text-xs text-slate-500 mb-6">
-                  <User2 size={14} className="text-slate-400" />
-                  <span className="font-medium line-clamp-1">{pub.authors}</span>
+              <div className="text-center group">
+                <div className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                  <Counter value={dbStats?.researchArticles || 0} />
                 </div>
-              )}
-
-              {/* Séparateur décoratif */}
-              <div className="w-12 h-0.5 bg-gradient-to-r from-blue-600/60 to-transparent mb-6 group-hover:w-20 transition-all duration-500" />
-
-              {/* Actions - Boutons PDF et détails */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  {/* Bouton Téléchargement PDF */}
-                  <motion.a
-                    href={pub.pdfUrl || '#'}
-                    download
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-900 hover:bg-blue-600 text-white text-[10px] sm:text-xs font-black uppercase tracking-wider rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl group/btn"
-                  >
-                    <Download size={14} className="group-hover/btn:animate-bounce" />
-                    <span>PDF</span>
-                  </motion.a>
-
-                  {/* Métriques de lecture
-                  <div className="flex items-center gap-2 text-[9px] sm:text-[10px] text-slate-500 font-medium">
-                    <span className="flex items-center gap-1">
-                      <Eye size={12} />
-                      {pub.views || '1.2k'}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Download size={12} />
-                      {pub.downloads || '342'}
-                    </span>
-                  </div> */}
+                <div className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">
+                  Études Scientifiques
                 </div>
+              </div>
 
-                {/* Lien détails */}
-                <Link
-                  href={`/publications/${pub.slug || pub.id}`}
-                  className="text-blue-600 hover:text-blue-700 transition-colors p-2"
-                >
-                  <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
-                </Link>
+              <div className="text-center group">
+                <div className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 group-hover:text-blue-800 transition-colors">
+                  <Counter value={dbStats?.totalResources || 0} />
+                </div>
+                <div className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">
+                  Ressources Totales
+                </div>
               </div>
             </div>
-
-            {/* Overlay de gradient au hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
           </div>
-        </motion.div>
-      ))}
-    </div>
 
-    {/* --- Section des statistiques de la bibliothèque (DYNAMIQUE) --- */}
-<div className="mt-16 sm:mt-20 pt-12 sm:pt-16 border-t border-slate-200">
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-    
-    {/* Statistiques 1: Total Publications PDF */}
-    <div className="text-center group">
-      <div className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
-        <Counter value={dbStats.publications} />
-      </div>
-      <div className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">
-        Rapports Archivés
-      </div>
-    </div>
-
-    {/* Statistiques 2: Articles Cliniques */}
-    <div className="text-center group">
-      <div className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 group-hover:text-emerald-600 transition-colors">
-        <Counter value={dbStats.clinicalArticles} />
-      </div>
-      <div className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">
-        Cas Cliniques
-      </div>
-    </div>
-
-    {/* Statistiques 3: Articles de Recherche */}
-    <div className="text-center group">
-      <div className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
-        <Counter value={dbStats.researchArticles} />
-      </div>
-      <div className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">
-        Études Scientifiques
-      </div>
-    </div>
-
-    {/* Statistiques 4: Total Global */}
-    <div className="text-center group">
-      <div className="text-2xl sm:text-4xl font-serif font-bold text-slate-900 group-hover:text-blue-800 transition-colors">
-        <Counter value={dbStats.totalResources} />
-      </div>
-      <div className="text-[9px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500 mt-2">
-        Ressources Totales
-      </div>
-    </div>
-
-  </div>
-</div>
-
-    {/* Badge de mise à jour */}
-    <div className="flex justify-center mt-12 sm:mt-16">
-      <div className="inline-flex items-center gap-3 px-5 py-3 bg-white rounded-full shadow-sm border border-slate-200">
-        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-        <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-slate-600">
-          Bibliothèque mise à jour le {new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
-        </span>
-      </div>
-    </div>
-  </div>
-</section>
+          <div className="flex justify-center mt-12 sm:mt-16">
+            <div className="inline-flex items-center gap-3 px-5 py-3 bg-white rounded-full shadow-sm border border-slate-200">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-slate-600">
+                Bibliothèque mise à jour le {new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* --- SECTION 8: PARTENAIRES --- */}
       <section className="py-20 bg-white">
