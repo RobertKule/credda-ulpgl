@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-import createMiddleware from 'next-intl/middleware';
-
-// On exporte directement la fonction nommée proxy
-export default function proxy(req: any) {
-  const handleI18n = createMiddleware({
-    locales: ['fr', 'en', 'sw'],
-    defaultLocale: 'fr',
-    localePrefix: 'always'
-  });
-  
-  return handleI18n(req);
-}
-
-export const config = {
-  // On ne cible que les pages, on ignore tout le reste
-=======
 // proxy.ts
 import createMiddleware from 'next-intl/middleware';
 import { NextRequest, NextResponse } from 'next/server';
@@ -28,7 +11,7 @@ const intlMiddleware = createMiddleware({
 export default function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // 1. Bypass total pour les fichiers système, images et API
+  // 1. BYPASS - Fichiers statiques, API, Next.js internals
   if (
     pathname.startsWith('/_next') || 
     pathname.includes('.') || 
@@ -41,28 +24,26 @@ export default function proxy(req: NextRequest) {
   const isAdminPage = pathname.includes('/admin');
   const isLoginPage = pathname.includes('/login');
 
-  // 2. SI ON EST SUR LOGIN : On applique uniquement la langue et on S'ARRÊTE
-  // Cela empêche la boucle de redirection
+  // 2. PAGE DE LOGIN - Pas de protection, juste la gestion des langues
   if (isLoginPage) {
     return intlMiddleware(req);
   }
 
-  // 3. PROTECTION ADMIN : Si on veut aller sur /admin sans token
+  // 3. PROTECTION ADMIN - Redirection vers login si non authentifié
   if (isAdminPage && !token) {
+    // Extraire la locale de l'URL ou utiliser 'fr' par défaut
     const segments = pathname.split('/');
-    // On essaie de récupérer la langue dans l'URL ou on met 'fr' par défaut
     const locale = ['fr', 'en', 'sw'].includes(segments[1]) ? segments[1] : 'fr';
     
-    // On redirige vers login. IMPORTANT: URL absolue avec le domaine
+    // Redirection vers la page de login
     return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
   }
 
-  // 4. POUR TOUT LE RESTE : Langues normales
+  // 4. TOUTES LES AUTRES PAGES - Gestion normale des langues
   return intlMiddleware(req);
 }
 
 export const config = {
-  // On matche tout sauf les dossiers exclus
->>>>>>> 1419e2e (fix: correction des erreurs TypeScript critiques)
+  // Matcher optimisé - ignore les fichiers statiques et les API
   matcher: ['/((?!api|_next|.*\\..*).*)']
 };
