@@ -78,7 +78,7 @@ export default async function PublicationDetailPage({ params }: { params: Promis
             <aside className="lg:col-span-4 space-y-8">
               <div className="sticky top-32 space-y-8">
                 {/* Preview Box */}
-                <div className="relative aspect-[3/4] bg-slate-900 shadow-2xl overflow-hidden group">
+                <div className="sticky top-2  aspect-[3/4] bg-slate-900 shadow-2xl overflow-hidden group">
                   <ClientPdfPreview url={pdfUrl} />
                   <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors" />
                 </div>
@@ -93,15 +93,7 @@ export default async function PublicationDetailPage({ params }: { params: Promis
                     <Download size={18} /> Télécharger le PDF
                   </a>
                   
-                  {pub.doi && (
-                    <a 
-                      href={`https://doi.org/${pub.doi}`}
-                      target="_blank"
-                      className="flex items-center justify-center gap-3 w-full bg-white border-2 border-slate-900 text-slate-900 py-5 px-6 font-black uppercase text-xs tracking-widest hover:bg-slate-900 hover:text-white transition-all"
-                    >
-                      <ExternalLink size={18} /> Indexation DOI
-                    </a>
-                  )}
+                  
                 </div>
 
                 {/* Citation Box (Styled) */}
