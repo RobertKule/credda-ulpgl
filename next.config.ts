@@ -5,7 +5,12 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Options Next.js ici
+  webpack: (config: any) => {
+    config.resolve.alias.canvas = false;
+    return config;
+  },
 };
+
+
 
 export default withNextIntl(nextConfig);

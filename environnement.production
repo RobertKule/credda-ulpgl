@@ -1,0 +1,23 @@
+# ============================================
+# 🚀 CREDDA-ULPGL - PRODUCTION ENVIRONMENT
+# ============================================
+
+# --- SUPABASE DATABASE (PostgreSQL) ---
+DATABASE_URL="postgresql://postgres:credda%402024@db.lokgdbcpnekafzakvfdb.supabase.co:5432/postgres"
+
+# --- SUPABASE AUTH ---
+NEXT_PUBLIC_SUPABASE_URL="https://lokgdbcpnekafzakvfdb.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="sb_publishable_sGwcI3gjTfVoABebsj-T3g_577uubjV"
+
+# --- RESEND (EMAILS) ---
+RESEND_API_KEY="re_W1BHUfF4_i93s6JaWEksHdLvJB6DQdbN1"
+RESEND_FROM_EMAIL="contact@credda-ulpgl.org"
+
+# --- NEXT.JS CONFIGURATION ---
+NEXTAUTH_URL="https://credda-ulpgl.vercel.app"
+NEXTAUTH_SECRET="votre-secret-32-caracteres-minimum"
+NEXT_PUBLIC_SITE_URL="https://credda-ulpgl.vercel.app"
+
+# --- APPLICATION SETTINGS ---
+NEXT_PUBLIC_APP_NAME="CREDDA-ULPGL"
+NEXT_PUBLIC_APP_DESCRIPTION="Centre de Recherche sur la Démocratie et le Développement en Afrique"
