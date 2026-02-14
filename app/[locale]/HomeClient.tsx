@@ -112,7 +112,7 @@ export default function HomeClient({
   };
 
   return (
-    <div className="flex flex-col w-full bg-white overflow-x-hidden">
+    <div className="flex flex-col w-full bg-white overflow-x-hidden mt-24">
       
       {/* --- SECTION 1: HERO OWL VIDEO --- */}
       <section className="relative h-[95vh] w-full overflow-hidden bg-slate-950">

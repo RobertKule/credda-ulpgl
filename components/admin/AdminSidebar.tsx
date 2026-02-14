@@ -1,3 +1,4 @@
+// components/admin/AdminSidebar.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -16,7 +17,7 @@ import {
   X
 } from "lucide-react";
 
-// ✅ Map des icônes (résolu côté client)
+// ✅ Map des icônes
 const iconMap: Record<string, any> = {
   LayoutDashboard,
   FileText,
@@ -29,7 +30,7 @@ const iconMap: Record<string, any> = {
 interface MenuItem {
   href: string;
   label: string;
-  icon: string; // ✅ Maintenant c'est une string, pas un composant
+  icon: string;
 }
 
 interface AdminSidebarProps {
@@ -42,7 +43,7 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // ✅ Écouter l'événement du bouton menu mobile
+  // ✅ Écouter l'événement du bouton menu
   useEffect(() => {
     const handleToggleSidebar = () => {
       setIsOpen(prev => !prev);
@@ -94,7 +95,7 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
 
   return (
     <>
-      {/* ✅ Overlay mobile */}
+      {/* Overlay mobile */}
       {isMobile && isOpen && (
         <div 
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity"
@@ -102,11 +103,11 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
         />
       )}
 
-      {/* ✅ Sidebar */}
+      {/* Sidebar */}
       <aside
         id="admin-sidebar"
         className={`
-          fixed lg:sticky top-0 left-0 z-50
+          fixed lg:sticky top-0 left-0 z-50 mt-32
           h-screen bg-white border-r border-slate-200
           transition-all duration-300 ease-in-out
           flex flex-col
@@ -115,7 +116,7 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
           overflow-hidden
         `}
       >
-        {/* ✅ Header Sidebar */}
+        {/* Header Sidebar */}
         <div className={`
           h-20 border-b border-slate-100 flex items-center
           ${isOpen ? 'px-6 justify-between' : 'px-0 justify-center'}
@@ -146,13 +147,13 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
           )}
         </div>
 
-        {/* ✅ Navigation */}
+        {/* Navigation */}
         <nav className="flex-1 py-6 overflow-y-auto">
           <ul className="space-y-1">
             {menuItems.map((item) => {
               const isActive = pathname === item.href || 
                 (item.href !== '/admin' && pathname?.startsWith(item.href));
-              const Icon = iconMap[item.icon]; // ✅ Résolution côté client
+              const Icon = iconMap[item.icon];
 
               if (!Icon) return null;
 
@@ -190,7 +191,7 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
           </ul>
         </nav>
 
-        {/* ✅ Footer Sidebar */}
+        {/* Footer Sidebar */}
         <div className="border-t border-slate-100 p-4">
           <div className={`
             flex items-center gap-3 px-3 py-3 rounded-xl bg-slate-50
@@ -220,7 +221,7 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
             )}
           </div>
 
-          {/* ✅ Bouton de bascule pour desktop */}
+          {/* Bouton de bascule pour desktop */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="hidden lg:flex items-center justify-center w-full mt-4 p-2 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
