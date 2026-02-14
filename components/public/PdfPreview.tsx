@@ -1,144 +1,100 @@
+// components/public/PdfPreview.tsx - Version avec iframe
 "use client";
 
-import { useState } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
-import { Loader2, FileWarning, Download, FileText } from "lucide-react";
-import { Button } from "@/components/ui/button";
-
-// Configuration de PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+import { useState, useEffect } from "react";
+import { Loader2, FileWarning, Download, FileText, XCircle, Eye } from "lucide-react";
 
 interface PdfPreviewProps {
   url: string;
-  pageNumber?: number;
 }
 
-export default function PdfPreview({ url, pageNumber = 1 }: PdfPreviewProps) {
-  const [numPages, setNumPages] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [retryCount, setRetryCount] = useState(0);
+export default function PdfPreview({ url }: PdfPreviewProps) {
+  const [fileExists, setFileExists] = useState<boolean | null>(null);
+  const [checkingFile, setCheckingFile] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
-  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
-    setNumPages(numPages);
-    setLoading(false);
-    setError(null);
-  };
+  useEffect(() => {
+    async function checkFileExists() {
+      if (!url || url === "#" || url === "") {
+        setFileExists(false);
+        setCheckingFile(false);
+        return;
+      }
 
-  const onDocumentLoadError = (error: Error) => {
-    console.error("❌ Erreur de chargement PDF:", error);
-    setError(error.message || "Impossible de charger le PDF");
-    setLoading(false);
-  };
+      try {
+        const response = await fetch(url, { method: 'HEAD' });
+        setFileExists(response.ok);
+      } catch (err) {
+        setFileExists(false);
+      } finally {
+        setCheckingFile(false);
+      }
+    }
 
-  const handleRetry = () => {
-    setLoading(true);
-    setError(null);
-    setRetryCount(prev => prev + 1);
-  };
+    checkFileExists();
+  }, [url]);
 
-  // ✅ GESTION DES URL INVALIDES OU MANQUANTES
-  if (!url || url === "#" || url === "") {
+  if (checkingFile) {
     return (
-      <div className="relative w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col items-center justify-center p-6">
-        <div className="text-center space-y-4">
-          <div className="w-20 h-20 mx-auto bg-slate-200 rounded-full flex items-center justify-center">
-            <FileText size={32} className="text-slate-400" />
-          </div>
-          <div>
-            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-widest mb-1">
-              PDF Non Disponible
-            </h4>
-            <p className="text-xs text-slate-500 font-light">
-              Ce document n'a pas encore été téléversé.
-            </p>
-          </div>
+      <div className="w-full h-full bg-slate-50 flex items-center justify-center">
+        <Loader2 className="animate-spin text-blue-600" size={24} />
+      </div>
+    );
+  }
+
+  if (fileExists === false) {
+    return (
+      <div className="w-full h-full bg-gradient-to-br from-red-50 to-orange-50 flex flex-col items-center justify-center p-4">
+        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-3">
+          <XCircle size={32} className="text-red-500" />
         </div>
+        <h4 className="text-sm font-bold text-red-700 uppercase tracking-widest mb-1">
+          Fichier introuvable
+        </h4>
+        <p className="text-xs text-slate-600 text-center mb-3">
+          Le PDF n'existe pas ou a été déplacé.
+        </p>
+        <p className="text-[10px] font-mono bg-white p-2 text-slate-500 truncate max-w-full border border-slate-200 rounded">
+          {url.split('/').pop() || 'document.pdf'}
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="relative w-full h-full bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-full bg-slate-100 overflow-hidden group">
+      {/* ✅ Iframe pour afficher le PDF */}
+      <iframe
+        src={`${url}#view=FitH&toolbar=0&navpanes=0`}
+        className="w-full h-full border-0"
+        title="PDF Preview"
+        onError={() => setLoadError(true)}
+      />
       
-      {/* 🟢 ÉTAT DE CHARGEMENT */}
-      {loading && !error && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10">
-          <Loader2 className="animate-spin text-blue-600 mb-3" size={32} />
-          <p className="text-xs font-medium text-slate-600">Chargement du PDF...</p>
+      {/* ✅ Overlay avec bouton voir si erreur */}
+      {loadError && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm">
+          <FileWarning size={32} className="text-amber-500 mb-2" />
+          <p className="text-xs text-slate-600 mb-3">Aperçu non disponible</p>
+          <a
+            href={url}
+            target="_blank"
+            className="px-4 py-2 bg-blue-600 text-white text-xs rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Ouvrir le PDF
+          </a>
         </div>
       )}
 
-      {/* 🔴 ÉTAT D'ERREUR (404, serveur, etc.) */}
-      {error ? (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-white p-6">
-          <div className="max-w-xs text-center space-y-5">
-            <div className="w-16 h-16 mx-auto bg-red-50 rounded-full flex items-center justify-center">
-              <FileWarning size={28} className="text-red-500" />
-            </div>
-            
-            <div className="space-y-2">
-              <h3 className="text-sm font-black uppercase tracking-widest text-slate-800">
-                Fichier introuvable
-              </h3>
-              <p className="text-xs text-slate-500 font-light">
-                Le PDF que vous recherchez n'est pas disponible ou a été déplacé.
-              </p>
-              {url.includes('localhost') && (
-                <p className="text-[10px] font-mono bg-slate-100 p-2 text-slate-600 truncate mt-2">
-                  {url}
-                </p>
-              )}
-            </div>
-
-            <div className="flex flex-col gap-2 w-full pt-2">
-              <Button
-                onClick={handleRetry}
-                variant="outline"
-                size="sm"
-                className="text-xs rounded-none border-slate-300 hover:bg-slate-100"
-              >
-                Réessayer
-              </Button>
-              
-              <a
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                <Download size={12} />
-                Télécharger quand même
-              </a>
-            </div>
-          </div>
-        </div>
-      ) : (
-        /* 🟦 AFFICHAGE DU PDF */
-        <Document
-          key={retryCount} // Force le rechargement en cas de retry
-          file={url}
-          onLoadSuccess={onDocumentLoadSuccess}
-          onLoadError={onDocumentLoadError}
-          loading={null} // Géré manuellement
-          className="relative w-full h-full flex items-center justify-center"
-        >
-          <Page
-            pageNumber={pageNumber}
-            width={300}
-            renderTextLayer={false}
-            renderAnnotationLayer={false}
-            className="shadow-lg"
-          />
-        </Document>
-      )}
-
-      {/* 🟡 INDICATEUR DE PAGES (si chargé) */}
-      {numPages && !error && (
-        <div className="absolute bottom-2 right-2 bg-black/70 backdrop-blur-sm text-white px-2 py-1 text-[8px] font-mono">
-          1 / {numPages}
-        </div>
-      )}
+      {/* ✅ Bouton téléchargement flottant */}
+      <a
+        href={url}
+        download
+        className="absolute bottom-2 right-2 bg-black/70 hover:bg-black text-white p-2 rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+        title="Télécharger"
+      >
+        <Download size={14} />
+      </a>
     </div>
   );
 }

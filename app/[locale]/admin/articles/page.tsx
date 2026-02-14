@@ -1,12 +1,17 @@
+"use client"
+
+import { useState } from "react"
 import { db } from "@/lib/db";
 import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
   Plus, FileText, Edit, Trash2, Globe, 
-  ExternalLink, Eye, Microscope, Scale 
+  ExternalLink, Eye, Microscope, Scale,
+  EyeIcon
 } from "lucide-react";
-import DeleteArticleButton from "@/components/admin/DeleteArticleButton"; // On va le créer
+import DeleteArticleButton from "@/components/admin/DeleteArticleButton";
+import { ArticleDetailModal } from "@/components/admin/ArticleDetailModal";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -38,7 +43,7 @@ export default async function ArticlesPage({ params }: Props) {
         </Button>
       </div>
 
-      {/* Table / List */}
+      {/* Liste des articles */}
       <div className="bg-white border border-slate-200 shadow-sm overflow-hidden">
         <table className="w-full text-left border-collapse">
           <thead>
@@ -52,47 +57,7 @@ export default async function ArticlesPage({ params }: Props) {
           </thead>
           <tbody className="divide-y divide-slate-100">
             {articles.map((a) => (
-              <tr key={a.id} className="hover:bg-slate-50/50 transition-colors group">
-                <td className="p-4">
-                  <div className="flex flex-col">
-                    <span className="font-bold text-slate-900">
-                      {a.translations[0]?.title || "Sans titre (traduisez-moi)"}
-                    </span>
-                    <span className="text-[10px] text-slate-400 font-mono">slug: {a.slug}</span>
-                  </div>
-                </td>
-                <td className="p-4">
-                  {a.domain === "RESEARCH" ? (
-                    <Badge className="bg-blue-100 text-blue-700 border-none shadow-none rounded-none text-[9px] uppercase">
-                      <Microscope size={10} className="mr-1" /> Recherche
-                    </Badge>
-                  ) : (
-                    <Badge className="bg-emerald-100 text-emerald-700 border-none shadow-none rounded-none text-[9px] uppercase">
-                      <Scale size={10} className="mr-1" /> Clinique
-                    </Badge>
-                  )}
-                </td>
-                <td className="p-4 text-xs font-medium text-slate-600">
-                  {a.category.translations[0]?.name || a.category.slug}
-                </td>
-                <td className="p-4">
-                  <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${a.published ? 'bg-green-500' : 'bg-slate-300'}`} />
-                    <span className="text-xs text-slate-600">{a.published ? 'En ligne' : 'Brouillon'}</span>
-                  </div>
-                </td>
-                <td className="p-4">
-                  <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-blue-600" title="Voir sur le site">
-                      <Link href={`/research/${a.slug}`} target="_blank"><Eye size={16} /></Link>
-                    </Button>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-slate-900">
-                      <Edit size={16} />
-                    </Button>
-                    <DeleteArticleButton id={a.id} />
-                  </div>
-                </td>
-              </tr>
+              <ArticleRow key={a.id} article={a} locale={locale} />
             ))}
           </tbody>
         </table>
@@ -104,4 +69,68 @@ export default async function ArticlesPage({ params }: Props) {
       </div>
     </div>
   );
+}
+
+// Composant client pour la ligne avec modal
+function ArticleRow({ article, locale }: { article: any; locale: string }) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  return (
+    <>
+      <tr className="hover:bg-slate-50/50 transition-colors group">
+        <td className="p-4">
+          <div className="flex flex-col">
+            <span className="font-bold text-slate-900">
+              {article.translations[0]?.title || "Sans titre (traduisez-moi)"}
+            </span>
+            <span className="text-[10px] text-slate-400 font-mono">slug: {article.slug}</span>
+          </div>
+        </td>
+        <td className="p-4">
+          {article.domain === "RESEARCH" ? (
+            <Badge className="bg-blue-100 text-blue-700 border-none shadow-none rounded-none text-[9px] uppercase">
+              <Microscope size={10} className="mr-1" /> Recherche
+            </Badge>
+          ) : (
+            <Badge className="bg-emerald-100 text-emerald-700 border-none shadow-none rounded-none text-[9px] uppercase">
+              <Scale size={10} className="mr-1" /> Clinique
+            </Badge>
+          )}
+        </td>
+        <td className="p-4 text-xs font-medium text-slate-600">
+          {article.category.translations[0]?.name || article.category.slug}
+        </td>
+        <td className="p-4">
+          <div className="flex items-center gap-2">
+            <div className={`w-2 h-2 rounded-full ${article.published ? 'bg-green-500' : 'bg-slate-300'}`} />
+            <span className="text-xs text-slate-600">{article.published ? 'En ligne' : 'Brouillon'}</span>
+          </div>
+        </td>
+        <td className="p-4">
+          <div className="flex justify-end gap-2">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-8 w-8 text-slate-400 hover:text-blue-600"
+              title="Détails"
+              onClick={() => setIsModalOpen(true)}
+            >
+              <Link href={`/research/${article.slug}`} target="_blank"><Eye size={16} /></Link>
+            </Button>
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-slate-900">
+              <Link href={`/admin/articles/edit/${article.id}`}><Edit size={16} /></Link>
+            </Button>
+            <DeleteArticleButton id={article.id} />
+          </div>
+        </td>
+      </tr>
+
+      <ArticleDetailModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        article={article}
+        locale={locale}
+      />
+    </>
+  )
 }

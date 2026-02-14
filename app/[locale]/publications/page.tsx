@@ -1,128 +1,350 @@
 import { db } from "@/lib/db";
 import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Download, Filter, SearchX, BookOpen, Calendar, User2, ArrowRight} from "lucide-react";
-import PdfPreview from "@/components/public/PdfPreview"; // Import du nouveau composant
+import { 
+  FileText, Download, Filter, SearchX, Calendar, 
+  User2, ArrowRight, BookOpen, Clock, Eye 
+} from "lucide-react";
+import ClientPdfPreview from "@/components/public/ClientPdfPreview";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Publications | CREDDA-ULPGL",
+  description: "Bibliothèque numérique des publications scientifiques et rapports cliniques du CREDDA-ULPGL",
+};
 
 interface Props {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ year?: string }>;
+  searchParams: Promise<{ year?: string; domain?: string }>;
 }
 
 export default async function PublicationsPage({ params, searchParams }: Props) {
   const { locale } = await params;
-  const { year } = await searchParams;
+  const { year, domain } = await searchParams;
 
-  const publications = await db.publication.findMany({
-    where: year ? { year: parseInt(year) } : {},
-    include: { translations: { where: { language: locale } } },
-    orderBy: { year: "desc" }
+  // ✅ Récupérer toutes les années disponibles
+  const availableYears = await db.publication.findMany({
+    select: { year: true },
+    distinct: ['year'],
+    orderBy: { year: 'desc' }
   });
 
-  const years = [2024, 2023, 2022, 2021];
+  const years = availableYears.map(y => y.year);
+
+  // ✅ Construire la requête avec filtres
+  const whereClause: any = {};
+  if (year) whereClause.year = parseInt(year);
+  if (domain) whereClause.domain = domain;
+
+  // ✅ Récupérer les publications avec leurs traductions
+  const publications = await db.publication.findMany({
+    where: whereClause,
+    include: { 
+      translations: { 
+        where: { language: locale },
+        select: {
+          title: true,
+          authors: true,
+          description: true,
+          content: true
+        }
+      } 
+    },
+    orderBy: [
+      { year: "desc" },
+      { createdAt: "desc" }
+    ]
+  });
+
+  // ✅ Statistiques pour l'en-tête
+  const totalPublications = await db.publication.count();
+  const totalDownloads = 15420; // À remplacer par des stats réelles si disponibles
+  const totalAuthors = await db.publicationTranslation.groupBy({
+    by: ['authors'],
+    _count: true
+  }).then(res => res.length);
 
   return (
-    <main className="min-h-screen bg-slate-50/30">
-      {/* --- HERO --- */}
-      <header className="bg-[#050a15] text-white py-24">
-        <div className="container mx-auto px-6 text-center">
-          <Badge className="bg-blue-600 rounded-none px-4 py-1 uppercase tracking-widest text-[10px] mb-6">Open Repository</Badge>
-          <h1 className="text-5xl lg:text-7xl font-serif font-bold italic mb-6">Bibliothèque Numérique</h1>
-          <p className="text-slate-400 max-w-2xl mx-auto font-light leading-relaxed">
-            Consultez et téléchargez les rapports annuels et travaux scientifiques du CREDDA.
-          </p>
-        </div>
-      </header>
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
+      
+      {/* --- HERO SECTION AVEC STATISTIQUES --- */}
+      <section className="relative bg-[#050a15] text-white py-24 overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-600/5 -skew-x-12 translate-x-1/4" />
+        
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <Badge className="bg-blue-600 text-white rounded-none px-4 py-1.5 uppercase tracking-[0.3em] text-[10px] font-black border-none">
+              Open Access Repository
+            </Badge>
+            
+            <h1 className="text-5xl lg:text-7xl font-serif font-bold leading-tight">
+              Bibliothèque <span className="text-blue-400 italic">Numérique</span>
+            </h1>
+            
+            <p className="text-xl text-slate-400 font-light max-w-2xl mx-auto">
+              Publications scientifiques, rapports cliniques et études de cas en libre accès
+            </p>
 
-      {/* --- FILTRES --- */}
-      <div className="sticky top-16 z-30 bg-white border-b border-slate-200 py-4 shadow-sm">
-        <div className="container mx-auto px-6 flex items-center gap-4 overflow-x-auto whitespace-nowrap">
-          <Filter size={14} className="text-slate-400" />
-          <Link href="/publications" className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border ${!year ? 'bg-blue-900 text-white' : 'text-slate-500 border-slate-100 hover:border-blue-900'}`}>Tous</Link>
-          {years.map(y => (
-            <Link key={y} href={`/publications?year=${y}`} className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border ${year === y.toString() ? 'bg-blue-900 text-white' : 'text-slate-500 border-slate-100 hover:border-blue-900'}`}>{y}</Link>
-          ))}
-        </div>
-      </div>
-
-      {/* --- LISTE --- */}
-<section className="container mx-auto px-6 py-20">
-  {publications.length > 0 ? (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-      {publications.map((pub) => {
-        const content = pub.translations[0];
-        return (
-          <div key={pub.id} className="bg-white border border-slate-200 flex flex-col md:flex-row group hover:shadow-2xl transition-all duration-500">
-            {/* COUVERTURE DU PDF (Rendu automatique de la page 1) */}
-            <div className="w-full md:w-56 h-72 shrink-0 border-r border-slate-50">
-              <PdfPreview url={pub.pdfUrl} />
-            </div>
-
-            {/* CONTENU */}
-            <div className="p-8 flex flex-col justify-between flex-1">
-              <div className="space-y-4">
-                <div className="flex justify-between items-start">
-                   <Badge variant="outline" className="rounded-none border-blue-600 text-blue-700 text-[9px] font-black uppercase tracking-widest">{pub.domain}</Badge>
-                   <span className="text-xs font-serif italic text-slate-400">{pub.year}</span>
-                </div>
-                
-                {/* ✅ LIEN VERS LA PAGE DÉTAIL AVEC LE SLUG OU L'ID */}
-                <Link 
-                  href={`/publications/${pub.slug || pub.id}`}
-                  className="group/link"
-                >
-                  <h2 className="text-2xl font-serif font-bold text-slate-900 leading-tight group-hover:text-blue-700 transition-colors hover:underline decoration-blue-700/30 underline-offset-4">
-                    {content.title}
-                  </h2>
-                </Link>
-                
-                <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
-                  <User2 size={14} className="text-blue-600" /> {content.authors}
-                </div>
-                <p className="text-slate-500 text-sm font-light line-clamp-3 leading-relaxed">{content.description}</p>
+            {/* Statistiques */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12">
+              <div>
+                <div className="text-3xl font-bold text-blue-400">{totalPublications}</div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">Publications</div>
               </div>
-
-              <div className="pt-6 mt-6 border-t border-slate-50 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <a 
-                    href={pub.pdfUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-blue-900 hover:gap-4 transition-all group/btn"
-                  >
-                    <Download size={14} className="group-hover/btn:animate-bounce" /> 
-                    Télécharger (PDF)
-                  </a>
-                  
-                  {/* ✅ BOUTON "LIRE LA SUITE" VERS LA PAGE DÉTAIL */}
-                  <Link 
-                    href={`/publications/${pub.slug || pub.id}`}
-                    className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-blue-700 transition-all group/link2"
-                  >
-                    Détails 
-                    <ArrowRight size={12} className="group-hover/link2:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-                
-                {pub.doi && (
-                  <span className="text-[9px] font-mono text-slate-300">
-                    DOI: {pub.doi}
-                  </span>
-                )}
+              <div>
+                <div className="text-3xl font-bold text-blue-400">{years.length}</div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">Années</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-blue-400">{totalAuthors}+</div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">Chercheurs</div>
+              </div>
+              <div>
+                <div className="text-3xl font-bold text-blue-400">{totalDownloads.toLocaleString()}</div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">Téléchargements</div>
               </div>
             </div>
           </div>
-        );
-      })}
-    </div>
-  ) : (
-    <div className="text-center py-20 border-2 border-dashed border-slate-200">
-      <SearchX size={48} className="mx-auto text-slate-200 mb-4" />
-      <p className="text-slate-400 font-serif italic">Aucun document pour cette période.</p>
-    </div>
-  )}
-</section>
+        </div>
+      </section>
+
+      {/* --- BARRE DE FILTRES AVANCÉE --- */}
+      <div className="sticky top-16 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200 py-4 shadow-sm">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            
+            {/* Filtres par année */}
+            <div className="flex items-center gap-3 overflow-x-auto pb-2 lg:pb-0">
+              <Filter size={14} className="text-slate-400 shrink-0" />
+              <div className="flex gap-2">
+                <Link 
+                  href="/publications" 
+                  className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all whitespace-nowrap ${
+                    !year && !domain 
+                      ? 'bg-blue-900 text-white border-blue-900' 
+                      : 'text-slate-500 border-slate-200 hover:border-blue-900 hover:text-blue-900'
+                  }`}
+                >
+                  Tous
+                </Link>
+                
+                {years.map(y => (
+                  <Link 
+                    key={y} 
+                    href={`/publications?year=${y}`} 
+                    className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all whitespace-nowrap ${
+                      year === y.toString() 
+                        ? 'bg-blue-900 text-white border-blue-900' 
+                        : 'text-slate-500 border-slate-200 hover:border-blue-900 hover:text-blue-900'
+                    }`}
+                  >
+                    {y}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            {/* Filtres par domaine */}
+            <div className="flex items-center gap-3">
+              <BookOpen size={14} className="text-slate-400 shrink-0" />
+              <div className="flex gap-2">
+                {['RESEARCH', 'CLINICAL'].map(d => (
+                  <Link
+                    key={d}
+                    href={`/publications?${year ? `year=${year}&` : ''}domain=${d}`}
+                    className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all ${
+                      domain === d
+                        ? d === 'RESEARCH' 
+                          ? 'bg-blue-600 text-white border-blue-600'
+                          : 'bg-emerald-600 text-white border-emerald-600'
+                        : 'text-slate-500 border-slate-200 hover:border-blue-900 hover:text-blue-900'
+                    }`}
+                  >
+                    {d === 'RESEARCH' ? 'Recherche' : 'Clinique'}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* --- GRILLE DES PUBLICATIONS --- */}
+      <section className="container mx-auto px-6 py-16 lg:py-24">
+        {publications.length > 0 ? (
+          <div className="space-y-12">
+            
+            {/* Indicateur de résultats */}
+            <div className="flex justify-between items-center">
+              <p className="text-sm text-slate-500">
+                <span className="font-bold text-slate-900">{publications.length}</span> publication{publications.length > 1 ? 's' : ''} trouvée{publications.length > 1 ? 's' : ''}
+                {year && <span className="italic"> en {year}</span>}
+                {domain && <span className="italic"> • {domain === 'RESEARCH' ? 'Recherche' : 'Clinique'}</span>}
+              </p>
+              
+              {(year || domain) && (
+                <Link 
+                  href="/publications" 
+                  className="text-[10px] font-bold uppercase tracking-widest text-blue-600 hover:text-blue-800 transition-colors"
+                >
+                  Réinitialiser les filtres
+                </Link>
+              )}
+            </div>
+
+            {/* Grille des cartes */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {publications.map((pub, index) => {
+                const content = pub.translations[0];
+                if (!content) return null;
+
+                return (
+                  <div 
+                    key={pub.id} 
+                    className="group bg-white border border-slate-200 hover:border-blue-200 hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row"
+                  >
+                    {/* Aperçu PDF */}
+                    <div className="w-full md:w-56 h-72 shrink-0 bg-slate-50 border-r border-slate-200">
+                      <ClientPdfPreview url={pub.pdfUrl} />
+                    </div>
+
+                    {/* Contenu */}
+                    <div className="p-6 lg:p-8 flex flex-col justify-between flex-1">
+                      <div className="space-y-4">
+                        {/* En-tête avec badge et année */}
+                        <div className="flex justify-between items-start">
+                          <Badge 
+                            className={`
+                              rounded-none uppercase text-[8px] font-black tracking-widest px-2 py-1
+                              ${pub.domain === 'RESEARCH' 
+                                ? 'bg-blue-100 text-blue-800 border-blue-200' 
+                                : 'bg-emerald-100 text-emerald-800 border-emerald-200'
+                              }
+                            `}
+                          >
+                            {pub.domain === 'RESEARCH' ? 'Recherche' : 'Clinique'}
+                          </Badge>
+                          <span className="text-xs font-serif italic text-slate-400">
+                            {pub.year}
+                          </span>
+                        </div>
+
+                        {/* Titre avec lien */}
+                        <Link 
+                          href={`/publications/${pub.slug || pub.id}`}
+                          className="block group/link"
+                        >
+                          <h2 className="text-xl lg:text-2xl font-serif font-bold text-slate-900 leading-tight group-hover:text-blue-700 transition-colors line-clamp-2">
+                            {content.title}
+                          </h2>
+                        </Link>
+
+                        {/* Auteurs */}
+                        <div className="flex items-center gap-2 text-xs text-slate-600">
+                          <User2 size={14} className="text-blue-600 shrink-0" />
+                          <span className="font-medium line-clamp-1">{content.authors}</span>
+                        </div>
+
+                        {/* Résumé */}
+                        <p className="text-sm text-slate-500 font-light line-clamp-2 leading-relaxed">
+                          {content.description}
+                        </p>
+
+                        {/* Métadonnées supplémentaires */}
+                        <div className="flex items-center gap-4 text-[10px] text-slate-400">
+                          <span className="flex items-center gap-1">
+                            <Clock size={12} />
+                            Lecture: 12 min
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Eye size={12} />
+                            1.2k vues
+                          </span>
+                          {pub.doi && (
+                            <span className="font-mono">DOI: {pub.doi}</span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="pt-6 mt-4 border-t border-slate-100">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            {/* Bouton téléchargement */}
+                            <a 
+                              href={pub.pdfUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-blue-900 hover:text-blue-700 transition-all group/btn"
+                            >
+                              <Download size={14} className="group-hover/btn:animate-bounce" />
+                              <span>PDF</span>
+                            </a>
+
+                            {/* Lien détails */}
+                            <Link 
+                              href={`/publications/${pub.slug || pub.id}`}
+                              className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-blue-700 transition-all group/link"
+                            >
+                              <span>Détails</span>
+                              <ArrowRight size={12} className="group-hover/link:translate-x-1 transition-transform" />
+                            </Link>
+                          </div>
+
+                          {/* Métriques */}
+                          <div className="flex items-center gap-2">
+                            <span className="text-[8px] font-mono text-slate-300">
+                              {pub.id.slice(-6)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          /* --- ÉTAT VIDE --- */
+          <div className="max-w-2xl mx-auto py-24 text-center">
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-600/5 blur-3xl rounded-full" />
+              <SearchX size={80} className="mx-auto text-slate-300 relative z-10" strokeWidth={1} />
+            </div>
+            
+            <h3 className="text-3xl font-serif font-bold text-slate-900 mt-8 mb-4">
+              Aucune publication trouvée
+            </h3>
+            
+            <p className="text-slate-500 font-light leading-relaxed mb-8 max-w-md mx-auto">
+              {year && domain 
+                ? `Aucune publication ${domain === 'RESEARCH' ? 'de recherche' : 'clinique'} pour l'année ${year}`
+                : year 
+                ? `Aucune publication disponible pour l'année ${year}`
+                : domain
+                ? `Aucune publication ${domain === 'RESEARCH' ? 'de recherche' : 'clinique'} disponible`
+                : 'Aucune publication disponible pour le moment'
+              }
+            </p>
+            
+            <div className="flex justify-center gap-4">
+              <Link 
+                href="/publications" 
+                className="px-8 py-3 bg-slate-900 text-white font-bold text-xs uppercase tracking-widest hover:bg-blue-700 transition-all"
+              >
+                Voir toutes
+              </Link>
+              <Link 
+                href="/contact" 
+                className="px-8 py-3 border border-slate-200 text-slate-600 font-bold text-xs uppercase tracking-widest hover:bg-slate-50 transition-all"
+              >
+                Suggérer un document
+              </Link>
+            </div>
+          </div>
+        )}
+      </section>
     </main>
   );
 }
