@@ -4,6 +4,9 @@ import { db } from "@/lib/db";
 import { Resend } from 'resend';
 import { z } from "zod";
 
+// ✅ FORCER nodejs runtime (TRÈS IMPORTANT)
+export const runtime = 'nodejs';
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Schéma de validation
@@ -42,7 +45,7 @@ export async function POST(req: NextRequest) {
 
     // 2. Envoyer un email de confirmation à l'utilisateur
     await resend.emails.send({
-      from: 'CREDDA-ULPGL <noreply@credda-ulpgl.org>',
+      from: 'CREDDA-ULPGL <onboarding@resend.dev>', // ✅ Utiliser onboarding pour les tests
       to: [email],
       subject: "Nous avons bien reçu votre message",
       html: `
@@ -61,7 +64,7 @@ export async function POST(req: NextRequest) {
 
     // 3. Envoyer une notification à l'admin
     await resend.emails.send({
-      from: 'CREDDA-ULPGL <system@credda-ulpgl.org>',
+      from: 'CREDDA-ULPGL <onboarding@resend.dev>', // ✅ Utiliser onboarding pour les tests
       to: ['admin@credda-ulpgl.org'],
       subject: `Nouveau message de contact: ${subject}`,
       html: `
