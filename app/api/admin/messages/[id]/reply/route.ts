@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { Resend } from 'resend';
-
+export const runtime = 'nodejs';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(
