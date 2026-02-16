@@ -20,7 +20,7 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
-  
+
   const [baseData, setBaseData] = useState({
     year: initialData?.year || new Date().getFullYear(),
     doi: initialData?.doi || "",
@@ -45,13 +45,21 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
     setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("uploadType", "pdf"); // Route will apply PDF branch (20MB, application/pdf)
 
     try {
       const res = await fetch("/api/upload", { method: "POST", body: formData });
       const data = await res.json();
-      if (data.url) setBaseData({ ...baseData, pdfUrl: data.url });
-    } catch (err) {
-      alert("Erreur lors de l'upload du document");
+      if (res.ok && data.url) {
+        setBaseData({ ...baseData, pdfUrl: data.url });
+      } else {
+        // Show the structured validation message from the route
+        const message =
+          data.errors?.file?.[0] ?? data.error ?? "Erreur lors de l'upload du document.";
+        alert(message);
+      }
+    } catch {
+      alert("Erreur réseau lors de l'upload du document.");
     } finally {
       setUploading(false);
     }
@@ -67,13 +75,13 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
       }))
     };
 
-    const res = initialData 
+    const res = initialData
       ? await updatePublication(initialData.id, payload)
       : await createPublication(payload);
 
     if (res.success) {
-  router.push(`/${locale}/admin/publications?updated=true`);
-}
+      router.push(`/${locale}/admin/publications?updated=true`);
+    }
 
     else setLoading(false);
   };
@@ -83,7 +91,7 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
       {/* SECTION DOCUMENT PDF */}
       <div className="bg-slate-950 text-white p-8 space-y-6">
         <h3 className="text-xs font-black uppercase tracking-[0.3em] text-blue-400">Fichier de Publication</h3>
-        
+
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="border-2 border-dashed border-white/10 p-6 flex flex-col items-center justify-center bg-white/5 group hover:border-blue-500 transition-all">
             {baseData.pdfUrl ? (
@@ -93,15 +101,15 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
                   <span className="text-xs font-bold uppercase tracking-widest">Document prêt</span>
                   <span className="text-[10px] text-white/50 truncate max-w-[200px]">{baseData.pdfUrl}</span>
                 </div>
-                <button onClick={() => setBaseData({...baseData, pdfUrl: ""})} className="ml-4 p-2 hover:bg-red-500/20 text-red-400 rounded-full">
+                <button onClick={() => setBaseData({ ...baseData, pdfUrl: "" })} className="ml-4 p-2 hover:bg-red-500/20 text-red-400 rounded-full">
                   <X size={16} />
                 </button>
               </div>
             ) : (
               <>
                 <FileText size={40} className="text-white/20 mb-4 group-hover:text-blue-500" />
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   disabled={uploading}
                   onClick={() => fileInputRef.current?.click()}
                   className="bg-transparent border-white/20 hover:bg-white hover:text-black rounded-none uppercase text-[10px] font-bold"
@@ -117,11 +125,11 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-[10px] font-bold text-slate-500 uppercase">Année</label>
-                <Input type="number" className="bg-white/5 border-white/10 rounded-none" value={baseData.year} onChange={(e) => setBaseData({...baseData, year: parseInt(e.target.value)})} />
+                <Input type="number" className="bg-white/5 border-white/10 rounded-none" value={baseData.year} onChange={(e) => setBaseData({ ...baseData, year: parseInt(e.target.value) })} />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] font-bold text-slate-500 uppercase">Domaine</label>
-                <select className="w-full h-10 bg-white/5 border border-white/10 px-3 text-sm" value={baseData.domain} onChange={(e) => setBaseData({...baseData, domain: e.target.value})}>
+                <select className="w-full h-10 bg-white/5 border border-white/10 px-3 text-sm" value={baseData.domain} onChange={(e) => setBaseData({ ...baseData, domain: e.target.value })}>
                   <option value="RESEARCH">Recherche</option>
                   <option value="CLINICAL">Clinique</option>
                 </select>
@@ -129,7 +137,7 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
             </div>
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-slate-500 uppercase">DOI (Digital Object Identifier)</label>
-              <Input placeholder="10.1000/xyz123" className="bg-white/5 border-white/10 rounded-none" value={baseData.doi} onChange={(e) => setBaseData({...baseData, doi: e.target.value})} />
+              <Input placeholder="10.1000/xyz123" className="bg-white/5 border-white/10 rounded-none" value={baseData.doi} onChange={(e) => setBaseData({ ...baseData, doi: e.target.value })} />
             </div>
           </div>
         </div>
@@ -141,9 +149,9 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
         </TabsList>
         {LANGUAGES.map(lang => (
           <TabsContent key={lang.code} value={lang.code} className="p-8 bg-white border border-t-0 border-slate-200 space-y-6">
-            <Input placeholder="Titre scientifique complet" className="text-xl font-serif font-bold rounded-none h-14" value={(translations as any)[lang.code].title} onChange={(e) => setTranslations({...translations, [lang.code]: {...(translations as any)[lang.code], title: e.target.value}})} />
-            <Input placeholder="Auteurs (Pr. Jean, Dr. Marie, etc.)" className="rounded-none" value={(translations as any)[lang.code].authors} onChange={(e) => setTranslations({...translations, [lang.code]: {...(translations as any)[lang.code], authors: e.target.value}})} />
-            <Textarea placeholder="Résumé analytique (Abstract)..." className="h-44 rounded-none" value={(translations as any)[lang.code].description} onChange={(e) => setTranslations({...translations, [lang.code]: {...(translations as any)[lang.code], description: e.target.value}})} />
+            <Input placeholder="Titre scientifique complet" className="text-xl font-serif font-bold rounded-none h-14" value={(translations as any)[lang.code].title} onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], title: e.target.value } })} />
+            <Input placeholder="Auteurs (Pr. Jean, Dr. Marie, etc.)" className="rounded-none" value={(translations as any)[lang.code].authors} onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], authors: e.target.value } })} />
+            <Textarea placeholder="Résumé analytique (Abstract)..." className="h-44 rounded-none" value={(translations as any)[lang.code].description} onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], description: e.target.value } })} />
           </TabsContent>
         ))}
       </Tabs>
