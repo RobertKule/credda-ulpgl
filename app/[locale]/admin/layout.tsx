@@ -5,6 +5,7 @@ import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader"; // ✅ Nouveau composant client
+import { Toaster } from "@/components/ui/toaster";
 
 import {
   LayoutDashboard,
@@ -37,6 +38,7 @@ export default async function AdminLayout({
     { href: "/admin", label: "Dashboard", icon: "LayoutDashboard" },
     { href: "/admin/articles", label: "Articles", icon: "FileText" },
     { href: "/admin/publications", label: "Publications", icon: "BookOpen" },
+    { href: "/admin/gallery", label: "Gallerie", icon: "BookOpen" },
     { href: "/admin/members", label: "Équipe", icon: "UserCircle" },
     { href: "/admin/messages", label: "Messages", icon: "Mail" },
     { href: "/admin/users", label: "Accès", icon: "Users" },
@@ -64,6 +66,7 @@ export default async function AdminLayout({
                 </p>
               </div>
               {children}
+               <Toaster />
             </div>
           </main>
 
