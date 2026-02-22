@@ -23,52 +23,77 @@
           "title": "Kitovu cha Ushirikiano wa Kimataifa.",
           "desc": "Tunashirikiana na vyuo vikuu vikubwa kwa maendeleo endelevu."
         }
-      ]
+      ],
+      "cta_publications": "Machapisho Yetu",
+      "cta_contact": "Wasiliana"
     },
     "stats": {
-      "years": "Miaka ya Uzoefu",
-      "pubs": "Machapisho ya Kisayansi",
+      "years": "Miaka ya Utaalam katika utafiti",
+      "pubs": "Nyaraka za Kisayansi & Ripoti",
       "partners": "Washirika wa Kimataifa",
       "cases": "Wanufaika wa Kliniki"
     },
-    "sections": {
-      "recentPubs": "Machapisho ya Hivi Karibuni",
-      "upcomingEvents": "Matukio Yanayokuja"
-    }
-  },
-
-  "AboutPage": {
-    "mission": {
-      "title": "Dhamira Yetu",
-      "desc": "CREDDA inalenga kuimarisha taasisi za kidemokrasia barani Afrika."
+    "research": {
+      "badge": "Utafiti Unaofanya",
+      "title": "Chunguza <span>Mipaka</span> ya Maarifa.",
+      "description": "Mihimili yetu ya utafiti inashughulikia changamoto za utawala barani Afrika.",
+      "cta": "Chunguza wigo wote"
     },
-    "vision": {
-      "title": "Maono Yetu",
-      "desc": "Tunatamani taasisi imara, jumuishi na zenye ufanisi."
-    },
-    "values": {
-      "title": "Maadili Yetu",
-      "desc": [
-        {
-          "name": "Ubora",
-          "desc": "Tunajitolea kwa utafiti wa hali ya juu."
+    "clinical": {
+      "badge": "Athari za Nyanjani",
+      "title": "Kliniki ya Sheria na Mazingira.",
+      "description": "Zaidi ya kituo cha utafiti, CREDDA inachukua hatua. Tunasaidia jamii katika usalama wa ardhi na ulinzi wa misitu.",
+      "actions": {
+        "legal": {
+          "title": "Msaada wa Kisheria",
+          "desc": "Upatanishi na utetezi wa haki za wanyonge."
         },
-        {
-          "name": "Athari",
-          "desc": "Tunataka matokeo halisi kwa jamii."
-        },
-        {
-          "name": "Ushirikiano",
-          "desc": "Tunaamini katika nguvu ya ushirikiano."
-        },
-        {
-          "name": "Ubunifu",
-          "desc": "Tunakuza ubunifu katika utafiti."
+        "land": {
+          "title": "Ulinzi wa Ardhi",
+          "desc": "Kulinda ardhi dhidi ya shinikizo za viwanda."
         }
-      ]
+      },
+      "cta": "Hatua zetu za kimatibabu"
+    },
+    "team": {
+      "title": "Uongozi wa Kisayansi",
+      "subtitle": "Timu ya Utafiti"
+    },
+    "testimonials": {
+      "badge": "Imani ya Kimataifa",
+      "title": "Wanatuamini."
+    },
+    "library": {
+      "badge": "Rasilimali",
+      "title": "Maktaba ya <span>Dijitali</span>",
+      "description": "Gundua ripoti zetu za hivi karibuni za utafiti, uchambuzi wa kisheria na tafiti za kesi.",
+      "cta": "Chunguza kumbukumbu",
+      "stats": {
+        "publications": "Ripoti za Kumbukumbu",
+        "clinical": "Kesi za Kliniki",
+        "research": "Tafiti za Kisayansi",
+        "total": "Jumla ya Rasilimali"
+      }
+    },
+    "partners": {
+      "title": "Mtandao wa Kimataifa wa Washirika"
+    },
+    "cta": {
+      "title": "Kujenga mustakabali kupitia <span>Sayansi</span>.",
+      "partner": "Kuwa Mshirika",
+      "about": "Mradi wa CREDDA"
+    },"Gallery": {
+    "badge": "Katika Picha",
+    "title": "CREDDA katika <span>Hatua</span>",
+    "description": "Gundua shughuli zetu za utafiti, kazi za kliniki na ushirikiano kupitia uteuzi wa picha.",
+    "cta": "Tazama nyumba ya sanaa kamili",
+    "modal": {
+      "close": "Funga",
+      "prev": "Iliyopita",
+      "next": "Ijayo"
     }
+  }
   },
-
   "NotFound": {
     "badge": "Hitilafu",
     "title": "Ukurasa haukupatikana",
@@ -81,5 +106,481 @@
     "back": "Rudi",
     "contact": "Wasiliana",
     "help": "Unahitaji msaada?"
+  },
+  "about": {
+    "since": "Tangu",
+    "watch_video": "Tazama filamu ya taasisi",
+    "hero": {
+      "title1": "Wasomi wa",
+      "title2": "Utafiti",
+      "title3": "Katika Afrika ya Maziwa Makuu."
+    },
+    "who_we_are": "Sisi ni nani?",
+    "mission_title": "Taasisi ya kitaaluma inayojitolea kwa",
+    "mission_italic": "Maendeleo ya Jamii",
+    "mission_description": "CREDDA si tu kituo cha mawazo. Ni mkono wa kisayansi wa ULPGL unaounganisha nadharia za sheria na uhalisia wa nchini katika Jamhuri ya Kidemokrasia ya Kongo.",
+    "achievements": [
+      "Uzalishaji wa kisayansi ulioidhinishwa kimataifa",
+      "Msaada wa kisheria bure kwa wanyonge",
+      "Uchunguzi wa demokrasia katika Maziwa Makuu",
+      "Utaalamu wa kipekee wa ardhi na mazingira"
+    ],
+    "years_excellence": "Miaka ya Ubora",
+    "contact_us": "Wasiliana Nasi",
+    "compass": "Dira Yetu",
+    "mission_vision_title": "Dhamira ya wazi kwa Afrika yenye uthabiti.",
+    "mission": "Dhamira Yetu",
+    "mission_text": "Kutoa utafiti wa hali ya juu ili kuongoza sera za umma na kuimarisha utawala wa sheria nchini DRC.",
+    "vision": "Maono Yetu",
+    "vision_text": "Kuwa kitovu kikuu cha taaluma mbalimbali cha mageuzi ya migogoro Afrika ya Kati.",
+    "values": "Maadili Yetu",
+    "values_text": "Uadilifu wa kitaaluma, kutoegemea upande wowote kisiasa, na kujitolea kwa haki za jamii zilizo katika mazingira magumu.",
+    "values_list": {
+      "excellence": "Ubora",
+      "neutrality": "Kutoegemea",
+      "engagement": "Kujitolea",
+      "innovation": "Ubunifu"
+    },
+    "location": "Mahali",
+    "find_us": "Tupate Goma.",
+    "location_description": "Makao makuu ya CREDDA yapo ndani ya Kampasi ya Salomon ya ULPGL, mazingira bora ya kitaaluma katikati ya jiji la Goma.",
+    "address": "Anwani ya Kawaida",
+    "full_address": [
+      "Université Libre des Pays des Grands Lacs (ULPGL),",
+      "Kampasi ya Salomon, Avenue de la Corniche,",
+      "Kitongoji cha Himbi, Goma, DRC."
+    ],
+    "stats": {
+      "years": "Miaka ya Utaalam",
+      "publications": "Machapisho ya Kisayansi",
+      "partners": "Washirika wa Kimataifa",
+      "beneficiaries": "Wanufaika"
+    },
+    "cta_title": "Uko tayari kushirikiana kwa mabadiliko?",
+    "become_partner": "Kuwa Mshirika",
+    "meet_team": "Timu Yetu"
+  },
+  "ResearchPage": {
+    "header": {
+      "badge": "Uzalishaji wa Kisayansi",
+      "title": "Utafiti <span>na</span> Uchambuzi.",
+      "description": "Gundua kazi zetu juu ya utawala, demokrasia na maendeleo endelevu barani Afrika, zinazozalishwa na watafiti wetu na washirika wa kimataifa."
+    },
+    "filters": {
+      "all": "Kazi zote",
+      "count": "{count} hati | {count} nyaraka",
+      "available": "inapatikana"
+    },
+    "article": {
+      "badge": "Utafiti",
+      "paper": "CREDDA Karatasi",
+      "authors": "Timu ya Utafiti ya CREDDA",
+      "readMore": "Fikia ripoti kamili",
+      "readingTime": "Kusoma: {time} dk",
+      "pdf": "Toleo la PDF",
+      "noExcerpt": "Muhtasari haupatikani",
+      "noTitle": "Kichwa hakipatikani"
+    },
+    "empty": {
+      "title": "Kumbukumbu zinawekwa kidijitali",
+      "description": "Timu zetu kwa sasa zinaunganisha ripoti za hivi karibuni. Tafadhali rudi karibuni kuona maendeleo yetu ya hivi punde.",
+      "subscribe": "Jisajili kwa arifa",
+      "backHome": "Rudi mwanzo"
+    },
+    "cta": {
+      "title": "Maktaba Halisi",
+      "description": "CREDDA pia ina kituo cha nyaraka kinachofunguliwa kwa watafiti katika kampasi ya ULPGL huko Goma.",
+      "button": "Fanya miadi"
+    }
+  },
+  "ResearchDetailPage": {
+    "back": "Rudi kwenye utafiti",
+    "ref": "KUMB",
+    "authors": "Timu ya CREDDA",
+    "readingTime": "Kusoma {time} dk",
+    "excerpt": {
+      "title": "Muhtasari"
+    },
+    "actions": {
+      "share": "Shiriki",
+      "copied": "Imenakiliwa!",
+      "save": "Hifadhi",
+      "saved": "Imehifadhiwa"
+    },
+    "metadata": {
+      "category": "Utafiti",
+      "notFound": {
+        "title": "Makala haipatikani",
+        "description": "Makala unayotafuta haipo au imehamishwa."
+      }
+    }
+  },
+  "ClinicalPage": {
+    "header": {
+      "badge": "Kliniki na Uga",
+      "title": "Haki kupitia <span>Kitendo cha Kisayansi</span>.",
+      "description": "Kliniki ya Sheria na Mazingira ya CREDDA inasaidia jamii katika kulinda haki zao na kuhifadhi bioanuwai."
+    },
+    "values": [
+      {
+        "title": "Msaada wa Kisheria",
+        "desc": "Upatanishi na usaidizi kwa wanyonge."
+      },
+      {
+        "title": "Haki za Mazingira",
+        "desc": "Ulinzi wa mifumo ikolojia ya Bonde la Kongo."
+      },
+      {
+        "title": "Utaalam wa Nyanjani",
+        "desc": "Uwepo hai katika maeneo ya migogoro ya ardhi."
+      }
+    ],
+    "article": {
+      "badge": "Kitendo cha Kliniki",
+      "readMore": "Tazama ripoti ya kliniki",
+      "noExcerpt": "Muhtasari haupatikani",
+      "noTitle": "Kichwa hakipatikani"
+    },
+    "empty": {
+      "title": "Kumbukumbu za kliniki zinasasishwa",
+      "description": "Timu zetu za uga zinakamilisha ripoti za uingiliaji. Tafadhali rudi karibuni kuona vitendo vyetu vya hivi punde vya kisheria.",
+      "button": "Rudi mwanzo"
+    },
+    "cta": {
+      "title": "Unahitaji msaada wa kisheria au ardhi?",
+      "description": "CREDDA inaweka utaalam wake katika huduma ya jamii za mitaa. Wataalam wetu hupokea maombi yako kila wiki.",
+      "button1": "Wasilisha kesi ya kliniki",
+      "button2": "Mawasiliano ya dharura"
+    }
+  },
+
+  "ClinicalDetailPage": {
+    "back": "Rudi kwenye vitendo vya kliniki",
+    "location": "Kivu Kaskazini, DRC",
+    "certified": "Ripoti Iliyothibitishwa",
+    "attachments": "Viambatisho na midia",
+    "download": "Pakua kiambatisho",
+    "gallery": "Kielelezo cha uga",
+    "notFound": {
+      "title": "Kitendo cha kliniki hakipatikani",
+      "description": "Kitendo cha kliniki unachotafuta hakipo au kimehamishwa."
+    }
+  },
+  "PublicationsPage": {
+    "header": {
+      "badge": "Hifadhi ya Wazi",
+      "title": "Maktaba ya <span>Dijitali</span>",
+      "description": "Machapisho ya kisayansi, ripoti za kliniki na tafiti za kesi katika ufikiaji wazi",
+      "stats": {
+        "publications": "Machapisho",
+        "years": "Miaka",
+        "researchers": "Watafiti",
+        "downloads": "Upakuaji"
+      }
+    },
+    "filters": {
+      "all": "Zote",
+      "domain": {
+        "research": "Utafiti",
+        "clinical": "Kliniki"
+      },
+      "reset": "Weka upya vichujio",
+      "results": "{count} chapisho limepatikana | {count} machapisho yamepatikana",
+      "filteredBy": {
+        "year": "mwaka {year}",
+        "domain": " • {domain}"
+      }
+    },
+    "article": {
+      "badge": {
+        "research": "Utafiti",
+        "clinical": "Kliniki"
+      },
+      "authors": "Mtafiti Mkuu",
+      "affiliation": "CREDDA - ULPGL Hub",
+      "readingTime": "Kusoma: {time} dk",
+      "views": "{count} maoni",
+      "doi": "DOI: {doi}",
+      "pdf": "PDF",
+      "details": "Maelezo",
+      "noDescription": "Maelezo hayapatikani",
+      "noTitle": "Kichwa hakipatikani"
+    },
+    "empty": {
+      "title": "Hakuna machapisho yaliyopatikana",
+      "description": {
+        "yearDomain": "Hakuna machapisho ya {domain} kwa mwaka {year}",
+        "year": "Hakuna machapisho yanayopatikana kwa mwaka {year}",
+        "domain": "Hakuna machapisho ya {domain} yanayopatikana",
+        "default": "Hakuna machapisho yanayopatikana kwa sasa"
+      },
+      "button1": "Tazama zote",
+      "button2": "Pendekeza hati"
+    }
+  },
+
+  "PublicationDetailPage": {
+    "back": "Rudi kwenye maktaba",
+    "badge": {
+      "research": "KARATASI YA UTAFITI",
+      "clinical": "KARATASI YA KLINIKI"
+    },
+    "actions": {
+      "download": "Pakua PDF",
+      "cite": "Taja"
+    },
+    "metadata": {
+      "publication": "Kuchapishwa: {year}",
+      "openAccess": "Ufikiaji Wazi",
+      "authors": "Mtafiti Mkuu",
+      "affiliation": "Uhusiano"
+    },
+    "abstract": "Muhtasari",
+    "tags": {
+      "democracy": "#Demokrasia",
+      "drc": "#DRC",
+      "governance": "#Utawala"
+    },
+    "recommendations": {
+      "title": "Usomaji Zaidi",
+      "subtitle": "Machapisho Sawa",
+      "cta": "Chunguza maktaba",
+      "read": "Tazama"
+    },
+    "citation": {
+      "title": "Rejeleo la Bibliografia",
+      "copy": "Nakili rejeleo",
+      "copied": "Imenakiliwa!",
+      "format": "{authors} ({year}). « {title} ». CREDDA-ULPGL Scientific Repository."
+    },
+    "notFound": {
+      "title": "Chapisho halipatikani",
+      "description": "Chapisho unalotafuta halipo au limehamishwa."
+    }
+  },
+  "TeamPage": {
+    "header": {
+      "badge": "Baraza la Kitaaluma",
+      "title": "<span>Watafiti</span> Wetu & Wataalam.",
+      "description": "Timu ya taaluma mbalimbali inayojitolea kwa uzalishaji wa maarifa muhimu na ubora wa kisayansi barani Afrika."
+    },
+    "empty": {
+      "title": "Saraka inasasishwa",
+      "description": "Saraka ya watafiti wetu kwa sasa inasasishwa. Tafadhali rudi karibuni."
+    },
+    "contact": {
+      "email": "Wasiliana kwa barua pepe",
+      "linkedin": "Wasifu wa LinkedIn"
+    }
+  },
+
+  "SearchPage": {
+    "header": {
+      "badge": "Injini ya utafutaji",
+      "title": "Matokeo ya: <span>\"{query}\"</span>",
+      "results": "Tumepata {count} inayolingana katika hifadhidata ya CREDDA."
+    },
+    "sections": {
+      "articles": "Uchambuzi na Kazi",
+      "publications": "Machapisho ya PDF",
+      "members": "Wanachama wa Timu"
+    },
+    "empty": {
+      "title": "Hakuna matokeo yaliyopatikana",
+      "description": "Angalia tahajia au jaribu kwa maneno ya jumla zaidi."
+    },
+    "highlight": {
+      "authors": "Waandishi: "
+    }
+  },
+  "ContactPage": {
+    "header": {
+      "badge": "Uhusiano wa Kitaasisi",
+      "title": "Tuzungumze kuhusu <span>Mustakabali</span>.",
+      "description": "Utafiti wa kisayansi, utaalam wa kliniki au ushirikiano wa kimkakati: sekretarieti yetu itakuelekeza kwa wataalam sahihi."
+    },
+    "info": {
+      "title": "Kitovu cha Mawasiliano",
+      "description": "Ufikiaji wa moja kwa moja kwa idara za utafiti na kliniki za sheria za ULPGL.",
+      "items": [
+        {
+          "title": "Kampasi ya Salomon",
+          "content": "Avenue de la Corniche, Himbi, Goma, DRC"
+        },
+        {
+          "title": "Barua Pepe Rasmi",
+          "content": "contact@credda-ulpgl.org"
+        },
+        {
+          "title": "Nambari ya Moja kwa Moja",
+          "content": "+243 812 345 678"
+        },
+        {
+          "title": "Saa za Kazi",
+          "content": "Jumatatu - Ijumaa: 08:30 - 16:30"
+        }
+      ],
+      "social": "Mitandao ya Kijamii"
+    },
+    "form": {
+      "title": "Tuma ombi la kisayansi",
+      "fields": {
+        "name": {
+          "label": "Kitambulisho Kamili",
+          "placeholder": "Pr. / Dr. / Jina kamili",
+          "required": "*"
+        },
+        "email": {
+          "label": "Barua Pepe ya Kitaasisi",
+          "placeholder": "anwani@taasisi.org",
+          "required": "*"
+        },
+        "subject": {
+          "label": "Mada ya Mawasiliano",
+          "placeholder": "Mf: Ombi la ushirikiano wa kisayansi au utaalam wa kliniki",
+          "required": "*"
+        },
+        "message": {
+          "label": "Maelezo ya Ombi Lako",
+          "placeholder": "Andika ujumbe wako kwa sekretarieti ya CREDDA...",
+          "required": "*"
+        }
+      },
+      "submit": "Tuma kwa sekretarieti",
+      "submitting": "Inatuma...",
+      "error": {
+        "invalid": "Jibu batili kutoka kwa seva",
+        "generic": "Hitilafu ilitokea wakati wa kutuma ujumbe.",
+        "connection": "Hitilafu ya muunganisho. Tafadhali jaribu tena baadaye."
+      },
+      "success": {
+        "title": "Ombi Limehifadhiwa.",
+        "description": "Ujumbe wako umetumwa kwa mafanikio kwa <strong>Sekretarieti ya Kisayansi ya CREDDA-ULPGL</strong>. Utapokea uthibitisho kwa barua pepe baada ya kukaguliwa na wataalam wetu.",
+        "button": "Ujumbe mpya"
+      }
+    },
+    "map": {
+      "badge": "Mahali",
+      "title": "Kampasi ya Salomon",
+      "gps": "Viwianishi vya GPS",
+      "location": "Himbi, Goma",
+      "description": "Fuata Avenue de la Corniche hadi lango kuu la Kampasi ya Salomon."
+    },
+    "faq": {
+      "security": {
+        "title": "Usalama wa Data",
+        "description": "Taarifa zako zimesimbwa kwa njia fiche na hazishirikiwi kamwe."
+      },
+      "regional": {
+        "title": "Ufikiaji wa Kikanda",
+        "description": "Tunafanya kazi kote katika eneo la Maziwa Makuu."
+      }
+    }
+  },
+
+  "LoginPage": {
+    "left": {
+      "badge": "Eneo Salama",
+      "title": "Portal ya Usimamizi <br/><span>Kisayansi</span>.",
+      "description": "Karibu kwenye kiolesura cha usimamizi cha CREDDA. Eneo hili limehifadhiwa kwa watafiti na wasimamizi walioidhinishwa.",
+      "footer": "Ulinzi wa data unaofaa"
+    },
+    "right": {
+      "back": "Rudi kwenye tovuti",
+      "logo": "CREDDA<span>.ULPGL</span>",
+      "title": "Kuingia kwa Admin",
+      "subtitle": "Tafadhali weka vitambulisho vyako vya ufikiaji.",
+       
+      "fields": {
+        "email": {
+          "placeholder": "Anwani ya barua pepe ya kitaaluma"
+        },
+        "password": {
+          "placeholder": "Nywila"
+        }
+      },
+      "submit": "Ingia",
+      "submitting": "Inaingia...",
+      "errors": {
+        "invalid": "Vitambulisho batili",
+        "connection": "Hitilafu ya muunganisho"
+      },
+      "forgotPassword": "Umesahau nywila?"
+    }
+  },
+  "Footer": {
+    "identity": {
+      "description": "Taasisi ya ubora wa Chuo Kikuu Huria cha Nchi za Maziwa Makuu inayojitolea kwa utafiti wa kisayansi na mazoezi ya kliniki ya sheria."
+    },
+    "expertise": {
+      "title": "Maeneo ya Utaalam",
+      "items": [
+        "Demokrasia na Uchaguzi",
+        "Utawala wa Ardhi",
+        "Haki ya Mazingira",
+        "Amani na Utatuzi wa Migogoro"
+      ]
+    },
+    "resources": {
+      "title": "Rasilimali za Kielimu",
+      "items": [
+        {
+          "label": "Historia Yetu",
+          "href": "/about"
+        },
+        {
+          "label": "Maktaba ya Ripoti",
+          "href": "/publications"
+        },
+        {
+          "label": "Timu ya Utafiti",
+          "href": "/team"
+        },
+        {
+          "label": "Ushirikiano wa Kisayansi",
+          "href": "/contact"
+        }
+      ],
+      "admin": "Eneo la Utawala"
+    },
+    "contact": {
+      "title": "Sekretarieti ya Goma",
+      "address": {
+        "line1": "Kampasi ya ULPGL, Kitongoji cha Himbi,",
+        "line2": "Goma, Kivu Kaskazini, DRC."
+      },
+      "phone": "+243 812 345 678",
+      "email": "contact@credda-ulpgl.org"
+    },
+    "bottom": {
+      "copyright": "© {year} CREDDA-ULPGL. Haki Zote Zimehifadhiwa.",
+      "legal": "Masharti ya Kisheria",
+      "privacy": "Sera ya Faragha",
+      "system": "Mfumo Unafanya Kazi"
+    }
+  },
+  "GalleryPage": {
+    "back": "Rudi mwanzo",
+    "badge": "Maktaba ya Picha",
+    "title": "Nyumba ya Sanaa <span>ya Taasisi</span>",
+    "description": "Jitumbukize katika shughuli za CREDDA kupitia uteuzi wa picha zinazonasa utafiti wetu, kazi ya kliniki na ushirikiano.",
+    "stats": {
+      "total": "Picha",
+      "categories": "Kategoria",
+      "featured": "Inayoangaziwa"
+    },
+    "filters": {
+      "all": "Zote"
+    },
+    "results": "Picha {count} kati ya {total}",
+    "featured": "Inayoangaziwa",
+    "download": "Pakua",
+    "share": "Shiriki",
+    "like": "Penda",
+    "liked": "Umeshapenda",
+    "empty": {
+      "title": "Nyumba ya sanaa inatajirishwa",
+      "description": "Timu zetu zinatayarisha uteuzi wa picha. Rudi karibuni kugundua shughuli zetu kwenye picha."
+    }
   }
 }
