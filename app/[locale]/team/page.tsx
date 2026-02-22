@@ -1,3 +1,4 @@
+// app/[locale]/team/page.tsx
 import { db } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/navigation";
@@ -6,6 +7,7 @@ import {
   SearchX, Globe, ChevronRight 
 } from "lucide-react";
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -13,6 +15,7 @@ interface Props {
 
 export default async function TeamPage({ params }: Props) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'TeamPage' });
 
   const members = await db.member.findMany({
     include: {
@@ -28,13 +31,13 @@ export default async function TeamPage({ params }: Props) {
         <div className="container mx-auto px-6">
           <div className="max-w-3xl space-y-6">
             <Badge className="bg-blue-600 rounded-none px-4 py-1 uppercase tracking-[0.2em] text-[10px] font-bold">
-              Corps Académique
+              {t('header.badge')}
             </Badge>
             <h1 className="text-5xl lg:text-7xl font-serif font-bold italic leading-tight">
-              Nos <span className="text-blue-500 italic">Chercheurs</span> & Experts.
+              <span dangerouslySetInnerHTML={{ __html: t.raw('header.title') }} />
             </h1>
             <p className="text-xl text-slate-400 font-light leading-relaxed">
-              Une équipe interdisciplinaire dédiée à la production de savoirs critiques et à l'excellence scientifique en Afrique.
+              {t('header.description')}
             </p>
           </div>
         </div>
@@ -88,10 +91,20 @@ export default async function TeamPage({ params }: Props) {
 
                     {/* Social links */}
                     <div className="flex gap-4 pt-2">
-                      <a href={`mailto:${member.email}`} className="p-2 border border-slate-100 text-slate-400 hover:text-blue-600 transition-all">
-                        <Mail size={16} />
-                      </a>
-                      <a href="#" className="p-2 border border-slate-100 text-slate-400 hover:text-blue-600 transition-all">
+                      {member.email && (
+                        <a 
+                          href={`mailto:${member.email}`} 
+                          className="p-2 border border-slate-100 text-slate-400 hover:text-blue-600 transition-all group"
+                          title={t('contact.email')}
+                        >
+                          <Mail size={16} />
+                        </a>
+                      )}
+                      <a 
+                        href="#" 
+                        className="p-2 border border-slate-100 text-slate-400 hover:text-blue-600 transition-all group"
+                        title={t('contact.linkedin')}
+                      >
                         <Linkedin size={16} />
                       </a>
                     </div>
@@ -101,9 +114,17 @@ export default async function TeamPage({ params }: Props) {
             })}
           </div>
         ) : (
-          <div className="py-24 text-center">
-            <SearchX size={64} className="mx-auto text-slate-100 mb-6" />
-            <p className="text-slate-400 font-serif italic text-lg">Annuaire en cours de mise à jour.</p>
+          <div className="py-24 text-center max-w-2xl mx-auto">
+            <div className="relative mb-8">
+              <div className="absolute inset-0 bg-blue-600/5 blur-3xl rounded-full" />
+              <SearchX size={80} className="mx-auto text-slate-300 relative z-10" strokeWidth={1} />
+            </div>
+            <h3 className="text-3xl font-serif font-bold text-slate-900 mb-4">
+              {t('empty.title')}
+            </h3>
+            <p className="text-slate-500 font-light text-lg">
+              {t('empty.description')}
+            </p>
           </div>
         )}
       </section>

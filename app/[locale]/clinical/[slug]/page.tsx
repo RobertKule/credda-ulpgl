@@ -1,3 +1,4 @@
+// app/[locale]/clinical/[slug]/page.tsx
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { Link } from "@/navigation";
@@ -8,6 +9,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
@@ -20,6 +22,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function ClinicalArticlePage({ params }: { params: Promise<{ locale: string, slug: string }> }) {
   const { locale, slug } = await params;
+  const t = await getTranslations({ locale, namespace: 'ClinicalDetailPage' });
+  
   const article = await db.article.findUnique({
     where: { slug },
     include: {
@@ -38,7 +42,7 @@ export default async function ClinicalArticlePage({ params }: { params: Promise<
       <div className="bg-slate-50 border-b border-slate-100 py-4">
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/clinical" className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-emerald-700 hover:text-emerald-900 transition-all">
-            <ArrowLeft size={14} /> Retour aux actions cliniques
+            <ArrowLeft size={14} /> {t('back')}
           </Link>
           <div className="flex gap-4">
             <Share2 size={16} className="text-slate-400 cursor-pointer hover:text-emerald-600" />
@@ -60,8 +64,8 @@ export default async function ClinicalArticlePage({ params }: { params: Promise<
               </h1>
               <div className="flex flex-wrap justify-center items-center gap-6 text-sm text-slate-500 font-medium italic">
                 <span className="flex items-center gap-2"><Calendar size={16} className="text-emerald-600" /> {new Date(article.createdAt).toLocaleDateString(locale)}</span>
-                <span className="flex items-center gap-2"><MapPin size={16} className="text-emerald-600" /> Nord-Kivu, RDC</span>
-                <span className="flex items-center gap-2"><ShieldCheck size={16} className="text-emerald-600" /> Rapport Certifié</span>
+                <span className="flex items-center gap-2"><MapPin size={16} className="text-emerald-600" /> {t('location')}</span>
+                <span className="flex items-center gap-2"><ShieldCheck size={16} className="text-emerald-600" /> {t('certified')}</span>
               </div>
             </header>
 
@@ -89,7 +93,7 @@ export default async function ClinicalArticlePage({ params }: { params: Promise<
             {article.medias.length > 0 && (
               <section className="pt-12 border-t border-slate-100">
                 <h3 className="text-xl font-serif font-bold text-slate-900 mb-8 flex items-center gap-3">
-                  <Info size={20} className="text-emerald-600" /> Pièces jointes et média
+                  <Info size={20} className="text-emerald-600" /> {t('attachments')}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {article.medias.map((media) => (
@@ -99,14 +103,14 @@ export default async function ClinicalArticlePage({ params }: { params: Promise<
                           <div className="relative h-48 w-full overflow-hidden">
                             <Image src={media.url} alt="Gallery" fill className="object-cover group-hover:scale-105 transition-transform" />
                           </div>
-                          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">{media.title || "Illustration terrain"}</p>
+                          <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">{media.title || t('gallery')}</p>
                         </div>
                       )}
                       {media.type === "DOCUMENT" && (
                         <a href={media.url} target="_blank" className="flex items-center justify-between p-4 bg-white border border-emerald-100 text-emerald-700">
                           <div className="flex items-center gap-3">
                             <Download size={20} />
-                            <span className="text-sm font-bold uppercase tracking-tighter">{media.title || "Télécharger l'annexe"}</span>
+                            <span className="text-sm font-bold uppercase tracking-tighter">{media.title || t('download')}</span>
                           </div>
                         </a>
                       )}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "./../../navigation";
+import { Link, usePathname } from "./../../navigation"; // ✅ IMPORTER DEPUIS VOTRE CONFIGURATION
 import { useLocale } from "next-intl";
 import {
   Globe, Menu, X, Search, Mail,
@@ -10,10 +10,11 @@ import {
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import SearchModal from "./SearchModal"; // Importe le nouveau composant
+import SearchModal from "./SearchModal";
 
 export default function Navbar() {
   const locale = useLocale();
+  const pathname = usePathname(); 
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -116,13 +117,13 @@ export default function Navbar() {
 
               <div className="h-6 w-[1px] bg-slate-100 mx-2"></div>
 
-              {/* LANGUE */}
+              {/* ✅ LANGUE CORRIGÉE - UTILISE LE CHEMIN ACTUEL */}
               <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-none border border-slate-100">
                 <Globe size={14} className="text-blue-600" />
                 {['fr', 'en', 'sw'].map((l) => (
                   <Link
                     key={l}
-                    href="/"
+                    href={pathname} // ✅ UTILISE LE CHEMIN ACTUEL
                     locale={l}
                     className={`text-[10px] font-bold transition-all ${locale === l ? 'text-blue-600' : 'text-slate-300 hover:text-slate-600'}`}
                   >
@@ -132,7 +133,7 @@ export default function Navbar() {
               </div>
 
               <button
-                onClick={() => setIsSearchOpen(true)} // OUVRE LE MODAL
+                onClick={() => setIsSearchOpen(true)}
                 className={`p-2.5 transition-all rounded-none ${isScrolled ? "bg-blue-600 text-white" : "bg-slate-950 text-white shadow-lg"}`}
               >
                 <Search size={18} />
@@ -141,7 +142,6 @@ export default function Navbar() {
 
             {/* MOBILE ACTIONS */}
             <div className="lg:hidden flex items-center gap-2 relative z-[110]">
-              {/* NOUVEAU : Bouton Recherche Mobile */}
               <button
                 onClick={() => setIsSearchOpen(true)}
                 className="p-2 text-slate-600 hover:text-blue-600 transition-colors"
@@ -150,7 +150,6 @@ export default function Navbar() {
                 <Search size={24} />
               </button>
 
-              {/* Toggle Menu Hamburger */}
               <button
                 className="p-2 text-slate-900 bg-slate-50 rounded-lg"
                 onClick={() => setIsOpen(!isOpen)}
@@ -191,9 +190,16 @@ export default function Navbar() {
                 </div>
 
                 <div className="mt-auto pt-10 border-t border-white/10 space-y-6">
+                  {/* ✅ MOBILE LANGUE CORRIGÉE */}
                   <div className="flex gap-6">
                     {['fr', 'en', 'sw'].map((l) => (
-                      <Link key={l} href="/" locale={l} onClick={() => setIsOpen(false)} className={`text-sm font-bold ${locale === l ? 'text-blue-400' : 'text-slate-500'}`}>
+                      <Link 
+                        key={l} 
+                        href={pathname} // ✅ UTILISE LE CHEMIN ACTUEL
+                        locale={l} 
+                        onClick={() => setIsOpen(false)} 
+                        className={`text-sm font-bold ${locale === l ? 'text-blue-400' : 'text-slate-500'}`}
+                      >
                         {l.toUpperCase()}
                       </Link>
                     ))}
@@ -205,7 +211,6 @@ export default function Navbar() {
           </AnimatePresence>
         </nav>
       </header>
-      {/* AJOUTER LE MODAL ICI */}
       <SearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}

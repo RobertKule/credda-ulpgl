@@ -1,9 +1,10 @@
+// app/[locale]/publications/[slug]/page.tsx
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { Link } from "@/navigation";
 import { 
   Download, User2, ExternalLink, ArrowLeft, Globe, Quote,
-  Calendar, Landmark,ArrowRight
+  Calendar, Landmark, ArrowRight
 } from "lucide-react";
 import ClientPdfPreview from "@/components/public/ClientPdfPreview";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +14,7 @@ import rehypeRaw from 'rehype-raw';
 import { Metadata } from 'next';
 import ShareButtons from "@/components/public/ShareButtons";
 import CitationButton from "@/components/public/CitationButton";
+import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
@@ -32,6 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function PublicationDetailPage({ params }: { params: Promise<{ locale: string, slug: string }> }) {
   const { locale, slug } = await params;
+  const t = await getTranslations({ locale, namespace: 'PublicationDetailPage' });
   
   const pub = await db.publication.findUnique({
     where: { slug },
@@ -42,7 +45,11 @@ export default async function PublicationDetailPage({ params }: { params: Promis
   
   const content = pub.translations[0];
   const pdfUrl = pub.pdfUrl.startsWith('http') ? pub.pdfUrl : (pub.pdfUrl.startsWith('/') ? pub.pdfUrl : `/${pub.pdfUrl}`);
-  const citation = `${content.authors} (${pub.year}). « ${content.title} ». CREDDA-ULPGL Scientific Repository.`;
+  const citation = t('citation.format', {
+    authors: content.authors,
+    year: pub.year,
+    title: content.title
+  });
 
   // Recommandations
   const recommendations = await db.publication.findMany({
@@ -59,12 +66,12 @@ export default async function PublicationDetailPage({ params }: { params: Promis
         <div className="container mx-auto px-6 flex justify-between items-center">
           <Link href="/publications" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-blue-600 transition-all group">
             <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-            Retour à la bibliothèque
+            {t('back')}
           </Link>
           <div className="flex items-center gap-6">
             <ShareButtons title={content.title} url={""} description={content.description} />
             <Badge variant="outline" className="rounded-none border-blue-200 text-blue-700 text-[9px] font-black uppercase tracking-tighter">
-              {pub.domain} PAPER
+              {pub.domain === 'RESEARCH' ? t('badge.research') : t('badge.clinical')}
             </Badge>
           </div>
         </div>
@@ -90,7 +97,7 @@ export default async function PublicationDetailPage({ params }: { params: Promis
                     target="_blank" 
                     className="flex items-center justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 text-white py-5 px-6 font-black uppercase text-xs tracking-widest transition-all shadow-xl shadow-blue-600/20"
                   >
-                    <Download size={18} /> Télécharger le PDF
+                    <Download size={18} /> {t('actions.download')}
                   </a>
                   
                   
@@ -99,7 +106,7 @@ export default async function PublicationDetailPage({ params }: { params: Promis
                 {/* Citation Box (Styled) */}
                 <div className="p-6 bg-slate-50 border-l-4 border-blue-600">
                   <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
-                    <Quote size={12} /> Référence Bibliographique
+                    <Quote size={12} /> {t('citation.title')}
                   </h4>
                   <p className="text-xs text-slate-600 leading-relaxed font-mono italic mb-4">
                     {citation}
@@ -115,10 +122,10 @@ export default async function PublicationDetailPage({ params }: { params: Promis
                 <div className="space-y-4">
                   <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
                     <Calendar size={14} />
-                    <span>Publication : {pub.year}</span>
+                    <span>{t('metadata.publication', { year: pub.year })}</span>
                     <span className="w-1.5 h-1.5 bg-slate-200 rounded-full" />
                     <Globe size={14} />
-                    <span>Open Access</span>
+                    <span>{t('metadata.openAccess')}</span>
                   </div>
                   <h1 className="text-4xl md:text-6xl font-serif font-bold text-slate-950 leading-tight tracking-tight">
                     {content.title}
@@ -132,7 +139,7 @@ export default async function PublicationDetailPage({ params }: { params: Promis
                       <User2 size={20} />
                     </div>
                     <div>
-                      <p className="text-[10px] font-black uppercase text-slate-400">Chercheur(s) Principal(aux)</p>
+                      <p className="text-[10px] font-black uppercase text-slate-400">{t('metadata.authors')}</p>
                       <p className="text-sm font-bold text-slate-900">{content.authors}</p>
                     </div>
                   </div>
@@ -141,7 +148,7 @@ export default async function PublicationDetailPage({ params }: { params: Promis
                       <Landmark size={20} />
                     </div>
                     <div>
-                      <p className="text-[10px] font-black uppercase text-slate-400">Affiliation</p>
+                      <p className="text-[10px] font-black uppercase text-slate-400">{t('metadata.affiliation')}</p>
                       <p className="text-sm font-bold text-slate-900">CREDDA - ULPGL Hub</p>
                     </div>
                   </div>
@@ -151,7 +158,7 @@ export default async function PublicationDetailPage({ params }: { params: Promis
               {/* Abstract / Résumé */}
               <section className="mb-16">
                 <h3 className="text-xs font-black uppercase tracking-[0.4em] text-blue-600 mb-6 flex items-center gap-3">
-                   <div className="h-px w-8 bg-blue-600" /> Abstract
+                   <div className="h-px w-8 bg-blue-600" /> {t('abstract')}
                 </h3>
                 <div className="text-xl font-light leading-relaxed text-slate-700 italic font-serif bg-slate-50 p-8 border-l-4 border-slate-200">
                    {content.description}
@@ -173,9 +180,9 @@ export default async function PublicationDetailPage({ params }: { params: Promis
 
               {/* Tags / Metadata Footer */}
               <footer className="mt-20 pt-10 border-t border-slate-100 flex flex-wrap gap-4">
-                 <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">#Démocratie</Badge>
-                 <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">#RDC</Badge>
-                 <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">#Gouvernance</Badge>
+                 <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.democracy')}</Badge>
+                 <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.drc')}</Badge>
+                 <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.governance')}</Badge>
               </footer>
             </div>
           </div>
@@ -185,11 +192,11 @@ export default async function PublicationDetailPage({ params }: { params: Promis
             <section className="mt-32 pt-20 border-t border-slate-100">
               <div className="flex items-end justify-between mb-12">
                 <div className="space-y-2">
-                  <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">Lectures Complémentaires</h2>
-                  <p className="text-3xl font-serif font-bold text-slate-950">Publications Similaires</p>
+                  <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">{t('recommendations.title')}</h2>
+                  <p className="text-3xl font-serif font-bold text-slate-950">{t('recommendations.subtitle')}</p>
                 </div>
                 <Link href="/publications" className="text-[10px] font-black uppercase border-b-2 border-slate-900 pb-1">
-                  Explorer la bibliothèque
+                  {t('recommendations.cta')}
                 </Link>
               </div>
               
@@ -206,7 +213,7 @@ export default async function PublicationDetailPage({ params }: { params: Promis
                         {rec.translations[0]?.title}
                       </h3>
                       <div className="mt-auto flex items-center justify-between text-[10px] font-black uppercase group-hover:text-white">
-                        <span>Consulter</span>
+                        <span>{t('recommendations.read')}</span>
                         <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
                       </div>
                     </div>

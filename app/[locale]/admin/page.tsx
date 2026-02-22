@@ -43,7 +43,7 @@ export default async function AdminPage({ params }: Props) {
         category: { include: { translations: { where: { language: locale } } } }
       }
     }),
-    db.contactMessage.count({ where: { isRead: false } }),
+    db.contactMessage.count({ where: { status: "UNREAD" } }),
     db.article.count({ where: { published: true } }),
     db.contactMessage.findMany({
       take: 3,

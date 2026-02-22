@@ -1,3 +1,4 @@
+// app/[locale]/publications/page.tsx
 import { db } from "@/lib/db";
 import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +8,7 @@ import {
 } from "lucide-react";
 import ClientPdfPreview from "@/components/public/ClientPdfPreview";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Publications | CREDDA-ULPGL",
@@ -21,6 +23,7 @@ interface Props {
 export default async function PublicationsPage({ params, searchParams }: Props) {
   const { locale } = await params;
   const { year, domain } = await searchParams;
+  const t = await getTranslations({ locale, namespace: 'PublicationsPage' });
 
   // ✅ Récupérer toutes les années disponibles
   const availableYears = await db.publication.findMany({
@@ -74,34 +77,34 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <Badge className="bg-blue-600 text-white rounded-none px-4 py-1.5 uppercase tracking-[0.3em] text-[10px] font-black border-none">
-              Open Access Repository
+              {t('header.badge')}
             </Badge>
             
             <h1 className="text-5xl lg:text-7xl font-serif font-bold leading-tight">
-              Bibliothèque <span className="text-blue-400 italic">Numérique</span>
+              <span dangerouslySetInnerHTML={{ __html: t.raw('header.title') }} />
             </h1>
             
             <p className="text-xl text-slate-400 font-light max-w-2xl mx-auto">
-              Publications scientifiques, rapports cliniques et études de cas en libre accès
+              {t('header.description')}
             </p>
 
             {/* Statistiques */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12">
               <div>
                 <div className="text-3xl font-bold text-blue-400">{totalPublications}</div>
-                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">Publications</div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">{t('header.stats.publications')}</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-blue-400">{years.length}</div>
-                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">Années</div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">{t('header.stats.years')}</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-blue-400">{totalAuthors}+</div>
-                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">Chercheurs</div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">{t('header.stats.researchers')}</div>
               </div>
               <div>
                 <div className="text-3xl font-bold text-blue-400">{totalDownloads.toLocaleString()}</div>
-                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">Téléchargements</div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">{t('header.stats.downloads')}</div>
               </div>
             </div>
           </div>
@@ -125,7 +128,7 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
                       : 'text-slate-500 border-slate-200 hover:border-blue-900 hover:text-blue-900'
                   }`}
                 >
-                  Tous
+                  {t('filters.all')}
                 </Link>
                 
                 {years.map(y => (
@@ -160,7 +163,7 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
                         : 'text-slate-500 border-slate-200 hover:border-blue-900 hover:text-blue-900'
                     }`}
                   >
-                    {d === 'RESEARCH' ? 'Recherche' : 'Clinique'}
+                    {d === 'RESEARCH' ? t('filters.domain.research') : t('filters.domain.clinical')}
                   </Link>
                 ))}
               </div>
@@ -177,9 +180,9 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
             {/* Indicateur de résultats */}
             <div className="flex justify-between items-center">
               <p className="text-sm text-slate-500">
-                <span className="font-bold text-slate-900">{publications.length}</span> publication{publications.length > 1 ? 's' : ''} trouvée{publications.length > 1 ? 's' : ''}
-                {year && <span className="italic"> en {year}</span>}
-                {domain && <span className="italic"> • {domain === 'RESEARCH' ? 'Recherche' : 'Clinique'}</span>}
+                {t('filters.results', { count: publications.length })}
+                {year && <span className="italic"> {t('filters.filteredBy.year', { year })}</span>}
+                {domain && <span className="italic"> {t('filters.filteredBy.domain', { domain: domain === 'RESEARCH' ? t('filters.domain.research') : t('filters.domain.clinical') })}</span>}
               </p>
               
               {(year || domain) && (
@@ -187,7 +190,7 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
                   href="/publications" 
                   className="text-[10px] font-bold uppercase tracking-widest text-blue-600 hover:text-blue-800 transition-colors"
                 >
-                  Réinitialiser les filtres
+                  {t('filters.reset')}
                 </Link>
               )}
             </div>
@@ -222,7 +225,7 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
                               }
                             `}
                           >
-                            {pub.domain === 'RESEARCH' ? 'Recherche' : 'Clinique'}
+                            {pub.domain === 'RESEARCH' ? t('article.badge.research') : t('article.badge.clinical')}
                           </Badge>
                           <span className="text-xs font-serif italic text-slate-400">
                             {pub.year}
@@ -235,33 +238,33 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
                           className="block group/link"
                         >
                           <h2 className="text-xl lg:text-2xl font-serif font-bold text-slate-900 leading-tight group-hover:text-blue-700 transition-colors line-clamp-2">
-                            {content.title}
+                            {content.title || t('article.noTitle')}
                           </h2>
                         </Link>
 
                         {/* Auteurs */}
                         <div className="flex items-center gap-2 text-xs text-slate-600">
                           <User2 size={14} className="text-blue-600 shrink-0" />
-                          <span className="font-medium line-clamp-1">{content.authors}</span>
+                          <span className="font-medium line-clamp-1">{content.authors || t('article.authors')}</span>
                         </div>
 
                         {/* Résumé */}
                         <p className="text-sm text-slate-500 font-light line-clamp-2 leading-relaxed">
-                          {content.description}
+                          {content.description || t('article.noDescription')}
                         </p>
 
                         {/* Métadonnées supplémentaires */}
                         <div className="flex items-center gap-4 text-[10px] text-slate-400">
                           <span className="flex items-center gap-1">
                             <Clock size={12} />
-                            Lecture: 12 min
+                            {t('article.readingTime', { time: '12' })}
                           </span>
                           <span className="flex items-center gap-1">
                             <Eye size={12} />
-                            1.2k vues
+                            {t('article.views', { count: '1.2k' })}
                           </span>
                           {pub.doi && (
-                            <span className="font-mono">DOI: {pub.doi}</span>
+                            <span className="font-mono">{t('article.doi', { doi: pub.doi })}</span>
                           )}
                         </div>
                       </div>
@@ -278,7 +281,7 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
                               className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-blue-900 hover:text-blue-700 transition-all group/btn"
                             >
                               <Download size={14} className="group-hover/btn:animate-bounce" />
-                              <span>PDF</span>
+                              <span>{t('article.pdf')}</span>
                             </a>
 
                             {/* Lien détails */}
@@ -286,7 +289,7 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
                               href={`/publications/${pub.slug || pub.id}`}
                               className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-blue-700 transition-all group/link"
                             >
-                              <span>Détails</span>
+                              <span>{t('article.details')}</span>
                               <ArrowRight size={12} className="group-hover/link:translate-x-1 transition-transform" />
                             </Link>
                           </div>
@@ -314,17 +317,22 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
             </div>
             
             <h3 className="text-3xl font-serif font-bold text-slate-900 mt-8 mb-4">
-              Aucune publication trouvée
+              {t('empty.title')}
             </h3>
             
             <p className="text-slate-500 font-light leading-relaxed mb-8 max-w-md mx-auto">
               {year && domain 
-                ? `Aucune publication ${domain === 'RESEARCH' ? 'de recherche' : 'clinique'} pour l'année ${year}`
+                ? t('empty.description.yearDomain', { 
+                    domain: domain === 'RESEARCH' ? t('filters.domain.research') : t('filters.domain.clinical'),
+                    year 
+                  })
                 : year 
-                ? `Aucune publication disponible pour l'année ${year}`
+                ? t('empty.description.year', { year })
                 : domain
-                ? `Aucune publication ${domain === 'RESEARCH' ? 'de recherche' : 'clinique'} disponible`
-                : 'Aucune publication disponible pour le moment'
+                ? t('empty.description.domain', { 
+                    domain: domain === 'RESEARCH' ? t('filters.domain.research') : t('filters.domain.clinical')
+                  })
+                : t('empty.description.default')
               }
             </p>
             
@@ -333,13 +341,13 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
                 href="/publications" 
                 className="px-8 py-3 bg-slate-900 text-white font-bold text-xs uppercase tracking-widest hover:bg-blue-700 transition-all"
               >
-                Voir toutes
+                {t('empty.button1')}
               </Link>
               <Link 
                 href="/contact" 
                 className="px-8 py-3 border border-slate-200 text-slate-600 font-bold text-xs uppercase tracking-widest hover:bg-slate-50 transition-all"
               >
-                Suggérer un document
+                {t('empty.button2')}
               </Link>
             </div>
           </div>

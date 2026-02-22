@@ -1,3 +1,4 @@
+// app/[locale]/clinical/page.tsx
 import { db } from "@/lib/db";
 import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +15,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { Article, Category } from "@prisma/client";
+import { getTranslations } from "next-intl/server";
 
 // Interface complète pour les articles avec relations
 interface ArticleWithRelations extends Article {
@@ -41,6 +43,7 @@ interface Props {
 
 export default async function ClinicalPage({ params }: Props) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'ClinicalPage' });
 
   // Typage explicite du résultat
   let articles: ArticleWithRelations[] = [];
@@ -82,6 +85,8 @@ export default async function ClinicalPage({ params }: Props) {
     console.error("Database Error (Clinical):", error);
   }
 
+  const values = t.raw('values');
+
   return (
     <main className="min-h-screen bg-white w-full overflow-x-hidden">
       
@@ -94,14 +99,13 @@ export default async function ClinicalPage({ params }: Props) {
           <div className="max-w-4xl space-y-4 sm:space-y-6">
             <div className="flex items-center gap-2 text-emerald-400 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-2 sm:mb-4">
               <Scale size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span>Domaine Clinique & Terrain</span>
+              <span>{t('header.badge')}</span>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-serif font-bold leading-tight">
-              La Justice par <span className="text-emerald-400 italic block sm:inline">l'Action Scientifique</span>.
+              <span dangerouslySetInnerHTML={{ __html: t.raw('header.title') }} />
             </h1>
             <p className="text-base sm:text-lg lg:text-xl text-emerald-100/70 font-light leading-relaxed max-w-xl lg:max-w-2xl">
-              La Clinique Juridique et Environnementale du CREDDA accompagne les communautés 
-              dans la protection de leurs droits et la préservation de la biodiversité.
+              {t('header.description')}
             </p>
           </div>
         </div>
@@ -112,17 +116,17 @@ export default async function ClinicalPage({ params }: Props) {
         <div className="container mx-auto px-4 sm:px-6 py-10 sm:py-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
             {[
-              { icon: <ShieldCheck size={20} className="sm:w-6 sm:h-6" />, title: "Accompagnement Juridique", desc: "Médiation et assistance pour les vulnérables." },
-              { icon: <Leaf size={20} className="sm:w-6 sm:h-6" />, title: "Droits Environnementaux", desc: "Protection des écosystèmes du Bassin du Congo." },
-              { icon: <MapPin size={20} className="sm:w-6 sm:h-6" />, title: "Expertise de Terrain", desc: "Présence active dans les zones de conflits fonciers." }
+              { icon: <ShieldCheck size={20} className="sm:w-6 sm:h-6" />, key: 0 },
+              { icon: <Leaf size={20} className="sm:w-6 sm:h-6" />, key: 1 },
+              { icon: <MapPin size={20} className="sm:w-6 sm:h-6" />, key: 2 }
             ].map((item, i) => (
               <div key={i} className="flex gap-3 sm:gap-4 items-start group">
                 <div className="p-2 sm:p-3 bg-emerald-100 text-emerald-700 rounded-none shrink-0 group-hover:scale-110 transition-transform duration-300">
                   {item.icon}
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">{item.title}</h3>
-                  <p className="text-xs sm:text-sm text-slate-500">{item.desc}</p>
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base">{values[i].title}</h3>
+                  <p className="text-xs sm:text-sm text-slate-500">{values[i].desc}</p>
                 </div>
               </div>
             ))}
@@ -138,7 +142,7 @@ export default async function ClinicalPage({ params }: Props) {
             {articles.map((article, index) => {
               // Vérification sécurisée des traductions
               const content = article.translations?.[0];
-              const categoryName = article.category?.translations?.[0]?.name ?? "Action Clinique";
+              const categoryName = article.category?.translations?.[0]?.name ?? t('article.badge');
 
               // Skip si pas de traduction
               if (!content) return null;
@@ -197,7 +201,7 @@ export default async function ClinicalPage({ params }: Props) {
                       </div>
 
                       <div className="mt-4 sm:mt-6 lg:mt-8 flex items-center gap-1 sm:gap-2 text-[10px] sm:text-xs font-bold text-emerald-700 uppercase tracking-tighter group-hover:gap-2 sm:group-hover:gap-4 transition-all">
-                        <span className="whitespace-nowrap">Consulter le rapport clinique</span>
+                        <span className="whitespace-nowrap">{t('article.readMore')}</span>
                         <ChevronRight size={12} className="sm:w-[14px] sm:h-[14px] group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
@@ -211,14 +215,13 @@ export default async function ClinicalPage({ params }: Props) {
           <div className="max-w-xl mx-auto py-16 sm:py-24 px-4 text-center border-2 border-dashed border-slate-100">
             <SearchX className="mx-auto text-slate-200 mb-4 sm:mb-6" size={48} strokeWidth={1} />
             <h3 className="text-xl sm:text-2xl font-serif font-bold text-slate-900 mb-3 sm:mb-4">
-              Archives cliniques en cours de mise à jour
+              {t('empty.title')}
             </h3>
             <p className="text-sm sm:text-base text-slate-500 font-light leading-relaxed mb-6 sm:mb-8 px-4">
-              Nos équipes de terrain finalisent les rapports d'intervention. 
-              Revenez très bientôt pour consulter nos dernières actions juridiques.
+              {t('empty.description')}
             </p>
             <Button asChild className="rounded-none bg-emerald-800 hover:bg-emerald-900 px-6 sm:px-8 text-sm sm:text-base">
-              <Link href="/">Retour à l'accueil</Link>
+              <Link href="/">{t('empty.button')}</Link>
             </Button>
           </div>
         )}
@@ -230,11 +233,10 @@ export default async function ClinicalPage({ params }: Props) {
           <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center lg:items-start text-center lg:text-left">
             <div className="space-y-4 sm:space-y-6 max-w-2xl lg:max-w-3xl">
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-serif font-bold leading-tight">
-                Besoin d'un accompagnement juridique ou foncier ?
+                {t('cta.title')}
               </h2>
               <p className="text-emerald-100 font-light text-sm sm:text-base lg:text-lg">
-                Le CREDDA met son expertise au service des communautés locales. 
-                Nos experts reçoivent vos demandes chaque semaine.
+                {t('cta.description')}
               </p>
             </div>
             <div className="flex flex-col sm:flex-row lg:justify-end gap-3 sm:gap-4 w-full sm:w-auto">
@@ -243,15 +245,15 @@ export default async function ClinicalPage({ params }: Props) {
                 className="bg-white text-emerald-900 hover:bg-emerald-50 rounded-none font-bold px-6 sm:px-8 lg:px-10 h-12 sm:h-14 uppercase tracking-widest text-[10px] sm:text-xs w-full sm:w-auto transform hover:scale-105 transition-all duration-300"
                 asChild
               >
-                <Link href="/contact">Soumettre un cas clinique</Link>
+                <Link href="/contact">{t('cta.button1')}</Link>
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="border-emerald-400 text-white hover:bg-emerald-600 rounded-none font-bold px-6 sm:px-8 lg:px-10 h-12 sm:h-14 uppercase tracking-widest text-[10px] sm:text-xs w-full sm:w-auto transform hover:scale-105 transition-all duration-300"
+                className="border-emerald-400 text-white bg-emerald-900 hover:bg-emerald-600 rounded-none font-bold px-6 sm:px-8 lg:px-10 h-12 sm:h-14 uppercase tracking-widest text-[10px] sm:text-xs w-full sm:w-auto transform hover:scale-105 transition-all duration-300"
                 asChild
               >
-                <Link href="/contact">Contact d'urgence</Link>
+                <Link href="/contact">{t('cta.button2')}</Link>
               </Button>
             </div>
           </div>
