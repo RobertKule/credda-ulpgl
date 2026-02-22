@@ -8,7 +8,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> } // ✅ CHANGER ICI: Promise
 ) {
   try {
     const session = await getServerSession();
@@ -16,7 +16,7 @@ export async function POST(
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params; // ✅ AJOUTER await ICI
     const { replyMessage } = await req.json();
 
     if (!replyMessage?.trim()) {
@@ -44,14 +44,14 @@ export async function POST(
       data: {
         replyContent: replyMessage,
         repliedAt: new Date(),
-        status: "READ" // Optionnel
+        status: "READ"
       }
     });
 
     // 2. Envoyer l'email via Resend
     try {
       const { data, error } = await resend.emails.send({
-        from: 'CREDDA-ULPGL <onboarding@resend.dev>', // Utilisez votre domaine vérifié
+        from: 'CREDDA-ULPGL <onboarding@resend.dev>',
         to: [originalMessage.email],
         subject: `Re: ${originalMessage.subject}`,
         html: `
