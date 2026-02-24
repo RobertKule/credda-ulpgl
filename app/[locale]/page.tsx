@@ -5,30 +5,52 @@ import HomeClient from "./HomeClient";
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
 
-  // Récupération des données en parallèle pour la performance
-  const [featuredResearch, latestReports, team, totalArticles, totalPubs, totalMembers, researchCount, clinicalCount] = await Promise.all([
+  const [featuredResearch, latestReports, team, galleryImages, totalArticles, totalPubs, totalMembers, researchCount, clinicalCount] = await Promise.all([
     // 1. Articles Featured
     db.article.findMany({
       where: { domain: "RESEARCH", published: true },
       take: 4,
-      include: { 
-        translations: { where: { language: locale } },
-        category: { include: { translations: { where: { language: locale } } } }
+      select: {
+        id: true,
+        slug: true,
+        mainImage: true,
+        createdAt: true,
+        translations: { where: { language: locale }, select: { title: true, excerpt: true } },
+        category: { select: { translations: { where: { language: locale }, select: { name: true } } } }
       },
       orderBy: { createdAt: "desc" }
     }),
     // 2. Dernières Publications PDF
     db.publication.findMany({
       take: 3,
-      include: { translations: { where: { language: locale } } },
+      select: {
+        id: true,
+        slug: true,
+        year: true,
+        domain: true,
+        pdfUrl: true,
+        createdAt: true,
+        translations: { where: { language: locale }, select: { title: true } }
+      },
       orderBy: { year: "desc" }
     }),
     // 3. Équipe
     db.member.findMany({
-      include: { translations: { where: { language: locale } } },
+      select: {
+        id: true,
+        image: true,
+        translations: { where: { language: locale }, select: { name: true, role: true } }
+      },
       orderBy: { order: "asc" }
     }),
-    // 4. Statistiques détaillées
+    // 4. Galerie Images
+    db.galleryImage.findMany({
+      where: { featured: true },
+      take: 10,
+      orderBy: { order: 'asc' },
+      select: { id: true, src: true, title: true, category: true, description: true }
+    }),
+    // 5. Statistiques détaillées
     db.article.count({ where: { published: true } }),
     db.publication.count(),
     db.member.count(),
@@ -45,7 +67,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   };
 
   return (
-    <HomeClient 
+    <HomeClient
       locale={locale}
       featuredResearch={featuredResearch}
       latestReports={latestReports}

@@ -21,7 +21,12 @@ export async function searchEverything(query: string, locale: string) {
             }
           }
         },
-        include: { translations: { where: { language: locale } } },
+        select: {
+          id: true,
+          slug: true,
+          mainImage: true,
+          translations: { where: { language: locale }, select: { title: true, excerpt: true } }
+        },
         take: 5
       }),
       db.publication.findMany({
@@ -36,7 +41,12 @@ export async function searchEverything(query: string, locale: string) {
             }
           }
         },
-        include: { translations: { where: { language: locale } } },
+        select: {
+          id: true,
+          slug: true,
+          pdfUrl: true,
+          translations: { where: { language: locale }, select: { title: true, authors: true } }
+        },
         take: 5
       }),
       db.member.findMany({
@@ -48,7 +58,11 @@ export async function searchEverything(query: string, locale: string) {
             }
           }
         },
-        include: { translations: { where: { language: locale } } },
+        select: {
+          id: true,
+          image: true,
+          translations: { where: { language: locale }, select: { name: true, role: true } }
+        },
         take: 3
       })
     ]);

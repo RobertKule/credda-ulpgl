@@ -1,29 +1,50 @@
-import { db } from "@/lib/db"; // ⚠️ Assure-toi que le chemin est correct
+import { db } from "@/lib/db";
 import { Domain } from "@prisma/client";
 
-export async function getArticlesByDomain(domain: Domain, locale: string) {
+export async function getArticlesByDomain(
+  domain: Domain,
+  locale: string,
+  limit: number = 10,
+  cursor?: string
+) {
   try {
     const articles = await db.article.findMany({
+      take: limit + 1,
+      ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
       where: {
         domain: domain,
         published: true,
       },
-      include: {
+      select: {
+        id: true,
+        slug: true,
+        mainImage: true,
+        createdAt: true,
         category: {
-          include: {
-            translations: { where: { language: locale } }
+          select: {
+            translations: {
+              where: { language: locale },
+              select: { name: true }
+            }
           }
         },
         translations: {
-          where: { language: locale }
+          where: { language: locale },
+          select: { title: true, excerpt: true }
         }
       },
       orderBy: { createdAt: 'desc' }
     });
-    return articles;
+
+    let nextCursor: typeof cursor | undefined = undefined;
+    if (articles.length > limit) {
+      const nextItem = articles.pop();
+      nextCursor = nextItem!.id;
+    }
+
+    return { data: articles, nextCursor };
   } catch (error) {
-    // Si la DB est vide ou déconnectée, on log et on renvoie un tableau vide
     console.error("Erreur de lecture base de données:", error);
-    return []; 
+    return { data: [], nextCursor: undefined };
   }
 }
