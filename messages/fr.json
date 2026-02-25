@@ -6,7 +6,6 @@
     "about": "À propos",
     "contact": "Contact"
   },
-
   "HomePage": {
     "hero": {
       "badge": "CREDDA - ULPGL Excellence",
@@ -57,7 +56,8 @@
     },
     "team": {
       "title": "Leadership Scientifique",
-      "subtitle": "Le Corps de Recherche"
+      "subtitle": "Le Corps de Recherche",
+      "badge": "Notre Équipe"
     },
     "testimonials": {
       "badge": "Confiance Internationale",
@@ -83,21 +83,18 @@
       "partner": "Devenir Partenaire",
       "about": "Le Projet CREDDA"
     },
-    
-  "Gallery": {
-    "badge": "En Images",
-    "title": "Le CREDDA en <span>Action</span>",
-    "description": "Découvrez nos activités de recherche, cliniques et partenariats à travers une sélection d'images.",
-    "cta": "Voir toute la galerie",
-    "modal": {
-      "close": "Fermer",
-      "prev": "Précédent",
-      "next": "Suivant"
+    "Gallery": {
+      "badge": "En Images",
+      "title": "Le CREDDA en <span>Action</span>",
+      "description": "Découvrez nos activités de recherche, cliniques et partenariats à travers une sélection d'images.",
+      "cta": "Voir toute la galerie",
+      "modal": {
+        "close": "Fermer",
+        "prev": "Précédent",
+        "next": "Suivant"
+      }
     }
-  }
   },
-
-
   "about": {
     "since": "Depuis",
     "watch_video": "Visionner le film institutionnel",
@@ -257,7 +254,6 @@
       "button2": "Contact d'urgence"
     }
   },
-
   "ClinicalDetailPage": {
     "back": "Retour aux actions cliniques",
     "location": "Nord-Kivu, RDC",
@@ -322,7 +318,6 @@
       "button2": "Suggérer un document"
     }
   },
-
   "PublicationDetailPage": {
     "back": "Retour à la bibliothèque",
     "badge": {
@@ -377,7 +372,6 @@
       "linkedin": "Profil LinkedIn"
     }
   },
-
   "SearchPage": {
     "header": {
       "badge": "Moteur de recherche",
@@ -481,7 +475,6 @@
       }
     }
   },
-
   "LoginPage": {
     "left": {
       "badge": "Espace Sécurisé",
@@ -508,7 +501,7 @@
         "invalid": "Identifiants invalides",
         "connection": "Erreur de connexion au serveur"
       },
-       "forgotPassword": "Mot de passe oublié ?"
+      "forgotPassword": "Mot de passe oublié ?"
     }
   },
   "Footer": {
@@ -586,6 +579,4 @@
       "description": "Nos équipes préparent une sélection d'images. Revenez très bientôt pour découvrir nos activités en photos."
     }
   }
-
-
 }
