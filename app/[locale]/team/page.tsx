@@ -2,9 +2,9 @@
 import { db } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/navigation";
-import { 
-  Mail, Linkedin, Users, GraduationCap, 
-  SearchX, Globe, ChevronRight 
+import {
+  Mail, Linkedin, Users, GraduationCap,
+  SearchX, Globe, ChevronRight
 } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
@@ -57,7 +57,7 @@ export default async function TeamPage({ params }: Props) {
                   <div className="relative aspect-[4/5] overflow-hidden bg-slate-100 border border-slate-100">
                     {member.image ? (
                       <Image
-                        src={member.image}
+                        src={member.image.replace(/\\/g, '/').replace(/^public\//, '/')}
                         alt={content.name}
                         fill
                         className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
@@ -92,16 +92,16 @@ export default async function TeamPage({ params }: Props) {
                     {/* Social links */}
                     <div className="flex gap-4 pt-2">
                       {member.email && (
-                        <a 
-                          href={`mailto:${member.email}`} 
+                        <a
+                          href={`mailto:${member.email}`}
                           className="p-2 border border-slate-100 text-slate-400 hover:text-blue-600 transition-all group"
                           title={t('contact.email')}
                         >
                           <Mail size={16} />
                         </a>
                       )}
-                      <a 
-                        href="#" 
+                      <a
+                        href="#"
                         className="p-2 border border-slate-100 text-slate-400 hover:text-blue-600 transition-all group"
                         title={t('contact.linkedin')}
                       >

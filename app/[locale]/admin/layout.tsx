@@ -6,24 +6,24 @@ import { NextIntlClientProvider } from "next-intl";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader"; // ✅ Nouveau composant client
 
-import { 
-  LayoutDashboard, 
-  FileText, 
-  BookOpen, 
-  UserCircle, 
-  Mail, 
-  Users 
+import {
+  LayoutDashboard,
+  FileText,
+  BookOpen,
+  UserCircle,
+  Mail,
+  Users
 } from "lucide-react";
 
-export default async function AdminLayout({ 
-  children, 
-  params 
-}: { 
-  children: React.ReactNode; 
-  params: Promise<{ locale: string }> 
+export default async function AdminLayout({
+  children,
+  params
+}: {
+  children: React.ReactNode;
+  params: any;
 }) {
-  const { locale } = await params;
-  
+  const { locale } = (await params) as { locale: string };
+
   // ✅ Vérification de sécurité (serveur uniquement)
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
@@ -31,7 +31,7 @@ export default async function AdminLayout({
 
   // ✅ Messages pour les composants clients
   const messages = await getMessages();
-  
+
   // ✅ Menu items (données pures, pas de composants)
   const menuItems = [
     { href: "/admin", label: "Dashboard", icon: "LayoutDashboard" },
@@ -45,16 +45,16 @@ export default async function AdminLayout({
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <div className="flex min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-        
+
         {/* ✅ Sidebar (composant client) */}
         <AdminSidebar locale={locale} menuItems={menuItems} />
-        
+
         {/* ✅ Contenu principal */}
         <div className="flex-1 flex flex-col min-w-0 transition-all duration-300">
-          
+
           {/* ✅ Header mobile (composant client) */}
           <AdminHeader locale={locale} />
-          
+
           {/* ✅ Contenu principal */}
           <main className="flex-1 p-4 sm:p-6 lg:p-8 xl:p-10 overflow-x-hidden mt-32">
             <div className="max-w-7xl mx-auto">
