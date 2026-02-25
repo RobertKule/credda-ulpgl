@@ -9,6 +9,8 @@ import ConnectedGallerySection from "@/components/home/ConnectedGallerySection";
 import TeamSection from "@/components/home/TeamSection";
 import TestimonialSection from "@/components/home/TestimonialSection";
 import DigitalLibrarySection from "@/components/home/DigitalLibrarySection";
+import PartnerSection from "@/components/home/PartnerSection";
+import CtaSection from "@/components/home/CtaSection";
 
 export default function HomeClient({
   locale,
@@ -16,6 +18,8 @@ export default function HomeClient({
   latestReports = [],
   team = [],
   galleryImages = [],
+  testimonials = [],
+  partners = [],
   dbStats = { totalResources: 0, publications: 0, clinicalArticles: 0, researchArticles: 0 }
 }: any) {
   return (
@@ -30,8 +34,14 @@ export default function HomeClient({
       {team.length > 0 && (
         <TeamSection team={team} />
       )}
-      <TestimonialSection />
+      {testimonials.length > 0 && (
+        <TestimonialSection testimonials={testimonials} />
+      )}
       <DigitalLibrarySection />
+      {partners.length > 0 && (
+        <PartnerSection partners={partners} />
+      )}
+      <CtaSection />
     </div>
   );
 }

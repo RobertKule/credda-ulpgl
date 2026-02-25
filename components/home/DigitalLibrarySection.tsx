@@ -25,7 +25,7 @@ export default function DigitalLibrarySection() {
                             {t('library.description')}
                         </p>
                         <div className="pt-4">
-                            <Link href="/library" className="group inline-flex items-center justify-center px-8 py-4 bg-slate-950 text-white font-black uppercase tracking-widest text-[10px] hover:bg-blue-600 transition-all rounded-none shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                            <Link href="/publications" className="group inline-flex items-center justify-center px-8 py-4 bg-slate-950 text-white font-black uppercase tracking-widest text-[10px] hover:bg-blue-600 transition-all rounded-none shadow-xl hover:shadow-2xl hover:-translate-y-1">
                                 {t('library.cta')}
                             </Link>
                         </div>
@@ -33,7 +33,7 @@ export default function DigitalLibrarySection() {
                     <div className="relative w-full md:w-1/2 aspect-square max-w-md">
                         <div className="absolute inset-0 bg-gradient-to-tr from-blue-100 to-emerald-50 rounded-[40px] rotate-6 transform group-hover:rotate-12 transition-all duration-700" />
                         <div className="absolute inset-0 bg-white rounded-[40px] shadow-2xl p-6 transform -rotate-3 transition-all duration-700 hover:rotate-0 flex flex-col items-center justify-center border border-slate-100 overflow-hidden">
-                            <Image src="/images/open-book.webp" alt="Bibliothèque CREDDA" width={300} height={300} className="object-cover opacity-80" />
+                            <Image src="/images/gallery/ppppppppp.png" alt="Bibliothèque CREDDA" width={300} height={300} className="object-cover opacity-80" />
                             <div className="absolute inset-0 bg-blue-900/10 mix-blend-multiply" />
                         </div>
                         {/* Decors flottants */}
