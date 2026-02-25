@@ -2,7 +2,7 @@
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { Link } from "@/navigation";
-import { 
+import {
   Download, User2, ExternalLink, ArrowLeft, Globe, Quote,
   Calendar, Landmark, ArrowRight
 } from "lucide-react";
@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   if (!pub || pub.translations.length === 0) return { title: 'Publication | CREDDA' };
   const content = pub.translations[0];
-  
+
   return {
     title: `${content.title} | CREDDA-ULPGL`,
     description: content.description.substring(0, 160),
@@ -35,16 +35,26 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function PublicationDetailPage({ params }: { params: Promise<{ locale: string, slug: string }> }) {
   const { locale, slug } = await params;
   const t = await getTranslations({ locale, namespace: 'PublicationDetailPage' });
-  
+
   const pub = await db.publication.findUnique({
     where: { slug },
     include: { translations: { where: { language: locale } } }
   });
 
   if (!pub || pub.translations.length === 0) notFound();
-  
+
   const content = pub.translations[0];
-  const pdfUrl = pub.pdfUrl.startsWith('http') ? pub.pdfUrl : (pub.pdfUrl.startsWith('/') ? pub.pdfUrl : `/${pub.pdfUrl}`);
+  // Normalise pdfUrl to an absolute URL.
+  // Guard against empty string: if pdfUrl is falsy, keep it empty so PdfPreview
+  // can render the "no document" placeholder instead of crashing on "/".
+  const rawPdfUrl = pub.pdfUrl
+    ? pub.pdfUrl.startsWith("http")
+      ? pub.pdfUrl
+      : pub.pdfUrl.startsWith("/")
+        ? pub.pdfUrl
+        : `/${pub.pdfUrl}`
+    : "";
+  const pdfUrl = rawPdfUrl && !rawPdfUrl.endsWith(".pdf") ? `${rawPdfUrl}.pdf` : rawPdfUrl;
   const citation = t('citation.format', {
     authors: content.authors,
     year: pub.year,
@@ -80,7 +90,7 @@ export default async function PublicationDetailPage({ params }: { params: Promis
       <article className="py-12 lg:py-20">
         <div className="container mx-auto px-6">
           <div className="grid lg:grid-cols-12 gap-16">
-            
+
             {/* --- 2. COLONNE GAUCHE : ACTIONS & PREVIEW (STICKY) --- */}
             <aside className="lg:col-span-4 space-y-8">
               <div className="sticky top-32 space-y-8">
@@ -92,15 +102,17 @@ export default async function PublicationDetailPage({ params }: { params: Promis
 
                 {/* Actions Buttons */}
                 <div className="space-y-3">
-                  <a 
-                    href={pdfUrl} 
-                    target="_blank" 
-                    className="flex items-center justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 text-white py-5 px-6 font-black uppercase text-xs tracking-widest transition-all shadow-xl shadow-blue-600/20"
-                  >
-                    <Download size={18} /> {t('actions.download')}
-                  </a>
-                  
-                  
+                  {pdfUrl && (
+                    <a
+                      href={pdfUrl}
+                      target="_blank"
+                      className="flex items-center justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 text-white py-5 px-6 font-black uppercase text-xs tracking-widest transition-all shadow-xl shadow-blue-600/20"
+                    >
+                      <Download size={18} /> {t('actions.download')}
+                    </a>
+                  )}
+
+
                 </div>
 
                 {/* Citation Box (Styled) */}
@@ -158,10 +170,10 @@ export default async function PublicationDetailPage({ params }: { params: Promis
               {/* Abstract / Résumé */}
               <section className="mb-16">
                 <h3 className="text-xs font-black uppercase tracking-[0.4em] text-blue-600 mb-6 flex items-center gap-3">
-                   <div className="h-px w-8 bg-blue-600" /> {t('abstract')}
+                  <div className="h-px w-8 bg-blue-600" /> {t('abstract')}
                 </h3>
                 <div className="text-xl font-light leading-relaxed text-slate-700 italic font-serif bg-slate-50 p-8 border-l-4 border-slate-200">
-                   {content.description}
+                  {content.description}
                 </div>
               </section>
 
@@ -180,9 +192,9 @@ export default async function PublicationDetailPage({ params }: { params: Promis
 
               {/* Tags / Metadata Footer */}
               <footer className="mt-20 pt-10 border-t border-slate-100 flex flex-wrap gap-4">
-                 <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.democracy')}</Badge>
-                 <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.drc')}</Badge>
-                 <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.governance')}</Badge>
+                <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.democracy')}</Badge>
+                <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.drc')}</Badge>
+                <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.governance')}</Badge>
               </footer>
             </div>
           </div>
@@ -199,11 +211,11 @@ export default async function PublicationDetailPage({ params }: { params: Promis
                   {t('recommendations.cta')}
                 </Link>
               </div>
-              
+
               <div className="grid md:grid-cols-3 gap-8">
                 {recommendations.map(rec => (
-                  <Link 
-                    key={rec.id} 
+                  <Link
+                    key={rec.id}
                     href={`/publications/${rec.slug || rec.id}`}
                     className="group bg-slate-50 p-8 hover:bg-blue-600 transition-all duration-500 hover:shadow-2xl"
                   >
