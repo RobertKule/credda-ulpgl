@@ -1,16 +1,34 @@
 "use client";
 
 import React from "react";
-import HeroSection from "@/components/home/HeroSection";
-import StatsSection from "@/components/home/StatsSection";
-import ResearchSection from "@/components/home/ResearchSection";
-import ClinicalImpactSection from "@/components/home/ClinicalImpactSection";
-import ConnectedGallerySection from "@/components/home/ConnectedGallerySection";
-import TeamSection from "@/components/home/TeamSection";
-import TestimonialSection from "@/components/home/TestimonialSection";
-import DigitalLibrarySection from "@/components/home/DigitalLibrarySection";
-import PartnerSection from "@/components/home/PartnerSection";
-import CtaSection from "@/components/home/CtaSection";
+// Import the new redesigned section components
+import HeroSection from "@/components/sections/HeroSection";
+import StatsSection from "@/components/sections/StatsSection";
+import ClinicalSection from "@/components/sections/ClinicalSection";
+import ResearchSection from "@/components/sections/ResearchSection";
+import TeamSection from "@/components/sections/TeamSection";
+import LibrarySection from "@/components/sections/LibrarySection";
+import TestimonialsSection from "@/components/sections/TestimonialsSection";
+import PartnersSection from "@/components/sections/PartnersSection";
+import CTASection from "@/components/sections/CTASection";
+
+// Existing Types (Assumed based on page.tsx and user prompt)
+export interface HomeClientProps {
+  locale: string;
+  featuredResearch?: any[];
+  latestReports?: any[];
+  team?: any[];
+  galleryImages?: any[];
+  testimonials?: any[];
+  partners?: string[];
+  dbStats?: {
+    totalResources: number;
+    publications: number;
+    clinicalArticles: number;
+    researchArticles: number;
+    members?: number;
+  };
+}
 
 export default function HomeClient({
   locale,
@@ -21,27 +39,39 @@ export default function HomeClient({
   testimonials = [],
   partners = [],
   dbStats = { totalResources: 0, publications: 0, clinicalArticles: 0, researchArticles: 0 }
-}: any) {
+}: HomeClientProps) {
   return (
-    <div className="flex flex-col w-full bg-white overflow-x-hidden mt-16 sm:mt-20 lg:mt-24">
+    <div className="flex flex-col w-full bg-slate-50 overflow-x-hidden p-0 m-0">
+      {/* 1. Hero with Video Background (Animated) */}
       <HeroSection />
+
+      {/* 2. Statistics Cards (Animated Grid) */}
       <StatsSection stats={dbStats} />
-      <ResearchSection articles={featuredResearch} />
-      <ClinicalImpactSection />
-      {galleryImages.length > 0 && (
-        <ConnectedGallerySection images={galleryImages} />
+
+      {/* 3. Clinical Impact (Split Screen) */}
+      <ClinicalSection />
+
+      {/* 4. Featured Research (Carousel/Grid) */}
+      {featuredResearch.length > 0 && (
+        <ResearchSection articles={featuredResearch} />
       )}
+
+      {/* 5. Team Showcase (Carousel) */}
       {team.length > 0 && (
         <TeamSection team={team} />
       )}
+
+      {/* 6. Digital Library (Cards) */}
+      <LibrarySection reports={latestReports} stats={dbStats} />
+
+      {/* 7. Testimonials (Trusted By Section) */}
       {testimonials.length > 0 && (
-        <TestimonialSection testimonials={testimonials} />
+        <TestimonialsSection testimonials={testimonials} />
       )}
-      <DigitalLibrarySection />
-      {partners.length > 0 && (
-        <PartnerSection partners={partners} />
-      )}
-      <CtaSection />
+
+      {/* 8. Partners (Infinite Scroll) & Final CTA */}
+      <PartnersSection partners={partners} />
+      <CTASection />
     </div>
   );
 }
