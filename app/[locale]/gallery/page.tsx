@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { getFeaturedGalleryImages } from "@/services/gallery-actions";
 import { getTranslations } from "next-intl/server";
-
+import { FormattedHTML } from "@/components/ui/FormattedHTML";
 export default async function GalleryPage({ params }: { params: Promise<{ locale: string }> }) {
   const images = await getFeaturedGalleryImages(50);
   const locale = (await params).locale;
@@ -9,9 +9,7 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
 
   return (
     <div className="container mx-auto px-4 py-24 min-h-screen">
-      <h1 className="text-4xl font-serif font-bold mb-8 text-slate-900 border-b pb-4">
-        {t("Gallery.title").replace(/<[^>]*>?/gm, '') || "Galerie"}
-      </h1>
+      <FormattedHTML html={t.raw("Gallery.title")} as="h1" className="text-4xl font-serif font-bold mb-8 text-slate-900 border-b pb-4" />
 
       {images.length === 0 ? (
         <p className="text-slate-500 italic">Aucune image pour le moment.</p>

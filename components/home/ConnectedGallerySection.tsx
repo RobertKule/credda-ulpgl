@@ -14,6 +14,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useTranslations } from "next-intl";
+import { FormattedHTML } from "@/components/ui/FormattedHTML";
 
 export default function ConnectedGallerySection({ images }: { images: any[] }) {
     const t = useTranslations('HomePage');
@@ -35,9 +36,11 @@ export default function ConnectedGallerySection({ images }: { images: any[] }) {
                     <Badge className="bg-blue-600/10 text-blue-700 rounded-none mb-3 sm:mb-4 uppercase text-[8px] sm:text-[9px] lg:text-[10px] font-black px-3 py-1 border-none">
                         {t('Gallery.badge')}
                     </Badge>
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-serif font-bold text-slate-900 leading-tight">
-                        <span dangerouslySetInnerHTML={{ __html: t.raw('Gallery.title') }} />
-                    </h2>
+                    <FormattedHTML
+                        html={t.raw('Gallery.title')}
+                        as="h2"
+                        className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-serif font-bold text-slate-900 leading-tight"
+                    />
                     <p className="text-sm sm:text-base text-slate-500 font-light max-w-2xl mx-auto mt-3 sm:mt-4">
                         {t('Gallery.description')}
                     </p>

@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "@/navigation";
 import { ArrowRight, ShieldCheck, MapPin } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { FormattedHTML } from "@/components/ui/FormattedHTML";
 
 export default function ClinicalImpactSection() {
     const t = useTranslations('HomePage');
@@ -19,7 +20,11 @@ export default function ClinicalImpactSection() {
                 </div>
                 <div className="space-y-4 sm:space-y-6 lg:space-y-8 order-1 lg:order-2">
                     <Badge className="bg-emerald-500 rounded-none uppercase text-[8px] sm:text-[9px] tracking-widest px-2 sm:px-3 py-1 border-none font-black">{t('clinical.badge')}</Badge>
-                    <h3 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-serif font-bold leading-tight">{t('clinical.title')}</h3>
+                    <FormattedHTML
+                        html={t.raw('clinical.title')}
+                        as="h3"
+                        className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-serif font-bold leading-tight"
+                    />
                     <p className="text-sm sm:text-base lg:text-lg text-emerald-100/80 font-light leading-relaxed">
                         {t('clinical.description')}
                     </p>

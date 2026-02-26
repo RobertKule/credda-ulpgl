@@ -6,6 +6,7 @@ import { Play, Pause, Volume2, VolumeX } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
+import { FormattedHTML } from "@/components/ui/FormattedHTML";
 
 export default function HeroSection() {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -67,9 +68,11 @@ export default function HeroSection() {
                             <Badge className="bg-blue-600 text-white rounded-none px-3 sm:px-4 py-1 sm:py-1.5 uppercase tracking-widest text-[8px] sm:text-[9px] lg:text-[10px] font-black border-none shadow-lg">
                                 {t('hero.badge')}
                             </Badge>
-                            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-serif font-bold text-white leading-[1.1] sm:leading-[1.08] lg:leading-[1.05]">
-                                {slides[currentSlide]?.title}
-                            </h1>
+                            <FormattedHTML
+                                html={slides[currentSlide]?.title}
+                                as="h1"
+                                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-serif font-bold text-white leading-[1.1] sm:leading-[1.08] lg:leading-[1.05]"
+                            />
                             <p className="text-sm sm:text-base lg:text-lg xl:text-xl text-slate-300 font-light max-w-lg sm:max-w-xl lg:max-w-2xl leading-relaxed">
                                 {slides[currentSlide]?.desc}
                             </p>

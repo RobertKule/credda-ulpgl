@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
+import { FormattedHTML } from "@/components/ui/FormattedHTML";
 
 export default function ResearchSection({ articles }: { articles: any[] }) {
     const t = useTranslations('HomePage');
@@ -40,9 +41,11 @@ export default function ResearchSection({ articles }: { articles: any[] }) {
                                 {t('research.badge')}
                             </Badge>
                         </div>
-                        <h3 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif font-bold text-slate-900 leading-[1.1]">
-                            <span dangerouslySetInnerHTML={{ __html: t.raw('research.title') }} />
-                        </h3>
+                        <FormattedHTML
+                            html={t.raw('research.title')}
+                            as="h3"
+                            className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif font-bold text-slate-900 leading-[1.1]"
+                        />
                         <p className="text-sm sm:text-base lg:text-lg text-slate-500 font-light max-w-md sm:max-w-lg lg:max-w-xl">
                             {t('research.description')}
                         </p>

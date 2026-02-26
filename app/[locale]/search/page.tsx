@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "@/navigation";
 import { FileText, BookOpen, User, ChevronRight, SearchX } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { FormattedHTML } from "@/components/ui/FormattedHTML";
 
 // Fonction utilitaire pour surligner le texte
 function Highlight({ text, query }: { text: string; query: string }) {
@@ -11,26 +12,26 @@ function Highlight({ text, query }: { text: string; query: string }) {
   const parts = text.split(new RegExp(`(${query})`, "gi"));
   return (
     <span>
-      {parts.map((part, i) => 
-        part.toLowerCase() === query.toLowerCase() 
-          ? <u key={i} className="text-blue-600 decoration-blue-600 decoration-2 underline-offset-4 font-black">{part}</u> 
+      {parts.map((part, i) =>
+        part.toLowerCase() === query.toLowerCase()
+          ? <u key={i} className="text-blue-600 decoration-blue-600 decoration-2 underline-offset-4 font-black">{part}</u>
           : part
       )}
     </span>
   );
 }
 
-export default async function SearchResultsPage({ 
-  params, 
-  searchParams 
-}: { 
-  params: Promise<{ locale: string }>; 
+export default async function SearchResultsPage({
+  params,
+  searchParams
+}: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{ q: string }>;
 }) {
   const { locale } = await params;
   const { q: query } = await searchParams;
   const t = await getTranslations({ locale, namespace: 'SearchPage' });
-  
+
   const results = await searchEverything(query, locale);
   const totalResults = results.articles.length + results.publications.length + results.members.length;
 
@@ -41,9 +42,11 @@ export default async function SearchResultsPage({
           <Badge className="bg-blue-600 rounded-none">
             {t('header.badge')}
           </Badge>
-          <h1 className="text-4xl md:text-6xl font-serif font-bold text-slate-900">
-            <span dangerouslySetInnerHTML={{ __html: t.raw('header.title').replace('{query}', query) }} />
-          </h1>
+          <FormattedHTML
+            html={t.raw('header.title').replace('{query}', query)}
+            as="h1"
+            className="text-4xl md:text-6xl font-serif font-bold text-slate-900"
+          />
           <p className="text-slate-500 font-medium">
             {t('header.results', { count: totalResults })}
           </p>

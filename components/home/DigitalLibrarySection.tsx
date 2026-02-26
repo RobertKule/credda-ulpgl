@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "@/navigation";
 import { BookOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { FormattedHTML } from "@/components/ui/FormattedHTML";
 
 export default function DigitalLibrarySection() {
     const t = useTranslations('HomePage');
@@ -18,9 +19,11 @@ export default function DigitalLibrarySection() {
                         <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-6">
                             <BookOpen size={28} />
                         </div>
-                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-slate-900 leading-[1.1]">
-                            <span dangerouslySetInnerHTML={{ __html: t.raw('library.title') }} />
-                        </h2>
+                        <FormattedHTML
+                            html={t.raw('library.title')}
+                            as="h2"
+                            className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-slate-900 leading-[1.1]"
+                        />
                         <p className="text-base sm:text-lg text-slate-500 font-light leading-relaxed">
                             {t('library.description')}
                         </p>

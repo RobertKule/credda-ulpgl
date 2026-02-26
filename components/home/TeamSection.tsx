@@ -7,6 +7,7 @@ import { Link } from "@/navigation";
 import { ArrowOutward, FormatQuote } from "@mui/icons-material";
 import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { FormattedHTML } from "@/components/ui/FormattedHTML";
 import {
     Carousel,
     CarouselContent,
@@ -28,9 +29,11 @@ export default function TeamSection({ team }: { team: any[] }) {
                         <Badge className="bg-slate-100 text-slate-800 hover:bg-slate-200 border-none rounded-none uppercase text-[8px] sm:text-[9px] lg:text-[10px] tracking-[0.2em] font-black px-3 py-1 mb-4">
                             {t('team.badge')}
                         </Badge>
-                        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-slate-900 leading-tight">
-                            <span dangerouslySetInnerHTML={{ __html: t.raw('team.title') }} />
-                        </h2>
+                        <FormattedHTML
+                            html={t.raw('team.title')}
+                            as="h2"
+                            className="text-3xl sm:text-4xl lg:text-5xl font-serif font-bold text-slate-900 leading-tight"
+                        />
                     </div>
                     <div className="flex gap-2 sm:gap-4">
                         <button
