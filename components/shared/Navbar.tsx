@@ -1,23 +1,38 @@
+// components/shared/Navbar.tsx
 "use client";
 
-import { Link, usePathname } from "./../../navigation"; // ✅ IMPORTER DEPUIS VOTRE CONFIGURATION
+import { Link, usePathname } from "./../../navigation";
 import { useLocale } from "next-intl";
 import {
   Globe, Menu, X, Search, Mail,
   Facebook, Twitter, Linkedin, ExternalLink, Landmark,
-  ChevronRight
+  ChevronRight, Camera, ChevronDown
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import SearchModal from "./SearchModal";
 
+// Définir les types pour les labels
+type LabelType = {
+  fr: string;
+  en: string;
+  sw: string;
+};
+
+type NavLink = {
+  href?: string;
+  label: LabelType;
+  dropdown?: { href: string; label: LabelType }[];
+};
+
 export default function Navbar() {
-  const locale = useLocale();
-  const pathname = usePathname(); 
+  const locale = useLocale() as keyof LabelType; // ✅ Typer locale
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   // Détection du défilement
   useEffect(() => {
@@ -28,20 +43,44 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
+  // Fermer le dropdown au clic en dehors
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (openDropdown && !(e.target as Element).closest('.dropdown-container')) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [openDropdown]);
+
+  const navLinks: NavLink[] = [
     { href: "/about", label: { fr: "À Propos", en: "About", sw: "Kuhusu" } },
-    { href: "/research", label: { fr: "Recherche", en: "Research", sw: "Utafiti" } },
-    { href: "/clinical", label: { fr: "Clinique", en: "Clinical", sw: "Kliniki" } },
-    { href: "/publications", label: { fr: "Publications", en: "Publications", sw: "Machapisho" } },
+    {
+      label: {
+        fr: "Recherche & Clinique",
+        en: "Research & Clinical",
+        sw: "Utafiti na Kliniki"
+      },
+      dropdown: [
+        { href: "/research", label: { fr: "Recherche", en: "Research", sw: "Utafiti" } },
+        { href: "/clinical", label: { fr: "Clinique Juridique", en: "Legal Clinic", sw: "Kliniki ya Sheria" } },
+        { href: "/publications", label: { fr: "Publications", en: "Publications", sw: "Machapisho" } },
+      ]
+    },
     { href: "/team", label: { fr: "Équipe", en: "Team", sw: "Timu" } },
+    { href: "/gallery", label: { fr: "Galerie", en: "Gallery", sw: "Nyumba ya sanaa" } },
     { href: "/contact", label: { fr: "Contact", en: "Contact", sw: "Wasiliana" } },
   ];
+
+  const toggleDropdown = (label: string) => {
+    setOpenDropdown(openDropdown === label ? null : label);
+  };
 
   return (
     <>
       <header className="fixed top-0 w-full z-[100] transition-all duration-300">
-
-        {/* --- 1. TOP BAR --- */}
+        {/* TOP BAR */}
         <AnimatePresence>
           {!isScrolled && (
             <motion.div
@@ -66,9 +105,9 @@ export default function Navbar() {
 
                 <div className="flex items-center gap-6">
                   <div className="flex items-center gap-4 border-r border-white/10 pr-6 text-slate-400">
-                    <Facebook size={14} className="hover:text-white cursor-pointer transition-colors" />
-                    <Twitter size={14} className="hover:text-white cursor-pointer transition-colors" />
-                    <Linkedin size={14} className="hover:text-white cursor-pointer transition-colors" />
+                    <a href="#" className="hover:text-white transition-colors"><Facebook size={14} /></a>
+                    <a href="#" className="hover:text-white transition-colors"><Twitter size={14} /></a>
+                    <a href="#" className="hover:text-white transition-colors"><Linkedin size={14} /></a>
                   </div>
                   <Link href="/admin" className="bg-blue-600 px-4 py-1 hover:bg-blue-500 transition-colors">
                     Portail Chercheur
@@ -79,7 +118,7 @@ export default function Navbar() {
           )}
         </AnimatePresence>
 
-        {/* --- 2. MAIN NAVBAR --- */}
+        {/* MAIN NAVBAR */}
         <nav className={`w-full transition-all duration-500 ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-xl h-16" : "bg-white h-24"
           } border-b border-slate-100`}>
           <div className="container mx-auto px-6 h-full flex items-center justify-between">
@@ -92,7 +131,8 @@ export default function Navbar() {
               </span>
               {!isScrolled && (
                 <motion.span
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   className="text-[8px] uppercase tracking-[0.3em] font-black text-slate-400"
                 >
                   Research & Legal Clinic
@@ -103,27 +143,66 @@ export default function Navbar() {
             {/* DESKTOP MENU */}
             <div className="hidden lg:flex items-center gap-8">
               <div className="flex items-center gap-1">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="px-4 py-2 text-[11px] font-black uppercase tracking-widest text-slate-600 hover:text-blue-600 transition-all relative group"
-                  >
-                    {link.label[locale as keyof typeof link.label]}
-                    <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                  </Link>
-                ))}
+                {navLinks.map((link, index) => {
+                  const linkKey = link.href || `dropdown-${index}`;
+                  const linkLabel = link.label[locale];
+                  
+                  return link.dropdown ? (
+                    <div key={linkKey} className="relative dropdown-container">
+                      <button
+                        onClick={() => toggleDropdown(linkLabel)}
+                        className="px-4 py-2 text-[11px] font-black uppercase tracking-widest text-slate-600 hover:text-blue-600 transition-all relative group flex items-center gap-1"
+                      >
+                        {linkLabel}
+                        <ChevronDown size={14} className={`transition-transform duration-300 ${openDropdown === linkLabel ? 'rotate-180' : ''}`} />
+                        <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                      </button>
+
+                      <AnimatePresence>
+                        {openDropdown === linkLabel && (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full left-0 mt-2 w-56 bg-white shadow-xl border border-slate-100 z-50"
+                          >
+                            {link.dropdown.map((item) => (
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                className="block px-4 py-3 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-slate-100 last:border-0"
+                                onClick={() => setOpenDropdown(null)}
+                              >
+                                {item.label[locale]}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <Link
+                      key={linkKey}
+                      href={link.href!}
+                      className="px-4 py-2 text-[11px] font-black uppercase tracking-widest text-slate-600 hover:text-blue-600 transition-all relative group"
+                    >
+                      {linkLabel}
+                      <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                    </Link>
+                  );
+                })}
               </div>
 
               <div className="h-6 w-[1px] bg-slate-100 mx-2"></div>
 
-              {/* ✅ LANGUE CORRIGÉE - UTILISE LE CHEMIN ACTUEL */}
+              {/* LANGUE */}
               <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-none border border-slate-100">
                 <Globe size={14} className="text-blue-600" />
                 {['fr', 'en', 'sw'].map((l) => (
                   <Link
                     key={l}
-                    href={pathname} // ✅ UTILISE LE CHEMIN ACTUEL
+                    href={pathname}
                     locale={l}
                     className={`text-[10px] font-bold transition-all ${locale === l ? 'text-blue-600' : 'text-slate-300 hover:text-slate-600'}`}
                   >
@@ -167,44 +246,70 @@ export default function Navbar() {
                 animate={{ x: 0 }}
                 exit={{ x: "100%" }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed inset-0 bg-[#050a15] text-white z-[100] flex flex-col p-10 pt-32"
+                className="fixed inset-0 bg-[#050a15] text-white z-[100] flex flex-col p-10 pt-32 overflow-y-auto"
               >
-                <div className="space-y-8">
-                  {navLinks.map((link, idx) => (
-                    <motion.div
-                      key={link.href}
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.1 + idx * 0.05 }}
-                    >
-                      <Link
-                        href={link.href}
-                        onClick={() => setIsOpen(false)}
-                        className="text-4xl font-serif font-bold hover:text-blue-400 flex items-center justify-between group"
+                <div className="space-y-6">
+                  {navLinks.map((link, idx) => {
+                    const linkKey = link.href || `mobile-dropdown-${idx}`;
+                    const linkLabel = link.label[locale];
+                    
+                    return (
+                      <motion.div
+                        key={linkKey}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.1 + idx * 0.05 }}
                       >
-                        {link.label[locale as keyof typeof link.label]}
-                        <ChevronRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </Link>
-                    </motion.div>
-                  ))}
+                        {link.dropdown ? (
+                          <div className="space-y-3">
+                            <p className="text-blue-400 text-sm font-bold uppercase tracking-widest">
+                              {linkLabel}
+                            </p>
+                            <div className="pl-4 space-y-3 border-l-2 border-blue-900">
+                              {link.dropdown.map((item) => (
+                                <Link
+                                  key={item.href}
+                                  href={item.href}
+                                  onClick={() => setIsOpen(false)}
+                                  className="block text-2xl font-serif hover:text-blue-400 transition-colors"
+                                >
+                                  {item.label[locale]}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <Link
+                            href={link.href!}
+                            onClick={() => setIsOpen(false)}
+                            className="text-3xl font-serif font-bold hover:text-blue-400 flex items-center justify-between group"
+                          >
+                            {linkLabel}
+                            <ChevronRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </Link>
+                        )}
+                      </motion.div>
+                    );
+                  })}
                 </div>
 
                 <div className="mt-auto pt-10 border-t border-white/10 space-y-6">
-                  {/* ✅ MOBILE LANGUE CORRIGÉE */}
                   <div className="flex gap-6">
                     {['fr', 'en', 'sw'].map((l) => (
-                      <Link 
-                        key={l} 
-                        href={pathname} // ✅ UTILISE LE CHEMIN ACTUEL
-                        locale={l} 
-                        onClick={() => setIsOpen(false)} 
+                      <Link
+                        key={l}
+                        href={pathname}
+                        locale={l}
+                        onClick={() => setIsOpen(false)}
                         className={`text-sm font-bold ${locale === l ? 'text-blue-400' : 'text-slate-500'}`}
                       >
                         {l.toUpperCase()}
                       </Link>
                     ))}
                   </div>
-                  <p className="text-[10px] text-slate-500 uppercase tracking-widest">CREDDA-ULPGL Official Hub</p>
+                  <p className="text-[10px] text-slate-500 uppercase tracking-widest">
+                    CREDDA-ULPGL Official Hub
+                  </p>
                 </div>
               </motion.div>
             )}
