@@ -3,11 +3,11 @@
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { Domain } from "@prisma/client";
+import { withSafeAction, ActionResponse } from "@/lib/safe-action";
 
-
-export async function updateArticle(data: any) {
-  try {
-    await db.article.update({
+export async function updateArticle(data: any): Promise<ActionResponse<any>> {
+  return withSafeAction("updateArticle", async () => {
+    const article = await db.article.update({
       where: { id: data.id },
       data: {
         slug: data.slug,
@@ -17,29 +17,24 @@ export async function updateArticle(data: any) {
         mainImage: data.mainImage,
         published: data.published,
         translations: {
-          deleteMany: {}, // Supprime les anciennes versions
-          create: data.translations // Ajoute les nouvelles versions
+          deleteMany: {},
+          create: data.translations
         }
       }
     });
-
     revalidatePath("/[locale]/admin/articles", "layout");
     revalidatePath("/[locale]/research", "layout");
-    return { success: true };
-  } catch (error) {
-    console.error("Update error:", error);
-    return { success: false, error: "Erreur lors de la mise à jour" };
-  }
+    return article;
+  }, "Erreur lors de la mise à jour de l'article");
 }
-// CRÉER
-export async function createArticle(formData: any) {
-  const { slug, domain, categoryId, translations, mainImage, videoUrl, published } = formData;
-  
-  try {
-    // Vérifier si le slug existe déjà
+
+export async function createArticle(formData: any): Promise<ActionResponse<any>> {
+  return withSafeAction("createArticle", async () => {
+    const { slug, domain, categoryId, translations, mainImage, videoUrl, published } = formData;
+
     const existing = await db.article.findUnique({ where: { slug } })
     if (existing) {
-      return { success: false, error: "Ce slug existe déjà. Veuillez en choisir un autre." }
+      throw new Error("Ce slug existe déjà. Veuillez en choisir un autre.");
     }
 
     const article = await db.article.create({
@@ -53,42 +48,30 @@ export async function createArticle(formData: any) {
         translations: { create: translations }
       }
     });
-    
+
     revalidatePath("/[locale]/admin/articles", "layout");
     revalidatePath("/[locale]/research", "layout");
-    return { success: true, data: article };
-  } catch (error) {
-    console.error(error);
-    return { success: false, error: "Erreur lors de la création" };
-  }
+    return article;
+  }, "Erreur lors de la création de l'article");
 }
 
-
-// SUPPRIMER
-export async function deleteArticle(id: string) {
-  try {
+export async function deleteArticle(id: string): Promise<ActionResponse<any>> {
+  return withSafeAction("deleteArticle", async () => {
     await db.article.delete({ where: { id } });
     revalidatePath("/[locale]/admin/articles", "layout");
     revalidatePath("/[locale]/research", "layout");
-    return { success: true };
-  } catch (error) {
-    console.error(error);
-    return { success: false, error: "Impossible de supprimer l'article" };
-  }
+    return { id };
+  }, "Impossible de supprimer l'article");
 }
 
-// TOGGLE PUBLICATION
-export async function toggleArticleStatus(id: string, currentStatus: boolean) {
-  try {
-    await db.article.update({
+export async function toggleArticleStatus(id: string, currentStatus: boolean): Promise<ActionResponse<any>> {
+  return withSafeAction("toggleArticleStatus", async () => {
+    const article = await db.article.update({
       where: { id },
       data: { published: !currentStatus }
     });
     revalidatePath("/[locale]/admin/articles", "layout");
     revalidatePath("/[locale]/research", "layout");
-    return { success: true };
-  } catch (error) {
-    console.error(error);
-    return { success: false, error: "Erreur lors de la modification du statut" };
-  }
+    return article;
+  }, "Erreur lors de la modification du statut");
 }

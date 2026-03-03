@@ -6,7 +6,6 @@
     "about": "About",
     "contact": "Contact"
   },
-
   "HomePage": {
     "hero": {
       "badge": "CREDDA - ULPGL Excellence",
@@ -26,7 +25,6 @@
       ],
       "cta_publications": "Our Publications",
       "cta_contact": "Contact"
-      
     },
     "stats": {
       "years": "Years of Expertise in action-research",
@@ -58,7 +56,8 @@
     },
     "team": {
       "title": "Scientific Leadership",
-      "subtitle": "The Research Team"
+      "subtitle": "The Research Team",
+      "badge": "Our Team"
     },
     "testimonials": {
       "badge": "International Trust",
@@ -85,16 +84,16 @@
       "about": "The CREDDA Project"
     },
     "Gallery": {
-    "badge": "In Pictures",
-    "title": "CREDDA in <span>Action</span>",
-    "description": "Discover our research activities, clinical work and partnerships through a selection of images.",
-    "cta": "View full gallery",
-    "modal": {
-      "close": "Close",
-      "prev": "Previous",
-      "next": "Next"
+      "badge": "In Pictures",
+      "title": "CREDDA in <span>Action</span>",
+      "description": "Discover our research activities, clinical work and partnerships through a selection of images.",
+      "cta": "View full gallery",
+      "modal": {
+        "close": "Close",
+        "prev": "Previous",
+        "next": "Next"
+      }
     }
-  }
   },
   "NotFound": {
     "badge": "Error",
@@ -255,7 +254,6 @@
       "button2": "Emergency contact"
     }
   },
-
   "ClinicalDetailPage": {
     "back": "Back to clinical actions",
     "location": "North Kivu, DRC",
@@ -268,7 +266,6 @@
       "description": "The clinical action you are looking for does not exist or has been moved."
     }
   },
-  
   "PublicationsPage": {
     "header": {
       "badge": "Open Access Repository",
@@ -321,7 +318,6 @@
       "button2": "Suggest a document"
     }
   },
-
   "PublicationDetailPage": {
     "back": "Back to library",
     "badge": {
@@ -376,7 +372,6 @@
       "linkedin": "LinkedIn Profile"
     }
   },
-
   "SearchPage": {
     "header": {
       "badge": "Search engine",
@@ -480,7 +475,6 @@
       }
     }
   },
-
   "LoginPage": {
     "left": {
       "badge": "Secure Area",
@@ -506,10 +500,10 @@
       "errors": {
         "invalid": "Invalid credentials",
         "connection": "Connection error"
-      }      ,
+      },
       "forgotPassword": "Forgot password?"
     }
-  }, 
+  },
   "Footer": {
     "identity": {
       "description": "Institution of excellence of the Université Libre des Pays des Grands Lacs dedicated to scientific research and clinical legal practice."
@@ -585,8 +579,4 @@
       "description": "Our teams are preparing a selection of images. Come back soon to discover our activities in photos."
     }
   }
-
-
-
-
 }

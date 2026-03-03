@@ -8,7 +8,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
   X, ChevronLeft, ChevronRight, Download, Heart, 
-  Share2, Maximize2, Minimize2, Grid, List, Filter
+  Share2, Maximize2, Minimize2, Grid, List, Filter,
+  Camera, Star, Eye
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
@@ -35,6 +36,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
   const [viewMode, setViewMode] = useState<"grid" | "masonry">("grid");
   const [likedImages, setLikedImages] = useState<string[]>([]);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
   
   const t = useTranslations('GalleryPage');
 
@@ -74,6 +76,10 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
     );
   };
 
+  const handleImageError = (id: string) => {
+    setImageErrors(prev => ({ ...prev, [id]: true }));
+  };
+
   const handleKeyDown = (e: KeyboardEvent) => {
     if (!selectedImage) return;
     
@@ -94,18 +100,12 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
           <div className="max-w-md mx-auto">
             <div className="relative mb-8">
               <div className="absolute inset-0 bg-blue-600/5 blur-3xl rounded-full" />
-              <Image
-                src="/images/placeholder-gallery.svg"
-                alt="Empty gallery"
-                width={200}
-                height={200}
-                className="mx-auto relative z-10 opacity-50"
-              />
+              <Camera size={80} className="mx-auto text-slate-300 relative z-10" strokeWidth={1} />
             </div>
-            <h3 className="text-2xl font-serif font-bold text-slate-900 mb-4">
+            <h3 className="text-3xl font-serif font-bold text-slate-900 mb-4">
               {t('empty.title')}
             </h3>
-            <p className="text-slate-500 font-light">
+            <p className="text-slate-500 font-light text-lg">
               {t('empty.description')}
             </p>
           </div>
@@ -125,53 +125,64 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
               <Filter size={14} className="text-slate-400 shrink-0" />
               <div className="flex gap-2">
                 {categories.map((cat) => (
-                  <button
+                  <motion.button
                     key={cat}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setFilter(cat)}
-                    className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all whitespace-nowrap rounded-none ${
+                    className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all whitespace-nowrap rounded-full ${
                       filter === cat
-                        ? 'bg-blue-900 text-white border-blue-900'
+                        ? 'bg-blue-900 text-white border-blue-900 shadow-lg'
                         : 'text-slate-500 border-slate-200 hover:border-blue-900 hover:text-blue-900'
                     }`}
                   >
                     {cat === "all" ? t('filters.all') : cat}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
 
             {/* Vue mode */}
-            <div className="flex items-center gap-2">
-              <button
+            <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-full">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setViewMode("grid")}
-                className={`p-2 transition-colors ${
+                className={`p-2 rounded-full transition-colors ${
                   viewMode === "grid"
-                    ? 'bg-blue-900 text-white'
-                    : 'bg-white text-slate-400 hover:text-blue-900'
+                    ? 'bg-white text-blue-900 shadow-md'
+                    : 'text-slate-400 hover:text-blue-900'
                 }`}
               >
-                <Grid size={16} />
-              </button>
-              <button
+                <Grid size={18} />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setViewMode("masonry")}
-                className={`p-2 transition-colors ${
+                className={`p-2 rounded-full transition-colors ${
                   viewMode === "masonry"
-                    ? 'bg-blue-900 text-white'
-                    : 'bg-white text-slate-400 hover:text-blue-900'
+                    ? 'bg-white text-blue-900 shadow-md'
+                    : 'text-slate-400 hover:text-blue-900'
                 }`}
               >
-                <List size={16} />
-              </button>
+                <List size={18} />
+              </motion.button>
             </div>
           </div>
 
           {/* Résultats */}
-          <div className="mt-4 text-xs text-slate-500">
+          <motion.div 
+            key={`${filter}-${filteredImages.length}`}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4 text-sm text-slate-500"
+          >
             {t('results', { 
               count: filteredImages.length,
               total: images.length 
             })}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -180,114 +191,175 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
         <div className="container mx-auto px-6">
           {viewMode === "grid" ? (
             // Vue Grille
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+            <motion.div 
+              layout
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            >
               {filteredImages.map((image, idx) => (
                 <motion.div
                   key={image.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ delay: idx * 0.05 }}
-                  whileHover={{ y: -5 }}
-                  className="group relative aspect-square overflow-hidden bg-slate-100 cursor-pointer rounded-lg shadow-md hover:shadow-2xl transition-all duration-500"
+                  whileHover={{ y: -8 }}
+                  className="group relative aspect-square overflow-hidden bg-slate-100 cursor-pointer rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500"
                   onClick={() => openLightbox(image, idx)}
                 >
-                  <Image
-                    src={image.src}
-                    alt={image.title}
-                    fill
-                    sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
+                  {!imageErrors[image.id] ? (
+                    <Image
+                      src={image.src}
+                      alt={image.title}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      onError={() => handleImageError(image.id)}
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-slate-200">
+                      <Camera size={40} className="text-slate-400" />
+                    </div>
+                  )}
                   
                   {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <motion.div 
+                    initial={{ opacity: 0 }}
+                    whileHover={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"
+                  />
                   
                   {/* Contenu au survol */}
-                  <div className="absolute inset-x-0 bottom-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                    <p className="text-[8px] font-black uppercase tracking-widest text-blue-400">
+                  <motion.div 
+                    initial={{ y: 20, opacity: 0 }}
+                    whileHover={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute inset-x-0 bottom-0 p-6"
+                  >
+                    <Badge className="bg-blue-600 text-white border-0 mb-2 text-[10px] px-2 py-1">
                       {image.category}
-                    </p>
-                    <h3 className="text-xs font-bold text-white line-clamp-1 mt-1">
+                    </Badge>
+                    <h3 className="text-lg font-serif font-bold text-white line-clamp-2">
                       {image.title}
                     </h3>
-                  </div>
+                    <div className="flex items-center gap-2 mt-2">
+                      <Eye size={14} className="text-blue-400" />
+                      <span className="text-xs text-white/70">Détails</span>
+                    </div>
+                  </motion.div>
 
-                  {/* Badge catégorie */}
-                  <div className="absolute top-3 left-3 z-10">
-                    <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[6px] font-black uppercase tracking-widest px-2 py-1 rounded-full">
+                  {/* Badge catégorie (visible sans survol) */}
+                  <div className="absolute top-4 left-4 z-10">
+                    <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[8px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">
                       {image.category}
                     </Badge>
                   </div>
 
                   {/* Bouton like */}
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.9 }}
                     onClick={(e) => {
                       e.stopPropagation();
                       toggleLike(image.id);
                     }}
-                    className="absolute top-3 right-3 z-20 p-2 bg-black/50 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-110"
+                    className="absolute top-4 right-4 z-20 p-2 bg-black/50 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   >
                     <Heart 
-                      size={14} 
+                      size={16} 
                       className={likedImages.includes(image.id) ? 'fill-red-500 text-red-500' : 'text-white'} 
                     />
-                  </button>
+                  </motion.button>
 
-                  {/* Image featured */}
+                  {/* Badge featured */}
                   {image.featured && (
-                    <div className="absolute top-3 right-12 z-20">
-                      <Badge className="bg-amber-500 text-white border-none text-[6px] font-black uppercase tracking-widest px-2 py-1 rounded-full">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute top-4 right-16 z-20"
+                    >
+                      <Badge className="bg-amber-500 text-white border-none text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full flex items-center gap-1">
+                        <Star size={10} className="fill-white" />
                         {t('featured')}
                       </Badge>
-                    </div>
+                    </motion.div>
                   )}
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           ) : (
             // Vue Masonry
-            <div className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4">
+            <motion.div layout className="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-6 space-y-6">
               {filteredImages.map((image, idx) => (
                 <motion.div
                   key={image.id}
+                  layout
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: idx * 0.05 }}
-                  className="break-inside-avoid group relative cursor-pointer mb-4"
+                  whileHover={{ scale: 1.02 }}
+                  className="break-inside-avoid group relative cursor-pointer mb-6"
                   onClick={() => openLightbox(image, idx)}
                 >
-                  <div className="relative overflow-hidden bg-slate-100 rounded-lg shadow-md hover:shadow-2xl transition-all duration-500">
-                    <Image
-                      src={image.src}
-                      alt={image.title}
-                      width={800}
-                      height={600}
-                      className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
+                  <div className="relative overflow-hidden bg-slate-100 rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500">
+                    {!imageErrors[image.id] ? (
+                      <Image
+                        src={image.src}
+                        alt={image.title}
+                        width={800}
+                        height={600}
+                        className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
+                        onError={() => handleImageError(image.id)}
+                      />
+                    ) : (
+                      <div className="w-full aspect-[4/3] flex items-center justify-center bg-slate-200">
+                        <Camera size={48} className="text-slate-400" />
+                      </div>
+                    )}
                     
                     {/* Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"
+                    />
                     
-                    {/* Contenu */}
-                    <div className="absolute inset-x-0 bottom-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                      <p className="text-[8px] font-black uppercase tracking-widest text-blue-400">
+                    {/* Contenu au survol */}
+                    <motion.div 
+                      initial={{ y: 20, opacity: 0 }}
+                      whileHover={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="absolute inset-x-0 bottom-0 p-6"
+                    >
+                      <Badge className="bg-blue-600 text-white border-0 mb-2 text-[10px] px-2 py-1">
                         {image.category}
-                      </p>
-                      <h3 className="text-xs font-bold text-white line-clamp-1">
+                      </Badge>
+                      <h3 className="text-lg font-serif font-bold text-white">
                         {image.title}
                       </h3>
-                    </div>
+                    </motion.div>
 
                     {/* Badge catégorie */}
-                    <div className="absolute top-3 left-3 z-10">
-                      <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[6px] font-black uppercase tracking-widest px-2 py-1 rounded-full">
+                    <div className="absolute top-4 left-4 z-10">
+                      <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[8px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">
                         {image.category}
                       </Badge>
                     </div>
+
+                    {/* Badge featured */}
+                    {image.featured && (
+                      <div className="absolute top-4 right-4 z-10">
+                        <Badge className="bg-amber-500 text-white border-none text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full flex items-center gap-1">
+                          <Star size={10} className="fill-white" />
+                        </Badge>
+                      </div>
+                    )}
                   </div>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
         </div>
       </section>
@@ -299,27 +371,33 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4"
+            className="fixed inset-0 z-[200] bg-black/98 flex items-center justify-center p-4"
             onClick={closeLightbox}
           >
             {/* Contrôles */}
             <div className="absolute top-4 right-4 z-30 flex gap-2">
-              <button
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setIsFullscreen(!isFullscreen)}
                 className="p-3 bg-white/10 backdrop-blur-md text-white hover:bg-blue-600 transition-all rounded-full"
               >
                 {isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
-              </button>
-              <button
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={closeLightbox}
                 className="p-3 bg-white/10 backdrop-blur-md text-white hover:bg-red-600 transition-all rounded-full"
               >
                 <X size={20} />
-              </button>
+              </motion.button>
             </div>
 
             {/* Navigation */}
-            <button
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               onClick={(e) => {
                 e.stopPropagation();
                 navigateLightbox("prev");
@@ -327,9 +405,11 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
               className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 backdrop-blur-md text-white hover:bg-blue-600 transition-all rounded-full z-30"
             >
               <ChevronLeft size={24} />
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
               onClick={(e) => {
                 e.stopPropagation();
                 navigateLightbox("next");
@@ -337,7 +417,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
               className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 backdrop-blur-md text-white hover:bg-blue-600 transition-all rounded-full z-30"
             >
               <ChevronRight size={24} />
-            </button>
+            </motion.button>
 
             {/* Image */}
             <motion.div
@@ -349,14 +429,21 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
               className={`relative ${isFullscreen ? 'w-screen h-screen' : 'max-w-6xl max-h-[80vh]'}`}
               onClick={(e) => e.stopPropagation()}
             >
-              <Image
-                src={selectedImage.src}
-                alt={selectedImage.title}
-                width={isFullscreen ? 1920 : 1200}
-                height={isFullscreen ? 1080 : 800}
-                className="object-contain w-full h-full"
-                priority
-              />
+              {!imageErrors[`lightbox-${selectedImage.id}`] ? (
+                <Image
+                  src={selectedImage.src}
+                  alt={selectedImage.title}
+                  width={isFullscreen ? 1920 : 1200}
+                  height={isFullscreen ? 1080 : 800}
+                  className="object-contain w-full h-full"
+                  priority
+                  onError={() => handleImageError(`lightbox-${selectedImage.id}`)}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-slate-900">
+                  <Camera size={80} className="text-slate-700" />
+                </div>
+              )}
             </motion.div>
 
             {/* Informations */}
@@ -364,48 +451,61 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8 text-white"
+              className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-8 text-white"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="container mx-auto">
                 <div className="flex items-center gap-3 mb-2">
-                  <Badge className="bg-blue-600 text-white border-none text-[8px] font-black uppercase tracking-widest px-3 py-1">
+                  <Badge className="bg-blue-600 text-white border-none text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
                     {selectedImage.category}
                   </Badge>
                   {selectedImage.featured && (
-                    <Badge className="bg-amber-500 text-white border-none text-[8px] font-black uppercase tracking-widest px-3 py-1">
+                    <Badge className="bg-amber-500 text-white border-none text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full flex items-center gap-1">
+                      <Star size={12} className="fill-white" />
                       {t('featured')}
                     </Badge>
                   )}
                 </div>
-                <h2 className="text-2xl font-serif font-bold mb-2">{selectedImage.title}</h2>
+                <h2 className="text-3xl font-serif font-bold mb-2">{selectedImage.title}</h2>
                 {selectedImage.description && (
-                  <p className="text-white/70 max-w-2xl">{selectedImage.description}</p>
+                  <p className="text-white/80 max-w-2xl text-lg font-light">
+                    {selectedImage.description}
+                  </p>
                 )}
-                <div className="flex gap-4 mt-4">
-                  <button className="flex items-center gap-2 text-xs bg-white/10 hover:bg-blue-600 px-4 py-2 rounded-full transition-all">
-                    <Download size={14} /> {t('download')}
-                  </button>
-                  <button className="flex items-center gap-2 text-xs bg-white/10 hover:bg-blue-600 px-4 py-2 rounded-full transition-all">
-                    <Share2 size={14} /> {t('share')}
-                  </button>
-                  <button
+                <div className="flex gap-4 mt-6">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2 text-sm bg-white/10 hover:bg-blue-600 px-6 py-3 rounded-full transition-all"
+                  >
+                    <Download size={16} /> {t('download')}
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2 text-sm bg-white/10 hover:bg-blue-600 px-6 py-3 rounded-full transition-all"
+                  >
+                    <Share2 size={16} /> {t('share')}
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => toggleLike(selectedImage.id)}
-                    className="flex items-center gap-2 text-xs bg-white/10 hover:bg-blue-600 px-4 py-2 rounded-full transition-all"
+                    className="flex items-center gap-2 text-sm bg-white/10 hover:bg-blue-600 px-6 py-3 rounded-full transition-all"
                   >
                     <Heart 
-                      size={14} 
+                      size={16} 
                       className={likedImages.includes(selectedImage.id) ? 'fill-red-500 text-red-500' : ''} 
                     />
                     {likedImages.includes(selectedImage.id) ? t('liked') : t('like')}
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             </motion.div>
 
             {/* Compteur */}
-            <div className="absolute top-4 left-4 text-white/50 text-sm">
-              {selectedIndex + 1} / {filteredImages.length}
+            <div className="absolute top-4 left-4 text-white/50 text-sm font-mono">
+              {String(selectedIndex + 1).padStart(2, '0')} / {String(filteredImages.length).padStart(2, '0')}
             </div>
           </motion.div>
         )}

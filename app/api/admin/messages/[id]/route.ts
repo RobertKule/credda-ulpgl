@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getServerSession } from "next-auth";
-
+export const runtime = 'nodejs';
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> } // ✅ CORRIGÉ: Promise

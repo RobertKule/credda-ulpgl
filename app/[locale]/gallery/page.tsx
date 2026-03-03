@@ -1,43 +1,15 @@
 // app/[locale]/gallery/page.tsx
 import { db } from "@/lib/db";
-import { notFound } from "next/navigation";
 import { Link } from "@/navigation";
-import { Badge } from "@/components/ui/badge";
-import { 
-  ArrowLeft, Download, X, ChevronLeft, ChevronRight,
-  Maximize2, Minimize2, Heart, Share2, Info
-} from "lucide-react";
-import Image from "next/image";
-import { Metadata } from "next";
+import { ArrowLeft } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import GalleryClient from "./GalleryClient";
-
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
-  const { locale } = await params;
-  
-  const titles: Record<string, string> = {
-    fr: "Galerie | CREDDA-ULPGL",
-    en: "Gallery | CREDDA-ULPGL",
-    sw: "Nyumba ya sanaa | CREDDA-ULPGL"
-  };
-  
-  const descriptions: Record<string, string> = {
-    fr: "Découvrez en images les activités de recherche, cliniques et partenariats du CREDDA-ULPGL.",
-    en: "Discover in pictures the research activities, clinical work and partnerships of CREDDA-ULPGL.",
-    sw: "Gundua kwa picha shughuli za utafiti, kazi za kliniki na ushirikiano wa CREDDA-ULPGL."
-  };
-  
-  return { 
-    title: titles[locale] || titles.fr,
-    description: descriptions[locale] || descriptions.fr,
-  };
-}
+import { Badge } from "@/components/ui/badge";
 
 export default async function GalleryPage({ params }: { params: Promise<{ locale: string }> }) {
-  const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'GalleryPage' });
+  const locale = (await params).locale;
+  const t = await getTranslations({ locale, namespace: "GalleryPage" });
 
-  // Récupérer les images depuis la base de données
   const images = await db.galleryImage.findMany({
     orderBy: [
       { featured: 'desc' },
@@ -46,15 +18,11 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
     ]
   });
 
-  // Statistiques
-  const categories = await db.galleryImage.groupBy({
-    by: ['category'],
-    _count: true
-  });
-
-  const featuredCount = await db.galleryImage.count({
-    where: { featured: true }
-  });
+  const stats = {
+    total: images.length,
+    categories: [...new Set(images.map(img => img.category))].length,
+    featured: images.filter(img => img.featured).length
+  };
 
   return (
     <main className="min-h-screen bg-white">
@@ -77,7 +45,7 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
               {t('badge')}
             </Badge>
             <h1 className="text-5xl lg:text-7xl font-serif font-bold leading-tight">
-              {t('title')}
+              <span dangerouslySetInnerHTML={{ __html: t.raw('title') }} />
             </h1>
             <p className="text-xl text-slate-400 font-light leading-relaxed max-w-2xl">
               {t('description')}
@@ -91,15 +59,15 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
         <div className="container mx-auto px-6">
           <div className="flex flex-wrap justify-center gap-8 text-center">
             <div>
-              <div className="text-2xl font-bold text-blue-600">{images.length}</div>
+              <div className="text-2xl font-bold text-blue-600">{stats.total}</div>
               <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">{t('stats.total')}</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-blue-600">{categories.length}</div>
+              <div className="text-2xl font-bold text-blue-600">{stats.categories}</div>
               <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">{t('stats.categories')}</div>
             </div>
             <div>
-              <div className="text-2xl font-bold text-blue-600">{featuredCount}</div>
+              <div className="text-2xl font-bold text-blue-600">{stats.featured}</div>
               <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-1">{t('stats.featured')}</div>
             </div>
           </div>

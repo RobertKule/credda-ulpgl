@@ -106,7 +106,7 @@ export async function replyToContactMessage(id: string, replyText: string): Prom
     // ✅ Mettre à jour avec les champs corrects
     const updatedMessage = await db.contactMessage.update({
       where: { id },
-      data: { 
+      data: {
         status: "READ",
         replyContent: replyText,
         repliedAt: new Date()
@@ -152,19 +152,27 @@ export async function archiveMessage(id: string): Promise<ContactMessageResult> 
 }
 
 // 5. RÉCUPÉRER TOUS LES MESSAGES
-export async function getAllMessages(status?: string): Promise<ContactMessageResult> {
+export async function getAllMessages(status?: string, limit: number = 20, cursor?: string): Promise<ContactMessageResult> {
   try {
     const where: any = {};
     if (status && status !== "all") {
       where.status = status; // ✅ Maintenant correct
     }
-    
+
     const messages = await db.contactMessage.findMany({
+      take: limit + 1,
+      ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
       where,
       orderBy: { createdAt: 'desc' }
     });
-    
-    return { success: true, data: messages };
+
+    let nextCursor: typeof cursor | undefined = undefined;
+    if (messages.length > limit) {
+      const nextItem = messages.pop();
+      nextCursor = nextItem!.id;
+    }
+
+    return { success: true, data: { messages, nextCursor } };
   } catch (error) {
     return { success: false, error: "Erreur lors de la récupération" };
   }

@@ -40,10 +40,10 @@ export default async function AdminPublicationsPage({ params, searchParams }: Pr
 
       <div className="bg-white border border-slate-200 shadow-sm overflow-hidden">
         {updated && (
-  <div className="bg-emerald-50 text-emerald-700 p-4">
-    Publication mise à jour avec succès
-  </div>
-)}
+          <div className="bg-emerald-50 text-emerald-700 p-4">
+            Publication mise à jour avec succès
+          </div>
+        )}
 
         <table className="w-full text-left border-collapse">
           <thead>
@@ -55,52 +55,72 @@ export default async function AdminPublicationsPage({ params, searchParams }: Pr
               <th className="p-4 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
             </tr>
           </thead>
-          
+
           <tbody className="divide-y divide-slate-100">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {publications.map((p) => (
-
-                <div
-                  key={p.id}
-                  className="bg-white border border-slate-200 p-6 shadow-sm hover:shadow-lg transition-all space-y-4"
-                >
-                  <div className="flex justify-between items-start">
-                    <Badge variant="outline">{p.year}</Badge>
-                    <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400">
-                      {p.domain}
-                    </span>
-                  </div>
-
-                  <div>
-                    <h3 className="font-serif font-bold text-lg">
-                      {p.translations[0]?.title || "Sans titre"}
-                    </h3>
-                    <p className="text-xs text-slate-400 italic">
-                      {p.translations[0]?.authors}
-                    </p>
-                  </div>
-
-                  <div className="flex justify-between items-center pt-4 border-t">
-                    <Button size="sm" variant="outline" asChild>
-                      <Link href={`/admin/publications/${p.id}/edit`}>
-                        Modifier
-                      </Link>
-                    </Button>
-
-                    <div className="flex gap-2">
-                      <Button size="icon" variant="ghost" asChild>
-                        <a href={p.pdfUrl} target="_blank">
-                          <Download size={16} />
-                        </a>
-                      </Button>
-
-                      <DeleteButton id={p.id} type="publication" />
+            {publications.map((p) => (
+              <tr key={p.id} className="hover:bg-slate-50 transition-colors">
+                {/* Document */}
+                <td className="p-4">
+                  <div className="flex items-start gap-3">
+                    <FileText size={18} className="text-blue-600 mt-0.5 shrink-0" />
+                    <div>
+                      <p className="font-semibold text-sm text-slate-900 leading-tight">
+                        {p.translations[0]?.title || <span className="italic text-slate-400">Sans titre</span>}
+                      </p>
+                      <p className="text-xs text-slate-400 italic mt-0.5">
+                        {p.translations[0]?.authors}
+                      </p>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                </td>
 
+                {/* Année */}
+                <td className="p-4">
+                  <div className="flex items-center gap-1.5 text-sm text-slate-600">
+                    <Calendar size={13} className="text-slate-400" />
+                    {p.year}
+                  </div>
+                </td>
+
+                {/* Domaine */}
+                <td className="p-4">
+                  <Badge variant="outline" className="rounded-none text-[10px] uppercase tracking-widest">
+                    {p.domain}
+                  </Badge>
+                </td>
+
+                {/* DOI */}
+                <td className="p-4">
+                  {p.doi ? (
+                    <div className="flex items-center gap-1.5 text-xs text-slate-500 font-mono">
+                      <Hash size={12} className="text-slate-400" />
+                      {p.doi}
+                    </div>
+                  ) : (
+                    <span className="text-xs text-slate-300 italic">—</span>
+                  )}
+                </td>
+
+                {/* Actions */}
+                <td className="p-4">
+                  <div className="flex items-center justify-end gap-2">
+                    {p.pdfUrl && (
+                      <Button size="icon" variant="ghost" asChild title="Télécharger le PDF">
+                        <a href={p.pdfUrl} target="_blank" rel="noopener noreferrer">
+                          <Download size={15} />
+                        </a>
+                      </Button>
+                    )}
+                    <Button size="sm" variant="outline" asChild className="rounded-none">
+                      <Link href={`/admin/publications/${p.id}/edit`} className="flex items-center gap-1.5">
+                        <Edit size={13} /> Modifier
+                      </Link>
+                    </Button>
+                    <DeleteButton id={p.id} type="publication" />
+                  </div>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
