@@ -2,18 +2,16 @@
 "use client";
 
 import { Link, usePathname } from "./../../navigation";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Globe, Menu, X, Search, Mail,
-  Facebook, Twitter, Linkedin, ExternalLink, Landmark,
-  ChevronRight, Camera, ChevronDown
+  Landmark, ExternalLink, ChevronDown,
+  ArrowRight, ShieldCheck, Newspaper, Scale
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
 import SearchModal from "./SearchModal";
 
-// Définir les types pour les labels
 type LabelType = {
   fr: string;
   en: string;
@@ -23,299 +21,245 @@ type LabelType = {
 type NavLink = {
   href?: string;
   label: LabelType;
-  dropdown?: { href: string; label: LabelType }[];
+  dropdown?: { href: string; label: LabelType; icon: any }[];
 };
 
 export default function Navbar() {
-  const locale = useLocale() as keyof LabelType; // ✅ Typer locale
+  const locale = useLocale() as keyof LabelType;
   const pathname = usePathname();
+  const t = useTranslations('Navbar');
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  // Détection du défilement
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Fermer le dropdown au clic en dehors
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (openDropdown && !(e.target as Element).closest('.dropdown-container')) {
-        setOpenDropdown(null);
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [openDropdown]);
-
-  const navLinks: NavLink[] = [
-    { href: "/about", label: { fr: "À Propos", en: "About", sw: "Kuhusu" } },
+  const navLinks = [
+    { href: "/about", label: t('institution') },
     {
-      label: {
-        fr: "Recherche & Clinique",
-        en: "Research & Clinical",
-        sw: "Utafiti na Kliniki"
-      },
+      label: t('expertise'),
       dropdown: [
-        { href: "/research", label: { fr: "Recherche", en: "Research", sw: "Utafiti" } },
-        { href: "/clinical", label: { fr: "Clinique Juridique", en: "Legal Clinic", sw: "Kliniki ya Sheria" } },
-        { href: "/publications", label: { fr: "Publications", en: "Publications", sw: "Machapisho" } },
+        { href: "/research", label: t('research'), icon: Newspaper },
+        { href: "/clinical", label: t('clinical'), icon: Scale },
+        { href: "/publications", label: t('library'), icon: ShieldCheck },
       ]
     },
-    { href: "/team", label: { fr: "Équipe", en: "Team", sw: "Timu" } },
-    { href: "/gallery", label: { fr: "Galerie", en: "Gallery", sw: "Nyumba ya sanaa" } },
-    { href: "/contact", label: { fr: "Contact", en: "Contact", sw: "Wasiliana" } },
+    { href: "/team", label: t('researchers') },
+    { href: "/gallery", label: t('gallery') },
+    { href: "/contact", label: t('contact') },
   ];
-
-  const toggleDropdown = (label: string) => {
-    setOpenDropdown(openDropdown === label ? null : label);
-  };
 
   return (
     <>
-      <header className="fixed top-0 w-full z-[100] transition-all duration-300">
-        {/* TOP BAR */}
-        <AnimatePresence>
-          {!isScrolled && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="bg-[#050a15] text-white overflow-hidden hidden lg:block"
-            >
-              <div className="container mx-auto px-6 py-2 flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.2em]">
-                <div className="flex items-center gap-6">
-                  <a href="https://ulpgl.net" target="_blank" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
-                    <Landmark size={12} className="text-blue-500" />
-                    Université Libre des Pays des Grands Lacs
-                    <ExternalLink size={10} className="opacity-50" />
-                  </a>
-                  <span className="opacity-20">|</span>
-                  <div className="flex items-center gap-2 opacity-70">
-                    <Mail size={12} />
-                    contact@credda-ulpgl.org
-                  </div>
-                </div>
+      <header className={`fixed top-0 w-full z-[100] transition-all duration-700 ${isScrolled ? "py-3" : "py-6"}`}>
+        {/* GLASS BACKGROUND */}
+        <div 
+          className={`absolute inset-0 transition-opacity duration-700 ${
+            isScrolled ? "bg-white/80 backdrop-blur-xl border-b border-slate-200/50 opacity-100" : "opacity-0"
+          }`} 
+        />
 
-                <div className="flex items-center gap-6">
-                  <div className="flex items-center gap-4 border-r border-white/10 pr-6 text-slate-400">
-                    <a href="#" className="hover:text-white transition-colors"><Facebook size={14} /></a>
-                    <a href="#" className="hover:text-white transition-colors"><Twitter size={14} /></a>
-                    <a href="#" className="hover:text-white transition-colors"><Linkedin size={14} /></a>
-                  </div>
-                  <Link href="/admin" className="bg-blue-600 px-4 py-1 hover:bg-blue-500 transition-colors">
-                    Portail Chercheur
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* MAIN NAVBAR */}
-        <nav className={`w-full transition-all duration-500 ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-xl h-16" : "bg-white h-24"
-          } border-b border-slate-100`}>
-          <div className="container mx-auto px-6 h-full flex items-center justify-between">
-
-            {/* LOGO */}
-            <Link href="/" className="flex flex-col group relative z-[110]">
-              <span className={`font-serif font-black tracking-tighter text-slate-900 transition-all duration-500 ${isScrolled ? "text-xl" : "text-2xl lg:text-3xl"
-                }`}>
-                CREDDA<span className="text-blue-600 group-hover:text-blue-500 transition-colors">.ULPGL</span>
+        <div className="container mx-auto px-6 relative flex items-center justify-between">
+          
+          {/* LOGO AREA */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative">
+              <div className="w-10 h-10 bg-primary flex items-center justify-center text-white font-black text-xl">C</div>
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-accent" />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className={`font-heading font-black tracking-tighter transition-all duration-500 ${isScrolled ? "text-lg text-primary" : "text-2xl text-white"}`}>
+                CREDDA<span className="text-accent">.</span>
               </span>
-              {!isScrolled && (
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="text-[8px] uppercase tracking-[0.3em] font-black text-slate-400"
-                >
-                  Research & Legal Clinic
-                </motion.span>
-              )}
-            </Link>
+              <span className={`text-[9px] uppercase tracking-[0.3em] font-black text-slate-400 transition-all duration-500 block overflow-hidden ${isScrolled ? "opacity-0 h-0" : "opacity-100 h-auto mt-1"}`}>
+                Research & Clinic
+              </span>
+            </div>
+          </Link>
 
-            {/* DESKTOP MENU */}
-            <div className="hidden lg:flex items-center gap-8">
-              <div className="flex items-center gap-1">
-                {navLinks.map((link, index) => {
-                  const linkKey = link.href || `dropdown-${index}`;
-                  const linkLabel = link.label[locale];
-                  
-                  return link.dropdown ? (
-                    <div key={linkKey} className="relative dropdown-container">
-                      <button
-                        onClick={() => toggleDropdown(linkLabel)}
-                        className="px-4 py-2 text-[11px] font-black uppercase tracking-widest text-slate-600 hover:text-blue-600 transition-all relative group flex items-center gap-1"
-                      >
-                        {linkLabel}
-                        <ChevronDown size={14} className={`transition-transform duration-300 ${openDropdown === linkLabel ? 'rotate-180' : ''}`} />
-                        <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                      </button>
-
-                      <AnimatePresence>
-                        {openDropdown === linkLabel && (
-                          <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.2 }}
-                            className="absolute top-full left-0 mt-2 w-56 bg-white shadow-xl border border-slate-100 z-50"
-                          >
-                            {link.dropdown.map((item) => (
-                              <Link
-                                key={item.href}
+          {/* DESKTOP NAV */}
+          <div className="hidden lg:flex items-center gap-2">
+            {navLinks.map((link, idx) => (
+              <div 
+                key={idx}
+                className="relative"
+                onMouseEnter={() => setActiveDropdown(link.label)}
+                onMouseLeave={() => setActiveDropdown(null)}
+              >
+                {link.dropdown ? (
+                  <>
+                    <button className={`px-5 py-2 text-[10px] font-heading font-black uppercase tracking-[0.2em] flex items-center gap-2 transition-all group ${isScrolled ? "text-anthracite/80 hover:text-primary" : "text-white/90 hover:text-white"}`}>
+                      {link.label}
+                      <ChevronDown size={12} className={`transition-transform duration-500 ${activeDropdown === link.label ? "rotate-180" : ""}`} />
+                    </button>
+                    
+                    <AnimatePresence>
+                      {activeDropdown === link.label && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 5 }}
+                          className="absolute top-full left-0 w-72 pt-4"
+                        >
+                          <div className="bg-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-slate-100 p-2 overflow-hidden">
+                            {link.dropdown.map((item, i) => (
+                              <Link 
+                                key={i}
                                 href={item.href}
-                                className="block px-4 py-3 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-slate-100 last:border-0"
-                                onClick={() => setOpenDropdown(null)}
+                                className="flex items-center gap-4 p-4 hover:bg-slate-50 transition-all group/item"
                               >
-                                {item.label[locale]}
+                                <div className="p-2 bg-slate-50 group-hover/item:bg-white group-hover/item:shadow-sm transition-all border border-transparent group-hover/item:border-slate-100">
+                                  <item.icon size={18} className="text-primary/60 group-hover/item:text-primary" />
+                                </div>
+                                <div className="flex flex-col">
+                                  <span className="text-xs font-black uppercase tracking-wider text-anthracite">{item.label}</span>
+                                  <span className="text-[9px] text-slate-400 font-medium">{t('consult')}</span>
+                                </div>
                               </Link>
                             ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
-                    <Link
-                      key={linkKey}
-                      href={link.href!}
-                      className="px-4 py-2 text-[11px] font-black uppercase tracking-widest text-slate-600 hover:text-blue-600 transition-all relative group"
-                    >
-                      {linkLabel}
-                      <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                    </Link>
-                  );
-                })}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </>
+                ) : (
+                  <Link 
+                    href={link.href!}
+                    className={`px-5 py-2 text-[10px] font-heading font-black uppercase tracking-[0.2em] transition-all relative group ${isScrolled ? "text-anthracite/80 hover:text-primary" : "text-white/90 hover:text-white"}`}
+                  >
+                    {link.label}
+                    <span className="absolute bottom-0 left-5 right-5 h-[1.5px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                  </Link>
+                )}
               </div>
+            ))}
 
-              <div className="h-6 w-[1px] bg-slate-100 mx-2"></div>
+            {/* ACTION AREA */}
+            <div className="ml-6 flex items-center gap-4 border-l border-slate-100 pl-8">
+              <button 
+                onClick={() => setIsSearchOpen(true)}
+                className={`p-2 transition-colors ${isScrolled ? "text-anthracite/60 hover:text-primary" : "text-white/60 hover:text-white"}`}
+                title={t('search')}
+              >
+                <Search size={18} />
+              </button>
 
-              {/* LANGUE */}
-              <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-none border border-slate-100">
-                <Globe size={14} className="text-blue-600" />
+              {/* LOCALE SWITCHER */}
+              <div className="flex gap-1.5">
                 {['fr', 'en', 'sw'].map((l) => (
                   <Link
                     key={l}
                     href={pathname}
                     locale={l}
-                    className={`text-[10px] font-bold transition-all ${locale === l ? 'text-blue-600' : 'text-slate-300 hover:text-slate-600'}`}
+                    className={`text-[9px] font-black w-7 h-7 flex items-center justify-center transition-all ${
+                      locale === l ? "bg-primary text-white" : "text-slate-400 hover:text-primary"
+                    }`}
                   >
                     {l.toUpperCase()}
                   </Link>
                 ))}
               </div>
 
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                className={`p-2.5 transition-all rounded-none ${isScrolled ? "bg-blue-600 text-white" : "bg-slate-950 text-white shadow-lg"}`}
+              <Link 
+                href="/admin" 
+                className={`ml-2 px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all shadow-lg ${
+                  isScrolled ? "bg-institutional-blue text-white hover:bg-black shadow-primary/10" : "bg-white text-primary hover:bg-accent hover:text-primary shadow-white/10"
+                }`}
               >
-                <Search size={18} />
-              </button>
-            </div>
-
-            {/* MOBILE ACTIONS */}
-            <div className="lg:hidden flex items-center gap-2 relative z-[110]">
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                className="p-2 text-slate-600 hover:text-blue-600 transition-colors"
-                aria-label="Recherche"
-              >
-                <Search size={24} />
-              </button>
-
-              <button
-                className="p-2 text-slate-900 bg-slate-50 rounded-lg"
-                onClick={() => setIsOpen(!isOpen)}
-              >
-                {isOpen ? <X size={28} /> : <Menu size={28} />}
-              </button>
+                {t('portal')}
+              </Link>
             </div>
           </div>
 
-          {/* MOBILE MENU OVERLAY */}
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed inset-0 bg-[#050a15] text-white z-[100] flex flex-col p-10 pt-32 overflow-y-auto"
-              >
-                <div className="space-y-6">
-                  {navLinks.map((link, idx) => {
-                    const linkKey = link.href || `mobile-dropdown-${idx}`;
-                    const linkLabel = link.label[locale];
-                    
-                    return (
-                      <motion.div
-                        key={linkKey}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.1 + idx * 0.05 }}
-                      >
-                        {link.dropdown ? (
-                          <div className="space-y-3">
-                            <p className="text-blue-400 text-sm font-bold uppercase tracking-widest">
-                              {linkLabel}
-                            </p>
-                            <div className="pl-4 space-y-3 border-l-2 border-blue-900">
-                              {link.dropdown.map((item) => (
-                                <Link
-                                  key={item.href}
-                                  href={item.href}
-                                  onClick={() => setIsOpen(false)}
-                                  className="block text-2xl font-serif hover:text-blue-400 transition-colors"
-                                >
-                                  {item.label[locale]}
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        ) : (
-                          <Link
-                            href={link.href!}
-                            onClick={() => setIsOpen(false)}
-                            className="text-3xl font-serif font-bold hover:text-blue-400 flex items-center justify-between group"
-                          >
-                            {linkLabel}
-                            <ChevronRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </Link>
-                        )}
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                <div className="mt-auto pt-10 border-t border-white/10 space-y-6">
-                  <div className="flex gap-6">
-                    {['fr', 'en', 'sw'].map((l) => (
-                      <Link
-                        key={l}
-                        href={pathname}
-                        locale={l}
-                        onClick={() => setIsOpen(false)}
-                        className={`text-sm font-bold ${locale === l ? 'text-blue-400' : 'text-slate-500'}`}
-                      >
-                        {l.toUpperCase()}
-                      </Link>
-                    ))}
-                  </div>
-                  <p className="text-[10px] text-slate-500 uppercase tracking-widest">
-                    CREDDA-ULPGL Official Hub
-                  </p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </nav>
+          {/* MOBILE TOGGLE */}
+          <button 
+            className="lg:hidden p-2 text-primary border border-slate-100"
+            onClick={() => setIsOpen(true)}
+          >
+            <Menu size={24} />
+          </button>
+        </div>
       </header>
+
+      {/* MOBILE MENU FULLSCREEN */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] bg-white flex flex-col"
+          >
+            <div className="p-8 flex justify-between items-center border-b border-slate-100">
+               <span className="font-heading font-black tracking-tighter text-2xl">
+                 CREDDA<span className="text-accent">.</span>
+               </span>
+               <button onClick={() => setIsOpen(false)} className="p-2 bg-slate-100 rounded-full">
+                 <X size={24} />
+               </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-12 flex flex-col justify-center">
+              <nav className="space-y-8">
+                {navLinks.map((link, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    {link.dropdown ? (
+                      <div className="space-y-4">
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">{link.label}</span>
+                        <div className="flex flex-col gap-4 pl-4 border-l-2 border-slate-100">
+                          {link.dropdown.map((item, j) => (
+                            <Link 
+                              key={j} 
+                              href={item.href} 
+                              onClick={() => setIsOpen(false)}
+                              className="text-4xl font-serif font-black hover:text-primary transition-colors"
+                            >
+                              {item.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <Link 
+                        href={link.href!} 
+                        onClick={() => setIsOpen(false)}
+                        className="text-6xl font-serif font-black hover:text-accent transition-all leading-[0.9]"
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                  </motion.div>
+                ))}
+              </nav>
+            </div>
+            
+            {/* MOBILE FOOTER */}
+            <div className="p-12 border-t border-slate-100 bg-slate-50 flex flex-col gap-6">
+               <div className="flex gap-4">
+                 {['fr', 'en', 'sw'].map((l) => (
+                    <Link key={l} href={pathname} locale={l} onClick={() => setIsOpen(false)} className={`text-xs font-black p-2 border ${locale === l ? 'bg-primary text-white border-primary' : 'border-slate-200'}`}>
+                      {l.toUpperCase()}
+                    </Link>
+                 ))}
+               </div>
+               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
+                 Centre de Recherche sur la Démocratie <br/> et le Développement en Afrique
+               </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <SearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}

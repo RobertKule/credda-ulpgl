@@ -1,0 +1,131 @@
+// services/clinical-actions.ts
+"use server";
+
+import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
+
+export interface ClinicalCaseResult {
+  success: boolean;
+  error?: string;
+  data?: any;
+}
+
+export async function submitClinicalCase(formData: any): Promise<ClinicalCaseResult> {
+  try {
+    // 1. Gérer le bénéficiaire (recherche par téléphone pour éviter les doublons simples)
+    let beneficiary = await db.beneficiary.findFirst({
+      where: { phone: formData.phone }
+    });
+
+    if (!beneficiary) {
+      beneficiary = await db.beneficiary.create({
+        data: {
+          name: formData.name,
+          email: formData.email || null,
+          phone: formData.phone,
+          location: formData.location,
+          type: formData.beneficiaryType || "LOCAL_COMMUNITY",
+        }
+      });
+    }
+
+    // 2. Créer le cas clinique
+    const newCase = await db.clinicalCase.create({
+      data: {
+        title: `Cas: ${formData.problemType} - ${formData.location}`,
+        description: formData.description,
+        problemType: formData.problemType,
+        location: formData.location,
+        incidentDate: formData.incidentDate ? new Date(formData.incidentDate) : null,
+        urgency: formData.urgency || "MEDIUM",
+        expectations: formData.expectations,
+        beneficiaryId: beneficiary.id,
+        status: "NEW",
+      }
+    });
+
+    // Optionnel : Notification (pourrait être ajouté ici via Resend)
+
+    revalidatePath("/admin/clinical");
+    return { success: true, data: newCase };
+  } catch (error) {
+    console.error("❌ Erreur soumission cas clinique:", error);
+    return { success: false, error: "Erreur lors de la soumission du cas" };
+  }
+}
+
+export async function getCasesByPhone(phone: string): Promise<ClinicalCaseResult> {
+  try {
+    const cases = await db.clinicalCase.findMany({
+      where: {
+        beneficiary: {
+          phone: phone
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    return { success: true, data: cases };
+  } catch (error) {
+    console.error("❌ Erreur récupération cas par téléphone:", error);
+    return { success: false, error: "Erreur lors de la récupération des cas" };
+  }
+}
+
+export async function getAllClinicalCases(): Promise<ClinicalCaseResult> {
+  try {
+    const cases = await db.clinicalCase.findMany({
+      include: { beneficiary: true },
+      orderBy: { createdAt: 'desc' }
+    });
+    return { success: true, data: cases };
+  } catch (error) {
+    return { success: false, error: "Erreur de récupération globale" };
+  }
+}
+
+export async function getClinicalCaseById(id: string): Promise<ClinicalCaseResult> {
+  try {
+    const caseItem = await db.clinicalCase.findUnique({
+      where: { id },
+      include: { 
+        beneficiary: true,
+        notes: {
+          orderBy: { createdAt: 'desc' }
+        }
+      }
+    });
+    return { success: true, data: caseItem };
+  } catch (error) {
+    return { success: false, error: "Cas non trouvé" };
+  }
+}
+
+export async function updateClinicalCaseStatus(id: string, status: string): Promise<ClinicalCaseResult> {
+  try {
+    const updated = await db.clinicalCase.update({
+      where: { id },
+      data: { status: status as any }
+    });
+    revalidatePath("/admin/clinical");
+    return { success: true, data: updated };
+  } catch (error) {
+    return { success: false, error: "Erreur de mise à jour" };
+  }
+}
+
+export async function addCaseNote(id: string, content: string, clinicianId: string): Promise<ClinicalCaseResult> {
+  try {
+    const note = await db.caseNote.create({
+      data: {
+        content,
+        caseId: id,
+        authorId: clinicianId
+      }
+    });
+    revalidatePath(`/admin/clinical/${id}`);
+    return { success: true, data: note };
+  } catch (error) {
+    return { success: false, error: "Erreur d'ajout de note" };
+  }
+}

@@ -7,7 +7,10 @@ import { useRouter } from "next/navigation";
 import { Link } from "@/navigation";
 import { searchEverything } from "@/services/search-actions";
 import { ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
+
 export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boolean; onClose: () => void; locale: string }) {
+  const t = useTranslations('Search');
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -68,16 +71,16 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
             className="relative w-full max-w-2xl bg-white shadow-2xl rounded-none overflow-hidden"
           >
             <form onSubmit={handleSearchSubmit} className="flex items-center p-6 border-b border-slate-100">
-              <Search className="text-blue-600 mr-4" size={24} />
+              <Search className="text-secondary mr-4" size={24} />
               <input
                 ref={inputRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Chercher un rapport, un expert ou un article..."
+                placeholder={t('placeholder')}
                 className="flex-1 bg-transparent border-none outline-none text-xl font-serif text-slate-900 placeholder:text-slate-300"
               />
               <div className="flex items-center gap-3">
-                {loading && <Loader2 className="animate-spin text-blue-600" size={20} />}
+                {loading && <Loader2 className="animate-spin text-secondary" size={20} />}
                 <button type="button" onClick={onClose} className="p-2 hover:bg-slate-100 text-slate-400">
                   <X size={20} />
                 </button>
@@ -90,7 +93,7 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
                   <div className="flex justify-center gap-2 text-slate-300">
                     <Command size={40} strokeWidth={1} />
                   </div>
-                  <p className="text-sm text-slate-400 font-bold uppercase tracking-widest">Saisissez au moins 2 caractères</p>
+                  <p className="text-sm text-slate-400 font-bold uppercase tracking-widest">{t('min_chars')}</p>
                 </div>
               )}
 
@@ -99,32 +102,38 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
                   {/* Articles */}
                   {results.articles.length > 0 && (
                     <div>
-                      <h3 className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-3 px-2">Travaux & Analyses</h3>
-                      {results.articles.map((a: any) => (
-                        <Link key={a.id} href={`/research/${a.slug}`} onClick={onClose} className="flex items-center justify-between p-3 hover:bg-blue-50 transition-colors group">
-                          <div className="flex items-center gap-3">
-                            <FileText size={18} className="text-slate-400" />
-                            <span className="text-sm font-bold text-slate-700">{a.translations[0].title}</span>
-                          </div>
-                          <ChevronRight size={14} className="text-slate-300 group-hover:text-blue-600" />
-                        </Link>
-                      ))}
+                      <h3 className="text-[10px] font-black text-secondary uppercase tracking-widest mb-3 px-2">{t('sections.articles')}</h3>
+                      {results.articles.map((a: any) => {
+                         const title = a.translations.find((tr: any) => tr.language === locale)?.title || a.translations[0].title;
+                         return (
+                          <Link key={a.id} href={`/research/${a.slug}`} onClick={onClose} className="flex items-center justify-between p-3 hover:bg-blue-50 transition-colors group">
+                            <div className="flex items-center gap-3">
+                              <FileText size={18} className="text-slate-400" />
+                              <span className="text-sm font-bold text-slate-700">{title}</span>
+                            </div>
+                            <ChevronRight size={14} className="text-slate-300 group-hover:text-secondary transition-transform" />
+                          </Link>
+                         );
+                      })}
                     </div>
                   )}
 
                   {/* Publications */}
                   {results.publications.length > 0 && (
                     <div>
-                      <h3 className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-3 px-2">Bibliothèque PDF</h3>
-                      {results.publications.map((p: any) => (
-                        <Link key={p.id} href="/publications" onClick={onClose} className="flex items-center justify-between p-3 hover:bg-emerald-50 transition-colors group">
-                          <div className="flex items-center gap-3">
-                            <BookOpen size={18} className="text-slate-400" />
-                            <span className="text-sm font-bold text-slate-700">{p.translations[0].title} ({p.year})</span>
-                          </div>
-                          <ArrowRight size={14} className="text-slate-300" />
-                        </Link>
-                      ))}
+                      <h3 className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-3 px-2">{t('sections.publications')}</h3>
+                      {results.publications.map((p: any) => {
+                         const title = p.translations.find((tr: any) => tr.language === locale)?.title || p.translations[0].title;
+                         return (
+                          <Link key={p.id} href="/publications" onClick={onClose} className="flex items-center justify-between p-3 hover:bg-emerald-50 transition-colors group">
+                            <div className="flex items-center gap-3">
+                              <BookOpen size={18} className="text-slate-400" />
+                              <span className="text-sm font-bold text-slate-700">{title} ({p.year})</span>
+                            </div>
+                            <ArrowRight size={14} className="text-slate-300" />
+                          </Link>
+                         );
+                      })}
                     </div>
                   )}
                 </div>
@@ -132,9 +141,9 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
             </div>
 
             <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-between text-[10px] font-bold uppercase text-slate-400 tracking-tighter">
-              <span>Appuyez sur Entrée pour voir tout</span>
+              <span>{t('footer_hint')}</span>
               <div className="flex gap-2">
-                 <span className="px-1.5 py-0.5 border border-slate-200 bg-white">ESC</span> pour fermer
+                 <span className="px-1.5 py-0.5 border border-slate-200 bg-white">ESC</span> {t('esc_hint')}
               </div>
             </div>
           </motion.div>

@@ -17,12 +17,17 @@ export default async function TeamPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'TeamPage' });
 
-  const members = await db.member.findMany({
-    include: {
-      translations: { where: { language: locale } }
-    },
-    orderBy: { order: "asc" }
-  });
+  let members: any[] = [];
+  try {
+    members = await db.member.findMany({
+      include: {
+        translations: { where: { language: locale } }
+      },
+      orderBy: { order: "asc" }
+    });
+  } catch (error) {
+    console.error("⚠️ Database connection failed in TeamPage. Using fallbacks.", error);
+  }
 
   return (
     <main className="min-h-screen bg-white">

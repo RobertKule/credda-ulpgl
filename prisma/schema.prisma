@@ -12,6 +12,7 @@ datasource db {
 // --- ÉNUMÉRATIONS ---
 
 enum Role {
+  MASTER_ADMIN
   ADMIN
   EDITOR
   RESEARCHER
@@ -46,9 +47,11 @@ model Media {
   type      MediaType @default(IMAGE)
   url       String // URL Cloudinary, S3 ou Lien Vidéo
   title     String? // Légende ou titre du média
-  articleId String?
-  article   Article?  @relation(fields: [articleId], references: [id])
-  createdAt DateTime  @default(now())
+  articleId      String?
+  article        Article?      @relation(fields: [articleId], references: [id])
+  clinicalCaseId String?
+  clinicalCase   ClinicalCase? @relation(fields: [clinicalCaseId], references: [id])
+  createdAt      DateTime      @default(now())
 }
 
 // --- ARTICLES & ACTUALITÉS ---
@@ -178,6 +181,115 @@ enum ContactStatus {
   UNREAD
   READ
   ARCHIVED
+}
+
+// --- CLINIQUE DE DROIT DE L'ENVIRONNEMENT (CDE) ---
+
+enum CaseStatus {
+  NEW
+  IN_ANALYSIS
+  MEETING_SCHEDULED
+  ACTION_ENGAGED
+  RESOLVED
+  CLOSED
+}
+
+enum BeneficiaryType {
+  INDIGENOUS_PEOPLE
+  LOCAL_COMMUNITY
+  OTHER
+}
+
+enum UrgencyLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+model Beneficiary {
+  id          String          @id @default(cuid())
+  name        String
+  email       String?
+  phone       String
+  location    String          // Territoire, village
+  type        BeneficiaryType @default(LOCAL_COMMUNITY)
+  cases       ClinicalCase[]
+  userId      String?         @unique // Optionnel si lié à un compte User
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model ClinicalCase {
+  id               String       @id @default(cuid())
+  title            String
+  description      String       
+  problemType      String       // Pollution, foncier, déforestation, etc.
+  location         String
+  incidentDate     DateTime?
+  status           CaseStatus   @default(NEW)
+  urgency          UrgencyLevel @default(MEDIUM)
+  actionsTaken     String?      
+  expectations     String?      
+  beneficiaryId    String
+  beneficiary      Beneficiary  @relation(fields: [beneficiaryId], references: [id])
+  clinicianId      String?      // Attribué à un clinicien (User avec rôle spécifique)
+  documents        Media[]      // Lié aux médias existants
+  notes            CaseNote[]
+  trackingCode     String?      @unique // Format: CDE-YYYY-XXXXX
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  @@index([status])
+  @@index([urgency])
+}
+
+model CaseNote {
+  id           String       @id @default(cuid())
+  content      String       
+  authorId     String
+  caseId       String
+  clinicalCase ClinicalCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  createdAt    DateTime     @default(now())
+}
+
+model LegalResource {
+  id           String                   @id @default(cuid())
+  category     String                   // Guide, Loi, Fiche pratique
+  slug         String                   @unique
+  featured     Boolean                  @default(false)
+  published    Boolean                  @default(false)
+  translations LegalResourceTranslation[]
+  createdAt    DateTime                 @default(now())
+  updatedAt    DateTime                 @updatedAt
+}
+
+model LegalResourceTranslation {
+  id              String        @id @default(cuid())
+  language        String        // fr, en, sw
+  title           String
+  description     String?       
+  content         String?       
+  fileUrl         String?       // Lien vers le PDF
+  resourceId      String
+  resource        LegalResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([resourceId, language])
+}
+
+model ClinicSession {
+  id              String   @id @default(cuid())
+  title           String
+  location        String
+  lat             Float?   // Coordinate Latitude
+  lng             Float?   // Coordinate Longitude
+  date            DateTime
+  description     String?  
+  isMobile        Boolean  @default(true)
+  capacity        Int      @default(50)
+  registeredCount Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model GalleryImage {

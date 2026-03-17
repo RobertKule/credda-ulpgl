@@ -40,6 +40,9 @@ export default async function AdminLayout({
     { href: "/admin/publications", label: "Publications", icon: "BookOpen" },
     { href: "/admin/gallery", label: "Gallerie", icon: "BookOpen" },
     { href: "/admin/members", label: "Équipe", icon: "UserCircle" },
+    { href: "/admin/clinical", label: "Cas Cliniques", icon: "Scale" },
+    { href: "/admin/resources", label: "Ressources", icon: "BookOpen" },
+    { href: "/admin/sessions", label: "Itinérances", icon: "Calendar" },
     { href: "/admin/messages", label: "Messages", icon: "Mail" },
     { href: "/admin/users", label: "Accès", icon: "Users" },
   ];

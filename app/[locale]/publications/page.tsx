@@ -9,6 +9,7 @@ import {
 import ClientPdfPreview from "@/components/public/ClientPdfPreview";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import ParallaxWrapper from "@/components/shared/ParallaxWrapper";
 
 export const metadata: Metadata = {
   title: "Publications | CREDDA-ULPGL",
@@ -40,7 +41,7 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
   if (domain) whereClause.domain = domain;
 
   // ✅ Récupérer les publications avec leurs traductions
-  const publications = await db.publication.findMany({
+  const allPublications = await db.publication.findMany({
     where: whereClause,
     include: { 
       translations: { 
@@ -59,6 +60,9 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
     ]
   });
 
+  const featuredPublication = allPublications[0];
+  const publications = allPublications.slice(1);
+
   // ✅ Statistiques pour l'en-tête
   const totalPublications = await db.publication.count();
   const totalDownloads = 15420; // À remplacer par des stats réelles si disponibles
@@ -71,7 +75,7 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
     <main className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
       
       {/* --- HERO SECTION AVEC STATISTIQUES --- */}
-      <section className="relative bg-[#050a15] text-white py-24 overflow-hidden">
+      <section className="relative bg-[#050a15] text-white py-24 overflow-hidden border-b border-white/5">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-600/5 -skew-x-12 translate-x-1/4" />
         
         <div className="container mx-auto px-6 relative z-10">
@@ -80,36 +84,91 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
               {t('header.badge')}
             </Badge>
             
-            <h1 className="text-5xl lg:text-7xl font-serif font-bold leading-tight">
-              <span dangerouslySetInnerHTML={{ __html: t.raw('header.title') }} />
+            <h1 className="text-5xl lg:text-8xl font-serif font-bold leading-tight">
+               <span className="italic font-light block text-blue-400 text-3xl lg:text-4xl mb-4">Scientific</span> 
+               <span dangerouslySetInnerHTML={{ __html: t.raw('header.title') }} />
             </h1>
             
-            <p className="text-xl text-slate-400 font-light max-w-2xl mx-auto">
+            <p className="text-xl text-slate-400 font-light max-w-2xl mx-auto leading-relaxed">
               {t('header.description')}
             </p>
 
-            {/* Statistiques */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12">
-              <div>
-                <div className="text-3xl font-bold text-blue-400">{totalPublications}</div>
-                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">{t('header.stats.publications')}</div>
+            {/* Statistiques Minimalistes */}
+            <div className="flex flex-wrap justify-center gap-12 pt-12 border-t border-white/10 mt-16">
+              <div className="flex flex-col items-center">
+                <div className="text-4xl font-serif font-bold text-white">{totalPublications}</div>
+                <div className="text-[9px] uppercase tracking-[0.3em] text-blue-500 font-black mt-2">{t('header.stats.publications')}</div>
               </div>
-              <div>
-                <div className="text-3xl font-bold text-blue-400">{years.length}</div>
-                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">{t('header.stats.years')}</div>
+              <div className="flex flex-col items-center">
+                <div className="text-4xl font-serif font-bold text-white">{years.length}</div>
+                <div className="text-[9px] uppercase tracking-[0.3em] text-blue-500 font-black mt-2">{t('header.stats.years')}</div>
               </div>
-              <div>
-                <div className="text-3xl font-bold text-blue-400">{totalAuthors}+</div>
-                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">{t('header.stats.researchers')}</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-blue-400">{totalDownloads.toLocaleString()}</div>
-                <div className="text-[10px] uppercase tracking-widest text-slate-500 mt-2">{t('header.stats.downloads')}</div>
+              <div className="flex flex-col items-center">
+                <div className="text-4xl font-serif font-bold text-white">{totalAuthors}+</div>
+                <div className="text-[9px] uppercase tracking-[0.3em] text-blue-500 font-black mt-2">{t('header.stats.researchers')}</div>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      {/* --- FEATURED PUBLICATION HERO --- */}
+      {featuredPublication && !year && !domain && (
+        <section className="bg-white py-24 border-b border-slate-100">
+           <div className="container mx-auto px-6">
+              <div className="grid lg:grid-cols-12 gap-16 items-center">
+                 <div className="lg:col-span-5 bg-slate-50 p-12 border border-slate-100 relative group">
+                    <ParallaxWrapper speed={0.1}>
+                      <div className="aspect-[3/4] shadow-2xl overflow-hidden relative">
+                         <ClientPdfPreview url={featuredPublication.pdfUrl} />
+                         <div className="absolute inset-0 bg-blue-900/5 group-hover:opacity-0 transition-opacity" />
+                      </div>
+                    </ParallaxWrapper>
+                    <div className="absolute -top-4 -left-4 bg-blue-600 text-white p-4 font-black uppercase text-[10px] tracking-widest">
+                       Latest Paper
+                    </div>
+                 </div>
+                 <div className="lg:col-span-7 space-y-8">
+                    <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-slate-400">
+                       <span className="flex items-center gap-2"><Calendar size={14} className="text-blue-600" /> {featuredPublication.year}</span>
+                       <span className="w-1 h-1 bg-blue-600 rounded-full" />
+                       <span className="flex items-center gap-2"><Clock size={14} className="text-blue-600" /> 15 MIN READ</span>
+                    </div>
+                    <h2 className="text-5xl lg:text-6xl font-serif font-bold text-slate-900 leading-tight">
+                       {featuredPublication.translations[0]?.title}
+                    </h2>
+                    <p className="text-slate-500 text-xl font-light leading-relaxed">
+                       {featuredPublication.translations[0]?.description}
+                    </p>
+                    <div className="flex items-center gap-3 pt-4">
+                       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                          <User2 size={24} />
+                       </div>
+                       <div>
+                          <p className="text-xs font-bold text-slate-900">{featuredPublication.translations[0]?.authors}</p>
+                          <p className="text-[10px] text-slate-400 uppercase tracking-widest">Principal Researcher</p>
+                       </div>
+                    </div>
+                    <div className="pt-8 flex gap-6">
+                       <Link 
+                         href={`/publications/${featuredPublication.slug || featuredPublication.id}`}
+                         className="px-10 py-5 bg-blue-900 text-white font-black uppercase tracking-widest text-[10px] hover:bg-blue-600 transition-all"
+                       >
+                         Access Full Journal
+                       </Link>
+                       <a 
+                         href={featuredPublication.pdfUrl}
+                         target="_blank"
+                         className="px-10 py-5 border border-slate-200 text-slate-900 font-black uppercase tracking-widest text-[10px] hover:bg-slate-50 transition-all flex items-center gap-3"
+                       >
+                         <Download size={16} /> PDF Preview
+                       </a>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </section>
+      )}
 
       {/* --- BARRE DE FILTRES AVANCÉE --- */}
       <div className="sticky top-16 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200 py-4 shadow-sm">
