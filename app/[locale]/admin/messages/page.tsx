@@ -1,66 +1,56 @@
-// Optionnel: utiliser les stats dans le header
-// app/admin/messages/page.tsx
+// app/[locale]/admin/messages/page.tsx
 import { db } from "@/lib/db";
-import { MessagesList } from "./MessagesList";
-import { Inbox } from "lucide-react";
+import { Inbox, MailOpen, AlertCircle, MessageSquare } from "lucide-react";
+import InboxTable from "./InboxTable";
+import { Badge } from "@/components/ui/badge";
 
 export default async function AdminMessagesPage() {
   const messages = await db.contactMessage.findMany({
     orderBy: { createdAt: "desc" },
   });
 
-  // Calculer les stats
   const stats = {
     total: messages.length,
     unread: messages.filter(m => m.status === "UNREAD").length,
     read: messages.filter(m => m.status === "READ").length,
-    archived: messages.filter(m => m.status === "ARCHIVED").length
+    replied: messages.filter(m => m.repliedAt !== null).length
   };
 
   return (
-    <div className="space-y-8">
-      {/* Header avec stats */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-blue-50 rounded-xl">
-              <Inbox size={24} className="text-blue-600" />
+    <div className="space-y-10 pb-10">
+      {/* Executive Header */}
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 border-b border-slate-200 pb-8">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="bg-blue-600/10 p-1.5 rounded-lg">
+              <Inbox size={18} className="text-blue-600" />
             </div>
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <h1 className="text-3xl font-serif font-bold text-slate-900">
-                  Messages
-                </h1>
-                <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-bold rounded-full">
-                  {stats.unread} non lu{stats.unread > 1 ? 's' : ''}
-                </span>
-              </div>
-              <p className="text-sm text-slate-500">
-                Gérez les demandes de contact et les correspondances
-              </p>
-            </div>
+            <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
+              Communications Center
+            </span>
           </div>
-
-          {/* Stats rapides */}
-          <div className="flex gap-4 text-sm">
-            <div className="text-center px-4 py-2 bg-slate-50 rounded-lg">
-              <div className="font-bold text-slate-900">{stats.total}</div>
-              <div className="text-[10px] text-slate-500 uppercase tracking-wider">Total</div>
-            </div>
-            <div className="text-center px-4 py-2 bg-emerald-50 rounded-lg">
-              <div className="font-bold text-emerald-700">{stats.read}</div>
-              <div className="text-[10px] text-emerald-600 uppercase tracking-wider">Lus</div>
-            </div>
-            <div className="text-center px-4 py-2 bg-amber-50 rounded-lg">
-              <div className="font-bold text-amber-700">{stats.unread}</div>
-              <div className="text-[10px] text-amber-600 uppercase tracking-wider">Non lus</div>
-            </div>
+          <h1 className="text-4xl font-serif font-bold text-slate-900 tracking-tight">
+            Message <span className="text-slate-400 font-light italic">Inbox</span>
+          </h1>
+          <p className="text-sm text-slate-500 font-medium">
+            Manage public inquiries, research collaboration requests, and partnership messages.
+          </p>
+        </div>
+        
+        <div className="flex gap-4">
+          <div className="bg-white border border-slate-200 p-3 flex flex-col items-center justify-center min-w-[80px]">
+            <span className="text-lg font-black text-slate-900">{stats.unread}</span>
+            <span className="text-[8px] font-black uppercase tracking-widest text-blue-600">Unread</span>
+          </div>
+          <div className="bg-white border border-slate-200 p-3 flex flex-col items-center justify-center min-w-[80px]">
+            <span className="text-lg font-black text-slate-900">{stats.replied}</span>
+            <span className="text-[8px] font-black uppercase tracking-widest text-purple-600">Replied</span>
           </div>
         </div>
       </div>
 
-      {/* Liste des messages */}
-      <MessagesList messages={messages} />
+      {/* Main Inbox Application */}
+      <InboxTable initialMessages={messages as any} />
     </div>
   );
 }

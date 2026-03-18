@@ -10,13 +10,18 @@ export default async function GalleryPage({ params }: { params: Promise<{ locale
   const locale = (await params).locale;
   const t = await getTranslations({ locale, namespace: "GalleryPage" });
 
-  const images = await db.galleryImage.findMany({
-    orderBy: [
-      { featured: 'desc' },
-      { order: 'asc' },
-      { createdAt: 'desc' }
-    ]
-  });
+  let images: any[] = [];
+  try {
+    images = await db.galleryImage.findMany({
+      orderBy: [
+        { featured: 'desc' },
+        { order: 'asc' },
+        { createdAt: 'desc' }
+      ]
+    });
+  } catch (error) {
+    console.error("⚠️ Database connection failed in GalleryPage. Using fallbacks.", error);
+  }
 
   const stats = {
     total: images.length,

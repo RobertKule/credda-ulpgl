@@ -88,17 +88,20 @@
         {
           "name": "David MICHAEL PEYTON",
           "role": "Mgombea wa PhD, Chuo Kikuu cha Northwestern",
-          "text": "Nisingeweza kuomba washirika bora wa utafiti kuliko kitivo na wafanyakazi wa CREDDA-ULPGL. Sio tu waliweza kusaidia aina nyingi za ukusanyaji wa data lakini pia walitoa fursa za maoni kutoka kwa wasomi wa Kikongo."
+          "text": "Nisingeweza kuomba washirika bora wa utafiti kuliko kitivo na wafanyakazi wa CREDDA-ULPGL. Sio tu waliweza kusaidia aina nyingi za ukusanyaji wa data lakini pia walitoa fursa za maoni kutoka kwa wasomi wa Kikongo.",
+          "image": "/images/testimonials/Peyton.webp"
         },
         {
           "name": "Heather LYNNE ZIMMERMAN",
           "role": "Mwanafunzi wa Uzamili, Shule ya Uchumi ya London (LSE)",
-          "text": "Mpendwa Profesa Kennedy Kihangi, asante sana kwa kunikaribisha kwa ukarimu katika jumuiya! Nashukuru kwa mawazo na maoni yaliyotolewa kwenye utafiti wangu. Natamani kurudi Goma."
+          "text": "Mpendwa Profesa Kennedy Kihangi, asante sana kwa kunikaribisha kwa ukarimu katika jumuiya! Nashukuru kwa mawazo na maoni yaliyotolewa kwenye utafiti wangu. Natamani kurudi Goma.",
+          "image": "/images/testimonials/heather.webp"
         },
         {
           "name": "Britta Sjöstedt",
           "role": "Mgombea wa PhD, Chuo Kikuu cha Lund",
-          "text": "Nilitembelea ULPGL mwaka wa 2015 kufanya utafiti kwa PhD yangu. Profesa Kennedy KIHANGI BINDU alikuwa mwenyeji mzuri ambaye alisaidia kuwasiliana na watafiti na mashirika mengine."
+          "text": "Nilitembelea ULPGL mwaka wa 2015 kufanya utafiti kwa PhD yangu. Profesa Kennedy KIHANGI BINDU alikuwa mwenyeji mzuri ambaye alisaidia kuwasiliana na watafiti na mashirika mengine.",
+          "image": "/images/testimonials/britta.webp"
         }
       ]
     },
@@ -555,6 +558,88 @@
         "connection": "Hitilafu ya muunganisho"
       },
       "forgotPassword": "Umesahau nywila?"
+    }
+  },
+  "RegisterPage": {
+    "left": {
+      "badge": "Jiunge na CREDDA",
+      "title": "Kuwa sehemu ya <span>Utafiti</span>.",
+      "description": "Fungua akaunti yako ili upate rasilimali za kipekee, uchangie katika kazi za kisayansi, au ufuatilie kesi zako za kliniki.",
+      "footer": "Usajili salama na uliothibitishwa"
+    },
+    "right": {
+      "back": "Rudi",
+      "logo": "CREDDA<span>.ULPGL</span>",
+      "title": "Fungua Akaunti",
+      "subtitle": "Fuata hatua ili kujiunga na mtandao wetu.",
+      "steps": {
+        "account": "Akaunti",
+        "profile": "Wasifu",
+        "details": "Maelezo"
+      },
+      "fields": {
+        "email": { "label": "Barua Pepe ya Kitaalamu", "placeholder": "yako@email.com" },
+        "password": { "label": "Nywila", "placeholder": "••••••••" },
+        "confirmPassword": { "label": "Thibitisha Nywila", "placeholder": "••••••••" },
+        "name": { "label": "Jina Kamili", "placeholder": "Pr. / Dr. / Jina" },
+        "phone": { "label": "Simu", "placeholder": "+243..." },
+        "organization": { "label": "Shirika / Chuo Kikuu", "placeholder": "Mf: ULPGL Goma" },
+        "requestedRole": { "label": "Jukumu Linalohitajika", "placeholder": "Mtafiti, Mhariri, Kliniki..." },
+        "bio": { "label": "Wasifu / Motisha", "placeholder": "Elezea kwa ufupi historia yako au maslahi yako..." }
+      },
+      "submit": "Maliza Usajili",
+      "next": "Hatua Inayofuata",
+      "prev": "Iliyopita",
+      "submitting": "Inachakata...",
+      "success": {
+        "title": "Ombi Limetumwa!",
+        "description": "Akaunti yako imeundwa kwa mafanikio. Kwa sasa <strong>inasubiri kuidhinishwa</strong> na utawala wa CREDDA. Utapokea barua pepe baada ya uthibitisho.",
+        "button": "Rudi Mwanzo"
+      },
+      "errors": {
+        "passwordsDontMatch": "Nywila hazilingani",
+        "missingFields": "Tafadhali jaza sehemu zote zinazohitajika",
+        "emailExists": "Barua pepe hii tayari inatumiwa",
+        "generic": "Hitilafu ilitokea wakati wa usajili"
+      }
+    }
+  },
+  "ProfilePage": {
+    "title": "Wasifu Wangu",
+    "subtitle": "Simamia maelezo yako binafsi na wasifu wako wa kisayansi.",
+    "fields": {
+      "name": "Jina Kamili",
+      "email": "Barua Pepe",
+      "phone": "Simu",
+      "organization": "Shirika / Chuo Kikuu",
+      "bio": "Wasifu / Motisha",
+      "image": "Kiungo cha Picha"
+    },
+    "actions": {
+      "save": "Hifadhi Mabadiliko",
+      "upload": "Badilisha Picha",
+      "saving": "Inahifadhi..."
+    },
+    "success": "Wasifu umesasishwa kwa mafanikio!",
+    "error": "Hitilafu imetokea wakati wa kusasisha wasifu."
+  },
+  "SecurityPage": {
+    "title": "Usalama",
+    "subtitle": "Linda akaunti yako kwa kubadilisha nywila yako.",
+    "fields": {
+      "current": "Nywila ya Sasa",
+      "new": "Nywila Mpya",
+      "confirm": "Thibitisha Nywila Mpya"
+    },
+    "actions": {
+      "update": "Sasisha Nywila",
+      "updating": "Inasasisha..."
+    },
+    "success": "Nywila imebadilishwa kwa mafanikio!",
+    "error": "Hitilafu imetokea wakati wa kubadilisha nywila.",
+    "errors": {
+      "wrongCurrent": "Nywila ya sasa si sahihi",
+      "dontMatch": "Nywila mpya hazilingani"
     }
   },
   "Footer": {

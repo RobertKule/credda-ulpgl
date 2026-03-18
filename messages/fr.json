@@ -87,17 +87,20 @@
         {
           "name": "David MICHAEL PEYTON",
           "role": "Candidat au PhD, Université Northwestern",
-          "text": "Je n'aurais pas pu rêver de meilleurs partenaires de recherche que le corps professoral et le personnel du CREDDA-ULPGL. Ils ont non seulement pu soutenir plusieurs types de collecte de données, mais ont également offert des opportunités de rétroaction de la part d'universitaires congolais."
+          "text": "Je n'aurais pas pu rêver de meilleurs partenaires de recherche que le corps professoral et le personnel du CREDDA-ULPGL. Ils ont non seulement pu soutenir plusieurs types de collecte de données, mais ont également offert des opportunités de rétroaction de la part d'universitaires congolais.",
+          "image": "/images/testimonials/Peyton.webp"
         },
         {
           "name": "Heather LYNNE ZIMMERMAN",
           "role": "Étudiante en Master, London School of Economics (LSE)",
-          "text": "Cher Professeur Kennedy Kihangi, merci beaucoup de m'avoir accueillie si généreusement dans la communauté ! Je suis reconnaissante pour les idées et les commentaires offerts sur mes recherches. J'ai hâte de revenir à Goma."
+          "text": "Cher Professeur Kennedy Kihangi, merci beaucoup de m'avoir accueillie si généreusement dans la communauté ! Je suis reconnaissante pour les idées et les commentaires offerts sur mes recherches. J'ai hâte de revenir à Goma.",
+          "image": "/images/testimonials/heather.webp"
         },
         {
           "name": "Britta Sjöstedt",
           "role": "Candidate au PhD, Université de Lund",
-          "text": "J'ai visité l'ULPGL en 2015 pour mener des recherches pour mon doctorat. Le professeur Kennedy KIHANGI BINDU a été un excellent hôte qui a aidé à entrer en contact avec d'autres chercheurs et organisations."
+          "text": "J'ai visité l'ULPGL en 2015 pour mener des recherches pour mon doctorat. Le professeur Kennedy KIHANGI BINDU a été un excellent hôte qui a aidé à entrer en contact avec d'autres chercheurs et organisations.",
+          "image": "/images/testimonials/britta.webp"
         }
       ]
     },
@@ -548,6 +551,88 @@
         "connection": "Erreur de connexion"
       },
       "forgotPassword": "Mot de passe oublié ?"
+    }
+  },
+  "RegisterPage": {
+    "left": {
+      "badge": "Rejoindre le CREDDA",
+      "title": "Devenez acteur de la <span>Recherche</span>.",
+      "description": "Créez votre compte pour accéder aux ressources exclusives, contribuer aux travaux scientifiques ou suivre vos cas cliniques.",
+      "footer": "Inscription sécurisée et vérifiée"
+    },
+    "right": {
+      "back": "Retour",
+      "logo": "CREDDA<span>.ULPGL</span>",
+      "title": "Créer un compte",
+      "subtitle": "Suivez les étapes pour rejoindre notre réseau.",
+      "steps": {
+        "account": "Compte",
+        "profile": "Profil",
+        "details": "Détails"
+      },
+      "fields": {
+        "email": { "label": "Email Professionnel", "placeholder": "votre@email.com" },
+        "password": { "label": "Mot de passe", "placeholder": "••••••••" },
+        "confirmPassword": { "label": "Confirmer", "placeholder": "••••••••" },
+        "name": { "label": "Nom Complet", "placeholder": "Pr. / Dr. / Nom" },
+        "phone": { "label": "Téléphone", "placeholder": "+243..." },
+        "organization": { "label": "Organisation / Université", "placeholder": "Ex: ULPGL Goma" },
+        "requestedRole": { "label": "Rôle Souhaité", "placeholder": "Chercheur, Éditeur, Clinicien..." },
+        "bio": { "label": "Bio / Motivation", "placeholder": "Décrivez brièvement votre parcours ou intérêt..." }
+      },
+      "submit": "Terminer l'inscription",
+      "next": "Étape suivante",
+      "prev": "Précédent",
+      "submitting": "Traitement...",
+      "success": {
+        "title": "Demande Envoyée !",
+        "description": "Votre compte a été créé avec succès. Il est actuellement <strong>en attente d'approbation</strong> par l'administration du CREDDA. Vous recevrez un email dès validation.",
+        "button": "Retour à l'accueil"
+      },
+      "errors": {
+        "passwordsDontMatch": "Les mots de passe ne correspondent pas",
+        "missingFields": "Veuillez remplir tous les champs obligatoires",
+        "emailExists": "Cet email est déjà utilisé",
+        "generic": "Une erreur est survenue lors de l'inscription"
+      }
+    }
+  },
+  "ProfilePage": {
+    "title": "Mon Profil",
+    "subtitle": "Gérez vos informations personnelles et votre biographie scientifique.",
+    "fields": {
+      "name": "Nom Complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "organization": "Organisation / Université",
+      "bio": "Bio / Motivation",
+      "image": "Lien de la photo"
+    },
+    "actions": {
+      "save": "Enregistrer les modifications",
+      "upload": "Changer la photo",
+      "saving": "Enregistrement..."
+    },
+    "success": "Profil mis à jour avec succès !",
+    "error": "Erreur lors de la mise à jour du profil."
+  },
+  "SecurityPage": {
+    "title": "Sécurité",
+    "subtitle": "Protégez votre compte en changeant votre mot de passe.",
+    "fields": {
+      "current": "Mot de passe actuel",
+      "new": "Nouveau mot de passe",
+      "confirm": "Confirmer le nouveau mot de passe"
+    },
+    "actions": {
+      "update": "Mettre à jour le mot de passe",
+      "updating": "Mise à jour..."
+    },
+    "success": "Mot de passe modifié avec succès !",
+    "error": "Erreur lors du changement de mot de passe.",
+    "errors": {
+      "wrongCurrent": "Le mot de passe actuel est incorrect",
+      "dontMatch": "Les nouveaux mots de passe ne correspondent pas"
     }
   },
   "Footer": {

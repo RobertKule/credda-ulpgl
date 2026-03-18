@@ -16,7 +16,8 @@ import {
   ChevronRight,
   X,
   Scale,
-  Calendar
+  Calendar,
+  Layout
 } from "lucide-react";
 
 // ✅ Map des icônes
@@ -28,7 +29,8 @@ const iconMap: Record<string, any> = {
   Mail,
   Users,
   Scale,
-  Calendar
+  Calendar,
+  Layout
 };
 
 interface MenuItem {

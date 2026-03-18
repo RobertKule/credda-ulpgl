@@ -1,6 +1,6 @@
 generator client {
-  provider        = "prisma-client-js"
-  // previewFeatures = ["driverAdapters"] 
+  provider = "prisma-client-js"
+  previewFeatures = ["driverAdapters"] 
 }
 
 datasource db {
@@ -8,14 +8,19 @@ datasource db {
   // url      = env("DATABASE_URL")
 }
 
-
 // --- ÉNUMÉRATIONS ---
 
 enum Role {
-  MASTER_ADMIN
+  SUPER_ADMIN
   ADMIN
   EDITOR
-  RESEARCHER
+  USER
+}
+
+enum AccountStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 enum Domain {
@@ -32,21 +37,54 @@ enum MediaType {
 // --- UTILISATEURS ---
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String   @unique
-  password  String
-  role      Role     @default(ADMIN)
-  createdAt DateTime @default(now())
+  id            String        @id @default(cuid())
+  name          String?
+  email         String        @unique
+  password      String
+  role          Role          @default(USER)
+  status        AccountStatus @default(PENDING)
+  phone         String?
+  organization  String?
+  bio           String?
+  image         String? // Profile picture
+  requestedRole String? // e.g., "Researcher", "Editor"
+  createdAt     DateTime      @default(now())
+}
+
+// --- PROGRAMMES ---
+
+model Program {
+  id           String               @id @default(cuid())
+  slug         String               @unique
+  published    Boolean              @default(false)
+  featured     Boolean              @default(false)
+  mainImage    String?
+  translations ProgramTranslation[]
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  @@index([slug])
+}
+
+model ProgramTranslation {
+  id          String  @id @default(cuid())
+  language    String // fr, en, sw
+  title       String
+  description String
+  content     String?
+  programId   String
+  program     Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([programId, language])
 }
 
 // --- SYSTÈME DE MÉDIAS ---
 // Centraliser les médias permet de les réutiliser
 model Media {
-  id        String    @id @default(cuid())
-  type      MediaType @default(IMAGE)
-  url       String // URL Cloudinary, S3 ou Lien Vidéo
-  title     String? // Légende ou titre du média
+  id             String        @id @default(cuid())
+  type           MediaType     @default(IMAGE)
+  url            String // URL Cloudinary, S3 ou Lien Vidéo
+  title          String? // Légende ou titre du média
   articleId      String?
   article        Article?      @relation(fields: [articleId], references: [id])
   clinicalCaseId String?
@@ -95,8 +133,8 @@ model ArticleTranslation {
   id        String  @id @default(cuid())
   language  String // fr, en, sw
   title     String
-  content   String  
-  excerpt   String? 
+  content   String
+  excerpt   String?
   articleId String
   article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
 
@@ -121,7 +159,7 @@ model PublicationTranslation {
   title         String
   authors       String
   description   String
-  content       String? 
+  content       String?
   publicationId String
   publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
 
@@ -143,32 +181,33 @@ model MemberTranslation {
   language String
   name     String
   role     String // ex: Directeur de recherche
-  bio      String? 
+  bio      String?
   memberId String
   member   Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
 
   @@unique([memberId, language])
 }
+
 // --- MESSAGES DE CONTACT ---
 // prisma/schema.prisma - Modèle ContactMessage mis à jour
 
 model ContactMessage {
-  id           String    @id @default(cuid())
-  name         String
-  email        String
-  subject      String
-  message      String    
-  
+  id      String @id @default(cuid())
+  name    String
+  email   String
+  subject String
+  message String
+
   // STATUTS (utilisation d'enum au lieu de boolean)
-  status       ContactStatus @default(UNREAD)  // UNREAD, READ, ARCHIVED
-  
+  status ContactStatus @default(UNREAD) // UNREAD, READ, ARCHIVED
+
   // POUR LES RÉPONSES
-  replyContent String?   
+  replyContent String?
   repliedAt    DateTime?
-  
+
   // METADATA
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // INDEX pour les recherches
   @@index([status])
@@ -208,37 +247,37 @@ enum UrgencyLevel {
 }
 
 model Beneficiary {
-  id          String          @id @default(cuid())
-  name        String
-  email       String?
-  phone       String
-  location    String          // Territoire, village
-  type        BeneficiaryType @default(LOCAL_COMMUNITY)
-  cases       ClinicalCase[]
-  userId      String?         @unique // Optionnel si lié à un compte User
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  id        String          @id @default(cuid())
+  name      String
+  email     String?
+  phone     String
+  location  String // Territoire, village
+  type      BeneficiaryType @default(LOCAL_COMMUNITY)
+  cases     ClinicalCase[]
+  userId    String?         @unique // Optionnel si lié à un compte User
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
 }
 
 model ClinicalCase {
-  id               String       @id @default(cuid())
-  title            String
-  description      String       
-  problemType      String       // Pollution, foncier, déforestation, etc.
-  location         String
-  incidentDate     DateTime?
-  status           CaseStatus   @default(NEW)
-  urgency          UrgencyLevel @default(MEDIUM)
-  actionsTaken     String?      
-  expectations     String?      
-  beneficiaryId    String
-  beneficiary      Beneficiary  @relation(fields: [beneficiaryId], references: [id])
-  clinicianId      String?      // Attribué à un clinicien (User avec rôle spécifique)
-  documents        Media[]      // Lié aux médias existants
-  notes            CaseNote[]
-  trackingCode     String?      @unique // Format: CDE-YYYY-XXXXX
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
+  id            String       @id @default(cuid())
+  title         String
+  description   String
+  problemType   String // Pollution, foncier, déforestation, etc.
+  location      String
+  incidentDate  DateTime?
+  status        CaseStatus   @default(NEW)
+  urgency       UrgencyLevel @default(MEDIUM)
+  actionsTaken  String?
+  expectations  String?
+  beneficiaryId String
+  beneficiary   Beneficiary  @relation(fields: [beneficiaryId], references: [id])
+  clinicianId   String? // Attribué à un clinicien (User avec rôle spécifique)
+  documents     Media[] // Lié aux médias existants
+  notes         CaseNote[]
+  trackingCode  String?      @unique // Format: CDE-YYYY-XXXXX
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   @@index([status])
   @@index([urgency])
@@ -246,7 +285,7 @@ model ClinicalCase {
 
 model CaseNote {
   id           String       @id @default(cuid())
-  content      String       
+  content      String
   authorId     String
   caseId       String
   clinicalCase ClinicalCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
@@ -254,25 +293,25 @@ model CaseNote {
 }
 
 model LegalResource {
-  id           String                   @id @default(cuid())
-  category     String                   // Guide, Loi, Fiche pratique
-  slug         String                   @unique
-  featured     Boolean                  @default(false)
-  published    Boolean                  @default(false)
+  id           String                     @id @default(cuid())
+  category     String // Guide, Loi, Fiche pratique
+  slug         String                     @unique
+  featured     Boolean                    @default(false)
+  published    Boolean                    @default(false)
   translations LegalResourceTranslation[]
-  createdAt    DateTime                 @default(now())
-  updatedAt    DateTime                 @updatedAt
+  createdAt    DateTime                   @default(now())
+  updatedAt    DateTime                   @updatedAt
 }
 
 model LegalResourceTranslation {
-  id              String        @id @default(cuid())
-  language        String        // fr, en, sw
-  title           String
-  description     String?       
-  content         String?       
-  fileUrl         String?       // Lien vers le PDF
-  resourceId      String
-  resource        LegalResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  id          String        @id @default(cuid())
+  language    String // fr, en, sw
+  title       String
+  description String?
+  content     String?
+  fileUrl     String? // Lien vers le PDF
+  resourceId  String
+  resource    LegalResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 
   @@unique([resourceId, language])
 }
@@ -281,10 +320,10 @@ model ClinicSession {
   id              String   @id @default(cuid())
   title           String
   location        String
-  lat             Float?   // Coordinate Latitude
-  lng             Float?   // Coordinate Longitude
+  lat             Float? // Coordinate Latitude
+  lng             Float? // Coordinate Longitude
   date            DateTime
-  description     String?  
+  description     String?
   isMobile        Boolean  @default(true)
   capacity        Int      @default(50)
   registeredCount Int      @default(0)
@@ -294,10 +333,10 @@ model ClinicSession {
 
 model GalleryImage {
   id          String   @id @default(cuid())
-  src         String   // Chemin de l'image
-  title       String   // Titre de l'image
-  category    String   // Catégorie (Événement, Terrain, etc.)
-  description String?  // Description optionnelle
+  src         String // Chemin de l'image
+  title       String // Titre de l'image
+  category    String // Catégorie (Événement, Terrain, etc.)
+  description String? // Description optionnelle
   order       Int      @default(0) // Ordre d'affichage
   featured    Boolean  @default(false) // Mettre en avant
   createdAt   DateTime @default(now())

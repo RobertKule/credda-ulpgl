@@ -16,7 +16,8 @@ import {
   Calendar, 
   AlertTriangle,
   Eye,
-  Search
+  Search,
+  Edit3
 } from "lucide-react";
 import { Link } from "@/navigation";
 
@@ -54,7 +55,9 @@ export default async function ClinicianAdminPage() {
         </div>
         <div className="flex gap-2">
           <Button variant="outline" className="rounded-none">Exporter CSV</Button>
-          <Button className="bg-emerald-800 hover:bg-emerald-900 rounded-none">Nouveau Cas</Button>
+          <Button asChild className="bg-emerald-800 hover:bg-emerald-900 rounded-none">
+            <Link href="/admin/clinical/new">Nouveau Cas</Link>
+          </Button>
         </div>
       </div>
 
@@ -119,6 +122,12 @@ export default async function ClinicianAdminPage() {
                       <Link href={`/admin/clinical/${c.id}`} className="flex items-center gap-2">
                         <Eye size={14} />
                         Voir
+                      </Link>
+                    </Button>
+                    <Button variant="ghost" size="sm" asChild className="rounded-none hover:bg-slate-100 text-slate-600">
+                      <Link href={`/admin/clinical/${c.id}/edit`} className="flex items-center gap-2">
+                        <Edit3 size={14} />
+                        Éditer
                       </Link>
                     </Button>
                   </TableCell>

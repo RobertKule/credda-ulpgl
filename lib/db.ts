@@ -1,21 +1,38 @@
 // lib/db.ts
 import { PrismaClient } from '@prisma/client'
-import { Pool } from 'pg'
-import { PrismaPg } from '@prisma/adapter-pg'
+import { Pool, neonConfig } from '@neondatabase/serverless'
+import { PrismaNeon } from '@prisma/adapter-neon'
+import ws from 'ws'
+
+// Configuration pour WebSocket si nécessaire (environnements non-Edge)
+neonConfig.webSocketConstructor = ws
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
+  pool: Pool | undefined
+  adapter: PrismaNeon | undefined
 }
 
 const connectionString = process.env.DATABASE_URL!
-const pool = new Pool({ connectionString })
-const adapter = new PrismaPg(pool)
 
-// ✅ VERSION CORRECTE POUR PRISMA 7
-// Il faut soit passer adapter, soit ne rien passer
-// L'URL est gérée via prisma.config.ts
-export const db = globalForPrisma.prisma ?? new PrismaClient({ adapter })
+if (!globalForPrisma.pool) {
+  globalForPrisma.pool = new Pool({ 
+    connectionString,
+    max: process.env.NODE_ENV === 'development' ? 1 : 10,
+    idleTimeoutMillis: 10000,
+    connectionTimeoutMillis: 5000,
+  })
+}
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db
+if (!globalForPrisma.adapter) {
+  globalForPrisma.adapter = new PrismaNeon(globalForPrisma.pool as any)
+}
 
+if (!globalForPrisma.prisma) {
+  globalForPrisma.prisma = new PrismaClient({ 
+    adapter: globalForPrisma.adapter 
+  })
+}
+
+export const db = globalForPrisma.prisma
 export const prisma = db

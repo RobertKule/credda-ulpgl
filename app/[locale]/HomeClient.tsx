@@ -61,9 +61,10 @@ export default function HomeClient({
                   <div className="h-[1px] w-8 bg-primary" />
                   <span className="text-[10px] uppercase tracking-[0.4em] font-black text-primary">{t('about.badge')}</span>
                 </div>
-                <h2 className="text-5xl lg:text-7xl font-serif font-black text-primary leading-[1] mt-6 mb-8">
+                <h2 className="text-4xl sm:text-5xl lg:text-7xl font-serif font-black text-primary leading-[1.1] mt-6 mb-8 hyphens-auto break-words">
                   {t.rich('about.title', { 
-                    span: (chunks) => <span className="italic text-accent">{chunks}</span> 
+                    span: (chunks) => <span className="italic text-accent">{chunks}</span>,
+                    br: () => <br />
                   })}
                 </h2>
                 <div className="space-y-6 text-anthracite/70 text-lg font-light leading-relaxed">
@@ -104,7 +105,9 @@ export default function HomeClient({
                 <span className="text-[10px] uppercase tracking-[0.4em] font-black text-primary">{t('testimonials.badge')}</span>
                 <div className="h-[1px] w-8 bg-primary" />
               </div>
-              <h2 className="text-5xl md:text-6xl font-serif font-black text-primary italic">{t('testimonials.title_alt')}</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif font-black text-primary italic leading-tight">
+                {t('testimonials.title_alt')}
+              </h2>
             </div>
           </GSAPReveal>
 
@@ -143,7 +146,7 @@ export default function HomeClient({
               <div className="flex gap-16 animate-infinite-scroll group-hover:[animation-play-state:paused] grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-1000">
                 {[...(t.raw('partners.items') || []), ...(t.raw('partners.items') || [])].map((partner: string, i: number) => (
                   <div key={i} className="flex-shrink-0 w-32 h-16 relative">
-                    <Image src={`/images/partners/${partner}`} alt="Partner" fill className="object-contain" />
+                    <Image src={`/images/partenaires/${partner}`} alt="Partner" fill className="object-contain" />
                   </div>
                 ))}
               </div>
@@ -170,17 +173,17 @@ export default function HomeClient({
              <span className="text-[11px] uppercase tracking-[0.5em] font-black text-accent mt-4">{t('cta.badge') || "Join the Movement"}</span>
           </div>
           
-          <h2 className="text-6xl md:text-8xl lg:text-9xl font-serif font-black leading-[0.9] tracking-tighter">
+          <h2 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-serif font-black leading-[1.1] sm:leading-[0.9] tracking-tighter break-words hyphens-auto px-4">
             {t.rich('cta.title', {
               span: (chunks) => <span className="italic">{chunks}</span>
             })}
           </h2>
           
-          <div className="flex flex-wrap justify-center gap-8 pt-8">
-            <Link href="/contact" className="group px-12 py-6 bg-accent text-primary font-heading font-black uppercase tracking-widest text-xs hover:bg-white transition-all">
+          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-4 sm:gap-8 pt-8">
+            <Link href="/contact" className="group px-8 sm:px-12 py-5 sm:py-6 bg-accent text-primary font-heading font-black uppercase tracking-widest text-xs hover:bg-white transition-all text-center">
               {t('cta.partner')}
             </Link>
-            <Link href="/login" className="group px-12 py-6 border border-white/20 hover:border-accent text-white font-heading font-black uppercase tracking-widest text-xs transition-all flex items-center gap-3">
+            <Link href="/login" className="group px-8 sm:px-12 py-5 sm:py-6 border border-white/20 hover:border-accent text-white font-heading font-black uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-3">
               {t('cta.portal')} <ExternalLink size={14} className="text-accent" />
             </Link>
           </div>

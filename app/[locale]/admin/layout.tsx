@@ -1,11 +1,12 @@
 // app/[locale]/admin/layout.tsx
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import AdminSidebar from "@/components/admin/AdminSidebar";
-import AdminHeader from "@/components/admin/AdminHeader"; // ✅ Nouveau composant client
+import AdminHeader from "@/components/admin/AdminHeader"; 
 import { Toaster } from "@/components/ui/toaster";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 import {
   LayoutDashboard,
@@ -13,7 +14,8 @@ import {
   BookOpen,
   UserCircle,
   Mail,
-  Users
+  Users,
+  Layout
 } from "lucide-react";
 
 export default async function AdminLayout({
@@ -21,14 +23,19 @@ export default async function AdminLayout({
   params
 }: {
   children: React.ReactNode;
-  params: any;
+  params: Promise<{ locale: string }>;
 }) {
-  const { locale } = (await params) as { locale: string };
+  const { locale } = await params;
+  const session = await getServerSession(authOptions);
 
-  // ✅ Vérification de sécurité (serveur uniquement)
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-  if (!token) redirect(`/${locale}/login`);
+  if (!session || !session.user) {
+    redirect(`/${locale}/login`);
+  }
+
+  // Enforce ADMIN roles for this layout
+  if ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "SUPER_ADMIN") {
+    redirect(`/${locale}/`);
+  }
 
   // ✅ Messages pour les composants clients
   const messages = await getMessages();
@@ -38,6 +45,7 @@ export default async function AdminLayout({
     { href: "/admin", label: "Dashboard", icon: "LayoutDashboard" },
     { href: "/admin/articles", label: "Articles", icon: "FileText" },
     { href: "/admin/publications", label: "Publications", icon: "BookOpen" },
+    { href: "/admin/programs", label: "Programmes", icon: "Layout" },
     { href: "/admin/gallery", label: "Gallerie", icon: "BookOpen" },
     { href: "/admin/members", label: "Équipe", icon: "UserCircle" },
     { href: "/admin/clinical", label: "Cas Cliniques", icon: "Scale" },

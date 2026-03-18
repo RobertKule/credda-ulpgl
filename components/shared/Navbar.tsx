@@ -11,6 +11,15 @@ import {
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SearchModal from "./SearchModal";
+import { useSession, signOut } from "next-auth/react";
+import { 
+  User, 
+  Settings, 
+  LogOut, 
+  Shield, 
+  LayoutDashboard,
+  UserCircle
+} from "lucide-react";
 
 type LabelType = {
   fr: string;
@@ -30,8 +39,10 @@ export default function Navbar() {
   const t = useTranslations('Navbar');
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const { data: session, status } = useSession();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -56,11 +67,11 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={`fixed top-0 w-full z-[100] transition-all duration-700 ${isScrolled ? "py-3" : "py-6"}`}>
-        {/* GLASS BACKGROUND */}
+      <header className={`fixed top-0 w-full z-[99999] transition-all duration-700 ${isScrolled ? "py-3" : "py-6"}`}>
+        {/* BACKGROUND */}
         <div 
-          className={`absolute inset-0 transition-opacity duration-700 ${
-            isScrolled ? "bg-white/80 backdrop-blur-xl border-b border-slate-200/50 opacity-100" : "opacity-0"
+          className={`absolute inset-0 transition-all duration-700 ${
+            isScrolled ? "bg-white/90 backdrop-blur-xl border-b border-slate-200/80 shadow-sm" : "bg-[#050a15]"
           }`} 
         />
 
@@ -165,14 +176,106 @@ export default function Navbar() {
                 ))}
               </div>
 
-              <Link 
-                href="/admin" 
-                className={`ml-2 px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all shadow-lg ${
-                  isScrolled ? "bg-institutional-blue text-white hover:bg-black shadow-primary/10" : "bg-white text-primary hover:bg-accent hover:text-primary shadow-white/10"
-                }`}
-              >
-                {t('portal')}
-              </Link>
+              {/* AUTH AREA */}
+              <div className="flex items-center gap-4 border-l border-slate-100 pl-8">
+                {status === "authenticated" ? (
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                      className="flex items-center gap-2 group p-1.5 hover:bg-slate-50 transition-all rounded-lg"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20 overflow-hidden">
+                        {session.user?.image ? (
+                          <img src={session.user.image} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <User size={16} />
+                        )}
+                      </div>
+                      <ChevronDown size={12} className={`text-slate-400 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    <AnimatePresence>
+                      {isUserMenuOpen && (
+                        <>
+                          <div 
+                            className="fixed inset-0 z-10" 
+                            onClick={() => setIsUserMenuOpen(false)} 
+                          />
+                          <motion.div
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                            className="absolute right-0 mt-3 w-56 bg-white border border-slate-100 shadow-xl z-20 overflow-hidden"
+                          >
+                            <div className="p-4 border-b border-slate-50 bg-slate-50/50">
+                              <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-0.5">
+                                {session?.user?.role || 'USER'}
+                              </p>
+                              <p className="text-xs font-bold text-slate-800 truncate">
+                                {session?.user?.name || session?.user?.email || 'Utilisateur'}
+                              </p>
+                            </div>
+                            <div className="p-1">
+                              {(session.user?.role === 'ADMIN' || session.user?.role === 'SUPER_ADMIN' || session.user?.role === 'EDITOR') && (
+                                <Link
+                                  href="/admin"
+                                  onClick={() => setIsUserMenuOpen(false)}
+                                  className="flex items-center gap-3 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-primary transition-all"
+                                >
+                                  <LayoutDashboard size={14} />
+                                  Dashboard Admin
+                                </Link>
+                              )}
+                              <Link
+                                href="/profile"
+                                onClick={() => setIsUserMenuOpen(false)}
+                                className="flex items-center gap-3 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-primary transition-all"
+                              >
+                                <UserCircle size={14} />
+                                Mon Profil
+                              </Link>
+                              <Link
+                                href="/security"
+                                onClick={() => setIsUserMenuOpen(false)}
+                                className="flex items-center gap-3 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-primary transition-all"
+                              >
+                                <Shield size={14} />
+                                Sécurité
+                              </Link>
+                              <button
+                                onClick={() => signOut()}
+                                className="w-full flex items-center gap-3 px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 transition-all border-t border-slate-50 mt-1"
+                              >
+                                <LogOut size={14} />
+                                Déconnexion
+                              </button>
+                            </div>
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href="/login"
+                      className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all px-4 py-2 hover:bg-primary/5 rounded-lg ${
+                        isScrolled ? "text-anthracite/80 hover:text-primary" : "text-white/80 hover:text-white"
+                      }`}
+                    >
+                      Connexion
+                    </Link>
+                    <Link 
+                      href="/register" 
+                      className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all shadow-lg ${
+                        isScrolled ? "bg-primary text-white hover:bg-black shadow-primary/10" : "bg-white text-primary hover:bg-accent hover:text-primary shadow-white/10"
+                      }`}
+                    >
+                      S'inscrire
+                    </Link>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 

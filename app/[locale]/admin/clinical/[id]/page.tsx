@@ -18,7 +18,8 @@ import {
   AlertTriangle,
   ChevronRight,
   Send,
-  UserCheck
+  UserCheck,
+  Edit3
 } from "lucide-react";
 import { Link } from "@/navigation";
 import { revalidatePath } from "next/cache";
@@ -56,10 +57,16 @@ export default async function CaseDetailPage({ params }: Props) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
         <div className="space-y-2">
-          <Link href="/admin/clinical" className="text-emerald-700 text-xs font-bold flex items-center gap-1 hover:gap-2 transition-all">
-            <ChevronRight size={14} className="rotate-180" />
-            Retour à la liste
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/admin/clinical" className="text-emerald-700 text-xs font-bold flex items-center gap-1 hover:gap-2 transition-all">
+              <ChevronRight size={14} className="rotate-180" />
+              Retour à la liste
+            </Link>
+            <Link href={`/admin/clinical/${cc.id}/edit`} className="text-slate-500 text-xs font-bold flex items-center gap-1 hover:text-emerald-700 transition-all">
+              <Edit3 size={14} />
+              Modifier les faits
+            </Link>
+          </div>
           <h1 className="text-3xl font-serif font-bold text-slate-900">
             Détails du Dossier <span>#{cc.id.substring(0, 8)}</span>
           </h1>

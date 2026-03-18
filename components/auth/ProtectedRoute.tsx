@@ -13,7 +13,7 @@ interface ProtectedRouteProps {
 
 export default function ProtectedRoute({ 
   children, 
-  allowedRoles = [Role.ADMIN, Role.EDITOR] 
+  allowedRoles = [Role.SUPER_ADMIN, Role.ADMIN, Role.EDITOR] 
 }: ProtectedRouteProps) {
   const { data: session, status } = useSession();
   const router = useRouter();

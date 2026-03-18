@@ -4,12 +4,14 @@ import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
 import { 
   FileText, Download, Filter, SearchX, Calendar, 
-  User2, ArrowRight, BookOpen, Clock, Eye 
+  User2, ArrowRight, BookOpen, Clock, Eye,
+  Sparkles, TrendingUp, Layers
 } from "lucide-react";
 import ClientPdfPreview from "@/components/public/ClientPdfPreview";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import ParallaxWrapper from "@/components/shared/ParallaxWrapper";
+import * as motion from "framer-motion/client";
 
 export const metadata: Metadata = {
   title: "Publications | CREDDA-ULPGL",
@@ -26,7 +28,6 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
   const { year, domain } = await searchParams;
   const t = await getTranslations({ locale, namespace: 'PublicationsPage' });
 
-  // ✅ Récupérer toutes les années disponibles
   const availableYears = await db.publication.findMany({
     select: { year: true },
     distinct: ['year'],
@@ -35,12 +36,10 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
 
   const years = availableYears.map(y => y.year);
 
-  // ✅ Construire la requête avec filtres
   const whereClause: any = {};
   if (year) whereClause.year = parseInt(year);
   if (domain) whereClause.domain = domain;
 
-  // ✅ Récupérer les publications avec leurs traductions
   const allPublications = await db.publication.findMany({
     where: whereClause,
     include: { 
@@ -63,128 +62,187 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
   const featuredPublication = allPublications[0];
   const publications = allPublications.slice(1);
 
-  // ✅ Statistiques pour l'en-tête
   const totalPublications = await db.publication.count();
-  const totalDownloads = 15420; // À remplacer par des stats réelles si disponibles
   const totalAuthors = await db.publicationTranslation.groupBy({
     by: ['authors'],
     _count: true
   }).then(res => res.length);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 to-white">
+    <main className="min-h-screen bg-[#fafafa]">
       
-      {/* --- HERO SECTION AVEC STATISTIQUES --- */}
-      <section className="relative bg-[#050a15] text-white py-24 overflow-hidden border-b border-white/5">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-600/5 -skew-x-12 translate-x-1/4" />
+      {/* --- PREMIUM HERO SECTION --- */}
+      <section className="relative min-h-[60vh] flex items-center bg-[#050a15] text-white overflow-hidden py-24 lg:py-32">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-blue-600/10 rounded-full blur-[120px] -mr-96 -mt-96 animate-pulse" />
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-emerald-600/5 rounded-full blur-[100px] -ml-64 -mb-64" />
+          <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.03]" />
+        </div>
         
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <Badge className="bg-blue-600 text-white rounded-none px-4 py-1.5 uppercase tracking-[0.3em] text-[10px] font-black border-none">
-              {t('header.badge')}
-            </Badge>
+          <div className="max-w-4xl space-y-12">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <Badge className="bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-full px-6 py-2 uppercase tracking-[0.3em] text-[10px] font-black shadow-lg backdrop-blur-md mb-8">
+                {t('header.badge')}
+              </Badge>
+              
+              <h1 className="text-6xl lg:text-8xl font-serif font-bold leading-[1.1] tracking-tight">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 italic font-light block text-3xl lg:text-4xl mb-6">Scientific</span> 
+                <span dangerouslySetInnerHTML={{ __html: t.raw('header.title') }} />
+              </h1>
+            </motion.div>
             
-            <h1 className="text-5xl lg:text-8xl font-serif font-bold leading-tight">
-               <span className="italic font-light block text-blue-400 text-3xl lg:text-4xl mb-4">Scientific</span> 
-               <span dangerouslySetInnerHTML={{ __html: t.raw('header.title') }} />
-            </h1>
-            
-            <p className="text-xl text-slate-400 font-light max-w-2xl mx-auto leading-relaxed">
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              className="text-xl text-slate-400 font-light max-w-2xl leading-relaxed"
+            >
               {t('header.description')}
-            </p>
+            </motion.p>
 
-            {/* Statistiques Minimalistes */}
-            <div className="flex flex-wrap justify-center gap-12 pt-12 border-t border-white/10 mt-16">
-              <div className="flex flex-col items-center">
-                <div className="text-4xl font-serif font-bold text-white">{totalPublications}</div>
-                <div className="text-[9px] uppercase tracking-[0.3em] text-blue-500 font-black mt-2">{t('header.stats.publications')}</div>
+            {/* Premium Stats Grid */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-white/10"
+            >
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-blue-400">
+                  <BookOpen size={16} />
+                  <span className="text-3xl font-serif font-bold text-white">{totalPublications}</span>
+                </div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 font-black">{t('header.stats.publications')}</div>
               </div>
-              <div className="flex flex-col items-center">
-                <div className="text-4xl font-serif font-bold text-white">{years.length}</div>
-                <div className="text-[9px] uppercase tracking-[0.3em] text-blue-500 font-black mt-2">{t('header.stats.years')}</div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-emerald-400">
+                  <Calendar size={16} />
+                  <span className="text-3xl font-serif font-bold text-white">{years.length}</span>
+                </div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 font-black">{t('header.stats.years')}</div>
               </div>
-              <div className="flex flex-col items-center">
-                <div className="text-4xl font-serif font-bold text-white">{totalAuthors}+</div>
-                <div className="text-[9px] uppercase tracking-[0.3em] text-blue-500 font-black mt-2">{t('header.stats.researchers')}</div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-blue-400">
+                  <User2 size={16} />
+                  <span className="text-3xl font-serif font-bold text-white">{totalAuthors}+</span>
+                </div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 font-black">{t('header.stats.researchers')}</div>
               </div>
-            </div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2 text-emerald-400">
+                  <TrendingUp size={16} />
+                  <span className="text-3xl font-serif font-bold text-white">15k+</span>
+                </div>
+                <div className="text-[10px] uppercase tracking-widest text-slate-500 font-black">Downloads</div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* --- FEATURED PUBLICATION HERO --- */}
+      {/* --- FEATURED PUBLICATION SECTION --- */}
       {featuredPublication && !year && !domain && (
-        <section className="bg-white py-24 border-b border-slate-100">
-           <div className="container mx-auto px-6">
-              <div className="grid lg:grid-cols-12 gap-16 items-center">
-                 <div className="lg:col-span-5 bg-slate-50 p-12 border border-slate-100 relative group">
-                    <ParallaxWrapper speed={0.1}>
-                      <div className="aspect-[3/4] shadow-2xl overflow-hidden relative">
-                         <ClientPdfPreview url={featuredPublication.pdfUrl} />
-                         <div className="absolute inset-0 bg-blue-900/5 group-hover:opacity-0 transition-opacity" />
+        <section className="relative -mt-24 z-20 pb-24">
+          <div className="container mx-auto px-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-[3rem] shadow-2xl shadow-blue-900/10 overflow-hidden border border-slate-100"
+            >
+              <div className="grid lg:grid-cols-12">
+                {/* Visual side */}
+                <div className="lg:col-span-5 bg-slate-50 p-12 lg:p-20 flex items-center justify-center relative group">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-emerald-600/5" />
+                  <div className="relative z-10 w-full max-w-sm">
+                    <ParallaxWrapper speed={0.05}>
+                      <div className="aspect-[3/4] shadow-[0_50px_100px_-20px_rgba(50,50,93,0.25),0_30px_60px_-30px_rgba(0,0,0,0.3)] rounded-lg overflow-hidden bg-white">
+                        <ClientPdfPreview url={featuredPublication.pdfUrl} />
                       </div>
                     </ParallaxWrapper>
-                    <div className="absolute -top-4 -left-4 bg-blue-600 text-white p-4 font-black uppercase text-[10px] tracking-widest">
-                       Latest Paper
+                    <Badge className="absolute -top-6 -left-6 bg-blue-600 text-white px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl shadow-blue-600/30 border-none">
+                      <Sparkles size={14} className="mr-2 inline" /> {t('header.latest')}
+                    </Badge>
+                  </div>
+                </div>
+                
+                {/* Content side */}
+                <div className="lg:col-span-7 p-12 lg:p-20 flex flex-col justify-center space-y-8">
+                  <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50 px-4 py-2 rounded-full">
+                      <Calendar size={14} />
+                      {featuredPublication.year}
                     </div>
-                 </div>
-                 <div className="lg:col-span-7 space-y-8">
-                    <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-slate-400">
-                       <span className="flex items-center gap-2"><Calendar size={14} className="text-blue-600" /> {featuredPublication.year}</span>
-                       <span className="w-1 h-1 bg-blue-600 rounded-full" />
-                       <span className="flex items-center gap-2"><Clock size={14} className="text-blue-600" /> 15 MIN READ</span>
+                    <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full">
+                      <Clock size={14} />
+                      15 MIN READ
                     </div>
-                    <h2 className="text-5xl lg:text-6xl font-serif font-bold text-slate-900 leading-tight">
-                       {featuredPublication.translations[0]?.title}
-                    </h2>
-                    <p className="text-slate-500 text-xl font-light leading-relaxed">
-                       {featuredPublication.translations[0]?.description}
-                    </p>
-                    <div className="flex items-center gap-3 pt-4">
-                       <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                          <User2 size={24} />
-                       </div>
-                       <div>
-                          <p className="text-xs font-bold text-slate-900">{featuredPublication.translations[0]?.authors}</p>
-                          <p className="text-[10px] text-slate-400 uppercase tracking-widest">Principal Researcher</p>
-                       </div>
+                  </div>
+                  
+                  <h2 className="text-4xl lg:text-6xl font-serif font-bold text-slate-900 leading-[1.2]">
+                    {featuredPublication.translations[0]?.title}
+                  </h2>
+                  
+                  <p className="text-slate-500 text-xl font-light leading-relaxed line-clamp-3">
+                    {featuredPublication.translations[0]?.description}
+                  </p>
+                  
+                  <div className="flex items-center gap-4 pt-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center text-blue-600 shadow-sm">
+                      <User2 size={24} />
                     </div>
-                    <div className="pt-8 flex gap-6">
-                       <Link 
-                         href={`/publications/${featuredPublication.slug || featuredPublication.id}`}
-                         className="px-10 py-5 bg-blue-900 text-white font-black uppercase tracking-widest text-[10px] hover:bg-blue-600 transition-all"
-                       >
-                         Access Full Journal
-                       </Link>
-                       <a 
-                         href={featuredPublication.pdfUrl}
-                         target="_blank"
-                         className="px-10 py-5 border border-slate-200 text-slate-900 font-black uppercase tracking-widest text-[10px] hover:bg-slate-50 transition-all flex items-center gap-3"
-                       >
-                         <Download size={16} /> PDF Preview
-                       </a>
+                    <div>
+                      <p className="text-sm font-bold text-slate-900">{featuredPublication.translations[0]?.authors}</p>
+                      <p className="text-[10px] text-slate-400 uppercase tracking-widest font-black">Lead Researcher</p>
                     </div>
-                 </div>
+                  </div>
+                  
+                  <div className="pt-10 flex flex-wrap gap-4">
+                    <Link 
+                      href={`/publications/${featuredPublication.slug || featuredPublication.id}`}
+                      className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-blue-600 text-white font-bold uppercase tracking-widest text-xs rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 group/btn"
+                    >
+                      Access Full Publication
+                      <ArrowRight size={18} className="group-hover/btn:translate-x-1 transition-transform" />
+                    </Link>
+                    <a 
+                      href={featuredPublication.pdfUrl}
+                      target="_blank"
+                      className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-white border border-slate-200 text-slate-900 font-bold uppercase tracking-widest text-xs rounded-2xl hover:bg-slate-50 transition-all flex items-center gap-3"
+                    >
+                      <Download size={18} /> PDF Preview
+                    </a>
+                  </div>
+                </div>
               </div>
-           </div>
+            </motion.div>
+          </div>
         </section>
       )}
 
-      {/* --- BARRE DE FILTRES AVANCÉE --- */}
-      <div className="sticky top-16 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200 py-4 shadow-sm">
+      {/* --- REFINED FILTER BAR --- */}
+      <div className="sticky top-20 z-40 bg-white/80 backdrop-blur-xl border-b border-slate-100 py-6">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
             
-            {/* Filtres par année */}
-            <div className="flex items-center gap-3 overflow-x-auto pb-2 lg:pb-0">
-              <Filter size={14} className="text-slate-400 shrink-0" />
-              <div className="flex gap-2">
+            {/* Year Filters */}
+            <div className="flex items-center gap-4 group">
+              <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-blue-600 transition-colors">
+                <Filter size={18} />
+              </div>
+              <div className="flex gap-2 overflow-x-auto no-scrollbar py-1">
                 <Link 
                   href="/publications" 
-                  className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all whitespace-nowrap ${
+                  className={`px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap shadow-sm border ${
                     !year && !domain 
-                      ? 'bg-blue-900 text-white border-blue-900' 
-                      : 'text-slate-500 border-slate-200 hover:border-blue-900 hover:text-blue-900'
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-blue-600/10' 
+                      : 'bg-white text-slate-500 border-slate-100 hover:border-blue-200 hover:text-blue-600'
                   }`}
                 >
                   {t('filters.all')}
@@ -194,10 +252,10 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
                   <Link 
                     key={y} 
                     href={`/publications?year=${y}`} 
-                    className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all whitespace-nowrap ${
+                    className={`px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all whitespace-nowrap shadow-sm border ${
                       year === y.toString() 
-                        ? 'bg-blue-900 text-white border-blue-900' 
-                        : 'text-slate-500 border-slate-200 hover:border-blue-900 hover:text-blue-900'
+                        ? 'bg-blue-600 text-white border-blue-600 shadow-blue-600/10' 
+                        : 'bg-white text-slate-500 border-slate-100 hover:border-blue-200 hover:text-blue-600'
                     }`}
                   >
                     {y}
@@ -206,20 +264,22 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
               </div>
             </div>
 
-            {/* Filtres par domaine */}
-            <div className="flex items-center gap-3">
-              <BookOpen size={14} className="text-slate-400 shrink-0" />
+            {/* Domain Filters */}
+            <div className="flex items-center gap-4 group">
+              <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:text-emerald-600 transition-colors">
+                <Layers size={18} />
+              </div>
               <div className="flex gap-2">
                 {['RESEARCH', 'CLINICAL'].map(d => (
                   <Link
                     key={d}
                     href={`/publications?${year ? `year=${year}&` : ''}domain=${d}`}
-                    className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all ${
+                    className={`px-6 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-sm border ${
                       domain === d
                         ? d === 'RESEARCH' 
-                          ? 'bg-blue-600 text-white border-blue-600'
-                          : 'bg-emerald-600 text-white border-emerald-600'
-                        : 'text-slate-500 border-slate-200 hover:border-blue-900 hover:text-blue-900'
+                          ? 'bg-blue-600 text-white border-blue-600 shadow-blue-600/10'
+                          : 'bg-emerald-600 text-white border-emerald-600 shadow-emerald-600/10'
+                        : 'bg-white text-slate-500 border-slate-100 hover:border-blue-200 hover:text-blue-600'
                     }`}
                   >
                     {d === 'RESEARCH' ? t('filters.domain.research') : t('filters.domain.clinical')}
@@ -231,182 +291,137 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
         </div>
       </div>
 
-      {/* --- GRILLE DES PUBLICATIONS --- */}
-      <section className="container mx-auto px-6 py-16 lg:py-24">
+      {/* --- PUBLICATIONS GRID --- */}
+      <section className="container mx-auto px-6 py-24">
         {publications.length > 0 ? (
-          <div className="space-y-12">
+          <div className="space-y-16">
             
-            {/* Indicateur de résultats */}
-            <div className="flex justify-between items-center">
-              <p className="text-sm text-slate-500">
-                {t('filters.results', { count: publications.length })}
-                {year && <span className="italic"> {t('filters.filteredBy.year', { year })}</span>}
-                {domain && <span className="italic"> {t('filters.filteredBy.domain', { domain: domain === 'RESEARCH' ? t('filters.domain.research') : t('filters.domain.clinical') })}</span>}
-              </p>
+            <div className="flex items-center justify-between border-b border-slate-100 pb-8">
+              <div className="space-y-1">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">Archive Explorer</p>
+                <h3 className="text-2xl font-serif font-bold text-slate-900">
+                  {t('filters.results', { count: publications.length })}
+                  {year && <span className="text-slate-400"> for {year}</span>}
+                </h3>
+              </div>
               
               {(year || domain) && (
                 <Link 
                   href="/publications" 
-                  className="text-[10px] font-bold uppercase tracking-widest text-blue-600 hover:text-blue-800 transition-colors"
+                  className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 transition-all bg-slate-50 px-4 py-2 rounded-full"
                 >
+                  <SearchX size={14} />
                   {t('filters.reset')}
                 </Link>
               )}
             </div>
 
-            {/* Grille des cartes */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
               {publications.map((pub, index) => {
                 const content = pub.translations[0];
                 if (!content) return null;
 
                 return (
-                  <div 
-                    key={pub.id} 
-                    className="group bg-white border border-slate-200 hover:border-blue-200 hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row"
+                  <motion.div 
+                    key={pub.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: (index % 3) * 0.1 }}
+                    className="group bg-white rounded-[2.5rem] border border-slate-100 p-6 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-500 hover:-translate-y-2"
                   >
-                    {/* Aperçu PDF */}
-                    <div className="w-full md:w-56 h-72 shrink-0 bg-slate-50 border-r border-slate-200">
-                      <ClientPdfPreview url={pub.pdfUrl} />
-                    </div>
+                    <div className="space-y-6">
+                      {/* PDF Preview Container */}
+                      <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-slate-50 border border-slate-100">
+                        <ClientPdfPreview url={pub.pdfUrl} />
+                        <div className="absolute inset-0 bg-blue-900/5 group-hover:opacity-0 transition-opacity" />
+                        
+                        {/* Domain Badge */}
+                        <Badge className={`
+                          absolute top-4 left-4 rounded-xl uppercase text-[8px] font-black tracking-widest px-4 py-1.5 border-none shadow-lg
+                          ${pub.domain === 'RESEARCH' 
+                            ? 'bg-blue-600 text-white shadow-blue-600/20' 
+                            : 'bg-emerald-600 text-white shadow-emerald-600/20'
+                          }
+                        `}>
+                          {pub.domain === 'RESEARCH' ? "Research" : "Clinical"}
+                        </Badge>
+                      </div>
 
-                    {/* Contenu */}
-                    <div className="p-6 lg:p-8 flex flex-col justify-between flex-1">
-                      <div className="space-y-4">
-                        {/* En-tête avec badge et année */}
-                        <div className="flex justify-between items-start">
-                          <Badge 
-                            className={`
-                              rounded-none uppercase text-[8px] font-black tracking-widest px-2 py-1
-                              ${pub.domain === 'RESEARCH' 
-                                ? 'bg-blue-100 text-blue-800 border-blue-200' 
-                                : 'bg-emerald-100 text-emerald-800 border-emerald-200'
-                              }
-                            `}
-                          >
-                            {pub.domain === 'RESEARCH' ? t('article.badge.research') : t('article.badge.clinical')}
-                          </Badge>
-                          <span className="text-xs font-serif italic text-slate-400">
-                            {pub.year}
-                          </span>
+                      {/* Content */}
+                      <div className="space-y-4 px-2">
+                        <div className="flex items-center gap-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                          <span className="flex items-center gap-1.5"><Calendar size={12} className="text-blue-600" /> {pub.year}</span>
+                          <span className="w-1 h-1 bg-slate-200 rounded-full" />
+                          <span className="flex items-center gap-1.5"><Clock size={12} className="text-emerald-600" /> 12 MIN</span>
                         </div>
 
-                        {/* Titre avec lien */}
-                        <Link 
-                          href={`/publications/${pub.slug || pub.id}`}
-                          className="block group/link"
-                        >
-                          <h2 className="text-xl lg:text-2xl font-serif font-bold text-slate-900 leading-tight group-hover:text-blue-700 transition-colors line-clamp-2">
+                        <Link href={`/publications/${pub.slug || pub.id}`}>
+                          <h4 className="text-xl font-serif font-bold text-slate-900 leading-tight line-clamp-2 min-h-[3.5rem] group-hover:text-blue-600 transition-colors">
                             {content.title || t('article.noTitle')}
-                          </h2>
+                          </h4>
                         </Link>
 
-                        {/* Auteurs */}
-                        <div className="flex items-center gap-2 text-xs text-slate-600">
-                          <User2 size={14} className="text-blue-600 shrink-0" />
-                          <span className="font-medium line-clamp-1">{content.authors || t('article.authors')}</span>
+                        <div className="flex items-center gap-3 py-3 border-y border-slate-50">
+                          <div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400">
+                            <User2 size={14} />
+                          </div>
+                          <span className="text-xs font-bold text-slate-600 line-clamp-1">{content.authors}</span>
                         </div>
 
-                        {/* Résumé */}
-                        <p className="text-sm text-slate-500 font-light line-clamp-2 leading-relaxed">
-                          {content.description || t('article.noDescription')}
-                        </p>
-
-                        {/* Métadonnées supplémentaires */}
-                        <div className="flex items-center gap-4 text-[10px] text-slate-400">
-                          <span className="flex items-center gap-1">
-                            <Clock size={12} />
-                            {t('article.readingTime', { time: '12' })}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Eye size={12} />
-                            {t('article.views', { count: '1.2k' })}
-                          </span>
-                          {pub.doi && (
-                            <span className="font-mono">{t('article.doi', { doi: pub.doi })}</span>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Actions */}
-                      <div className="pt-6 mt-4 border-t border-slate-100">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            {/* Bouton téléchargement */}
-                            <a 
-                              href={pub.pdfUrl} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-blue-900 hover:text-blue-700 transition-all group/btn"
-                            >
-                              <Download size={14} className="group-hover/btn:animate-bounce" />
-                              <span>{t('article.pdf')}</span>
-                            </a>
-
-                            {/* Lien détails */}
-                            <Link 
-                              href={`/publications/${pub.slug || pub.id}`}
-                              className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-blue-700 transition-all group/link"
-                            >
-                              <span>{t('article.details')}</span>
-                              <ArrowRight size={12} className="group-hover/link:translate-x-1 transition-transform" />
-                            </Link>
-                          </div>
-
-                          {/* Métriques */}
-                          <div className="flex items-center gap-2">
-                            <span className="text-[8px] font-mono text-slate-300">
-                              {pub.id.slice(-6)}
-                            </span>
-                          </div>
+                        <div className="flex items-center justify-between pt-2">
+                          <Link 
+                            href={`/publications/${pub.slug || pub.id}`}
+                            className="text-[10px] font-black uppercase tracking-widest text-blue-600 flex items-center gap-2 group/link"
+                          >
+                            Details
+                            <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
+                          </Link>
+                          
+                          <a 
+                            href={pub.pdfUrl} 
+                            target="_blank" 
+                            className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all overflow-hidden relative group/dl"
+                          >
+                            <Download size={16} className="relative z-10" />
+                            <motion.div 
+                              className="absolute inset-0 bg-blue-600"
+                              initial={{ y: "100%" }}
+                              whileHover={{ y: 0 }}
+                            />
+                          </a>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
           </div>
         ) : (
-          /* --- ÉTAT VIDE --- */
-          <div className="max-w-2xl mx-auto py-24 text-center">
-            <div className="relative">
-              <div className="absolute inset-0 bg-blue-600/5 blur-3xl rounded-full" />
-              <SearchX size={80} className="mx-auto text-slate-300 relative z-10" strokeWidth={1} />
+          /* --- REFINED EMPTY STATE --- */
+          <div className="max-w-xl mx-auto py-32 text-center">
+            <div className="relative mb-12">
+              <div className="absolute inset-0 bg-blue-600/5 blur-3xl rounded-full scale-150" />
+              <div className="w-24 h-24 bg-white rounded-[2rem] shadow-xl border border-slate-50 flex items-center justify-center mx-auto relative z-10">
+                <SearchX size={48} className="text-slate-200" strokeWidth={1.5} />
+              </div>
             </div>
             
-            <h3 className="text-3xl font-serif font-bold text-slate-900 mt-8 mb-4">
+            <h3 className="text-3xl font-serif font-bold text-slate-900 mb-6">
               {t('empty.title')}
             </h3>
             
-            <p className="text-slate-500 font-light leading-relaxed mb-8 max-w-md mx-auto">
-              {year && domain 
-                ? t('empty.description.yearDomain', { 
-                    domain: domain === 'RESEARCH' ? t('filters.domain.research') : t('filters.domain.clinical'),
-                    year 
-                  })
-                : year 
-                ? t('empty.description.year', { year })
-                : domain
-                ? t('empty.description.domain', { 
-                    domain: domain === 'RESEARCH' ? t('filters.domain.research') : t('filters.domain.clinical')
-                  })
-                : t('empty.description.default')
-              }
+            <p className="text-slate-500 font-light leading-relaxed mb-10">
+              No publications match your current filters. Try resetting the filters to explore our full library.
             </p>
             
             <div className="flex justify-center gap-4">
               <Link 
                 href="/publications" 
-                className="px-8 py-3 bg-slate-900 text-white font-bold text-xs uppercase tracking-widest hover:bg-blue-700 transition-all"
+                className="px-10 py-4 bg-blue-600 text-white font-bold text-[10px] uppercase tracking-widest rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20"
               >
-                {t('empty.button1')}
-              </Link>
-              <Link 
-                href="/contact" 
-                className="px-8 py-3 border border-slate-200 text-slate-600 font-bold text-xs uppercase tracking-widest hover:bg-slate-50 transition-all"
-              >
-                {t('empty.button2')}
+                Reset Filters
               </Link>
             </div>
           </div>

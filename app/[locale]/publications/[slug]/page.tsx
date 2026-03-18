@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { Link } from "@/navigation";
 import {
   Download, User2, ExternalLink, ArrowLeft, Globe, Quote,
-  Calendar, Landmark, ArrowRight
+  Calendar, Landmark, ArrowRight, Share2, Clock, BookOpen,
+  FileText, Award
 } from "lucide-react";
 import ClientPdfPreview from "@/components/public/ClientPdfPreview";
 import { Badge } from "@/components/ui/badge";
@@ -15,11 +16,12 @@ import { Metadata } from 'next';
 import ShareButtons from "@/components/public/ShareButtons";
 import CitationButton from "@/components/public/CitationButton";
 import { getTranslations } from "next-intl/server";
+import * as motion from "framer-motion/client";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
   const pub = await db.publication.findUnique({
-    where: { slug },
+    where: { slug: decodeURIComponent(slug) },
     include: { translations: { where: { language: locale } } }
   });
 
@@ -37,16 +39,18 @@ export default async function PublicationDetailPage({ params }: { params: Promis
   const t = await getTranslations({ locale, namespace: 'PublicationDetailPage' });
 
   const pub = await db.publication.findUnique({
-    where: { slug },
-    include: { translations: { where: { language: locale } } }
+    where: { slug: decodeURIComponent(slug) },
+    include: { 
+      translations: { where: { language: locale } } 
+    }
   });
 
   if (!pub || pub.translations.length === 0) notFound();
 
   const content = pub.translations[0];
-  // Normalise pdfUrl to an absolute URL.
-  // Guard against empty string: if pdfUrl is falsy, keep it empty so PdfPreview
-  // can render the "no document" placeholder instead of crashing on "/".
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://credda-ulpgl.org';
+  const pageUrl = `${baseUrl}/${locale}/publications/${slug}`;
+
   const rawPdfUrl = pub.pdfUrl
     ? pub.pdfUrl.startsWith("http")
       ? pub.pdfUrl
@@ -55,13 +59,13 @@ export default async function PublicationDetailPage({ params }: { params: Promis
         : `/${pub.pdfUrl}`
     : "";
   const pdfUrl = rawPdfUrl && !rawPdfUrl.endsWith(".pdf") ? `${rawPdfUrl}.pdf` : rawPdfUrl;
+
   const citation = t('citation.format', {
     authors: content.authors,
     year: pub.year,
     title: content.title
   });
 
-  // Recommandations
   const recommendations = await db.publication.findMany({
     where: { id: { not: pub.id }, domain: pub.domain },
     include: { translations: { where: { language: locale } } },
@@ -70,172 +74,309 @@ export default async function PublicationDetailPage({ params }: { params: Promis
   });
 
   return (
-    <main className="min-h-screen bg-white">
-      {/* --- 1. TOP NAVIGATION BAR --- */}
-      <div className="bg-slate-50 border-b border-slate-100 py-4 sticky top-16 z-40 backdrop-blur-md bg-white/80">
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/publications" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-blue-600 transition-all group">
-            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-            {t('back')}
-          </Link>
-          <div className="flex items-center gap-6">
-            <ShareButtons title={content.title} url={""} description={content.description} />
-            <Badge variant="outline" className="rounded-none border-blue-200 text-blue-700 text-[9px] font-black uppercase tracking-tighter">
-              {pub.domain === 'RESEARCH' ? t('badge.research') : t('badge.clinical')}
-            </Badge>
-          </div>
+    <main className="min-h-screen bg-[#fafafa]">
+      
+      {/* --- 1. PREMIUM DARK HERO --- */}
+      <section className="relative bg-[#050a15] text-white pt-32 pb-48 lg:pt-48 lg:pb-64 overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-0 right-0 w-[1000px] h-[1000px] bg-blue-600/10 rounded-full blur-[150px] -mr-96 -mt-96" />
+          <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-emerald-600/5 rounded-full blur-[120px] -ml-64 -mb-64" />
+          <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.03]" />
         </div>
-      </div>
 
-      <article className="py-12 lg:py-20">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-12 gap-16">
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-5xl space-y-10">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex items-center gap-4"
+            >
+              <Link href="/publications" className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-white transition-all">
+                <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
+                Back to Archive
+              </Link>
+              <span className="w-1 h-1 bg-slate-700 rounded-full" />
+              <Badge className="bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-full px-4 py-1.5 uppercase tracking-widest text-[9px] font-black">
+                {pub.domain === 'RESEARCH' ? "Research Paper" : "Clinical Report"}
+              </Badge>
+            </motion.div>
 
-            {/* --- 2. COLONNE GAUCHE : ACTIONS & PREVIEW (STICKY) --- */}
-            <aside className="lg:col-span-4 space-y-8">
-              <div className="sticky top-32 space-y-8">
-                {/* Preview Box */}
-                <div className="sticky top-2  aspect-[3/4] bg-slate-900 shadow-2xl overflow-hidden group">
-                  <ClientPdfPreview url={pdfUrl} />
-                  <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors" />
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.8 }}
+              className="space-y-6"
+            >
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold leading-[1.1] tracking-tight">
+                {content.title}
+              </h1>
+              
+              <div className="flex flex-wrap items-center gap-8 pt-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-600/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                    <Calendar size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[9px] uppercase tracking-widest text-slate-500 font-black">Published</p>
+                    <p className="text-sm font-bold text-slate-200">{pub.year}</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-600/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                    <Clock size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[9px] uppercase tracking-widest text-slate-500 font-black">Read Time</p>
+                    <p className="text-sm font-bold text-slate-200">15 Minutes</p>
+                  </div>
                 </div>
 
-                {/* Actions Buttons */}
-                <div className="space-y-3">
-                  {pdfUrl && (
-                    <a
-                      href={pdfUrl}
-                      target="_blank"
-                      className="flex items-center justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 text-white py-5 px-6 font-black uppercase text-xs tracking-widest transition-all shadow-xl shadow-blue-600/20"
-                    >
-                      <Download size={18} /> {t('actions.download')}
-                    </a>
-                  )}
-
-
-                </div>
-
-                {/* Citation Box (Styled) */}
-                <div className="p-6 bg-slate-50 border-l-4 border-blue-600">
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
-                    <Quote size={12} /> {t('citation.title')}
-                  </h4>
-                  <p className="text-xs text-slate-600 leading-relaxed font-mono italic mb-4">
-                    {citation}
-                  </p>
-                  <CitationButton citation={citation} />
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-purple-600/10 border border-purple-500/20 flex items-center justify-center text-purple-400">
+                    <Award size={18} />
+                  </div>
+                  <div>
+                    <p className="text-[9px] uppercase tracking-widest text-slate-500 font-black">Impact</p>
+                    <p className="text-sm font-bold text-slate-200">Peer Reviewed</p>
+                  </div>
                 </div>
               </div>
-            </aside>
+            </motion.div>
+          </div>
+        </div>
+      </section>
 
-            {/* --- 3. COLONNE DROITE : CONTENU SCIENTIFIQUE --- */}
-            <div className="lg:col-span-8">
-              <header className="space-y-8 mb-16">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
-                    <Calendar size={14} />
-                    <span>{t('metadata.publication', { year: pub.year })}</span>
-                    <span className="w-1.5 h-1.5 bg-slate-200 rounded-full" />
-                    <Globe size={14} />
-                    <span>{t('metadata.openAccess')}</span>
+      {/* --- 2. MAIN CONTENT & STICKY SIDEBAR --- */}
+      <section className="relative -mt-32 z-20 pb-24">
+        <div className="container mx-auto px-6">
+          <div className="grid lg:grid-cols-12 gap-12">
+            
+            {/* --- LEFT COL: CONTENT --- */}
+            <div className="lg:col-span-8 space-y-12">
+              <motion.div 
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
+                className="bg-white rounded-[3rem] p-12 lg:p-16 shadow-2xl shadow-blue-900/10 border border-slate-100"
+              >
+                {/* Abstract Section */}
+                <div className="space-y-8">
+                  <div className="flex items-center gap-3">
+                    <div className="h-px w-12 bg-blue-600" />
+                    <h3 className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Executive Abstract</h3>
                   </div>
-                  <h1 className="text-4xl md:text-6xl font-serif font-bold text-slate-950 leading-tight tracking-tight">
-                    {content.title}
-                  </h1>
+                  
+                  <div className="text-2xl font-serif font-light leading-relaxed text-slate-700 italic border-l-4 border-blue-50 px-8 py-4 bg-slate-50 rounded-2xl">
+                    {content.description}
+                  </div>
                 </div>
 
-                {/* Auteurs - Style Academic Listing */}
-                <div className="flex flex-wrap items-center gap-y-4 gap-x-8 py-6 border-y border-slate-100">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-blue-600">
-                      <User2 size={20} />
+                {/* Authors Section */}
+                <div className="mt-16 pt-12 border-t border-slate-100 grid md:grid-cols-2 gap-12">
+                  <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-sm shrink-0">
+                      <User2 size={28} />
                     </div>
                     <div>
-                      <p className="text-[10px] font-black uppercase text-slate-400">{t('metadata.authors')}</p>
-                      <p className="text-sm font-bold text-slate-900">{content.authors}</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Lead Researchers</p>
+                      <p className="text-lg font-bold text-slate-900 leading-tight">{content.authors}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-blue-600">
-                      <Landmark size={20} />
+                  
+                  <div className="flex items-center gap-6">
+                    <div className="w-16 h-16 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 shadow-sm shrink-0">
+                      <Landmark size={28} />
                     </div>
                     <div>
-                      <p className="text-[10px] font-black uppercase text-slate-400">{t('metadata.affiliation')}</p>
-                      <p className="text-sm font-bold text-slate-900">CREDDA - ULPGL Hub</p>
+                      <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">Affiliation</p>
+                      <p className="text-lg font-bold text-slate-900 leading-tight">CREDDA - ULPGL Research Hub</p>
                     </div>
                   </div>
                 </div>
-              </header>
 
-              {/* Abstract / Résumé */}
-              <section className="mb-16">
-                <h3 className="text-xs font-black uppercase tracking-[0.4em] text-blue-600 mb-6 flex items-center gap-3">
-                  <div className="h-px w-8 bg-blue-600" /> {t('abstract')}
-                </h3>
-                <div className="text-xl font-light leading-relaxed text-slate-700 italic font-serif bg-slate-50 p-8 border-l-4 border-slate-200">
-                  {content.description}
-                </div>
-              </section>
-
-              {/* Contenu Markdown Intégral */}
-              {content.content && (
-                <section className="prose prose-slate prose-lg max-w-none 
+                {/* Main Content (Markdown) */}
+                {content.content && (
+                  <div className="mt-20 pt-16 border-t border-slate-100">
+                    <div className="flex items-center gap-3 mb-12">
+                      <div className="h-px w-12 bg-blue-600" />
+                      <h3 className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Full Publication</h3>
+                    </div>
+                    
+                    <div className="prose prose-slate prose-lg max-w-none 
                                     prose-headings:font-serif prose-headings:font-bold prose-headings:text-slate-950
-                                    prose-p:text-slate-700 prose-p:leading-relaxed prose-p:font-light
+                                    prose-p:text-slate-600 prose-p:leading-relaxed prose-p:font-light
                                     prose-strong:text-blue-900 prose-strong:font-bold
-                                    border-t border-slate-100 pt-12">
-                  <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                    {content.content}
-                  </Markdown>
-                </section>
-              )}
-
-              {/* Tags / Metadata Footer */}
-              <footer className="mt-20 pt-10 border-t border-slate-100 flex flex-wrap gap-4">
-                <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.democracy')}</Badge>
-                <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.drc')}</Badge>
-                <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.governance')}</Badge>
-              </footer>
+                                    prose-blockquote:border-l-4 prose-blockquote:border-blue-100 prose-blockquote:bg-slate-50 prose-blockquote:py-2 prose-blockquote:px-8 prose-blockquote:rounded-r-2xl prose-blockquote:italic
+                                    prose-img:rounded-[2rem] prose-img:shadow-xl">
+                      <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                        {content.content}
+                      </Markdown>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
             </div>
+
+            {/* --- RIGHT COL: STICKY ACTIONS --- */}
+            <aside className="lg:col-span-4">
+              <div className="sticky top-32 space-y-8">
+                
+                {/* PDF Preview Card */}
+                <motion.div 
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
+                  className="bg-white rounded-[2.5rem] p-6 shadow-2xl shadow-blue-900/10 border border-slate-100 overflow-hidden group"
+                >
+                  <div className="aspect-[3/4] rounded-[2rem] overflow-hidden bg-slate-50 border border-slate-100 mb-8 relative">
+                    <ClientPdfPreview url={pdfUrl} />
+                    <div className="absolute inset-0 bg-blue-900/5 group-hover:opacity-0 transition-opacity" />
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {pdfUrl && (
+                      <a
+                        href={pdfUrl}
+                        target="_blank"
+                        className="flex items-center justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 text-white py-5 px-6 rounded-2xl font-black uppercase text-xs tracking-widest transition-all shadow-xl shadow-blue-600/20 group/dl"
+                      >
+                        <Download size={18} className="group-hover/dl:animate-bounce" /> 
+                        {t('actions.download')}
+                      </a>
+                    )}
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <button className="flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-600 py-4 px-4 rounded-xl font-bold uppercase text-[9px] tracking-widest transition-all">
+                        <Share2 size={16} /> Share Now
+                      </button>
+                      <button className="flex items-center justify-center gap-2 bg-slate-50 hover:bg-slate-100 text-slate-600 py-4 px-4 rounded-xl font-bold uppercase text-[9px] tracking-widest transition-all">
+                        <FileText size={16} /> Reference
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Citation Box */}
+                <motion.div 
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.8, duration: 0.8 }}
+                  className="bg-white rounded-[2.5rem] p-8 lg:p-10 shadow-xl shadow-blue-900/5 border border-slate-100 space-y-6"
+                >
+                  <div className="flex items-center gap-3">
+                    <Quote size={20} className="text-blue-600" />
+                    <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
+                      {t('citation.title')}
+                    </h4>
+                  </div>
+                  
+                  <div className="p-6 bg-slate-50 rounded-2xl border-l-4 border-blue-600 italic">
+                    <p className="text-sm text-slate-600 leading-relaxed font-mono">
+                      {citation}
+                    </p>
+                  </div>
+                  
+                  <CitationButton citation={citation} />
+                </motion.div>
+
+                {/* Share Box */}
+                <motion.div 
+                   initial={{ opacity: 0, x: 20 }}
+                   animate={{ opacity: 1, x: 0 }}
+                   transition={{ delay: 1, duration: 0.8 }}
+                   className="bg-white rounded-[2rem] p-6 border border-slate-100"
+                >
+                   <ShareButtons title={content.title} url={pageUrl} description={content.description} />
+                </motion.div>
+              </div>
+            </aside>
           </div>
 
-          {/* --- 4. SECTION RECOMMANDATIONS --- */}
+          {/* --- 3. RECOMMENDATIONS SECTION --- */}
           {recommendations.length > 0 && (
-            <section className="mt-32 pt-20 border-t border-slate-100">
-              <div className="flex items-end justify-between mb-12">
-                <div className="space-y-2">
-                  <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">{t('recommendations.title')}</h2>
-                  <p className="text-3xl font-serif font-bold text-slate-950">{t('recommendations.subtitle')}</p>
+            <section className="mt-32 pt-24 border-t border-slate-100">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="h-px w-12 bg-blue-600" />
+                    <h3 className="text-xs font-black uppercase tracking-[0.4em] text-blue-600">Scientific Context</h3>
+                  </div>
+                  <h2 className="text-4xl lg:text-5xl font-serif font-bold text-slate-950">
+                    Related Research
+                  </h2>
                 </div>
-                <Link href="/publications" className="text-[10px] font-black uppercase border-b-2 border-slate-900 pb-1">
-                  {t('recommendations.cta')}
+                
+                <Link href="/publications" className="group inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-blue-600 transition-all">
+                  Explore Full Archive
+                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-8">
-                {recommendations.map(rec => (
-                  <Link
-                    key={rec.id}
-                    href={`/publications/${rec.slug || rec.id}`}
-                    className="group bg-slate-50 p-8 hover:bg-blue-600 transition-all duration-500 hover:shadow-2xl"
-                  >
-                    <div className="flex flex-col h-full">
-                      <span className="text-[10px] font-bold text-slate-400 group-hover:text-blue-100 mb-4 uppercase">{rec.year}</span>
-                      <h3 className="text-lg font-serif font-bold text-slate-900 group-hover:text-white leading-tight mb-4 line-clamp-2">
-                        {rec.translations[0]?.title}
-                      </h3>
-                      <div className="mt-auto flex items-center justify-between text-[10px] font-black uppercase group-hover:text-white">
-                        <span>{t('recommendations.read')}</span>
-                        <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                {recommendations.map((rec, index) => {
+                  const recContent = rec.translations[0];
+                  if (!recContent) return null;
+
+                  return (
+                    <motion.div 
+                      key={rec.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: index * 0.1 }}
+                      className="group bg-white rounded-[2.5rem] border border-slate-100 p-6 hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-500 hover:-translate-y-2"
+                    >
+                      <div className="space-y-6">
+                        <div className="relative aspect-[4/5] rounded-3xl overflow-hidden bg-slate-50 border border-slate-100">
+                          <ClientPdfPreview url={rec.pdfUrl} />
+                          <div className="absolute inset-0 bg-blue-900/5 group-hover:opacity-0 transition-opacity" />
+                          
+                          <Badge className={`
+                            absolute top-4 left-4 rounded-xl uppercase text-[8px] font-black tracking-widest px-4 py-1.5 border-none shadow-lg
+                            ${rec.domain === 'RESEARCH' 
+                              ? 'bg-blue-600 text-white shadow-blue-600/20' 
+                              : 'bg-emerald-600 text-white shadow-emerald-600/20'
+                            }
+                          `}>
+                            {rec.domain === 'RESEARCH' ? "Research" : "Clinical"}
+                          </Badge>
+                        </div>
+
+                        <div className="space-y-4 px-2">
+                          <div className="flex items-center gap-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                            <span className="flex items-center gap-1.5"><Calendar size={12} className="text-blue-600" /> {rec.year}</span>
+                            <span className="w-1 h-1 bg-slate-200 rounded-full" />
+                            <span className="flex items-center gap-1.5"><Clock size={12} className="text-emerald-600" /> 12 MIN</span>
+                          </div>
+
+                          <Link href={`/publications/${rec.slug || rec.id}`}>
+                            <h4 className="text-xl font-serif font-bold text-slate-900 leading-tight line-clamp-2 min-h-[3.5rem] group-hover:text-blue-600 transition-colors">
+                              {recContent.title}
+                            </h4>
+                          </Link>
+
+                          <div className="flex items-center justify-between pt-4 border-t border-slate-50">
+                            <Link 
+                              href={`/publications/${rec.slug || rec.id}`}
+                              className="text-[10px] font-black uppercase tracking-widest text-blue-600 flex items-center gap-2 group/link"
+                            >
+                              Read Full Paper
+                              <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
+                            </Link>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </section>
           )}
         </div>
-      </article>
+      </section>
     </main>
   );
 }

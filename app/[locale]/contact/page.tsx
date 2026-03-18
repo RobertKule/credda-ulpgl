@@ -1,12 +1,10 @@
-// app/[locale]/contact/page.tsx
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Send, Loader2, CheckCircle2, User, Tag, MessageSquare,
   MapPin, Mail, Phone, Clock, Facebook, Twitter, Linkedin, 
-  ShieldCheck, Globe 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,8 +12,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { sendContactMessage } from "@/services/contact-actions";
 import { useTranslations } from "next-intl";
+import ContactMap from "@/components/contact/ContactMap";
 
-// Interface pour le résultat du formulaire
 interface ContactFormResult {
   success: boolean;
   error?: string;
@@ -47,7 +45,6 @@ export default function ContactPage() {
 
     try {
       const response = await sendContactMessage(data);
-      
       let resultData: ContactFormResult;
       
       if (typeof response === 'object' && response !== null) {
@@ -75,168 +72,198 @@ export default function ContactPage() {
     }
   };
 
-  const icons = [MapPin, Mail, Phone, Clock];
+  const icons = [MapPin, Phone, Mail, Clock]; // Mapping to Location, Phone, Email, Hours
 
   return (
-    <main className="min-h-screen bg-white overflow-x-hidden">
+    <main className="min-h-screen bg-[#fafafa] overflow-x-hidden pt-28 lg:pt-36 pb-20">
+      <div className="container mx-auto px-6 max-w-7xl relative">
 
-      {/* --- 1. HEADER CONTACT (DARK ACADEMIC) --- */}
-      <header className="relative bg-[#050a15] text-white py-24 lg:py-32 overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[100px] -mr-20 -mt-20" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-600/5 rounded-full blur-[80px] -ml-20 -mb-20" />
-
-        <div className="container mx-auto px-6 text-center relative z-10 space-y-6">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <Badge className="bg-blue-600 rounded-none px-4 py-1.5 uppercase tracking-[0.3em] text-[10px] mb-4">
-              {t('header.badge')}
-            </Badge>
-            <h1 className="text-5xl lg:text-8xl font-serif font-bold italic leading-tight">
-              <span dangerouslySetInnerHTML={{ __html: t.raw('header.title') }} />
-            </h1>
-          </motion.div>
-          <p className="text-slate-400 max-w-2xl mx-auto font-light text-lg lg:text-xl leading-relaxed">
-            {t('header.description')}
-          </p>
-        </div>
-      </header>
-
-      {/* --- 2. SECTION CARTE DE CONTACT (SPLIT DESIGN) --- */}
-      <section className="container mx-auto px-6 -mt-20 relative z-20 mb-28">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="grid lg:grid-cols-12 gap-0 bg-white shadow-[0_30px_100px_rgba(0,0,0,0.12)] border border-slate-100"
-        >
-          {/* GAUCHE : INFOS DE CONTACT (DEEP BLUE) */}
-          <div className="lg:col-span-4 bg-[#0a1120] text-white p-10 lg:p-16 flex flex-col justify-between overflow-hidden relative">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/20 blur-3xl rounded-full" />
-
-            <div className="space-y-12 relative z-10">
-              <div className="space-y-4">
-                <h3 className="text-3xl font-serif font-bold">{t('info.title')}</h3>
-                <div className="h-1 w-12 bg-blue-600" />
-                <p className="text-slate-400 text-sm font-light leading-relaxed">
-                  {t('info.description')}
-                </p>
-              </div>
-
-              <div className="space-y-8">
-                {infoItems.map((item: any, idx: number) => {
-                  const Icon = icons[idx];
-                  return (
-                    <div key={idx} className="flex items-start gap-5 group">
-                      <div className="p-3 bg-white/5 border border-white/10 group-hover:bg-blue-600/20 transition-all">
-                        <Icon className="text-blue-500" size={20} />
-                      </div>
-                      <div>
-                        <p className="font-black text-[10px] uppercase tracking-[0.2em] text-blue-400 mb-1">{item.title}</p>
-                        <p className="text-blue-50 text-sm font-light leading-snug">{item.content}</p>
-                      </div>
-                    </div>
-                  );
-                })}
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
+          
+          {/* LEFT SIDE: MAP & LOCATION INFO */}
+          <div className="w-full lg:w-5/12 order-2 lg:order-1 flex flex-col gap-6">
+            <div className="h-[400px] lg:h-[calc(100vh-200px)] min-h-[600px] sticky top-32 rounded-3xl overflow-hidden shadow-[0_20px_80px_rgba(0,0,0,0.1)] border-4 border-white z-10">
+              <ContactMap />
+              <div className="absolute top-6 left-6 z-[500] pointer-events-none">
+                <Badge className="bg-white/95 text-blue-600 border-none rounded-2xl px-5 py-2 uppercase tracking-widest text-[10px] font-black shadow-lg backdrop-blur-md flex items-center gap-2">
+                  <MapPin size={14} />
+                  {t('map.badge')}
+                </Badge>
               </div>
             </div>
-
-            <div className="pt-16 space-y-6 relative z-10">
-              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">{t('info.social')}</p>
-              <div className="flex gap-4">
+            
+            <div className="flex items-center justify-center gap-6 mt-4">
+              <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">{t('info.social')}</p>
+              <div className="flex gap-3">
                 {[Facebook, Twitter, Linkedin].map((Icon, i) => (
-                  <a key={i} href="#" className="w-10 h-10 border border-white/10 flex items-center justify-center hover:bg-blue-600 hover:border-blue-600 transition-all">
-                    <Icon size={18} />
-                  </a>
+                  <motion.a 
+                    key={i} 
+                    href="#" 
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-10 h-10 rounded-full bg-white shadow-md border border-slate-100 flex items-center justify-center text-slate-400 hover:text-blue-600 transition-colors"
+                  >
+                    <Icon size={16} />
+                  </motion.a>
                 ))}
               </div>
             </div>
           </div>
 
-          {/* DROITE : FORMULAIRE */}
-          <div className="lg:col-span-8 p-10 lg:p-20 bg-white">
-            {!isSent ? (
-              <div className="max-w-2xl mx-auto space-y-10">
-                <div className="space-y-3">
-                  <h3 className="text-3xl font-serif font-bold text-slate-900 leading-tight">
-                    {t('form.title')}
-                  </h3>
-                  
-                  {/* Affichage des erreurs */}
-                  {error && (
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      className="bg-red-50 border-l-4 border-red-600 p-4 flex items-start gap-3"
-                    >
-                      <div className="text-red-600 font-bold text-lg">!</div>
-                      <p className="text-red-700 text-sm font-medium">{error}</p>
-                    </motion.div>
-                  )}
-                </div>
+          {/* RIGHT SIDE: CONTENT & FORM */}
+          <div className="w-full lg:w-7/12 order-1 lg:order-2 flex flex-col gap-12">
+            
+            {/* HEADER */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="space-y-6"
+            >
+              <Badge className="bg-blue-600/10 text-blue-600 border border-blue-200 rounded-full px-4 py-1.5 uppercase tracking-widest text-[10px] font-black">
+                {t('header.badge')}
+              </Badge>
+              <h1 className="text-4xl lg:text-6xl font-serif font-bold text-slate-900 leading-tight tracking-tight">
+                <span dangerouslySetInnerHTML={{ __html: t.raw('header.title') }} />
+              </h1>
+              <p className="text-slate-500 max-w-xl font-light text-lg lg:text-xl leading-relaxed">
+                {t('header.description')}
+              </p>
+            </motion.div>
 
-                <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-x-12 gap-y-8">
-                  {/* NOM COMPLET */}
-                  <div className="space-y-3 group">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors flex items-center gap-2">
-                      <User size={12} className="text-blue-600/50" />
-                      {formFields.name.label} {formFields.name.required}
-                    </label>
-                    <Input
-                      name="name"
-                      required
-                      placeholder={formFields.name.placeholder}
-                      className="rounded-none border-t-0 border-x-0 border-b-2 border-slate-200 bg-transparent px-0 h-12 text-lg focus-visible:ring-0 focus-visible:border-blue-600 transition-all placeholder:text-slate-300 font-light"
-                    />
-                  </div>
+            {/* INFO CARDS */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              {infoItems.map((item: any, idx: number) => {
+                const Icon = icons[idx];
+                return (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: idx * 0.1 }}
+                    key={idx}
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    className="bg-white p-6 rounded-2xl border border-slate-100 shadow-[0_4px_20px_rgba(0,0,0,0.02)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:border-blue-100 group flex flex-col gap-4 cursor-default transition-shadow"
+                  >
+                    <div className="w-12 h-12 bg-slate-50 rounded-xl group-hover:bg-blue-600/10 group-hover:text-blue-600 text-slate-400 flex items-center justify-center transition-colors">
+                      <Icon size={22} />
+                    </div>
+                    <div>
+                      <h4 className="font-black text-[10px] uppercase tracking-[0.2em] text-slate-400 mb-1.5 group-hover:text-blue-600 transition-colors">{item.title}</h4>
+                      <p className="text-slate-700 text-sm font-medium leading-relaxed">{item.content}</p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
 
-                  {/* EMAIL */}
-                  <div className="space-y-3 group">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors flex items-center gap-2">
-                      <Mail size={12} className="text-blue-600/50" />
-                      {formFields.email.label} {formFields.email.required}
-                    </label>
-                    <Input
-                      name="email"
-                      required
-                      type="email"
-                      placeholder={formFields.email.placeholder}
-                      className="rounded-none border-t-0 border-x-0 border-b-2 border-slate-200 bg-transparent px-0 h-12 text-lg focus-visible:ring-0 focus-visible:border-blue-600 transition-all placeholder:text-slate-300 font-light"
-                    />
-                  </div>
+            {/* CONTACT FORM */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="bg-white p-8 lg:p-12 rounded-[2rem] border border-slate-100 shadow-[0_20px_80px_rgba(0,0,0,0.04)] relative overflow-hidden"
+            >
+              {/* Form visual elements */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none opacity-60" />
 
-                  {/* SUJET */}
-                  <div className="md:col-span-2 space-y-3 group">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors flex items-center gap-2">
-                      <Tag size={12} className="text-blue-600/50" />
-                      {formFields.subject.label} {formFields.subject.required}
-                    </label>
-                    <Input
-                      name="subject"
-                      required
-                      placeholder={formFields.subject.placeholder}
-                      className="rounded-none border-t-0 border-x-0 border-b-2 border-slate-200 bg-transparent px-0 h-12 text-lg focus-visible:ring-0 focus-visible:border-blue-600 transition-all placeholder:text-slate-300 font-light"
-                    />
-                  </div>
+              <h3 className="text-3xl font-serif font-bold text-slate-900 leading-tight mb-8 relative z-10">
+                {t('form.title')}
+              </h3>
 
-                  {/* MESSAGE */}
-                  <div className="md:col-span-2 space-y-3 group">
-                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors flex items-center gap-2">
-                      <MessageSquare size={12} className="text-blue-600/50" />
-                      {formFields.message.label} {formFields.message.required}
-                    </label>
-                    <Textarea
-                      name="message"
-                      required
-                      placeholder={formFields.message.placeholder}
-                      className="rounded-none border-t-0 border-x-0 border-b-2 border-slate-200 bg-slate-50/30 p-4 min-h-[180px] text-lg focus-visible:ring-0 focus-visible:border-blue-600 transition-all placeholder:text-slate-300 font-light resize-none"
-                    />
-                  </div>
+              <AnimatePresence mode="wait">
+                {!isSent ? (
+                  <motion.form 
+                    key="form"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    onSubmit={handleSubmit} 
+                    className="space-y-6 relative z-10"
+                  >
+                    {error && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        className="bg-red-50 border border-red-100 rounded-xl p-4 flex items-start gap-3 text-red-700 text-sm font-medium"
+                      >
+                        <div className="font-bold mt-0.5">!</div>
+                        <p>{error}</p>
+                      </motion.div>
+                    )}
 
-                  {/* BOUTON D'ENVOI */}
-                  <div className="md:col-span-2 pt-6">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {/* NAME */}
+                      <div className="space-y-2 group">
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors">
+                          {formFields.name.label} {formFields.name.required && <span className="text-red-400">*</span>}
+                        </label>
+                        <div className="relative">
+                          <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                          <Input
+                            name="name"
+                            required
+                            placeholder={formFields.name.placeholder}
+                            className="h-14 pl-12 rounded-2xl border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-base placeholder:text-slate-400 font-medium"
+                          />
+                        </div>
+                      </div>
+
+                      {/* EMAIL */}
+                      <div className="space-y-2 group">
+                        <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors">
+                          {formFields.email.label} {formFields.email.required && <span className="text-red-400">*</span>}
+                        </label>
+                        <div className="relative">
+                          <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                          <Input
+                            name="email"
+                            type="email"
+                            required
+                            placeholder={formFields.email.placeholder}
+                            className="h-14 pl-12 rounded-2xl border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-base placeholder:text-slate-400 font-medium"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* SUBJECT */}
+                    <div className="space-y-2 group">
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors">
+                        {formFields.subject.label} {formFields.subject.required && <span className="text-red-400">*</span>}
+                      </label>
+                      <div className="relative">
+                        <Tag size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                        <Input
+                          name="subject"
+                          required
+                          placeholder={formFields.subject.placeholder}
+                          className="h-14 pl-12 rounded-2xl border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-base placeholder:text-slate-400 font-medium"
+                        />
+                      </div>
+                    </div>
+
+                    {/* MESSAGE */}
+                    <div className="space-y-2 group">
+                      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors">
+                        {formFields.message.label} {formFields.message.required && <span className="text-red-400">*</span>}
+                      </label>
+                      <div className="relative">
+                        <MessageSquare size={18} className="absolute left-4 top-5 text-slate-400 group-focus-within:text-blue-500 transition-colors pointer-events-none" />
+                        <Textarea
+                          name="message"
+                          required
+                          placeholder={formFields.message.placeholder}
+                          className="min-h-[160px] pl-12 pt-4 rounded-2xl border-slate-200 bg-slate-50/50 hover:bg-white focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-base placeholder:text-slate-400 font-medium resize-none shadow-sm"
+                        />
+                      </div>
+                    </div>
+
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full md:w-auto px-16 h-16 bg-[#050a15] hover:bg-blue-700 text-white rounded-none uppercase font-black tracking-[0.3em] text-[11px] shadow-2xl transition-all flex items-center gap-4 group disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl uppercase font-bold tracking-[0.1em] text-xs shadow-lg shadow-blue-600/20 hover:shadow-blue-600/40 transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden group/btn"
                     >
                       {isSubmitting ? (
                         <>
@@ -244,117 +271,49 @@ export default function ContactPage() {
                           <span>{t('form.submitting')}</span>
                         </>
                       ) : (
-                        <>
-                          {t('form.submit')}
-                          <Send size={16} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                        </>
+                        <div className="relative flex items-center gap-2">
+                          <span className="relative z-10">{t('form.submit')}</span>
+                          <Send size={16} className="relative z-10 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                        </div>
                       )}
                     </Button>
-                  </div>
-                </form>
-              </div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-center py-16 px-6 bg-slate-50 border border-slate-100 rounded-none space-y-8"
-              >
-                <div className="relative mx-auto w-24 h-24">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                    className="absolute inset-0 bg-emerald-500 rounded-full opacity-20"
-                  />
-                  <div className="relative flex items-center justify-center h-full text-emerald-600">
-                    <CheckCircle2 size={64} strokeWidth={1.5} />
-                  </div>
-                </div>
-
-                <div className="space-y-4 max-w-lg mx-auto">
-                  <h3 className="text-3xl font-serif font-bold text-slate-900 tracking-tight">
-                    {t('form.success.title')}
-                  </h3>
-                  <div className="w-12 h-1 bg-emerald-500 mx-auto mb-6" />
-                  <p className="text-slate-600 font-light leading-relaxed" 
-                     dangerouslySetInnerHTML={{ __html: t.raw('form.success.description') }} />
-                </div>
-
-                <div className="pt-6">
-                  <Button
-                    onClick={() => {
-                      setIsSent(false);
-                      setError("");
-                      setResult({ success: false });
-                    }}
-                    variant="outline"
-                    className="rounded-none border-slate-300 text-slate-500 hover:text-blue-600 hover:border-blue-600 uppercase font-black text-[10px] tracking-widest px-10 h-12 transition-all"
+                  </motion.form>
+                ) : (
+                  <motion.div 
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="flex flex-col items-center justify-center text-center py-10 relative z-10"
                   >
-                    {t('form.success.button')}
-                  </Button>
-                </div>
-              </motion.div>
-            )}
-          </div>
-        </motion.div>
-      </section>
+                    <motion.div 
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                      className="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-500 mb-8 mx-auto"
+                    >
+                      <CheckCircle2 size={48} strokeWidth={2} />
+                    </motion.div>
 
-      {/* --- 3. SECTION CARTE INTERACTIVE (CAMPUS SALOMON GOMA) --- */}
-      <section className="container mx-auto px-6 mb-24">
-        <div className="space-y-6 mb-12 text-center">
-          <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400">
-            {t('map.badge')}
-          </Badge>
-          <h3 className="text-4xl font-serif font-bold text-slate-900">{t('map.title')}</h3>
-        </div>
+                    <h3 className="text-3xl font-serif font-bold text-slate-900 mb-4">
+                      {t('form.success.title')}
+                    </h3>
+                    <p className="text-slate-500 font-medium leading-relaxed max-w-sm mx-auto" 
+                       dangerouslySetInnerHTML={{ __html: t.raw('form.success.description') }} />
 
-        <div className="h-[500px] w-full bg-slate-100 shadow-2xl relative border-8 border-white overflow-hidden group">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.102660144983!2d29.21980311475458!3d-1.6836423987723048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dd0f81d11e5f8f%3A0xc36e3c5443c7b3c2!2sULPGL%20Salomon!5e0!3m2!1sfr!2s!4v1707600000000!5m2!1sfr!2s"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            className="grayscale group-hover:grayscale-0 transition-all duration-1000 ease-in-out"
-          />
-          <div className="absolute bottom-6 left-6 bg-white p-6 shadow-2xl hidden md:block max-w-xs border-l-4 border-blue-600">
-            <p className="text-[10px] font-black uppercase text-blue-600 mb-2 tracking-widest">{t('map.gps')}</p>
-            <p className="text-slate-800 font-bold text-sm mb-1 italic">{t('map.location')}</p>
-            <p className="text-slate-500 text-xs leading-relaxed font-light">
-              {t('map.description')}
-            </p>
+                    <Button
+                      onClick={() => setIsSent(false)}
+                      variant="outline"
+                      className="mt-10 rounded-xl border-slate-200 text-slate-600 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-200 uppercase font-bold text-xs tracking-widest px-8 h-12 transition-all duration-300"
+                    >
+                      {t('form.success.button')}
+                    </Button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           </div>
         </div>
-      </section>
-
-      {/* --- 4. SECTION FAQ RAPIDE (ACCESSIBILITÉ) --- */}
-      <section className="py-20 bg-slate-50">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-12">
-          <div className="flex items-center gap-6">
-            <div className="p-4 bg-white shadow-xl">
-              <ShieldCheck size={32} className="text-blue-600" />
-            </div>
-            <div>
-              <h4 className="font-bold text-slate-900 uppercase text-xs tracking-widest">{t('faq.security.title')}</h4>
-              <p className="text-slate-500 text-sm font-light">
-                {t('faq.security.description')}
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-6">
-            <div className="p-4 bg-white shadow-xl">
-              <Globe size={32} className="text-blue-600" />
-            </div>
-            <div>
-              <h4 className="font-bold text-slate-900 uppercase text-xs tracking-widest">{t('faq.regional.title')}</h4>
-              <p className="text-slate-500 text-sm font-light">
-                {t('faq.regional.description')}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
     </main>
   );
 }
