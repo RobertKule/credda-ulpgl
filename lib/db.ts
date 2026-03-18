@@ -30,7 +30,8 @@ if (!globalForPrisma.adapter) {
 
 if (!globalForPrisma.prisma) {
   globalForPrisma.prisma = new PrismaClient({ 
-    adapter: globalForPrisma.adapter 
+    adapter: globalForPrisma.adapter,
+    log: [] // Silences default logging for a cleaner terminal
   })
 }
 

@@ -52,10 +52,16 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error: any) {
-    console.error("Registration error:", error);
+    const isConnError = error.code === 'P1017' || error.message?.includes('closed the connection');
+
+    if (isConnError) {
+      console.warn("⚠️ Database connection closed gracefully in registration API.");
+    } else {
+      console.error("Registration error:", error);
+    }
 
     // Resilience: Handle database connection drops gracefully
-    if (error.code === 'P1017' || error.message?.includes('closed the connection')) {
+    if (isConnError) {
       return NextResponse.json(
         { message: "Le service d'inscription est temporairement indisponible. Veuillez réessayer." },
         { status: 503 }

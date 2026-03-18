@@ -37,10 +37,16 @@ export async function PATCH(req: Request) {
       },
     });
   } catch (error: any) {
-    console.error("Profile update error:", error);
+    const isConnError = error.code === 'P1017' || error.message?.includes('closed the connection');
+    
+    if (isConnError) {
+      console.warn("⚠️ Database connection closed gracefully in profile update API.");
+    } else {
+      console.error("Profile update error:", error);
+    }
     
     // Resilience: Handle database connection drops gracefully
-    if (error.code === 'P1017' || error.message?.includes('closed the connection')) {
+    if (isConnError) {
       return NextResponse.json(
         { message: "La base de données est temporairement indisponible. Veuillez réessayer." },
         { status: 503 }
