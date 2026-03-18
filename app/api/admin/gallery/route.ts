@@ -1,11 +1,18 @@
 // app/api/admin/gallery/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export const runtime = 'nodejs';
 
 export async function GET() {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+    }
+
     const images = await db.galleryImage.findMany({
       orderBy: [
         { featured: 'desc' },
@@ -15,8 +22,8 @@ export async function GET() {
     });
     return NextResponse.json(images);
   } catch (error) {
-    console.error("Erreur GET gallery:", error);
-    return NextResponse.json({ error: "Erreur serveur" }, { status: 500 });
+    console.error("⚠️ Database failure in GET gallery:", error);
+    return NextResponse.json([]); // Return empty list on failure
   }
 }
 
