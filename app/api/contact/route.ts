@@ -86,8 +86,17 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erreur contact:", error);
+
+    // Resilience: Handle database connection drops gracefully
+    if (error.code === 'P1017' || error.message?.includes('closed the connection')) {
+      return NextResponse.json(
+        { error: "Le service est temporairement indisponible. Votre message n'a pas pu être enregistré." },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json(
       { error: "Erreur lors de l'envoi du message" },
       { status: 500 }

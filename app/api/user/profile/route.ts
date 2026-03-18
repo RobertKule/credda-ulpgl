@@ -36,10 +36,19 @@ export async function PATCH(req: Request) {
         image: updatedUser.image,
       },
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Profile update error:", error);
+    
+    // Resilience: Handle database connection drops gracefully
+    if (error.code === 'P1017' || error.message?.includes('closed the connection')) {
+      return NextResponse.json(
+        { message: "La base de données est temporairement indisponible. Veuillez réessayer." },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Une erreur est survenue lors de la mise à jour." },
       { status: 500 }
     );
   }

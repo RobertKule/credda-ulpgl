@@ -13,14 +13,16 @@ export default getRequestConfig(async ({ requestLocale }) => {
     const messages = (await import(`../messages/${locale}.json`)).default;
     return {
       locale,
-      messages
+      messages,
+      timeZone: 'Africa/Lubumbashi'
     };
   } catch (error) {
     console.error(`❌ Erreur chargement messages pour ${locale}:`, error);
     const fallbackMessages = (await import(`../messages/fr.json`)).default;
     return {
       locale: 'fr',
-      messages: fallbackMessages
+      messages: fallbackMessages,
+      timeZone: 'Africa/Lubumbashi'
     };
   }
 });

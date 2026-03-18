@@ -54,10 +54,19 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(image, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Erreur POST gallery:", error);
+    
+    // Resilience: Handle database connection drops gracefully
+    if (error.code === 'P1017' || error.message?.includes('closed the connection')) {
+      return NextResponse.json(
+        { error: "La base de données est temporairement indisponible. Veuillez réessayer." },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json(
-      { error: "Erreur lors de la création" },
+      { error: "Erreur lors de la création de l'image." },
       { status: 500 }
     );
   }

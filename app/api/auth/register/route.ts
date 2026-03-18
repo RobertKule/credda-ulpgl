@@ -53,8 +53,17 @@ export async function POST(req: Request) {
     );
   } catch (error: any) {
     console.error("Registration error:", error);
+
+    // Resilience: Handle database connection drops gracefully
+    if (error.code === 'P1017' || error.message?.includes('closed the connection')) {
+      return NextResponse.json(
+        { message: "Le service d'inscription est temporairement indisponible. Veuillez réessayer." },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Une erreur est survenue lors de l'inscription." },
       { status: 500 }
     );
   }
