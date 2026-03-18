@@ -87,10 +87,16 @@ export async function POST(req: NextRequest) {
     );
 
   } catch (error: any) {
-    console.error("Erreur contact:", error);
+    const isConnError = error.code === 'P1017' || error.message?.includes('closed the connection');
+
+    if (isConnError) {
+      console.warn("⚠️ Database connection closed gracefully in contact API.");
+    } else {
+      console.error("Erreur contact:", error);
+    }
 
     // Resilience: Handle database connection drops gracefully
-    if (error.code === 'P1017' || error.message?.includes('closed the connection')) {
+    if (isConnError) {
       return NextResponse.json(
         { error: "Le service est temporairement indisponible. Votre message n'a pas pu être enregistré." },
         { status: 503 }

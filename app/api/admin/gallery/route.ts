@@ -55,10 +55,16 @@ export async function POST(request: Request) {
 
     return NextResponse.json(image, { status: 201 });
   } catch (error: any) {
-    console.error("Erreur POST gallery:", error);
+    const isConnError = error.code === 'P1017' || error.message?.includes('closed the connection');
+
+    if (isConnError) {
+      console.warn("⚠️ Database connection closed gracefully in gallery creation API.");
+    } else {
+      console.error("Erreur POST gallery:", error);
+    }
     
     // Resilience: Handle database connection drops gracefully
-    if (error.code === 'P1017' || error.message?.includes('closed the connection')) {
+    if (isConnError) {
       return NextResponse.json(
         { error: "La base de données est temporairement indisponible. Veuillez réessayer." },
         { status: 503 }
