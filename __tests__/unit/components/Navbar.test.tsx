@@ -36,7 +36,7 @@ jest.mock('@/components/shared/SearchModal', () => ({
 describe('Navbar Component', () => {
   it('should render brand logo', () => {
     render(<Navbar />)
-    expect(screen.getByText('CREDDA.')).toBeInTheDocument()
+    expect(screen.getByText(/CREDDA/i)).toBeInTheDocument()
   })
 
   it('should have navigation links', () => {

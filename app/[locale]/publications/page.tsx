@@ -28,45 +28,54 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
   const { year, domain } = await searchParams;
   const t = await getTranslations({ locale, namespace: 'PublicationsPage' });
 
-  const availableYears = await db.publication.findMany({
-    select: { year: true },
-    distinct: ['year'],
-    orderBy: { year: 'desc' }
-  });
+  let availableYears: any[] = [];
+  let allPublications: any[] = [];
+  let totalPublications = 0;
+  let totalAuthors = 0;
+
+  try {
+    const [fetchedAvailableYears, fetchedAllPublications, fetchedTotalPublications, fetchedTotalAuthorsRes] = await Promise.all([
+      db.publication.findMany({
+        select: { year: true },
+        distinct: ['year'],
+        orderBy: { year: 'desc' }
+      }),
+      db.publication.findMany({
+        where: whereClause,
+        include: { 
+          translations: { 
+            where: { language: locale },
+            select: {
+              title: true,
+              authors: true,
+              description: true,
+              content: true
+            }
+          } 
+        },
+        orderBy: [
+          { year: "desc" },
+          { createdAt: "desc" }
+        ]
+      }),
+      db.publication.count(),
+      db.publicationTranslation.groupBy({
+        by: ['authors'],
+        _count: true
+      })
+    ]);
+
+    availableYears = fetchedAvailableYears;
+    allPublications = fetchedAllPublications;
+    totalPublications = fetchedTotalPublications;
+    totalAuthors = fetchedTotalAuthorsRes.length;
+  } catch (error) {
+    console.error("⚠️ Database connection failed in PublicationsPage. Using fallbacks.", error);
+  }
 
   const years = availableYears.map(y => y.year);
-
-  const whereClause: any = {};
-  if (year) whereClause.year = parseInt(year);
-  if (domain) whereClause.domain = domain;
-
-  const allPublications = await db.publication.findMany({
-    where: whereClause,
-    include: { 
-      translations: { 
-        where: { language: locale },
-        select: {
-          title: true,
-          authors: true,
-          description: true,
-          content: true
-        }
-      } 
-    },
-    orderBy: [
-      { year: "desc" },
-      { createdAt: "desc" }
-    ]
-  });
-
   const featuredPublication = allPublications[0];
   const publications = allPublications.slice(1);
-
-  const totalPublications = await db.publication.count();
-  const totalAuthors = await db.publicationTranslation.groupBy({
-    by: ['authors'],
-    _count: true
-  }).then(res => res.length);
 
   return (
     <main className="min-h-screen bg-[#fafafa]">

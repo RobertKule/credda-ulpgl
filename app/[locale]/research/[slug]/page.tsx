@@ -17,17 +17,21 @@ import ParallaxWrapper from "@/components/shared/ParallaxWrapper";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const article = await db.article.findUnique({
-    where: { slug },
-    include: { translations: { where: { language: locale } } }
-  });
+  try {
+    const article = await db.article.findUnique({
+      where: { slug },
+      include: { translations: { where: { language: locale } } }
+    });
 
-  if (!article || article.translations.length === 0) return { title: "Not Found | CREDDA" };
-  const translation = article.translations[0];
-  return {
-    title: `${translation.title} | CREDDA-ULPGL`,
-    description: translation.excerpt || "Scientific publication from CREDDA-ULPGL",
-  };
+    if (!article || article.translations.length === 0) return { title: "Not Found | CREDDA" };
+    const translation = article.translations[0];
+    return {
+      title: `${translation.title} | CREDDA-ULPGL`,
+      description: translation.excerpt || "Scientific publication from CREDDA-ULPGL",
+    };
+  } catch (error) {
+    return { title: "Publication Scientifique | CREDDA-ULPGL" };
+  }
 }
 
 const MarkdownComponents = {
@@ -59,13 +63,18 @@ export default async function ResearchDetailPage({
   const { locale, slug } = await params;
   const t = await getTranslations({ locale, namespace: 'ResearchDetailPage' });
   
-  const article = await db.article.findUnique({
-    where: { slug },
-    include: {
-      translations: { where: { language: locale } },
-      category: { include: { translations: { where: { language: locale } } } }
-    }
-  });
+  let article = null;
+  try {
+    article = await db.article.findUnique({
+      where: { slug },
+      include: {
+        translations: { where: { language: locale } },
+        category: { include: { translations: { where: { language: locale } } } }
+      }
+    });
+  } catch (error) {
+    console.error("⚠️ Database connection failed in ResearchDetailPage", error);
+  }
 
   if (!article || article.domain !== "RESEARCH" || article.translations.length === 0) notFound();
   

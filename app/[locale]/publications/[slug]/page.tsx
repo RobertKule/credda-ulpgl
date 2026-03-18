@@ -20,30 +20,39 @@ import * as motion from "framer-motion/client";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const pub = await db.publication.findUnique({
-    where: { slug: decodeURIComponent(slug) },
-    include: { translations: { where: { language: locale } } }
-  });
+  try {
+    const pub = await db.publication.findUnique({
+      where: { slug: decodeURIComponent(slug) },
+      include: { translations: { where: { language: locale } } }
+    });
 
-  if (!pub || pub.translations.length === 0) return { title: 'Publication | CREDDA' };
-  const content = pub.translations[0];
+    if (!pub || pub.translations.length === 0) return { title: 'Publication | CREDDA' };
+    const content = pub.translations[0];
 
-  return {
-    title: `${content.title} | CREDDA-ULPGL`,
-    description: content.description.substring(0, 160),
-  };
+    return {
+      title: `${content.title} | CREDDA-ULPGL`,
+      description: content.description.substring(0, 160),
+    };
+  } catch (error) {
+    return { title: 'Publication | CREDDA' };
+  }
 }
 
 export default async function PublicationDetailPage({ params }: { params: Promise<{ locale: string, slug: string }> }) {
   const { locale, slug } = await params;
   const t = await getTranslations({ locale, namespace: 'PublicationDetailPage' });
 
-  const pub = await db.publication.findUnique({
-    where: { slug: decodeURIComponent(slug) },
-    include: { 
-      translations: { where: { language: locale } } 
-    }
-  });
+  let pub = null;
+  try {
+    pub = await db.publication.findUnique({
+      where: { slug: decodeURIComponent(slug) },
+      include: { 
+        translations: { where: { language: locale } } 
+      }
+    });
+  } catch (error) {
+    console.error("⚠️ Database connection failed in PublicationDetailPage", error);
+  }
 
   if (!pub || pub.translations.length === 0) notFound();
 
@@ -66,12 +75,17 @@ export default async function PublicationDetailPage({ params }: { params: Promis
     title: content.title
   });
 
-  const recommendations = await db.publication.findMany({
-    where: { id: { not: pub.id }, domain: pub.domain },
-    include: { translations: { where: { language: locale } } },
-    take: 3,
-    orderBy: { createdAt: 'desc' }
-  });
+  let recommendations: any[] = [];
+  try {
+    recommendations = await db.publication.findMany({
+      where: { id: { not: pub.id }, domain: pub.domain },
+      include: { translations: { where: { language: locale } } },
+      take: 3,
+      orderBy: { createdAt: 'desc' }
+    });
+  } catch (error) {
+    console.error("⚠️ Recommendations fetch failed in PublicationDetailPage", error);
+  }
 
   return (
     <main className="min-h-screen bg-[#fafafa]">

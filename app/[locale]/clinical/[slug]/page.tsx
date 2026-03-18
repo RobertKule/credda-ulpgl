@@ -13,25 +13,34 @@ import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const article = await db.article.findUnique({
-    where: { slug },
-    include: { translations: { where: { language: locale } } }
-  });
-  return { title: `${article?.translations[0]?.title || "Clinique"} | CREDDA-ULPGL` };
+  try {
+    const article = await db.article.findUnique({
+      where: { slug },
+      include: { translations: { where: { language: locale } } }
+    });
+    return { title: `${article?.translations[0]?.title || "Clinique"} | CREDDA-ULPGL` };
+  } catch (error) {
+    return { title: "Clinique | CREDDA-ULPGL" };
+  }
 }
 
 export default async function ClinicalArticlePage({ params }: { params: Promise<{ locale: string, slug: string }> }) {
   const { locale, slug } = await params;
   const t = await getTranslations({ locale, namespace: 'ClinicalDetailPage' });
   
-  const article = await db.article.findUnique({
-    where: { slug },
-    include: {
-      translations: { where: { language: locale } },
-      category: { include: { translations: { where: { language: locale } } } },
-      medias: true
-    }
-  });
+  let article = null;
+  try {
+    article = await db.article.findUnique({
+      where: { slug },
+      include: {
+        translations: { where: { language: locale } },
+        category: { include: { translations: { where: { language: locale } } } },
+        medias: true
+      }
+    });
+  } catch (error) {
+    console.error("⚠️ Database connection failed in ClinicalArticlePage", error);
+  }
 
   if (!article || article.domain !== "CLINICAL" || article.translations.length === 0) return notFound();
   const content = article.translations[0];
