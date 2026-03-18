@@ -32,6 +32,9 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
   let allPublications: any[] = [];
   let totalPublications = 0;
   let totalAuthors = 0;
+  const whereClause: any = {};
+  if (year && year !== 'all') whereClause.year = parseInt(year);
+  if (domain && domain !== 'all') whereClause.domain = domain;
 
   try {
     const [fetchedAvailableYears, fetchedAllPublications, fetchedTotalPublications, fetchedTotalAuthorsRes] = await Promise.all([
@@ -58,7 +61,7 @@ export default async function PublicationsPage({ params, searchParams }: Props) 
           { createdAt: "desc" }
         ]
       }),
-      db.publication.count(),
+      db.publication.count({ where: whereClause }),
       db.publicationTranslation.groupBy({
         by: ['authors'],
         _count: true
