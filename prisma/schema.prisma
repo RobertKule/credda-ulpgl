@@ -5,7 +5,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  // url      = env("DATABASE_URL")
 }
 
 // --- ÉNUMÉRATIONS ---
@@ -333,15 +332,82 @@ model ClinicSession {
 
 model GalleryImage {
   id          String   @id @default(cuid())
-  src         String // Chemin de l'image
-  title       String // Titre de l'image
+  src         String // Chemin de l'image (Cloudinary URL)
   category    String // Catégorie (Événement, Terrain, etc.)
-  description String? // Description optionnelle
   order       Int      @default(0) // Ordre d'affichage
   featured    Boolean  @default(false) // Mettre en avant
+  translations GalleryImageTranslation[]
+  eventId     String?
+  event       Event?   @relation(fields: [eventId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([order])
   @@index([featured])
+}
+
+model GalleryImageTranslation {
+  id             String       @id @default(cuid())
+  language       String // fr, en, sw
+  title          String
+  description    String?
+  galleryImageId String
+  galleryImage   GalleryImage @relation(fields: [galleryImageId], references: [id], onDelete: Cascade)
+
+  @@unique([galleryImageId, language])
+}
+
+// --- ÉVÉNEMENTS ---
+
+model Event {
+  id             String             @id @default(cuid())
+  slug           String             @unique
+  date           DateTime
+  location       String
+  type           String // Conférence, Atelier, Descente sur terrain, etc.
+  coverImageUrl  String?
+  isPublished    Boolean            @default(false)
+  translations   EventTranslation[]
+  galleryImages  GalleryImage[]
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  @@index([slug])
+  @@index([date])
+}
+
+model EventTranslation {
+  id            String  @id @default(cuid())
+  language      String // fr, en, sw
+  title         String
+  description   String
+  content       String?
+  eventId       String
+  event         Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, language])
+}
+
+// --- TÉMOIGNAGES ---
+
+model Testimonial {
+  id             String                   @id @default(cuid())
+  authorName     String
+  authorRole     String
+  avatarInitials String?
+  photoUrl       String?
+  isPublished    Boolean                  @default(false)
+  translations   TestimonialTranslation[]
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+}
+
+model TestimonialTranslation {
+  id            String      @id @default(cuid())
+  language      String // fr, en, sw
+  quote         String
+  testimonialId String
+  testimonial   Testimonial @relation(fields: [testimonialId], references: [id], onDelete: Cascade)
+
+  @@unique([testimonialId, language])
 }

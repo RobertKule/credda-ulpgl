@@ -4,8 +4,10 @@ import { Pool, neonConfig } from '@neondatabase/serverless'
 import { PrismaNeon } from '@prisma/adapter-neon'
 import ws from 'ws'
 
-// Configuration pour WebSocket si nécessaire (environnements non-Edge)
-neonConfig.webSocketConstructor = ws
+// Fix for Node.js environments where WebSocket isn't global
+if (typeof WebSocket === 'undefined') {
+  neonConfig.webSocketConstructor = ws
+}
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
@@ -13,25 +15,48 @@ const globalForPrisma = globalThis as unknown as {
   adapter: PrismaNeon | undefined
 }
 
-const connectionString = process.env.DATABASE_URL!
+const rawConnectionString = process.env.DATABASE_URL || "";
+const connectionString = rawConnectionString.trim().replace(/^"|"$/g, '');
 
-if (!globalForPrisma.pool) {
-  globalForPrisma.pool = new Pool({ 
-    connectionString,
-    max: process.env.NODE_ENV === 'development' ? 1 : 10,
-    idleTimeoutMillis: 10000,
-    connectionTimeoutMillis: 5000,
-  })
+if (process.env.NODE_ENV === 'development') {
+  console.log("--- [DB NEON-SERVERLESS MODE] ---")
+  console.log("DATABASE_URL length:", connectionString.length)
 }
 
-if (!globalForPrisma.adapter) {
-  globalForPrisma.adapter = new PrismaNeon(globalForPrisma.pool as any)
+if (!connectionString) {
+  console.error("❌ DATABASE_URL is missing in .env")
+}
+
+// Ensure connection string has correct SSL parameters for Neon if needed
+const finalConnectionString = connectionString + (connectionString.includes('?') ? '&' : '?') + 'sslmode=require';
+
+// In development, we force recreation if the current pool doesn't match the env
+const currentConfig = (globalForPrisma.pool as any)?._configuredWith;
+if (!globalForPrisma.pool || (process.env.NODE_ENV === 'development' && currentConfig !== finalConnectionString)) {
+  if (globalForPrisma.pool) {
+    console.log("🔄 Configuration changed or missing. Recreating Neon Pool...")
+    globalForPrisma.pool.end().catch(() => {});
+  } else {
+    console.log("🚀 Initializing Neon Serverless Pool (WebSockets enabled)...")
+  }
+
+  const pool = new Pool({ connectionString: finalConnectionString });
+  
+  pool.on('error', (err) => {
+    console.error('❌ Unexpected error on idle client', err);
+  });
+
+  (pool as any)._configuredWith = finalConnectionString;
+  
+  globalForPrisma.pool = pool;
+  globalForPrisma.adapter = new PrismaNeon(pool);
+  globalForPrisma.prisma = undefined;
 }
 
 if (!globalForPrisma.prisma) {
-  globalForPrisma.prisma = new PrismaClient({ 
+  globalForPrisma.prisma = new PrismaClient({
     adapter: globalForPrisma.adapter,
-    log: [] // Silences default logging for a cleaner terminal
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })
 }
 
