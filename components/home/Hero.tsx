@@ -1,138 +1,106 @@
+// components/home/Hero.tsx
 "use client";
 
 import { motion } from "framer-motion";
 import { Link } from "@/navigation";
-import { ArrowRight, Play, Landmark } from "lucide-react";
+import { ArrowRight, Play } from "lucide-react";
 import { useTranslations } from "next-intl";
-import ParallaxWrapper from "@/components/shared/ParallaxWrapper";
 
-interface HeroProps {
-  slides: {
-    title: string;
-    desc: string;
-  }[];
-}
-
-export default function Hero({ slides }: HeroProps) {
+export default function Hero() {
   const t = useTranslations('HomePage');
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-primary">
-      {/* Cinematic Background Overlay */}
-      <div className="absolute inset-0 z-10 bg-gradient-to-b from-primary/60 via-transparent to-primary/90" />
-      <div className="absolute inset-0 z-10 bg-[radial-gradient(circle_at_center,_transparent_0%,_rgba(26,54,93,0.4)_100%)]" />
+    <section className="relative min-h-screen w-full overflow-hidden bg-[#0C0C0A] flex items-center">
+      {/* BACKGROUND VIDEO */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
+      >
+        <source src="/video/hero-bg.mp4" type="video/mp4" />
+      </video>
       
-      {/* Video/Image Background with Parallax */}
-      <ParallaxWrapper speed={0.4} className="absolute inset-0 w-full h-full scale-110">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="w-full h-full object-cover opacity-50 grayscale-[0.3]"
-        >
-          <source src="/video/hero-bg.mp4" type="video/mp4" />
-        </video>
-      </ParallaxWrapper>
+      {/* DARK OVERLAY */}
+      <div className="absolute inset-0 bg-black/55 z-[1]" />
 
-      <div className="relative z-20 container mx-auto px-6 h-full flex flex-col justify-center">
-        <div className="max-w-4xl">
+      {/* GRID BACKGROUND */}
+      <div className="absolute inset-0 bg-grid-move opacity-20 pointer-events-none z-[2]" />
+      
+      {/* ANIMATED ORBS */}
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-[#C9A84C]/10 rounded-full blur-[120px] animate-orb-pulse pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-20 w-[500px] h-[500px] bg-[#C9A84C]/5 rounded-full blur-[150px] animate-orb-pulse pointer-events-none delay-2000" />
+
+      <div className="container mx-auto px-6 relative z-20">
+        <div className="max-w-5xl">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex items-center gap-3 mb-8">
-              <div className="h-[1px] w-12 bg-accent" />
-              <span className="text-[10px] uppercase tracking-[0.4em] font-black text-accent">
+            {/* BADGE */}
+            <div className="flex items-center gap-4 mb-10">
+              <div className="h-[1px] w-12 bg-[#C9A84C]" />
+              <span className="text-[10px] uppercase tracking-[0.5em] font-outfit font-bold text-[#C9A84C]">
                 {t('hero.badge') || "Institutional Excellence"}
               </span>
             </div>
 
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-serif font-black text-white leading-[0.9] tracking-tighter mb-8">
-              <span className="block overflow-hidden">
-                <motion.span 
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  transition={{ delay: 0.2, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="block italic"
-                >
-                  {t('hero.title_part1') || "Justice"}
-                </motion.span>
+            {/* MAIN TITLE */}
+            <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-fraunces font-extrabold text-[#F5F2EC] leading-[0.85] tracking-tighter mb-12">
+              <span className="block italic">
+                {t('hero.title_part1') || "Justice"}
               </span>
-              <span className="block overflow-hidden">
-                <motion.span 
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  transition={{ delay: 0.4, duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                  className="block text-accent"
-                >
-                  {t('hero.title_part2') || "& Research"}
-                </motion.span>
+              <span className="block text-[#C9A84C] relative">
+                {t('hero.title_part2') || "& Research"}
+                <span className="absolute -bottom-4 left-0 w-24 h-1 bg-[#C9A84C]/20" />
               </span>
             </h1>
 
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 1 }}
-              className="text-lg md:text-xl text-white/70 font-light max-w-2xl leading-relaxed mb-12 border-l border-white/10 pl-8 ml-1"
-            >
-              {t('hero.slides.0.desc')}
-            </motion.p>
+            {/* DESCRIPTION */}
+            <p className="text-lg md:text-xl text-[#F5F2EC]/60 font-outfit font-light max-w-2xl leading-relaxed mb-16 border-l border-white/10 pl-10 ml-1">
+              {t('hero.slides.0.description') || "Leading legal research and clinical excellence in the Great Lakes region, dedicated to democracy and sustainable development."}
+            </p>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 1 }}
-              className="flex flex-wrap gap-6 items-center"
-            >
+            {/* ACTIONS */}
+            <div className="flex flex-wrap gap-8 items-center">
               <Link 
                 href="/publications" 
-                className="group relative px-10 py-5 bg-accent text-primary font-heading font-black uppercase tracking-widest text-xs overflow-hidden"
+                className="group relative px-12 py-6 bg-[#C9A84C] text-[#0C0C0A] font-outfit font-bold uppercase tracking-widest text-xs overflow-hidden transition-all hover:scale-105 active:scale-95"
               >
-                <span className="relative z-10 flex items-center gap-2">
-                  {t('hero.cta_publications')} <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                <span className="relative z-10 flex items-center gap-3">
+                  {t('hero.cta_publications') || "Our Publications"} 
+                  <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-500" />
                 </span>
-                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
               </Link>
               
               <Link 
                 href="/about" 
-                className="group flex items-center gap-4 text-white hover:text-accent transition-colors"
+                className="group flex items-center gap-5 text-[#F5F2EC] hover:text-[#C9A84C] transition-all duration-500"
               >
-                <div className="w-14 h-14 rounded-full border border-white/20 flex items-center justify-center group-hover:border-accent group-hover:bg-accent/10 transition-all duration-500">
-                  <Play size={16} fill="currentColor" className="ml-1" />
+                <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#C9A84C] group-hover:bg-[#C9A84C]/10 transition-all duration-700 relative">
+                   <div className="absolute inset-0 rounded-full border border-[#C9A84C]/0 group-hover:border-[#C9A84C]/40 group-hover:scale-125 transition-all duration-700" />
+                  <Play size={18} fill="currentColor" className="ml-1" />
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-widest">{t('hero.cta_contact')}</span>
+                <span className="text-[11px] font-outfit font-bold uppercase tracking-[0.2em]">{t('hero.cta_contact') || "Learn More"}</span>
               </Link>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>
 
-      {/* Floating Elements / Decorative */}
-      <div className="absolute bottom-12 left-12 z-20 hidden lg:block">
-        <div className="flex items-center gap-6">
-          <div className="w-12 h-12 bg-white/5 border border-white/10 glass flex items-center justify-center">
-            <Landmark size={20} className="text-accent" />
-          </div>
-          <div className="h-10 w-[1px] bg-white/10" />
-          <div>
-            <p className="text-[8px] uppercase tracking-[0.2em] font-black text-white/30">Affiliation</p>
-            <p className="text-[10px] font-serif italic text-white/60">ULPGL University, Goma</p>
-          </div>
+      {/* DECORATIVE ELEMENTS */}
+      <div className="absolute bottom-16 right-16 z-20 hidden lg:block">
+        <div className="flex flex-col items-end gap-2 text-right">
+          <p className="text-[10px] uppercase tracking-[0.3em] font-outfit font-medium text-[#F5F2EC]/20">Location</p>
+          <p className="text-xs font-fraunces italic text-[#C9A84C]">ULPGL University, Goma, DRC</p>
         </div>
       </div>
 
-      {/* Bottom Progress Indicator */}
-      <div className="absolute bottom-0 left-0 w-full h-1 bg-white/5 z-20">
-        <motion.div 
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 10, ease: "linear", repeat: Infinity }}
-          className="h-full bg-accent origin-left"
-        />
+      {/* SCROLL INDICATOR */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+        <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-[#C9A84C]/50 to-[#C9A84C] animate-scroll-line" />
       </div>
     </section>
   );

@@ -72,7 +72,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         where: { featured: true },
         take: 8,
         orderBy: { order: 'asc' },
-        select: { id: true, src: true, title: true, category: true, description: true }
+        select: { 
+          id: true, 
+          src: true, 
+          category: true, 
+          translations: {
+            where: { language: locale },
+            select: { title: true, description: true }
+          }
+        }
       }),
       // 5. Statistiques détaillées
       db.article.count({ where: { published: true } }),
@@ -106,7 +114,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   const sanitizedGalleryImages = galleryImages.map(img => ({
     ...img,
-    src: img.src ? img.src.replace(/\\/g, '/').replace(/^public\//, '/') : ''
+    src: img.src ? img.src.replace(/\\/g, '/').replace(/^public\//, '/') : '',
+    title: img.translations?.[0]?.title || "",
+    description: img.translations?.[0]?.description || img.description || ""
   }));
 
   const TESTIMONIALS = [
