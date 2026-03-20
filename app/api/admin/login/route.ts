@@ -23,11 +23,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ Admin par défaut (seed)
+    // ✅ Admin par défaut (seed / fallback production)
     const adminFromSeed = [
+      { email: "masteradmin@credda.org", password: process.env.MASTER_ADMIN_PASSWORD || "CreddaMaster2026!", role: "SUPER_ADMIN" },
       { email: "admin@credda-ulpgl.org", password: "Admin123!", role: "ADMIN" },
       { email: "editor@credda-ulpgl.org", password: "Editor123!", role: "EDITOR" },
-      { email: "researcher@credda-ulpgl.org", password: "Researcher123!", role: "RESEARCHER" },
       { email: "kulewakangitsirobert@gmail.com", password: "credda@2026", role: "ADMIN" }
     ].find(a => a.email === email && a.password === password);
 
@@ -74,6 +74,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { message: "Email ou mot de passe incorrect" },
         { status: 401 }
+      );
+    }
+
+    if (user.status !== "APPROVED") {
+      console.log(`❌ Compte non approuvé: ${email} (${user.status})`);
+      return NextResponse.json(
+        { message: "Votre compte est en attente d'approbation ou a été désactivé." },
+        { status: 403 }
       );
     }
 

@@ -10,13 +10,19 @@ export async function GET() {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
-    const [total, unread, read, archived, replied] = await Promise.all([
-      db.contactMessage.count(),
-      db.contactMessage.count({ where: { status: "UNREAD" } }),
-      db.contactMessage.count({ where: { status: "READ" } }),
-      db.contactMessage.count({ where: { status: "ARCHIVED" } }),
-      db.contactMessage.count({ where: { NOT: { repliedAt: null } } })
-    ]);
+    let total = 0, unread = 0, read = 0, archived = 0, replied = 0;
+    try {
+      const [fTotal, fUnread, fRead, fArchived, fReplied] = await Promise.all([
+        db.contactMessage.count(),
+        db.contactMessage.count({ where: { status: "UNREAD" } }),
+        db.contactMessage.count({ where: { status: "READ" } }),
+        db.contactMessage.count({ where: { status: "ARCHIVED" } }),
+        db.contactMessage.count({ where: { NOT: { repliedAt: null } } })
+      ]);
+      total = fTotal; unread = fUnread; read = fRead; archived = fArchived; replied = fReplied;
+    } catch (dbError) {
+      console.error("⚠️ Database failure in messages/stats:", dbError);
+    }
 
     return NextResponse.json({
       total,

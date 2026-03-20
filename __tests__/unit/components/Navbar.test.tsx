@@ -6,7 +6,17 @@ import Navbar from '@/components/shared/Navbar'
 // Mock next-intl
 jest.mock('next-intl', () => ({
   useLocale: () => 'fr',
-  useTranslations: () => (key: string) => key,
+  useTranslations: () => (key: string) => {
+    const translations: Record<string, string> = {
+      'institution': 'À Propos',
+      'expertise': 'Recherche & Clinique',
+      'researchers': 'Équipe',
+      'gallery': 'Galerie',
+      'contact': 'Contact',
+      'search': 'recherche'
+    }
+    return translations[key] || key
+  },
 }))
 
 // Mock navigation
@@ -26,7 +36,7 @@ jest.mock('@/components/shared/SearchModal', () => ({
 describe('Navbar Component', () => {
   it('should render brand logo', () => {
     render(<Navbar />)
-    expect(screen.getByText('CREDDA.ULPGL')).toBeInTheDocument()
+    expect(screen.getByText(/CREDDA/i)).toBeInTheDocument()
   })
 
   it('should have navigation links', () => {
@@ -51,7 +61,7 @@ describe('Navbar Component', () => {
   it('should have search button', () => {
     render(<Navbar />)
     
-    const searchButton = screen.getByRole('button', { name: /recherche/i })
+    const searchButton = screen.getByRole('button', { name: 'recherche' })
     expect(searchButton).toBeInTheDocument()
   })
 })

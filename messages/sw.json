@@ -3,8 +3,15 @@
     "research": "Utafiti",
     "clinical": "Kliniki ya Sheria",
     "publications": "Machapisho",
-    "about": "Kuhusu Sisi",
-    "contact": "Wasiliana"
+    "about": "Taasisi",
+    "contact": "Wasiliana nasi",
+    "login": "Ingia",
+    "ticker": {
+      "item1": "Chapisho jipya kuhusu haki ya hali ya hewa nchini RDC",
+      "item2": "Kliniki inayotembea imepangwa Kalehe Machi 25",
+      "item3": "Ushirikiano ulioimarishwa na Chuo Kikuu cha Oxford",
+      "item4": "Ripoti ya Demokrasia ya 2025 inapatikana"
+    }
   },
 
   "HomePage": {
@@ -13,47 +20,68 @@
       "slides": [
         {
           "title": "Ubora kwa ajili ya Demokrasia.",
-          "desc": "CREDDA huzalisha utafiti wa hali ya juu kubadilisha taasisi za Afrika."
+          "description": "CREDDA huzalisha utafiti wa hali ya juu kubadilisha taasisi za Afrika."
         },
         {
           "title": "Kliniki ya Sheria ya Mazingira.",
-          "desc": "Tunalinda haki za jamii na bioanuwai kupitia sheria."
+          "description": "Tunalinda haki za jamii na bioanuwai kupitia sheria."
         },
         {
           "title": "Kitovu cha Ushirikiano wa Kimataifa.",
-          "desc": "Tunashirikiana na vyuo vikuu vikubwa kwa maendeleo endelevu."
+          "description": "Tunashirikiana na vyuo vikuu vikubwa kwa maendeleo endelevu."
         }
       ],
       "cta_publications": "Machapisho Yetu",
-      "cta_contact": "Wasiliana"
+      "cta_contact": "Gundua zaidi",
+      "title_part1": "Haki",
+      "title_part2": "& Utafiti"
     },
     "stats": {
-      "years": "Miaka ya Utaalam katika utafiti",
-      "pubs": "Nyaraka za Kisayansi & Ripoti",
+      "years": "Miaka ya Utaalam wa Utafiti",
+      "pubs": "Nyaraka za Kidijitali & Ripoti",
       "partners": "Washirika wa Kimataifa",
-      "cases": "Wanufaika wa Kliniki"
+      "cases": "Wanufaika wa Kliniki",
+      "articles": "Makala ya Utafiti",
+      "members": "Wajumbe wa Timu"
+    },
+    "about": {
+      "badge": "Urithi wa Kiakademia",
+      "title": "Kufafanua Mustakabali wa <br /> <span>Utafiti wa Kisheria</span>",
+      "description_p1": "Kituo cha Utafiti wa Demokrasia na Maendeleo barani Afrika (CREDDA) ni taasisi ya ubora iliyojitolea kwa uchambuzi wa kina wa changamoto za kisheria na kijamii.",
+      "description_p2": "Ikiwa na ushirikiano na ULPGL-Goma, tunachanganya utaalamu wa kiakademia na hatua za nyanjani ili kukuza haki ya usawa na endelevu kote barani."
     },
     "research": {
-      "badge": "Utafiti Unaofanya",
-      "title": "Chunguza <span>Mipaka</span> ya Maarifa.",
-      "description": "Mihimili yetu ya utafiti inashughulikia changamoto za utawala barani Afrika.",
-      "cta": "Chunguza wigo wote"
+      "badge": "Upelelezi & Uchambuzi",
+      "title": "Utafiti Ulioangaziwa",
+      "subtitle": "& Machapisho ya Kisayansi",
+      "description": "Nyanja zetu za utafiti zinashughulikia changamoto za utawala barani Afrika.",
+      "cta": "Fikia Kumbukumbu Kamili",
+      "read_more": "Soma Jarida Kamili",
+      "journal": "Utafiti wa Kisa",
+      "lab": "Maabara ya CREDDA"
     },
     "clinical": {
-      "badge": "Athari za Nyanjani",
-      "title": "Kliniki ya Sheria na Mazingira.",
-      "description": "Zaidi ya kituo cha utafiti, CREDDA inachukua hatua. Tunasaidia jamii katika usalama wa ardhi na ulinzi wa misitu.",
+      "badge": "Hatua za Nyanjani & Haki",
+      "title": "Kliniki ya Sheria kwa ajili ya",
+      "subtitle": "Ulinzi wa Mazingira",
+      "description": "Tunabeba sauti ya jamii na asili mbele ya mamlaka za kisheria. Kliniki zetu zinazotembea zinahakikisha uwepo wa nyanjani unaoendelea.",
       "actions": {
         "legal": {
           "title": "Msaada wa Kisheria",
-          "desc": "Upatanishi na utetezi wa haki za wanyonge."
+          "desc": "Mashauriano na utetezi wa haki za wanyonge."
         },
         "land": {
-          "title": "Ulinzi wa Ardhi",
-          "desc": "Kulinda ardhi dhidi ya shinikizo za viwanda."
+          "title": "Haki ya Ardhi",
+          "desc": "Kulinda haki za jamii za mahali hapo na za asili."
+        },
+        "mobile": {
+          "title": "Kliniki Zinazotembea",
+          "desc": "Msaada wa kisheria bila malipo katikati ya maeneo yaliyo katika hatari."
         }
       },
-      "cta": "Hatua zetu za kimatibabu"
+      "cta": "Wasilisha Kesi ya Kisheria",
+      "impact": "Athari za Nyanjani",
+      "families": "Zaidi ya familia {count} zimesaidiwa"
     },
     "team": {
       "title": "Uongozi wa Kisayansi",
@@ -62,7 +90,27 @@
     },
     "testimonials": {
       "badge": "Imani ya Kimataifa",
-      "title": "Wanatuamini."
+      "title_alt": "Utambuzi wa Kimataifa",
+      "items": [
+        {
+          "name": "David MICHAEL PEYTON",
+          "role": "Mgombea wa PhD, Chuo Kikuu cha Northwestern",
+          "text": "Nisingeweza kuomba washirika bora wa utafiti kuliko kitivo na wafanyakazi wa CREDDA-ULPGL. Sio tu waliweza kusaidia aina nyingi za ukusanyaji wa data lakini pia walitoa fursa za maoni kutoka kwa wasomi wa Kikongo.",
+          "image": "/images/testimonials/Peyton.webp"
+        },
+        {
+          "name": "Heather LYNNE ZIMMERMAN",
+          "role": "Mwanafunzi wa Uzamili, Shule ya Uchumi ya London (LSE)",
+          "text": "Mpendwa Profesa Kennedy Kihangi, asante sana kwa kunikaribisha kwa ukarimu katika jumuiya! Nashukuru kwa mawazo na maoni yaliyotolewa kwenye utafiti wangu. Natamani kurudi Goma.",
+          "image": "/images/testimonials/heather.webp"
+        },
+        {
+          "name": "Britta Sjöstedt",
+          "role": "Mgombea wa PhD, Chuo Kikuu cha Lund",
+          "text": "Nilitembelea ULPGL mwaka wa 2015 kufanya utafiti kwa PhD yangu. Profesa Kennedy KIHANGI BINDU alikuwa mwenyeji mzuri ambaye alisaidia kuwasiliana na watafiti na mashirika mengine.",
+          "image": "/images/testimonials/britta.webp"
+        }
+      ]
     },
     "library": {
       "badge": "Rasilimali",
@@ -77,13 +125,23 @@
       }
     },
     "partners": {
-      "title": "Mtandao wa Kimataifa wa Washirika"
+      "title": "Mtandao wa Washirika wa Kiulimwengu",
+      "items": [
+        "Amnesty.webp", "McCain.webp", "Northwestern.webp", "TWB.webp",
+        "worldbank.webp", "Ceni.webp", "Monusco.webp", "Oxford.webp",
+        "Uhaki.webp", "Harvard.webp", "Morehouse.webp", "PNUD.webp", "ulpgl.webp"
+      ]
     },
     "cta": {
-      "title": "Kujenga mustakabali kupitia <span>Sayansi</span>.",
+      "badge": "Jiunge na Harakati",
+      "title": "Kujenga mustakabari kupitia <span>Sayansi</span>.",
       "partner": "Kuwa Mshirika",
-      "about": "Mradi wa CREDDA"
-    },"Gallery": {
+      "about": "Mradi wa CREDDA",
+      "mission": "Soma Dhamira Yetu",
+      "collaboration": "Kushirikiana na Bora Duniani",
+      "portal": "Portal ya Watafiti"
+    },
+"Gallery": {
     "badge": "Katika Picha",
     "title": "CREDDA katika <span>Hatua</span>",
     "description": "Gundua shughuli zetu za utafiti, kazi za kliniki na ushirikiano kupitia uteuzi wa picha.",
@@ -381,10 +439,11 @@
       "title": "Matokeo ya: <span>\"{query}\"</span>",
       "results": "Tumepata {count} inayolingana katika hifadhidata ya CREDDA."
     },
+    "placeholder": "Tafuta karatasi, kesi au habari...",
     "sections": {
-      "articles": "Uchambuzi na Kazi",
-      "publications": "Machapisho ya PDF",
-      "members": "Wanachama wa Timu"
+      "articles": "Makala",
+      "publications": "Machapisho",
+      "cases": "Kesi za Kisheria"
     },
     "empty": {
       "title": "Hakuna matokeo yaliyopatikana",
@@ -482,7 +541,7 @@
   "LoginPage": {
     "left": {
       "badge": "Eneo Salama",
-      "title": "Portal ya Usimamizi <br/><span>Kisayansi</span>.",
+      "title": "Portal ya Usimamizi <span>Kisayansi</span>.",
       "description": "Karibu kwenye kiolesura cha usimamizi cha CREDDA. Eneo hili limehifadhiwa kwa watafiti na wasimamizi walioidhinishwa.",
       "footer": "Ulinzi wa data unaofaa"
     },
@@ -509,9 +568,92 @@
       "forgotPassword": "Umesahau nywila?"
     }
   },
+  "RegisterPage": {
+    "left": {
+      "badge": "Jiunge na CREDDA",
+      "title": "Kuwa sehemu ya <span>Utafiti</span>.",
+      "description": "Fungua akaunti yako ili upate rasilimali za kipekee, uchangie katika kazi za kisayansi, au ufuatilie kesi zako za kliniki.",
+      "footer": "Usajili salama na uliothibitishwa"
+    },
+    "right": {
+      "back": "Rudi",
+      "logo": "CREDDA<span>.ULPGL</span>",
+      "title": "Fungua Akaunti",
+      "subtitle": "Fuata hatua ili kujiunga na mtandao wetu.",
+      "steps": {
+        "account": "Akaunti",
+        "profile": "Wasifu",
+        "details": "Maelezo"
+      },
+      "fields": {
+        "email": { "label": "Barua Pepe ya Kitaalamu", "placeholder": "yako@email.com" },
+        "password": { "label": "Nywila", "placeholder": "••••••••" },
+        "confirmPassword": { "label": "Thibitisha Nywila", "placeholder": "••••••••" },
+        "name": { "label": "Jina Kamili", "placeholder": "Pr. / Dr. / Jina" },
+        "phone": { "label": "Simu", "placeholder": "+243..." },
+        "organization": { "label": "Shirika / Chuo Kikuu", "placeholder": "Mf: ULPGL Goma" },
+        "requestedRole": { "label": "Jukumu Linalohitajika", "placeholder": "Mtafiti, Mhariri, Kliniki..." },
+        "bio": { "label": "Wasifu / Motisha", "placeholder": "Elezea kwa ufupi historia yako au maslahi yako..." }
+      },
+      "submit": "Maliza Usajili",
+      "next": "Hatua Inayofuata",
+      "prev": "Iliyopita",
+      "submitting": "Inachakata...",
+      "success": {
+        "title": "Ombi Limetumwa!",
+        "description": "Akaunti yako imeundwa kwa mafanikio. Kwa sasa <strong>inasubiri kuidhinishwa</strong> na utawala wa CREDDA. Utapokea barua pepe baada ya uthibitisho.",
+        "button": "Rudi Mwanzo"
+      },
+      "errors": {
+        "passwordsDontMatch": "Nywila hazilingani",
+        "missingFields": "Tafadhali jaza sehemu zote zinazohitajika",
+        "emailExists": "Barua pepe hii tayari inatumiwa",
+        "generic": "Hitilafu ilitokea wakati wa usajili"
+      }
+    }
+  },
+  "ProfilePage": {
+    "title": "Wasifu Wangu",
+    "subtitle": "Simamia maelezo yako binafsi na wasifu wako wa kisayansi.",
+    "fields": {
+      "name": "Jina Kamili",
+      "email": "Barua Pepe",
+      "phone": "Simu",
+      "organization": "Shirika / Chuo Kikuu",
+      "bio": "Wasifu / Motisha",
+      "image": "Kiungo cha Picha"
+    },
+    "actions": {
+      "save": "Hifadhi Mabadiliko",
+      "upload": "Badilisha Picha",
+      "saving": "Inahifadhi..."
+    },
+    "success": "Wasifu umesasishwa kwa mafanikio!",
+    "error": "Hitilafu imetokea wakati wa kusasisha wasifu."
+  },
+  "SecurityPage": {
+    "title": "Usalama",
+    "subtitle": "Linda akaunti yako kwa kubadilisha nywila yako.",
+    "fields": {
+      "current": "Nywila ya Sasa",
+      "new": "Nywila Mpya",
+      "confirm": "Thibitisha Nywila Mpya"
+    },
+    "actions": {
+      "update": "Sasisha Nywila",
+      "updating": "Inasasisha..."
+    },
+    "success": "Nywila imebadilishwa kwa mafanikio!",
+    "error": "Hitilafu imetokea wakati wa kubadilisha nywila.",
+    "errors": {
+      "wrongCurrent": "Nywila ya sasa si sahihi",
+      "dontMatch": "Nywila mpya hazilingani"
+    }
+  },
   "Footer": {
     "identity": {
-      "description": "Taasisi ya ubora wa Chuo Kikuu Huria cha Nchi za Maziwa Makuu inayojitolea kwa utafiti wa kisayansi na mazoezi ya kliniki ya sheria."
+      "badge": "Research & Impact Hub",
+      "description": "Taasisi ya ubora ya Chuo Kikuu Huria cha Nchi za Maziwa Makuu iliyojitolea kwa utafiti wa kisayansi na mazoezi ya kliniki ya sheria."
     },
     "expertise": {
       "title": "Maeneo ya Utaalam",
@@ -554,10 +696,11 @@
       "email": "contact@credda-ulpgl.org"
     },
     "bottom": {
-      "copyright": "© {year} CREDDA-ULPGL. Haki Zote Zimehifadhiwa.",
-      "legal": "Masharti ya Kisheria",
+      "copyright": "© {year} CREDDA-ULPGL. Haki zote zimehifadhiwa.",
+      "legal": "Ilani za Kisheria",
       "privacy": "Sera ya Faragha",
-      "system": "Mfumo Unafanya Kazi"
+      "system": "Mfumo wa Kitaasisi Mtandaoni",
+      "affiliation": "INASHIRIKIANA NA CHUO KIKUU CHA ULPGL"
     }
   },
   "GalleryPage": {
@@ -583,5 +726,104 @@
       "title": "Nyumba ya sanaa inatajirishwa",
       "description": "Timu zetu zinatayarisha uteuzi wa picha. Rudi karibuni kugundua shughuli zetu kwenye picha."
     }
+  },
+  "CDEPage": {
+    "header": {
+      "badge": "Mpango Maalum wa CDE",
+      "title": "Kliniki ya <span>Sheria ya Mazingira</span>",
+      "description": "Taasisi ya ubora ndani ya CREDDA-ULPGL inayojitolea kwa ulinzi wa mazingira na haki za jamii za mitaa."
+    },
+    "intro": {
+      "title": "Muktadha na Uhalali",
+      "text": "Uzinduzi wa Kliniki ya Sheria ya Mazingira (CDE) unajibu hitaji la haraka la kutoa suluhisho la vitendo kwa haki ya kijamii na ufikiaji wa haki, haki ya kikatiba inayotambuliwa kwa watu wa asili wa pygmy na jamii za mitaa katika DRC."
+    },
+    "mission": {
+      "title": "Dhamira Yetu",
+      "items": [
+        "Ushauri wa kisheria na mwongozo kwa wadai",
+        "Kuandaa nyaraka rahisi za kisheria (malalamiko, maombi)",
+        "Upatanishi wa jamii",
+        "Msaada wa kisheria chini ya usimamizi",
+        "Kliniki zinazotembea na kampeni za uhamasishaji wa sheria"
+      ]
+    },
+    "strategic_axes": {
+      "title": "Mihimili ya Kimkakati",
+      "axes": [
+        {
+          "title": "Ujengaji wa Uwezo",
+          "desc": "Mafunzo kwa wanafunzi, majaji, na viongozi wa jamii."
+        },
+        {
+          "title": "Madai ya Maslahi ya Umma",
+          "desc": "Kuzuia maendeleo yenye madhara na uchafuzi."
+        },
+        {
+          "title": "Utetezi",
+          "desc": "Kushawishi sheria za mazingira na sera za umma."
+        },
+        {
+          "title": "Msaada wa Kisheria wa Bure",
+          "desc": "Huduma za bure kwa watu walio katika mazingira magumu."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ripoti dhuluma ya mazingira",
+      "description": "Je, wewe ni mwathirika wa uchafuzi wa mazingira, migogoro ya ardhi au ukataji miti? Tunaweza kukusaidia.",
+      "button": "Wasilisha kesi yangu"
+    }
+  },
+  "Track": {
+    "badge": "Portal ya kufuatilia salama",
+    "title": "Fuatilia Kesi Yako.",
+    "description": "Ingiza nambari yako ya simu iliyosajiliwa ili kupata hali yako na kufuata maendeleo ya usajili wako wa kisheria.",
+    "placeholder": "Ingiza nambari ya simu (+243...)",
+    "submit": "Pata Usajili",
+    "results_title": "Kumbukumbu za Usajili",
+    "last_update": "Sasisho la Mwisho",
+    "no_records": "Hakuna Kumbukumbu Zilizopatikana",
+    "no_records_desc": "Hatujapata kesi zozote za kliniki zinazohusiana na nambari hii ya simu. Tafadhali angalia nambari au wasiliana na ofisi yetu.",
+    "confidentiality_title": "Siri",
+    "confidentiality_desc": "Data yako inalindwa na usiri wa mahakama. Ufikiaji umezuiwa kwa wanufaika waliosajiliwa.",
+    "authority_title": "Mamlaka ya Kisheria",
+    "authority_desc": "Hali zinasasishwa kwa wakati halisi na wataalam wetu wa kisheria baada ya kila hatua ya utaratibu."
+  },
+  "Search": {
+    "placeholder": "Tafuta ripoti, mtafiti au makala...",
+    "min_chars": "Ingiza angalau herufi 2",
+    "sections": {
+      "articles": "Utafiti na Uchambuzi",
+      "publications": "Maktaba ya PDF"
+    },
+    "footer_hint": "Bonyeza Enter kuona matokeo yote",
+    "esc_hint": "kufunga"
+  },
+  "PublicationsHero": {
+    "latest": "Machapisho ya Karibuni",
+    "readingTime": "DKK {time} ZA KUSOMA",
+    "access": "Pata Jarida Kamili",
+    "preview": "Onyesho la PDF"
+  },
+  "ClinicalMap": {
+    "badge": "Ufikiaji wa Kijiografia",
+    "title": "Uwepo Nyanjani",
+    "description": "CREDDA inapeleka wataalamu wake karibu na jamii. Kliniki zetu za kudumu na zinazotembea zinajumuisha maeneo ya kimkakati katika ukanda wa Maziwa Makuu.",
+    "loading": "Inapakia Data ya Kijiografia...",
+    "mobile": "Kliniki Inayotembea",
+    "fixed": "Kituo cha Kudumu"
+  },
+  "Navbar": {
+    "institution": "Taasisi",
+    "expertise": "Utaalamu",
+    "research": "Nyanja za Utafiti",
+    "clinical": "Kliniki ya Sheria",
+    "library": "Maktaba ya Kidijitali",
+    "researchers": "Watafiti",
+    "gallery": "Nyumba ya Sanaa",
+    "contact": "Wasiliana",
+    "portal": "Portal",
+    "consult": "Wasiliana na Idara",
+    "search": "Tafuta"
   }
 }

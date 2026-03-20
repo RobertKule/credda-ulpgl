@@ -2,320 +2,248 @@
 "use client";
 
 import { Link, usePathname } from "./../../navigation";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
-  Globe, Menu, X, Search, Mail,
-  Facebook, Twitter, Linkedin, ExternalLink, Landmark,
-  ChevronRight, Camera, ChevronDown
+  Menu, X, ArrowRight, Search
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
 import SearchModal from "./SearchModal";
-
-// Définir les types pour les labels
-type LabelType = {
-  fr: string;
-  en: string;
-  sw: string;
-};
-
-type NavLink = {
-  href?: string;
-  label: LabelType;
-  dropdown?: { href: string; label: LabelType }[];
-};
+import { useSession } from "next-auth/react";
 
 export default function Navbar() {
-  const locale = useLocale() as keyof LabelType; // ✅ Typer locale
+  const locale = useLocale();
   const pathname = usePathname();
+  const t = useTranslations('Navigation');
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const { data: session } = useSession();
 
-  // Détection du défilement
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Fermer le dropdown au clic en dehors
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (openDropdown && !(e.target as Element).closest('.dropdown-container')) {
-        setOpenDropdown(null);
-      }
-    };
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [openDropdown]);
+  const tickerItems = Object.values(t.raw('ticker') || {});
 
-  const navLinks: NavLink[] = [
-    { href: "/about", label: { fr: "À Propos", en: "About", sw: "Kuhusu" } },
-    {
-      label: {
-        fr: "Recherche & Clinique",
-        en: "Research & Clinical",
-        sw: "Utafiti na Kliniki"
-      },
-      dropdown: [
-        { href: "/research", label: { fr: "Recherche", en: "Research", sw: "Utafiti" } },
-        { href: "/clinical", label: { fr: "Clinique Juridique", en: "Legal Clinic", sw: "Kliniki ya Sheria" } },
-        { href: "/publications", label: { fr: "Publications", en: "Publications", sw: "Machapisho" } },
-      ]
-    },
-    { href: "/team", label: { fr: "Équipe", en: "Team", sw: "Timu" } },
-    { href: "/gallery", label: { fr: "Galerie", en: "Gallery", sw: "Nyumba ya sanaa" } },
-    { href: "/contact", label: { fr: "Contact", en: "Contact", sw: "Wasiliana" } },
+  const navLinks = [
+    { href: "/about", label: t('about') },
+    { href: "/research", label: t('research') },
+    { href: "/programmes", label: "Programmes" },
+    { href: "/publications", label: t('publications') },
+    { href: "/events", label: "Événements" },
   ];
-
-  const toggleDropdown = (label: string) => {
-    setOpenDropdown(openDropdown === label ? null : label);
-  };
 
   return (
     <>
-      <header className="fixed top-0 w-full z-[100] transition-all duration-300">
-        {/* TOP BAR */}
-        <AnimatePresence>
-          {!isScrolled && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="bg-[#050a15] text-white overflow-hidden hidden lg:block"
-            >
-              <div className="container mx-auto px-6 py-2 flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.2em]">
-                <div className="flex items-center gap-6">
-                  <a href="https://ulpgl.net" target="_blank" className="flex items-center gap-2 hover:text-blue-400 transition-colors">
-                    <Landmark size={12} className="text-blue-500" />
-                    Université Libre des Pays des Grands Lacs
-                    <ExternalLink size={10} className="opacity-50" />
-                  </a>
-                  <span className="opacity-20">|</span>
-                  <div className="flex items-center gap-2 opacity-70">
-                    <Mail size={12} />
-                    contact@credda-ulpgl.org
-                  </div>
-                </div>
+      {/* NEWS TICKER */}
+      <div className="fixed top-0 w-full z-[100] bg-[#111110] border-b border-white/5 py-1.5 overflow-hidden">
+        <div className="flex whitespace-nowrap animate-ticker">
+          {[...tickerItems, ...tickerItems].map((item: any, i) => (
+            <span key={i} className="mx-12 text-[10px] font-outfit font-medium uppercase tracking-[0.2em] text-[#F5F2EC]/60 flex items-center gap-4">
+              <span className="w-1.5 h-1.5 bg-[#C9A84C] rounded-full" />
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
 
-                <div className="flex items-center gap-6">
-                  <div className="flex items-center gap-4 border-r border-white/10 pr-6 text-slate-400">
-                    <a href="#" className="hover:text-white transition-colors"><Facebook size={14} /></a>
-                    <a href="#" className="hover:text-white transition-colors"><Twitter size={14} /></a>
-                    <a href="#" className="hover:text-white transition-colors"><Linkedin size={14} /></a>
-                  </div>
-                  <Link href="/admin" className="bg-blue-600 px-4 py-1 hover:bg-blue-500 transition-colors">
-                    Portail Chercheur
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <header 
+        className={`fixed top-8 w-full z-[99] transition-all duration-700 ${
+          isScrolled ? "py-2" : "py-6"
+        }`}
+      >
+        {/* BACKGROUND */}
+        <div 
+          className={`absolute inset-0 transition-all duration-700 ${
+            isScrolled 
+              ? "bg-[#0C0C0A]/90 backdrop-blur-xl border-b border-white/5 shadow-2xl" 
+              : "bg-transparent"
+          }`} 
+        />
 
-        {/* MAIN NAVBAR */}
-        <nav className={`w-full transition-all duration-500 ${isScrolled ? "bg-white/95 backdrop-blur-md shadow-xl h-16" : "bg-white h-24"
-          } border-b border-slate-100`}>
-          <div className="container mx-auto px-6 h-full flex items-center justify-between">
-
-            {/* LOGO */}
-            <Link href="/" className="flex flex-col group relative z-[110]">
-              <span className={`font-serif font-black tracking-tighter text-slate-900 transition-all duration-500 ${isScrolled ? "text-xl" : "text-2xl lg:text-3xl"
-                }`}>
-                CREDDA<span className="text-blue-600 group-hover:text-blue-500 transition-colors">.ULPGL</span>
+        <div className="container mx-auto px-6 relative flex items-center justify-between">
+          
+          {/* LOGO AREA */}
+          <Link href="/" className="flex items-center gap-4 group">
+            <div className="relative flex flex-col items-start translate-y-1">
+              <span className="font-bricolage font-extrabold text-2xl lg:text-3xl tracking-tighter text-[#F5F2EC] leading-none">
+                CREDDA<span className="text-[#C9A84C]">·</span>CDE
               </span>
-              {!isScrolled && (
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="text-[8px] uppercase tracking-[0.3em] font-black text-slate-400"
-                >
-                  Research & Legal Clinic
-                </motion.span>
-              )}
-            </Link>
+              <span className="text-[8px] uppercase tracking-[0.4em] font-outfit font-medium text-[#F5F2EC]/40 mt-1 pl-0.5">
+                Research & Legal Clinic
+              </span>
+            </div>
+          </Link>
 
-            {/* DESKTOP MENU */}
-            <div className="hidden lg:flex items-center gap-8">
-              <div className="flex items-center gap-1">
-                {navLinks.map((link, index) => {
-                  const linkKey = link.href || `dropdown-${index}`;
-                  const linkLabel = link.label[locale];
-                  
-                  return link.dropdown ? (
-                    <div key={linkKey} className="relative dropdown-container">
-                      <button
-                        onClick={() => toggleDropdown(linkLabel)}
-                        className="px-4 py-2 text-[11px] font-black uppercase tracking-widest text-slate-600 hover:text-blue-600 transition-all relative group flex items-center gap-1"
-                      >
-                        {linkLabel}
-                        <ChevronDown size={14} className={`transition-transform duration-300 ${openDropdown === linkLabel ? 'rotate-180' : ''}`} />
-                        <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                      </button>
+          {/* DESKTOP NAV */}
+          <nav className="hidden lg:flex items-center gap-2">
+            {navLinks.map((link, idx) => (
+              <Link 
+                key={idx}
+                href={link.href}
+                className={`relative px-4 py-2 text-[10px] font-outfit font-medium uppercase tracking-[0.2em] transition-all group ${
+                  pathname === link.href ? "text-[#C9A84C]" : "text-[#F5F2EC]/70 hover:text-[#F5F2EC]"
+                }`}
+              >
+                {link.label}
+                <span className={`absolute bottom-0 left-4 right-4 h-[1px] bg-[#C9A84C] transition-transform duration-500 origin-left ${
+                  pathname === link.href ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                }`} />
+              </Link>
+            ))}
 
-                      <AnimatePresence>
-                        {openDropdown === linkLabel && (
-                          <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.2 }}
-                            className="absolute top-full left-0 mt-2 w-56 bg-white shadow-xl border border-slate-100 z-50"
-                          >
-                            {link.dropdown.map((item) => (
-                              <Link
-                                key={item.href}
-                                href={item.href}
-                                className="block px-4 py-3 text-xs font-medium text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition-colors border-b border-slate-100 last:border-0"
-                                onClick={() => setOpenDropdown(null)}
-                              >
-                                {item.label[locale]}
-                              </Link>
-                            ))}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  ) : (
-                    <Link
-                      key={linkKey}
-                      href={link.href!}
-                      className="px-4 py-2 text-[11px] font-black uppercase tracking-widest text-slate-600 hover:text-blue-600 transition-all relative group"
-                    >
-                      {linkLabel}
-                      <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
-                    </Link>
-                  );
-                })}
-              </div>
+            {/* ACTION AREA */}
+            <div className="ml-6 flex items-center gap-6 border-l border-white/10 pl-8">
+              {/* SEARCH BUTTON */}
+              <button 
+                onClick={() => setIsSearchOpen(true)}
+                className="p-2 text-[#F5F2EC]/40 hover:text-[#C9A84C] transition-colors"
+                title="Rechercher"
+              >
+                <Search size={18} />
+              </button>
 
-              <div className="h-6 w-[1px] bg-slate-100 mx-2"></div>
-
-              {/* LANGUE */}
-              <div className="flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-none border border-slate-100">
-                <Globe size={14} className="text-blue-600" />
+              {/* LOCALE SWITCHER */}
+              <div className="flex items-center gap-1.5 bg-white/5 p-1 rounded-sm border border-white/5">
                 {['fr', 'en', 'sw'].map((l) => (
                   <Link
                     key={l}
                     href={pathname}
                     locale={l}
-                    className={`text-[10px] font-bold transition-all ${locale === l ? 'text-blue-600' : 'text-slate-300 hover:text-slate-600'}`}
+                    className={`text-[9px] font-outfit font-bold w-7 h-7 flex items-center justify-center transition-all ${
+                      locale === l 
+                        ? "bg-[#C9A84C] text-[#0C0C0A]" 
+                        : "text-[#F5F2EC]/40 hover:text-[#F5F2EC]/70"
+                    }`}
                   >
                     {l.toUpperCase()}
                   </Link>
                 ))}
               </div>
 
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                className={`p-2.5 transition-all rounded-none ${isScrolled ? "bg-blue-600 text-white" : "bg-slate-950 text-white shadow-lg"}`}
+              {/* AUTH BUTTON */}
+              <Link
+                href={session ? "/admin" : "/admin/login"}
+                className="px-4 py-2.5 border border-[#C9A84C] text-[#C9A84C] text-[9px] font-outfit font-semibold uppercase tracking-widest hover:bg-[#C9A84C] hover:text-[#0C0C0A] transition-all rounded-sm"
               >
-                <Search size={18} />
-              </button>
-            </div>
+                {session ? 'Dashboard' : t('login') || 'Se connecter'}
+              </Link>
 
-            {/* MOBILE ACTIONS */}
-            <div className="lg:hidden flex items-center gap-2 relative z-[110]">
-              <button
-                onClick={() => setIsSearchOpen(true)}
-                className="p-2 text-slate-600 hover:text-blue-600 transition-colors"
-                aria-label="Recherche"
+              {/* CONTACT BUTTON */}
+              <Link
+                href="/contact"
+                className="px-6 py-2.5 bg-[#C9A84C] text-[#0C0C0A] text-[10px] font-outfit font-bold uppercase tracking-widest hover:bg-[#E8C97A] transition-all flex items-center gap-2 ring-1 ring-[#C9A84C]/20"
               >
-                <Search size={24} />
-              </button>
-
-              <button
-                className="p-2 text-slate-900 bg-slate-50 rounded-lg"
-                onClick={() => setIsOpen(!isOpen)}
-              >
-                {isOpen ? <X size={28} /> : <Menu size={28} />}
-              </button>
+                {t('contact')}
+                <ArrowRight size={12} />
+              </Link>
             </div>
+          </nav>
+
+          {/* MOBILE TOGGLE AREA */}
+          <div className="flex items-center gap-4 lg:hidden">
+            <button 
+              onClick={() => setIsSearchOpen(true)}
+              className="p-2 text-[#F5F2EC]/60 hover:text-[#C9A84C] transition-colors"
+            >
+              <Search size={22} />
+            </button>
+            <button 
+              className="p-2 text-[#F5F2EC]/80 hover:text-[#C9A84C] transition-colors"
+              onClick={() => setIsOpen(true)}
+            >
+              <Menu size={24} />
+            </button>
           </div>
-
-          {/* MOBILE MENU OVERLAY */}
-          <AnimatePresence>
-            {isOpen && (
-              <motion.div
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="fixed inset-0 bg-[#050a15] text-white z-[100] flex flex-col p-10 pt-32 overflow-y-auto"
-              >
-                <div className="space-y-6">
-                  {navLinks.map((link, idx) => {
-                    const linkKey = link.href || `mobile-dropdown-${idx}`;
-                    const linkLabel = link.label[locale];
-                    
-                    return (
-                      <motion.div
-                        key={linkKey}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.1 + idx * 0.05 }}
-                      >
-                        {link.dropdown ? (
-                          <div className="space-y-3">
-                            <p className="text-blue-400 text-sm font-bold uppercase tracking-widest">
-                              {linkLabel}
-                            </p>
-                            <div className="pl-4 space-y-3 border-l-2 border-blue-900">
-                              {link.dropdown.map((item) => (
-                                <Link
-                                  key={item.href}
-                                  href={item.href}
-                                  onClick={() => setIsOpen(false)}
-                                  className="block text-2xl font-serif hover:text-blue-400 transition-colors"
-                                >
-                                  {item.label[locale]}
-                                </Link>
-                              ))}
-                            </div>
-                          </div>
-                        ) : (
-                          <Link
-                            href={link.href!}
-                            onClick={() => setIsOpen(false)}
-                            className="text-3xl font-serif font-bold hover:text-blue-400 flex items-center justify-between group"
-                          >
-                            {linkLabel}
-                            <ChevronRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </Link>
-                        )}
-                      </motion.div>
-                    );
-                  })}
-                </div>
-
-                <div className="mt-auto pt-10 border-t border-white/10 space-y-6">
-                  <div className="flex gap-6">
-                    {['fr', 'en', 'sw'].map((l) => (
-                      <Link
-                        key={l}
-                        href={pathname}
-                        locale={l}
-                        onClick={() => setIsOpen(false)}
-                        className={`text-sm font-bold ${locale === l ? 'text-blue-400' : 'text-slate-500'}`}
-                      >
-                        {l.toUpperCase()}
-                      </Link>
-                    ))}
-                  </div>
-                  <p className="text-[10px] text-slate-500 uppercase tracking-widest">
-                    CREDDA-ULPGL Official Hub
-                  </p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </nav>
+        </div>
       </header>
+
+      {/* MOBILE MENU */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[200] bg-[#0C0C0A] flex flex-col"
+          >
+            <div className="p-8 flex justify-between items-center border-b border-white/5">
+               <span className="font-bricolage font-extrabold tracking-tighter text-2xl text-[#F5F2EC]">
+                 CREDDA<span className="text-[#C9A84C]">·</span>CDE
+               </span>
+               <button 
+                onClick={() => setIsOpen(false)} 
+                className="p-3 bg-white/5 text-[#F5F2EC] rounded-full hover:bg-[#C9A84C] hover:text-[#0C0C0A] transition-all"
+              >
+                 <X size={24} />
+               </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-12 flex flex-col justify-center">
+              <nav className="space-y-6">
+                {navLinks.map((link, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <Link 
+                      href={link.href} 
+                      onClick={() => setIsOpen(false)}
+                      className="text-5xl font-fraunces font-extrabold text-[#F5F2EC] hover:text-[#C9A84C] transition-all leading-tight block"
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+            </div>
+            
+            <div className="p-12 border-t border-white/5 bg-[#111110] flex flex-col gap-6">
+               <div className="flex gap-2">
+                 {['fr', 'en', 'sw'].map((l) => (
+                    <Link 
+                      key={l} 
+                      href={pathname} 
+                      locale={l} 
+                      onClick={() => setIsOpen(false)} 
+                      className={`flex-1 text-center py-3 text-xs font-outfit font-bold border ${
+                        locale === l 
+                          ? 'bg-[#C9A84C] text-[#0C0C0A] border-[#C9A84C]' 
+                          : 'text-[#F5F2EC]/40 border-white/5'
+                      }`}
+                    >
+                      {l.toUpperCase()}
+                    </Link>
+                 ))}
+               </div>
+               
+               <Link
+                  href={session ? "/admin" : "/admin/login"}
+                  onClick={() => setIsOpen(false)}
+                  className="w-full py-4 border border-[#C9A84C] text-[#C9A84C] text-center text-[10px] font-outfit font-bold uppercase tracking-[0.2em]"
+                >
+                  {session ? "Tableau de Bord" : "Accès Admin"}
+               </Link>
+
+               <Link
+                  href="/contact"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full py-5 bg-[#C9A84C] text-[#0C0C0A] text-center text-xs font-outfit font-bold uppercase tracking-[0.2em]"
+                >
+                  {t('contact')}
+               </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* SEARCH MODAL */}
       <SearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}

@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@/navigation";
 import {
   Lock,
@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
-import LoginSkeleton from "@/components/skeletons/LoginSkeleton";
+import { signIn } from "next-auth/react";
 
 export default function AdminLogin() {
   const { locale } = useParams<{ locale: string }>();
@@ -33,11 +33,10 @@ export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  // Simuler un chargement initial
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 800);
+    }, 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -47,19 +46,18 @@ export default function AdminLogin() {
     setError("");
 
     try {
-      const res = await fetch("/api/admin/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: `/${locale}/admin`
       });
 
-      const data = await res.json();
-
-      if (res.ok && data.token) {
-        document.cookie = `token=${data.token}; path=/; max-age=604800; SameSite=Strict`;
-        router.push(`/${locale}/admin`);
+      if (result?.error) {
+        setError(t('right.errors.invalid'));
       } else {
-        setError(data.message || t('right.errors.invalid'));
+        router.push(`/${locale}/admin`);
+        router.refresh();
       }
     } catch (err) {
       setError(t('right.errors.connection'));
@@ -68,168 +66,124 @@ export default function AdminLogin() {
     }
   };
 
-  // Afficher le skeleton pendant le chargement
   if (isLoading) {
-    return <LoginSkeleton />;
+    return <div className="min-h-screen bg-[#0C0C0A] flex items-center justify-center">
+      <Loader2 className="animate-spin text-[#C9A84C]" size={48} />
+    </div>;
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row bg-white">
-      {/* PARTIE GAUCHE - VISUEL */}
-      <div className="hidden md:flex md:w-1/2 bg-[#050a15] relative overflow-hidden items-center justify-center p-12">
-        <div className="absolute top-0 left-0 w-full h-full opacity-20">
-          <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full border border-blue-500/30" />
-          <div className="absolute bottom-[-5%] right-[-5%] w-[300px] h-[300px] rounded-full border border-blue-500/20" />
+    <div className="min-h-screen w-full flex flex-col md:flex-row bg-[#0C0C0A]">
+      {/* LEFT VISUAL */}
+      <div className="hidden md:flex md:w-1/2 bg-[#0C0C0A] relative overflow-hidden items-center justify-center p-12 lg:p-24 border-r border-white/5">
+        <div className="absolute inset-0">
+          <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#C9A84C]/5 blur-[100px]" />
+          <div className="absolute inset-0 bg-grid-move opacity-20 pointer-events-none" />
         </div>
 
-        <div className="relative z-10 max-w-md text-center md:text-left space-y-8">
+        <div className="relative z-10 w-full max-w-lg space-y-10">
           <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
+            initial={{ opacity: 0, y: 30 }} 
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8 }}
           >
-            <Badge className="bg-blue-600 text-white rounded-none mb-6 px-4 py-1 uppercase tracking-widest text-[10px]">
+            <Badge className="bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20 rounded-none mb-8 px-5 py-2 uppercase tracking-[0.4em] text-[10px]">
               {t('left.badge')}
             </Badge>
-            <h2 className="text-4xl lg:text-5xl font-serif font-bold text-white leading-tight">
-              <span dangerouslySetInnerHTML={{ __html: t.raw('left.title') }} />
+            <h2 className="text-4xl lg:text-7xl font-serif font-black text-[#F5F2EC] leading-[0.9]">
+               Portail de Gestion <span className="text-[#C9A84C] italic">Scientifique</span>.
             </h2>
-            <div className="w-20 h-1 bg-blue-600 mt-6 hidden md:block" />
+            <div className="w-16 h-[2px] bg-[#C9A84C] mt-8" />
           </motion.div>
 
           <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-slate-400 font-light leading-relaxed"
+            className="text-[#F5F2EC]/40 font-light text-lg leading-relaxed max-w-md"
           >
             {t('left.description')}
           </motion.p>
-
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="pt-8 flex items-center gap-4 text-slate-500 text-xs uppercase tracking-widest font-bold"
-          >
-            <ShieldCheck className="text-blue-500" size={20} />
-            {t('left.footer')}
-          </motion.div>
         </div>
       </div>
 
-      {/* PARTIE DROITE - FORMULAIRE */}
-      <div className="flex-1 flex items-center justify-center p-6 md:p-12 lg:p-24 bg-slate-50">
+      {/* RIGHT FORM */}
+      <div className="flex-1 flex items-center justify-center p-6 md:p-12 lg:p-24 relative bg-[#111110]">
         <motion.div 
           initial={{ opacity: 0, x: 20 }} 
           animate={{ opacity: 1, x: 0 }} 
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-sm space-y-10"
+          className="w-full max-w-sm"
         >
-          <div className="space-y-4">
-            <Link href="/" className="inline-flex items-center text-xs font-bold text-slate-400 hover:text-blue-600 transition-colors uppercase tracking-widest group">
-              <ChevronLeft size={14} className="mr-1 group-hover:-translate-x-1 transition-transform" /> 
+          <div className="space-y-12 mb-16">
+            <Link href="/" className="inline-flex items-center text-[10px] font-black text-white/20 hover:text-[#C9A84C] transition-colors uppercase tracking-[0.3em] group">
+              <ChevronLeft size={14} className="mr-2 group-hover:-translate-x-1 transition-transform" /> 
               {t('right.back')}
             </Link>
-            <div className="text-3xl font-serif font-black tracking-tighter text-slate-900">
-              <span dangerouslySetInnerHTML={{ __html: t.raw('right.logo') }} />
+            <div className="text-3xl font-serif font-black tracking-tight text-[#F5F2EC]">
+              CREDDA<span className="text-[#C9A84C]">.ULPGL</span>
             </div>
           </div>
 
-          <div className="space-y-2">
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">{t('right.title')}</h1>
-            <p className="text-sm text-slate-500">{t('right.subtitle')}</p>
-          </div>
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <AnimatePresence>
+              {error && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }} 
+                  animate={{ opacity: 1, height: "auto" }} 
+                  className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-bold uppercase tracking-widest"
+                >
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {error && (
-              <motion.div 
-                initial={{ opacity: 0, height: 0 }} 
-                animate={{ opacity: 1, height: "auto" }} 
-                className="p-3 bg-red-50 border-l-4 border-red-500 text-red-700 text-xs font-medium"
-              >
-                {error}
-              </motion.div>
-            )}
-
-            <div className="space-y-4">
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors">
-                  <Mail size={18} />
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <label className="text-[10px] uppercase font-black tracking-widest text-white/20">Email Académique</label>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={18} />
+                  <Input
+                    type="email"
+                    placeholder="adresse@ulpgl.ac.cd"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="pl-12 h-14 bg-black/40 border-white/5 rounded-none focus:border-[#C9A84C]/50 transition-all text-white font-light"
+                    required
+                  />
                 </div>
-                <Input
-                  type="email"
-                  placeholder={t('right.fields.email.placeholder')}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 h-12 rounded-none border-slate-200 focus:border-blue-600 focus:ring-0 transition-all bg-white"
-                  required
-                  disabled={isSubmitting}
-                />
               </div>
 
-              <div className="relative group">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors">
-                  <Lock size={18} />
+              <div className="space-y-3">
+                <label className="text-[10px] uppercase font-black tracking-widest text-white/20">Mot de passe</label>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" size={18} />
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pl-12 pr-12 h-14 bg-black/40 border-white/5 rounded-none focus:border-[#C9A84C]/50 transition-all text-white font-light"
+                    required
+                  />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-colors">
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
                 </div>
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  placeholder={t('right.fields.password.placeholder')}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 pr-10 h-12 rounded-none border-slate-200 focus:border-blue-600 focus:ring-0 transition-all bg-white"
-                  required
-                  disabled={isSubmitting}
-                />
-                <button 
-                  type="button" 
-                  onClick={() => setShowPassword(!showPassword)} 
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
-                  disabled={isSubmitting}
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
               </div>
             </div>
 
             <Button 
               type="submit" 
               disabled={isSubmitting} 
-              className="w-full h-14 bg-slate-900 hover:bg-blue-600 text-white rounded-none font-bold uppercase tracking-[0.2em] transition-all group shadow-xl shadow-slate-200 relative overflow-hidden"
+              className="w-full h-16 bg-[#C9A84C] hover:bg-[#E8C97A] text-[#0C0C0A] rounded-none font-black uppercase tracking-[0.3em] text-[10px] transition-all"
             >
-              {isSubmitting ? (
-                <span className="flex items-center gap-2">
-                  <Loader2 className="animate-spin" size={18} />
-                  {t('right.submitting')}
-                </span>
-              ) : (
-                <span className="flex items-center gap-2">
-                  {t('right.submit')}
-                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </span>
-              )}
-              
-              {/* Effet de chargement progressif */}
-              {isSubmitting && (
-                <motion.div 
-                  className="absolute bottom-0 left-0 h-1 bg-blue-400"
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                />
-              )}
+              {isSubmitting ? <Loader2 className="animate-spin" size={18} /> : t('right.submit')}
             </Button>
           </form>
 
-          {/* Lien optionnel pour mot de passe oublié */}
-          <div className="text-center">
-            <Link 
-              href="/contact" 
-              className="text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-blue-600 transition-colors"
-            >
-              {t('right.forgotPassword')}
-            </Link>
-          </div>
+          <p className="text-center mt-12 text-[9px] uppercase tracking-widest text-white/10">
+            © {new Date().getFullYear()} CREDDA Research Management System
+          </p>
         </motion.div>
       </div>
     </div>

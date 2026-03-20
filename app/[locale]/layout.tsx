@@ -1,13 +1,7 @@
 import { getMessages } from "next-intl/server";
-import { NextIntlClientProvider } from "next-intl";
-import "../globals.css";
 import Navbar from "@/components/shared/Navbar";
 import Footer from "@/components/shared/Footer";
-
-export const metadata = {
-  title: "CREDDa - ULPGL",
-  description: "Centre de Recherche en Droit et Développement de l'ULPGL",
-};
+import Providers from "@/components/shared/Providers";
 
 export default async function RootLayout({
   children,
@@ -22,18 +16,12 @@ export default async function RootLayout({
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale}>
-      <body>
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <Navbar />
-          <div className="m-0 p-0 pt-12">
-            {children}
-          </div>
-
-
-          <Footer />
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <Providers locale={locale} messages={messages}>
+      <Navbar />
+      <div className="m-0 p-0 pt-12">
+        {children}
+      </div>
+      <Footer />
+    </Providers>
   );
 }

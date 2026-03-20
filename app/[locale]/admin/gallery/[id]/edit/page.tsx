@@ -10,7 +10,8 @@ export default async function EditGalleryImagePage({ params }: Props) {
   const { id } = await params;
   
   const image = await db.galleryImage.findUnique({
-    where: { id }
+    where: { id },
+    include: { translations: true }
   });
 
   if (!image) {
@@ -27,7 +28,29 @@ export default async function EditGalleryImagePage({ params }: Props) {
     
     await db.galleryImage.update({
       where: { id },
-      data: { src, title, category, description }
+      data: { 
+        src, 
+        category,
+        translations: {
+          upsert: [
+            {
+              where: { galleryImageId_language: { galleryImageId: id, language: 'fr' } },
+              update: { title, description: description || null },
+              create: { language: 'fr', title, description: description || null }
+            },
+            {
+              where: { galleryImageId_language: { galleryImageId: id, language: 'en' } },
+              update: { title, description: description || null },
+              create: { language: 'en', title, description: description || null }
+            },
+            {
+              where: { galleryImageId_language: { galleryImageId: id, language: 'sw' } },
+              update: { title, description: description || null },
+              create: { language: 'sw', title, description: description || null }
+            }
+          ]
+        }
+      }
     });
     
     redirect('/admin/gallery');
@@ -52,7 +75,7 @@ export default async function EditGalleryImagePage({ params }: Props) {
           <input 
             name="title" 
             type="text" 
-            defaultValue={image.title}
+            defaultValue={(image as any).translations?.[0]?.title || ''}
             required 
             className="w-full border p-2" 
           />
@@ -72,7 +95,7 @@ export default async function EditGalleryImagePage({ params }: Props) {
           <textarea 
             name="description" 
             rows={3} 
-            defaultValue={image.description || ''}
+            defaultValue={(image as any).translations?.[0]?.description || ''}
             className="w-full border p-2" 
           />
         </div>

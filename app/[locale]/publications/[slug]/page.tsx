@@ -1,241 +1,157 @@
 // app/[locale]/publications/[slug]/page.tsx
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
-import { Link } from "@/navigation";
-import {
-  Download, User2, ExternalLink, ArrowLeft, Globe, Quote,
-  Calendar, Landmark, ArrowRight
-} from "lucide-react";
-import ClientPdfPreview from "@/components/public/ClientPdfPreview";
-import { Badge } from "@/components/ui/badge";
-import Markdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import rehypeRaw from 'rehype-raw';
-import { Metadata } from 'next';
-import ShareButtons from "@/components/public/ShareButtons";
-import CitationButton from "@/components/public/CitationButton";
-import { getTranslations } from "next-intl/server";
+import { Calendar, User, ArrowLeft, Share2, Download, Clock } from "lucide-react";
+import Link from "next/link";
+import { Metadata } from "next";
+import { Button } from "@/components/ui/button";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ locale: string; slug: string }> 
+}): Promise<Metadata> {
   const { locale, slug } = await params;
-  const pub = await db.publication.findUnique({
+  const article = await db.article.findUnique({
     where: { slug },
-    include: { translations: { where: { language: locale } } }
+    include: { 
+      translations: { where: { language: locale } },
+      category: { select: { translations: { where: { language: locale }, select: { name: true } } } }
+    }
   });
 
-  if (!pub || pub.translations.length === 0) return { title: 'Publication | CREDDA' };
-  const content = pub.translations[0];
+  if (!article) return { title: "Publication - CREDDA" };
+  const t = article.translations?.[0];
 
   return {
-    title: `${content.title} | CREDDA-ULPGL`,
-    description: content.description.substring(0, 160),
+    title: `${t?.title || "Recherche"} | CREDDA-ULPGL`,
+    description: t?.excerpt || "Rapport de recherche scientifique du CREDDA.",
   };
 }
 
-export default async function PublicationDetailPage({ params }: { params: Promise<{ locale: string, slug: string }> }) {
+export default async function PublicationDetailPage({ 
+  params 
+}: { 
+  params: Promise<{ locale: string; slug: string }> 
+}) {
   const { locale, slug } = await params;
-  const t = await getTranslations({ locale, namespace: 'PublicationDetailPage' });
-
-  const pub = await db.publication.findUnique({
+  const article = await db.article.findUnique({
     where: { slug },
-    include: { translations: { where: { language: locale } } }
+    include: { 
+      translations: { where: { language: locale } },
+      category: { select: { translations: { where: { language: locale }, select: { name: true } } } }
+    }
   });
 
-  if (!pub || pub.translations.length === 0) notFound();
-
-  const content = pub.translations[0];
-  // Normalise pdfUrl to an absolute URL.
-  // Guard against empty string: if pdfUrl is falsy, keep it empty so PdfPreview
-  // can render the "no document" placeholder instead of crashing on "/".
-  const rawPdfUrl = pub.pdfUrl
-    ? pub.pdfUrl.startsWith("http")
-      ? pub.pdfUrl
-      : pub.pdfUrl.startsWith("/")
-        ? pub.pdfUrl
-        : `/${pub.pdfUrl}`
-    : "";
-  const pdfUrl = rawPdfUrl && !rawPdfUrl.endsWith(".pdf") ? `${rawPdfUrl}.pdf` : rawPdfUrl;
-  const citation = t('citation.format', {
-    authors: content.authors,
-    year: pub.year,
-    title: content.title
-  });
-
-  // Recommandations
-  const recommendations = await db.publication.findMany({
-    where: { id: { not: pub.id }, domain: pub.domain },
-    include: { translations: { where: { language: locale } } },
-    take: 3,
-    orderBy: { createdAt: 'desc' }
-  });
+  if (!article) notFound();
+  
+  const t = article.translations?.[0];
+  const date = article.createdAt ? new Date(article.createdAt).toLocaleDateString(locale, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }) : "Recent";
 
   return (
-    <main className="min-h-screen bg-white">
-      {/* --- 1. TOP NAVIGATION BAR --- */}
-      <div className="bg-slate-50 border-b border-slate-100 py-4 sticky top-16 z-40 backdrop-blur-md bg-white/80">
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <Link href="/publications" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-blue-600 transition-all group">
-            <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
-            {t('back')}
+    <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">
+       <div className="max-w-4xl mx-auto">
+          {/* BACK LINK */}
+          <Link href="/publications" className="inline-flex items-center gap-2 text-[#C9A84C] text-xs uppercase tracking-widest font-black mb-16 hover:gap-4 transition-all">
+            <ArrowLeft size={14} /> Back to Library
           </Link>
-          <div className="flex items-center gap-6">
-            <ShareButtons title={content.title} url={""} description={content.description} />
-            <Badge variant="outline" className="rounded-none border-blue-200 text-blue-700 text-[9px] font-black uppercase tracking-tighter">
-              {pub.domain === 'RESEARCH' ? t('badge.research') : t('badge.clinical')}
-            </Badge>
+
+          {/* HEADER */}
+          <header className="mb-20">
+             <div className="flex items-center gap-4 mb-8">
+                <span className="px-3 py-1 border border-[#C9A84C]/20 text-[#C9A84C] text-[9px] uppercase tracking-widest font-bold">
+                  {(article as any).category?.translations?.[0]?.name || "Research Paper"}
+                </span>
+                <div className="h-[1px] flex-1 bg-white/5" />
+             </div>
+             
+             <h1 className="text-5xl md:text-7xl font-serif font-black text-[#F5F2EC] leading-[1.1] mb-12">
+                {t?.title}
+             </h1>
+
+             <div className="flex flex-wrap items-center gap-x-12 gap-y-6 pt-12 border-t border-white/5">
+                <div className="flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C]">
+                      <User size={18} />
+                   </div>
+                   <div>
+                      <p className="text-[10px] text-white/20 uppercase tracking-widest">Auteur</p>
+                      <p className="text-sm font-bold text-[#F5F2EC]">Equipe de Recherche CREDDA</p>
+                   </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/40">
+                      <Calendar size={18} />
+                   </div>
+                   <div>
+                      <p className="text-[10px] text-white/20 uppercase tracking-widest">Publication</p>
+                      <p className="text-sm font-bold text-[#F5F2EC]">{date}</p>
+                   </div>
+                </div>
+
+                <div className="flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/40">
+                      <Clock size={18} />
+                   </div>
+                   <div>
+                      <p className="text-[10px] text-white/20 uppercase tracking-widest">Lecture</p>
+                      <p className="text-sm font-bold text-[#F5F2EC]">12 Min</p>
+                   </div>
+                </div>
+             </div>
+          </header>
+
+          {/* CONTENT SECTION */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-20">
+             {/* MAIN BODY */}
+             <div className="lg:col-span-3">
+                <div className="prose prose-invert prose-gold max-w-none">
+                   <p className="text-xl text-[#F5F2EC]/60 font-serif italic mb-12 leading-relaxed">
+                      {t?.excerpt}
+                   </p>
+                   
+                   <div className="h-[1px] w-full bg-white/5 mb-12" />
+                   
+                   <div className="text-[#F5F2EC]/80 font-sans font-light leading-loose space-y-8 text-lg">
+                      {t?.content ? (
+                        <div dangerouslySetInnerHTML={{ __html: t.content }} />
+                      ) : (
+                        <p>No extended content available for this report at the moment. Please consult the physical library at ULPGL for the full manuscript.</p>
+                      )}
+                   </div>
+                </div>
+             </div>
+
+             {/* SIDEBAR */}
+             <aside className="lg:col-span-1 space-y-12">
+                <div className="bg-[#111110] border border-white/5 p-8">
+                   <h4 className="text-[11px] font-black uppercase tracking-widest text-[#C9A84C] mb-8">Actions</h4>
+                   <div className="space-y-4">
+                      <Button className="w-full bg-[#C9A84C] text-[#0C0C0A] rounded-none py-6 font-black uppercase tracking-widest text-[10px] flex gap-3">
+                         <Download size={16} /> PDF Open Archive
+                      </Button>
+                      <Button variant="outline" className="w-full border-white/10 text-white rounded-none py-6 font-black uppercase tracking-widest text-[10px] flex gap-3 hover:bg-white hover:text-black">
+                         <Share2 size={16} /> Share Research
+                      </Button>
+                   </div>
+                </div>
+
+                <div className="p-8 border-l border-[#C9A84C]/20">
+                   <h4 className="text-[11px] font-black uppercase tracking-widest text-white/30 mb-6">Keywords</h4>
+                   <div className="flex flex-wrap gap-2">
+                      {["Droit", "Environnement", "RDC", "Justice"].map(tag => (
+                        <span key={tag} className="text-[10px] text-[#F5F2EC]/40 hover:text-[#C9A84C] transition-colors cursor-pointer">#{tag}</span>
+                      ))}
+                   </div>
+                </div>
+             </aside>
           </div>
-        </div>
-      </div>
-
-      <article className="py-12 lg:py-20">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-12 gap-16">
-
-            {/* --- 2. COLONNE GAUCHE : ACTIONS & PREVIEW (STICKY) --- */}
-            <aside className="lg:col-span-4 space-y-8">
-              <div className="sticky top-32 space-y-8">
-                {/* Preview Box */}
-                <div className="sticky top-2  aspect-[3/4] bg-slate-900 shadow-2xl overflow-hidden group">
-                  <ClientPdfPreview url={pdfUrl} />
-                  <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors" />
-                </div>
-
-                {/* Actions Buttons */}
-                <div className="space-y-3">
-                  {pdfUrl && (
-                    <a
-                      href={pdfUrl}
-                      target="_blank"
-                      className="flex items-center justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 text-white py-5 px-6 font-black uppercase text-xs tracking-widest transition-all shadow-xl shadow-blue-600/20"
-                    >
-                      <Download size={18} /> {t('actions.download')}
-                    </a>
-                  )}
-
-
-                </div>
-
-                {/* Citation Box (Styled) */}
-                <div className="p-6 bg-slate-50 border-l-4 border-blue-600">
-                  <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3 flex items-center gap-2">
-                    <Quote size={12} /> {t('citation.title')}
-                  </h4>
-                  <p className="text-xs text-slate-600 leading-relaxed font-mono italic mb-4">
-                    {citation}
-                  </p>
-                  <CitationButton citation={citation} />
-                </div>
-              </div>
-            </aside>
-
-            {/* --- 3. COLONNE DROITE : CONTENU SCIENTIFIQUE --- */}
-            <div className="lg:col-span-8">
-              <header className="space-y-8 mb-16">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
-                    <Calendar size={14} />
-                    <span>{t('metadata.publication', { year: pub.year })}</span>
-                    <span className="w-1.5 h-1.5 bg-slate-200 rounded-full" />
-                    <Globe size={14} />
-                    <span>{t('metadata.openAccess')}</span>
-                  </div>
-                  <h1 className="text-4xl md:text-6xl font-serif font-bold text-slate-950 leading-tight tracking-tight">
-                    {content.title}
-                  </h1>
-                </div>
-
-                {/* Auteurs - Style Academic Listing */}
-                <div className="flex flex-wrap items-center gap-y-4 gap-x-8 py-6 border-y border-slate-100">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-blue-600">
-                      <User2 size={20} />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-black uppercase text-slate-400">{t('metadata.authors')}</p>
-                      <p className="text-sm font-bold text-slate-900">{content.authors}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-blue-600">
-                      <Landmark size={20} />
-                    </div>
-                    <div>
-                      <p className="text-[10px] font-black uppercase text-slate-400">{t('metadata.affiliation')}</p>
-                      <p className="text-sm font-bold text-slate-900">CREDDA - ULPGL Hub</p>
-                    </div>
-                  </div>
-                </div>
-              </header>
-
-              {/* Abstract / Résumé */}
-              <section className="mb-16">
-                <h3 className="text-xs font-black uppercase tracking-[0.4em] text-blue-600 mb-6 flex items-center gap-3">
-                  <div className="h-px w-8 bg-blue-600" /> {t('abstract')}
-                </h3>
-                <div className="text-xl font-light leading-relaxed text-slate-700 italic font-serif bg-slate-50 p-8 border-l-4 border-slate-200">
-                  {content.description}
-                </div>
-              </section>
-
-              {/* Contenu Markdown Intégral */}
-              {content.content && (
-                <section className="prose prose-slate prose-lg max-w-none 
-                                    prose-headings:font-serif prose-headings:font-bold prose-headings:text-slate-950
-                                    prose-p:text-slate-700 prose-p:leading-relaxed prose-p:font-light
-                                    prose-strong:text-blue-900 prose-strong:font-bold
-                                    border-t border-slate-100 pt-12">
-                  <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
-                    {content.content}
-                  </Markdown>
-                </section>
-              )}
-
-              {/* Tags / Metadata Footer */}
-              <footer className="mt-20 pt-10 border-t border-slate-100 flex flex-wrap gap-4">
-                <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.democracy')}</Badge>
-                <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.drc')}</Badge>
-                <Badge variant="outline" className="rounded-none border-slate-200 text-slate-400 px-4 py-1 uppercase text-[10px]">{t('tags.governance')}</Badge>
-              </footer>
-            </div>
-          </div>
-
-          {/* --- 4. SECTION RECOMMANDATIONS --- */}
-          {recommendations.length > 0 && (
-            <section className="mt-32 pt-20 border-t border-slate-100">
-              <div className="flex items-end justify-between mb-12">
-                <div className="space-y-2">
-                  <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-600">{t('recommendations.title')}</h2>
-                  <p className="text-3xl font-serif font-bold text-slate-950">{t('recommendations.subtitle')}</p>
-                </div>
-                <Link href="/publications" className="text-[10px] font-black uppercase border-b-2 border-slate-900 pb-1">
-                  {t('recommendations.cta')}
-                </Link>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-8">
-                {recommendations.map(rec => (
-                  <Link
-                    key={rec.id}
-                    href={`/publications/${rec.slug || rec.id}`}
-                    className="group bg-slate-50 p-8 hover:bg-blue-600 transition-all duration-500 hover:shadow-2xl"
-                  >
-                    <div className="flex flex-col h-full">
-                      <span className="text-[10px] font-bold text-slate-400 group-hover:text-blue-100 mb-4 uppercase">{rec.year}</span>
-                      <h3 className="text-lg font-serif font-bold text-slate-900 group-hover:text-white leading-tight mb-4 line-clamp-2">
-                        {rec.translations[0]?.title}
-                      </h3>
-                      <div className="mt-auto flex items-center justify-between text-[10px] font-black uppercase group-hover:text-white">
-                        <span>{t('recommendations.read')}</span>
-                        <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
-        </div>
-      </article>
+       </div>
     </main>
   );
 }

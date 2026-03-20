@@ -1,13 +1,16 @@
+// components/shared/SearchModal.tsx
 "use client";
 
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, FileText, BookOpen, User, ArrowRight, Loader2, Command } from "lucide-react";
+import { Search, X, FileText, BookOpen, Loader2, Command, ChevronRight, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Link } from "@/navigation";
 import { searchEverything } from "@/services/search-actions";
-import { ChevronRight } from "lucide-react";
+import { useTranslations } from "next-intl";
+
 export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boolean; onClose: () => void; locale: string }) {
+  const t = useTranslations('Search');
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -25,7 +28,6 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
     }
   }, [isOpen]);
 
-  // Debounce simple pour les suggestions
   useEffect(() => {
     if (query.length < 2) {
       setResults(null);
@@ -53,88 +55,105 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-[200] flex items-start justify-center pt-20 px-4 md:pt-32">
-          {/* Overlay flou */}
+          {/* Overlay */}
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-950/60 backdrop-blur-md"
+            className="absolute inset-0 bg-[#0C0C0A]/90 backdrop-blur-xl"
           />
 
-          {/* Fenêtre de recherche */}
+          {/* Search Window */}
           <motion.div 
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
-            className="relative w-full max-w-2xl bg-white shadow-2xl rounded-none overflow-hidden"
+            className="relative w-full max-w-2xl bg-[#111110] border border-white/5 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden rounded-sm"
           >
-            <form onSubmit={handleSearchSubmit} className="flex items-center p-6 border-b border-slate-100">
-              <Search className="text-blue-600 mr-4" size={24} />
+            <form onSubmit={handleSearchSubmit} className="flex items-center p-8 border-b border-white/5 bg-[#161614]">
+              <Search className="text-[#C9A84C] mr-6" size={24} />
               <input
                 ref={inputRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Chercher un rapport, un expert ou un article..."
-                className="flex-1 bg-transparent border-none outline-none text-xl font-serif text-slate-900 placeholder:text-slate-300"
+                placeholder={t('placeholder') || "Search for research, publications..."}
+                className="flex-1 bg-transparent border-none outline-none text-2xl font-serif text-[#F5F2EC] placeholder:text-[#F5F2EC]/20"
               />
-              <div className="flex items-center gap-3">
-                {loading && <Loader2 className="animate-spin text-blue-600" size={20} />}
-                <button type="button" onClick={onClose} className="p-2 hover:bg-slate-100 text-slate-400">
-                  <X size={20} />
+              <div className="flex items-center gap-4">
+                {loading && <Loader2 className="animate-spin text-[#C9A84C]" size={20} />}
+                <button type="button" onClick={onClose} className="p-2 hover:bg-white/5 text-[#F5F2EC]/40 transition-colors">
+                  <X size={24} />
                 </button>
               </div>
             </form>
 
-            <div className="max-h-[60vh] overflow-y-auto p-2">
+            <div className="max-h-[60vh] overflow-y-auto p-4 custom-scrollbar">
               {!results && !loading && query.length < 2 && (
-                <div className="p-10 text-center space-y-4">
-                  <div className="flex justify-center gap-2 text-slate-300">
-                    <Command size={40} strokeWidth={1} />
+                <div className="p-20 text-center space-y-6">
+                  <div className="flex justify-center text-[#C9A84C]/20">
+                    <Command size={60} strokeWidth={1} />
                   </div>
-                  <p className="text-sm text-slate-400 font-bold uppercase tracking-widest">Saisissez au moins 2 caractères</p>
+                  <p className="text-[10px] text-[#F5F2EC]/30 font-black uppercase tracking-[0.4em]">{t('min_chars') || "Type at least 2 characters"}</p>
                 </div>
               )}
 
               {results && (
-                <div className="space-y-6 p-4">
+                <div className="space-y-10 p-4">
                   {/* Articles */}
                   {results.articles.length > 0 && (
                     <div>
-                      <h3 className="text-[10px] font-black text-blue-600 uppercase tracking-widest mb-3 px-2">Travaux & Analyses</h3>
-                      {results.articles.map((a: any) => (
-                        <Link key={a.id} href={`/research/${a.slug}`} onClick={onClose} className="flex items-center justify-between p-3 hover:bg-blue-50 transition-colors group">
-                          <div className="flex items-center gap-3">
-                            <FileText size={18} className="text-slate-400" />
-                            <span className="text-sm font-bold text-slate-700">{a.translations[0].title}</span>
-                          </div>
-                          <ChevronRight size={14} className="text-slate-300 group-hover:text-blue-600" />
-                        </Link>
-                      ))}
+                      <h3 className="text-[10px] font-black text-[#C9A84C] uppercase tracking-[0.4em] mb-6 px-4">{t('sections.articles') || "Research Articles"}</h3>
+                      <div className="space-y-2">
+                        {results.articles.map((a: any) => {
+                           const title = a.translations.find((tr: any) => tr.language === locale)?.title || a.translations[0].title;
+                           return (
+                            <Link key={a.id} href={`/research/${a.slug}`} onClick={onClose} className="flex items-center justify-between p-4 hover:bg-white/5 transition-all group rounded-sm">
+                              <div className="flex items-center gap-4">
+                                <div className="p-2 bg-white/5 rounded-sm">
+                                  <FileText size={16} className="text-[#F5F2EC]/40 group-hover:text-[#C9A84C] transition-colors" />
+                                </div>
+                                <span className="text-base font-light text-[#F5F2EC]/80 group-hover:text-[#F5F2EC]">{title}</span>
+                              </div>
+                              <ChevronRight size={16} className="text-[#F5F2EC]/20 group-hover:text-[#C9A84C] transition-all transform group-hover:translate-x-1" />
+                            </Link>
+                           );
+                        })}
+                      </div>
                     </div>
                   )}
 
                   {/* Publications */}
                   {results.publications.length > 0 && (
                     <div>
-                      <h3 className="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-3 px-2">Bibliothèque PDF</h3>
-                      {results.publications.map((p: any) => (
-                        <Link key={p.id} href="/publications" onClick={onClose} className="flex items-center justify-between p-3 hover:bg-emerald-50 transition-colors group">
-                          <div className="flex items-center gap-3">
-                            <BookOpen size={18} className="text-slate-400" />
-                            <span className="text-sm font-bold text-slate-700">{p.translations[0].title} ({p.year})</span>
-                          </div>
-                          <ArrowRight size={14} className="text-slate-300" />
-                        </Link>
-                      ))}
+                      <h3 className="text-[10px] font-black text-[#C9A84C] uppercase tracking-[0.4em] mb-6 px-4">{t('sections.publications') || "Scientific Publications"}</h3>
+                      <div className="space-y-2">
+                        {results.publications.map((p: any) => {
+                           const title = p.translations.find((tr: any) => tr.language === locale)?.title || p.translations[0].title;
+                           return (
+                            <Link key={p.id} href="/publications" onClick={onClose} className="flex items-center justify-between p-4 hover:bg-white/5 transition-all group rounded-sm">
+                              <div className="flex items-center gap-4">
+                                <div className="p-2 bg-white/5 rounded-sm">
+                                  <BookOpen size={16} className="text-[#F5F2EC]/40 group-hover:text-[#C9A84C] transition-colors" />
+                                </div>
+                                <span className="text-base font-light text-[#F5F2EC]/80 group-hover:text-[#F5F2EC]">{title} ({p.year})</span>
+                              </div>
+                              <ArrowRight size={16} className="text-[#F5F2EC]/20 group-hover:text-[#C9A84C] transition-all transform group-hover:translate-x-1" />
+                            </Link>
+                           );
+                        })}
+                      </div>
                     </div>
                   )}
                 </div>
               )}
             </div>
 
-            <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-between text-[10px] font-bold uppercase text-slate-400 tracking-tighter">
-              <span>Appuyez sur Entrée pour voir tout</span>
-              <div className="flex gap-2">
-                 <span className="px-1.5 py-0.5 border border-slate-200 bg-white">ESC</span> pour fermer
+            <div className="p-6 bg-[#161614] border-t border-white/5 flex justify-between items-center text-[9px] font-bold uppercase text-[#F5F2EC]/20 tracking-widest">
+              <span className="flex items-center gap-2">
+                <Command size={12} /> {t('footer_hint') || "Press enter to see all results"}
+              </span>
+              <div className="flex gap-4">
+                 <span className="px-2 py-1 bg-white/5 border border-white/5 font-mono">ESC</span>
+                 <span className="mt-1">{t('esc_hint') || "to close"}</span>
               </div>
             </div>
           </motion.div>

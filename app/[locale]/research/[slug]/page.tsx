@@ -3,96 +3,52 @@ import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
-import { ArrowLeft, BookOpen, Clock, User, Calendar } from "lucide-react";
+import { ArrowLeft, Clock, User, Calendar } from "lucide-react";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Metadata } from "next";
 import ArticleActions from "./ArticleActions";
 import { getTranslations } from "next-intl/server";
+import ParallaxWrapper from "@/components/shared/ParallaxWrapper";
 
-// --- SEO DYNAMIQUE ---
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
-  
-  const article = await db.article.findUnique({
-    where: { slug },
-    include: {
-      translations: { where: { language: locale } }
-    }
-  });
+  try {
+    const article = await db.article.findUnique({
+      where: { slug },
+      include: { translations: { where: { language: locale } } }
+    });
 
-  if (!article || article.translations.length === 0) {
-    const t = await getTranslations({ locale, namespace: 'ResearchDetailPage.metadata.notFound' });
+    if (!article || article.translations.length === 0) return { title: "Not Found | CREDDA" };
+    const translation = article.translations[0];
     return {
-      title: `${t('title')} | CREDDA-ULPGL`,
+      title: `${translation.title} | CREDDA-ULPGL`,
+      description: translation.excerpt || "Scientific publication from CREDDA-ULPGL",
     };
+  } catch (error) {
+    return { title: "Publication Scientifique | CREDDA-ULPGL" };
   }
-
-  const translation = article.translations[0];
-  
-  return {
-    title: `${translation.title} | CREDDA-ULPGL`,
-    description: translation.excerpt || "Publication scientifique du CREDDA-ULPGL",
-    openGraph: {
-      title: translation.title,
-      description: translation.excerpt || "Publication scientifique du CREDDA-ULPGL",
-      type: 'article',
-      publishedTime: article.createdAt.toISOString(),
-      authors: ['CREDDA Research Team'],
-    },
-  };
 }
 
-// Composant pour le rendu Markdown personnalisé
 const MarkdownComponents = {
-  h1: ({ node, ...props }: any) => (
-    <h1 className="text-3xl md:text-4xl font-serif font-bold text-slate-950 mt-12 mb-6 pb-2 border-b border-slate-100" {...props} />
+  h1: ({ ...props }: any) => <h1 className="text-4xl md:text-5xl font-serif font-black text-primary mt-16 mb-8 leading-[1.1]" {...props} />,
+  h2: ({ ...props }: any) => <h2 className="text-3xl font-serif font-black text-primary mt-12 mb-6 leading-tight border-b border-light-gray pb-4" {...props} />,
+  h3: ({ ...props }: any) => <h3 className="text-2xl font-serif font-black text-primary mt-10 mb-4" {...props} />,
+  p: ({ ...props }: any) => <p className="text-lg md:text-xl text-anthracite/80 leading-[1.8] mb-8 font-light" {...props} />,
+  ul: ({ ...props }: any) => <ul className="list-disc list-outside ml-6 mb-8 space-y-4 text-anthracite/80 text-lg md:text-xl font-light" {...props} />,
+  ol: ({ ...props }: any) => <ol className="list-decimal list-outside ml-6 mb-8 space-y-4 text-anthracite/80 text-lg md:text-xl font-light" {...props} />,
+  blockquote: ({ ...props }: any) => (
+    <blockquote className="border-l-4 border-accent bg-soft-cream/50 p-10 my-12 italic text-primary text-xl md:text-2xl font-serif relative" {...props}>
+      <span className="absolute top-4 left-4 text-6xl text-accent opacity-20 font-serif">&ldquo;</span>
+      {props.children}
+    </blockquote>
   ),
-  h2: ({ node, ...props }: any) => (
-    <h2 className="text-2xl md:text-3xl font-serif font-bold text-slate-950 mt-10 mb-4" {...props} />
-  ),
-  h3: ({ node, ...props }: any) => (
-    <h3 className="text-xl md:text-2xl font-serif font-bold text-slate-950 mt-8 mb-3" {...props} />
-  ),
-  p: ({ node, ...props }: any) => (
-    <p className="text-base md:text-lg text-slate-700 leading-relaxed mb-6 font-light" {...props} />
-  ),
-  ul: ({ node, ...props }: any) => (
-    <ul className="list-disc list-outside ml-6 mb-6 space-y-2 text-slate-700" {...props} />
-  ),
-  ol: ({ node, ...props }: any) => (
-    <ol className="list-decimal list-outside ml-6 mb-6 space-y-2 text-slate-700" {...props} />
-  ),
-  blockquote: ({ node, ...props }: any) => (
-    <blockquote className="border-l-4 border-blue-600 bg-slate-50 p-6 my-8 italic text-slate-700" {...props} />
-  ),
-  code: ({ node, inline, className, children, ...props }: any) => {
-    const match = /language-(\w+)/.exec(className || '');
-    return !inline && match ? (
-      <SyntaxHighlighter
-        style={vscDarkPlus}
-        language={match[1]}
-        PreTag="div"
-        className="rounded-none my-6 text-sm"
-        {...props}
-      >
-        {String(children).replace(/\n$/, '')}
-      </SyntaxHighlighter>
-    ) : (
-      <code className="bg-slate-100 text-slate-800 px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
-        {children}
-      </code>
-    );
-  },
 };
 
-// Fonction pour calculer le temps de lecture
 function calculateReadTime(content: string = ''): number {
   const wordsPerMinute = 200;
   const wordCount = content.split(/\s+/).length;
@@ -107,111 +63,88 @@ export default async function ResearchDetailPage({
   const { locale, slug } = await params;
   const t = await getTranslations({ locale, namespace: 'ResearchDetailPage' });
   
-  const article = await db.article.findUnique({
-    where: { slug },
-    include: {
-      translations: { where: { language: locale } },
-      category: { 
-        include: { 
-          translations: { 
-            where: { language: locale } 
-          } 
-        } 
-      },
-      medias: true
-    }
-  });
-
-  if (!article || article.domain !== "RESEARCH" || article.translations.length === 0) {
-    notFound();
+  let article = null;
+  try {
+    article = await db.article.findUnique({
+      where: { slug },
+      include: {
+        translations: { where: { language: locale } },
+        category: { include: { translations: { where: { language: locale } } } }
+      }
+    });
+  } catch (error) {
+    console.error("⚠️ Database connection failed in ResearchDetailPage", error);
   }
+
+  if (!article || article.domain !== "RESEARCH" || article.translations.length === 0) notFound();
   
   const translation = article.translations[0];
-  const categoryName = article.category.translations[0]?.name || t('metadata.category');
+  const categoryName = article.category?.translations[0]?.name || "Research Paper";
   const readTime = calculateReadTime(translation.content);
   const publishDate = new Date(article.createdAt).toLocaleDateString(locale, { 
-    year: 'numeric', 
-    month: 'long',
-    day: 'numeric'
+    year: 'numeric', month: 'long', day: 'numeric'
   });
 
   return (
-    <main className="min-h-screen bg-white pb-24">
-      {/* Header Académique */}
-      <div className="bg-[#050a15] text-white py-20 lg:py-32">
-        <div className="container mx-auto px-6 max-w-4xl">
-          <div className="space-y-8">
-            <Link 
-              href="/research" 
-              className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 hover:text-white transition-all group"
-            >
-              <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> 
-              {t('back')}
-            </Link>
+    <main className="min-h-screen bg-white relative pb-32">
+      {/* 1. SCROLL PROGRESS BAR */}
+      <div className="fixed top-0 left-0 w-full h-1 z-[60]">
+        <div id="scroll-progress" className="h-full bg-accent w-0 transition-all duration-150" />
+      </div>
+
+      {/* 2. INSTITUTIONAL HEADER */}
+      <header className="bg-primary text-white pt-32 pb-48 relative overflow-hidden">
+        <div className="absolute inset-0 bg-blue-600/5 -skew-y-3 translate-y-20 pointer-events-none" />
+        <div className="container mx-auto px-6 max-w-5xl relative z-10 text-center">
+          <Link 
+            href="/research" 
+            className="inline-flex items-center gap-3 text-[10px] uppercase tracking-[0.4em] font-black text-accent hover:text-white transition-all mb-12 group"
+          >
+            <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" /> 
+            {t('back')}
+          </Link>
+          
+          <div className="flex flex-col items-center gap-8">
+            <Badge className="bg-white/5 border border-white/20 text-accent rounded-none text-[10px] uppercase tracking-[0.4em] font-black px-6 py-2">
+              {categoryName}
+            </Badge>
             
-            <div className="flex items-center gap-4">
-              <Badge className="bg-blue-600 rounded-none text-[9px] uppercase tracking-[0.3em] font-black py-1">
-                {categoryName}
-              </Badge>
-              <span className="text-slate-400 text-[10px] font-mono">
-                {t('ref')}: {article.id.substring(0, 8).toUpperCase()}
-              </span>
-            </div>
-            
-            <h1 className="text-4xl md:text-6xl font-serif font-bold leading-tight">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-black leading-[1.05] tracking-tight max-w-4xl mx-auto">
               {translation.title}
             </h1>
             
-            <div className="flex flex-wrap gap-8 pt-4 border-t border-white/10 text-slate-400 text-[11px] font-bold uppercase tracking-widest">
-              <div className="flex items-center gap-2">
-                <User size={14} className="text-blue-500" /> 
-                {t('authors')}
-              </div>
-              <div className="flex items-center gap-2">
-                <Calendar size={14} className="text-blue-500" /> 
-                {publishDate}
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock size={14} className="text-blue-500" /> 
-                {t('readingTime', { time: readTime })}
-              </div>
+            <div className="flex flex-wrap justify-center gap-10 pt-8 border-t border-white/10 text-white/40 text-[10px] font-black uppercase tracking-[0.25em]">
+              <div className="flex items-center gap-2"><User size={14} className="text-accent" /> {t('authors')}</div>
+              <div className="flex items-center gap-2"><Calendar size={14} className="text-accent" /> {publishDate}</div>
+              <div className="flex items-center gap-2"><Clock size={14} className="text-accent" /> {t('readingTime', { time: readTime })}</div>
             </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Image principale si disponible */}
-      {article.mainImage && (
-        <div className="container mx-auto px-6 -mt-12 mb-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="relative aspect-[21/9] overflow-hidden border-8 border-white shadow-2xl">
-              <Image
-                src={article.mainImage}
-                alt={translation.title}
-                fill
-                className="object-cover"
-                priority
-              />
+      {/* 3. HERO IMAGE & ARTICLE CONTENT */}
+      <div className="container mx-auto px-6 max-w-5xl -mt-64 relative z-20">
+        {article.mainImage && (
+          <ParallaxWrapper speed={0.15} className="mb-20">
+            <div className="relative aspect-[21/9] lg:aspect-[3/1] overflow-hidden border-[12px] border-white shadow-3xl">
+              <Image src={article.mainImage} alt={translation.title} fill className="object-cover scale-110" priority />
             </div>
-          </div>
-        </div>
-      )}
+          </ParallaxWrapper>
+        )}
 
-      {/* Contenu Article avec Support Markdown */}
-      <div className="container mx-auto px-6">
-        <div className="max-w-4xl mx-auto bg-white p-8 md:p-16 shadow-2xl border border-slate-100">
-          
-          {/* Extrait si disponible */}
+        <div className="max-w-3xl mx-auto">
+          {/* Abstract / Excerpt */}
           {translation.excerpt && (
-            <div className="mb-12 pb-8 border-b border-slate-100">
-              <p className="text-xl text-slate-600 font-serif italic leading-relaxed">
+            <div className="mb-20 pb-12 border-b border-light-gray">
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-accent mb-6 block">Abstract</span>
+              <p className="text-2xl md:text-3xl text-primary font-serif italic font-light leading-relaxed">
                 {translation.excerpt}
               </p>
             </div>
           )}
 
-          {/* Contenu Markdown */}
-          <div className="prose prose-slate max-w-none font-serif">
+          {/* Reading Mode Content */}
+          <article className="prose prose-slate max-w-none">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw, rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]]}
@@ -219,14 +152,30 @@ export default async function ResearchDetailPage({
             >
               {translation.content}
             </ReactMarkdown>
-          </div>
+          </article>
 
-          {/* Section Actions avec composant client */}
-          <div className="mt-20 pt-10 border-t border-slate-100">
-            <ArticleActions article={article} translation={translation} />
+          {/* Institutional Footer Actions */}
+          <div className="mt-32 pt-16 border-t border-light-gray">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+               <div className="space-y-2">
+                 <h4 className="text-xl font-serif font-black text-primary">Cite this Research</h4>
+                 <p className="text-sm text-anthracite/50 font-light">CREDDA Paper Series · 2026 Archive</p>
+               </div>
+               <ArticleActions article={article} translation={translation} />
+            </div>
           </div>
         </div>
       </div>
+
+      <script dangerouslySetInnerHTML={{ __html: `
+        window.onscroll = function() {
+          var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+          var scrolled = (winScroll / height) * 100;
+          var progress = document.getElementById("scroll-progress");
+          if (progress) progress.style.width = scrolled + "%";
+        };
+      `}} />
     </main>
   );
 }

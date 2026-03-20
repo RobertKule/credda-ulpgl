@@ -20,36 +20,59 @@ interface Props {
 export default async function AdminPage({ params }: Props) {
   const { locale } = await params;
 
-  // --- RÉCUPÉRATION DES DONNÉES RÉELLES ---
-  const [
-    totalArticles,
-    totalPublications,
-    totalMembers,
-    totalUsers,
-    recentArticles,
-    unreadMessages,
-    publishedArticles,
-    latestMessages
-  ] = await Promise.all([
-    db.article.count(),
-    db.publication.count(),
-    db.member.count(),
-    db.user.count(),
-    db.article.findMany({
-      take: 4,
-      orderBy: { updatedAt: 'desc' },
-      include: { 
-        translations: { where: { language: locale } },
-        category: { include: { translations: { where: { language: locale } } } }
-      }
-    }),
-    db.contactMessage.count({ where: { status: "UNREAD" } }),
-    db.article.count({ where: { published: true } }),
-    db.contactMessage.findMany({
-      take: 3,
-      orderBy: { createdAt: 'desc' },
-    })
-  ]);
+  // --- RÉCUPÉRATION DES DONNÉES RÉELLES (AVEC FALLBACK) ---
+  let totalArticles = 0;
+  let totalPublications = 0;
+  let totalMembers = 0;
+  let totalUsers = 0;
+  let recentArticles: any[] = [];
+  let unreadMessages = 0;
+  let publishedArticles = 0;
+  let latestMessages: any[] = [];
+
+  try {
+    const [
+      dbTotalArticles,
+      dbTotalPublications,
+      dbTotalMembers,
+      dbTotalUsers,
+      dbRecentArticles,
+      dbUnreadMessages,
+      dbPublishedArticles,
+      dbLatestMessages
+    ] = await Promise.all([
+      db.article.count(),
+      db.publication.count(),
+      db.member.count(),
+      db.user.count(),
+      db.article.findMany({
+        take: 4,
+        orderBy: { updatedAt: 'desc' },
+        include: { 
+          translations: { where: { language: locale } },
+          category: { include: { translations: { where: { language: locale } } } }
+        }
+      }),
+      db.contactMessage.count({ where: { status: "UNREAD" } }),
+      db.article.count({ where: { published: true } }),
+      db.contactMessage.findMany({
+        take: 3,
+        orderBy: { createdAt: 'desc' },
+      })
+    ]);
+
+    totalArticles = dbTotalArticles;
+    totalPublications = dbTotalPublications;
+    totalMembers = dbTotalMembers;
+    totalUsers = dbTotalUsers;
+    recentArticles = dbRecentArticles;
+    unreadMessages = dbUnreadMessages;
+    publishedArticles = dbPublishedArticles;
+    latestMessages = dbLatestMessages;
+
+  } catch (error) {
+    console.error("⚠️ Database connection failed in Admin Dashboard. Using fallbacks.", error);
+  }
 
   const stats = [
     { 

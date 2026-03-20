@@ -1,90 +1,87 @@
-"use server"
+// services/publication-actions.ts
+"use server";
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import slugify from 'slugify'; // ✅ À installer
 
-// Fonction utilitaire pour générer un slug unique
-async function generateUniqueSlug(title: string): Promise<string> {
-  let slug = slugify(title, { lower: true, strict: true });
-  let uniqueSlug = slug;
-  let counter = 1;
-  
-  // Vérifier si le slug existe déjà
-  while (await db.publication.findUnique({ where: { slug: uniqueSlug } })) {
-    uniqueSlug = `${slug}-${counter}`;
-    counter++;
-  }
-  
-  return uniqueSlug;
+export interface PublicationResult {
+  success: boolean;
+  error?: string;
+  data?: any;
 }
 
-export async function createPublication(formData: any) {
+export async function getPublicationsByDomain(domain: "RESEARCH" | "CLINICAL", locale: string): Promise<PublicationResult> {
   try {
-    // ✅ Générer un slug à partir du titre (première traduction)
-    const title = formData.translations?.[0]?.title || 'publication';
-    const slug = await generateUniqueSlug(title);
-    
-    await db.publication.create({
+    const publications = await db.publication.findMany({
+      where: { domain },
+      include: {
+        translations: {
+          where: { language: locale }
+        }
+      },
+      orderBy: { year: 'desc' }
+    });
+    return { success: true, data: publications };
+  } catch (error) {
+    console.error(`❌ Erreur récupération publications ${domain}:`, error);
+    return { success: false, error: "Erreur lors de la récupération des publications" };
+  }
+}
+
+export async function createPublication(data: any): Promise<PublicationResult> {
+  try {
+    const pub = await db.publication.create({
       data: {
-        slug, // ✅ Champ requis AJOUTÉ
-        year: parseInt(formData.year),
-        doi: formData.doi,
-        pdfUrl: formData.pdfUrl,
-        domain: formData.domain,
-        translations: { create: formData.translations }
+        slug: data.slug,
+        year: parseInt(data.year),
+        pdfUrl: data.pdfUrl,
+        domain: data.domain || "RESEARCH",
+        doi: data.doi,
+        translations: {
+          create: data.translations
+        }
       }
     });
-    revalidatePath("/[locale]/admin/publications", "layout");
-    return { success: true };
+    revalidatePath("/admin/publications");
+    return { success: true, data: pub };
   } catch (error) {
-    console.error("❌ Erreur création publication:", error);
-    return { success: false, error: "Erreur lors de la création" };
+    return { success: false, error: "Erreur de création" };
   }
 }
 
-export async function deletePublication(id: string) {
+export async function deletePublication(id: string): Promise<PublicationResult> {
   try {
-    await db.publication.delete({ where: { id } });
-    revalidatePath("/[locale]/admin/publications", "layout");
+    await db.publication.delete({
+      where: { id }
+    });
+    revalidatePath("/admin/publications");
     return { success: true };
   } catch (error) {
-    console.error("❌ Erreur suppression:", error);
-    return { success: false };
+    console.error("❌ Erreur suppression publication:", error);
+    return { success: false, error: "Erreur de suppression" };
   }
 }
 
-export async function updatePublication(id: string, formData: any) {
+export async function updatePublication(id: string, data: any): Promise<PublicationResult> {
   try {
-    // ✅ Pour la mise à jour, le slug peut rester inchangé
-    // Mais si le titre change, on peut vouloir le mettre à jour
-    const updateData: any = {
-      year: parseInt(formData.year),
-      doi: formData.doi,
-      pdfUrl: formData.pdfUrl,
-      domain: formData.domain,
-      translations: {
-        deleteMany: {},
-        create: formData.translations
-      }
-    };
-    
-    // Optionnel: mettre à jour le slug si le titre change
-    if (formData.updateSlug) {
-      const title = formData.translations?.[0]?.title;
-      if (title) {
-        updateData.slug = await generateUniqueSlug(title);
-      }
-    }
-    
-    await db.publication.update({
+    const pub = await db.publication.update({
       where: { id },
-      data: updateData
+      data: {
+        slug: data.slug,
+        year: parseInt(data.year),
+        pdfUrl: data.pdfUrl,
+        domain: data.domain,
+        doi: data.doi,
+        translations: {
+          deleteMany: {},
+          create: data.translations
+        }
+      }
     });
-    revalidatePath("/[locale]/admin/publications", "layout");
-    return { success: true };
+    revalidatePath("/admin/publications");
+    return { success: true, data: pub };
   } catch (error) {
-    console.error("❌ Erreur mise à jour:", error);
-    return { success: false };
+    console.error("❌ Erreur mise à jour publication:", error);
+    return { success: false, error: "Erreur de mise à jour" };
   }
 }

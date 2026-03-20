@@ -1,342 +1,148 @@
-// app/admin/members/MembersList.tsx
+// app/[locale]/admin/members/MembersList.tsx
 "use client";
 
-import { Link } from "@/navigation";
-import { Button } from "@/components/ui/button";
+import { useState, useTransition } from "react";
 import { 
-  UserPlus, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Award,
-  Calendar,
-  Edit,
-  MoreVertical,
-  ChevronUp,
-  ChevronDown,
-  Globe
+  UserPlus, Mail, Phone, MapPin, Award,
+  Calendar, Edit, Trash2, Search, Filter,
+  MoreVertical, ChevronRight, Hash, Globe,
+  User, Microscope, Scale, ShieldCheck
 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
-import DeleteButton from "@/components/admin/DeleteButton";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Link } from "@/navigation";
+import DeleteButton from "@/components/admin/DeleteButton";
+import { toast } from "react-hot-toast";
 
-interface MemberListProps {
-  members: any[];
-  locale: string;
+interface Member {
+  id: string;
+  image: string | null;
+  email: string | null;
+  order: number;
+  translations: {
+    name: string;
+    role: string;
+    bio: string | null;
+  }[];
 }
 
-export default function MembersList({ members }: MemberListProps) {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+export default function MembersList({ 
+  members: initialMembers,
+  locale 
+}: { 
+  members: Member[],
+  locale: string
+}) {
+  const [members, setMembers] = useState(initialMembers);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isPending, startTransition] = useTransition();
 
-  // Fonction pour obtenir l'initiale du nom
+  const filteredMembers = members.filter(m => {
+    const content = m.translations[0] || { name: "", role: "" };
+    return content.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+           content.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           (m.email?.toLowerCase() || "").includes(searchTerm.toLowerCase());
+  });
+
   const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(word => word[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 2);
-  };
-
-  // Couleurs de fond aléatoires mais cohérentes par ID
-  const getAvatarColor = (id: string) => {
-    const colors = [
-      'bg-blue-100 text-blue-600',
-      'bg-emerald-100 text-emerald-600',
-      'bg-amber-100 text-amber-600',
-      'bg-rose-100 text-rose-600',
-      'bg-purple-100 text-purple-600',
-      'bg-cyan-100 text-cyan-600'
-    ];
-    const index = id.charCodeAt(0) % colors.length;
-    return colors[index];
-  };
-
-  // Fonction pour formater le rôle
-  const formatRole = (role: string) => {
-    return role.split('_').map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    ).join(' ');
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
-      {/* HEADER avec contrôles */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-serif font-bold text-slate-900">
-            Corps de Recherche
-          </h1>
-          <p className="text-slate-500 text-sm mt-1">
-            {members.length} membre{members.length > 1 ? 's' : ''} • Gérez l'équipe de recherche
-          </p>
+    <div className="space-y-6">
+      {/* Search & Stats Area */}
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-white p-4 border border-slate-200 shadow-sm">
+        <div className="relative w-full md:w-96">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <input 
+            type="text" 
+            placeholder="Search by name, role or email..." 
+            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all font-medium"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
         
-        <div className="flex items-center gap-3 w-full sm:w-auto">
-          {/* Toggle view mode */}
-          <div className="flex border border-slate-200 rounded-lg overflow-hidden">
-            <button
-              onClick={() => setViewMode("grid")}
-              className={`p-2 transition-colors ${
-                viewMode === "grid" 
-                  ? "bg-slate-900 text-white" 
-                  : "bg-white text-slate-600 hover:bg-slate-50"
-              }`}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-              </svg>
-            </button>
-            <button
-              onClick={() => setViewMode("list")}
-              className={`p-2 transition-colors ${
-                viewMode === "list" 
-                  ? "bg-slate-900 text-white" 
-                  : "bg-white text-slate-600 hover:bg-slate-50"
-              }`}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-
-          <Button asChild className="bg-slate-900 hover:bg-blue-600 rounded-lg transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex-1 sm:flex-none">
-            <Link href="/admin/members/new" className="flex items-center gap-2">
-              <UserPlus size={18} /> 
-              <span className="hidden sm:inline">Ajouter un membre</span>
-              <span className="sm:hidden">Ajouter</span>
-            </Link>
-          </Button>
+        <div className="flex items-center gap-6">
+           <div className="flex items-center gap-2">
+             <span className="text-[10px] font-black uppercase text-slate-400 tracking-tighter">Total Staff</span>
+             <span className="text-sm font-bold text-slate-900">{members.length}</span>
+           </div>
+           <div className="h-4 w-px bg-slate-200" />
+           <div className="flex items-center gap-2">
+             <ShieldCheck size={14} className="text-emerald-600" />
+             <span className="text-[10px] font-black uppercase text-slate-400 tracking-tighter">Verified Team</span>
+           </div>
         </div>
       </div>
 
-      {/* GRID VIEW */}
-      {viewMode === "grid" && (
-        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {members.map((m, index) => (
-            <div
-              key={m.id}
-              className="group relative bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-            >
-              {/* Gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              
-              {/* Card content */}
-              <div className="p-6">
-                {/* Avatar section */}
-                <div className="flex justify-center mb-4">
-                  <div className="relative">
-                    {m.image ? (
-                      <div className="relative w-24 h-24 rounded-full overflow-hidden ring-4 ring-slate-100 group-hover:ring-blue-100 transition-all duration-300">
-                        <Image
-                          src={m.image}
-                          alt={m.translations[0]?.name || "Avatar"}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    ) : (
-                      <div className={`w-24 h-24 rounded-full flex items-center justify-center text-2xl font-bold ${getAvatarColor(m.id)} ring-4 ring-slate-100 group-hover:ring-blue-100 transition-all duration-300`}>
-                        {getInitials(m.translations[0]?.name || "Unknown")}
-                      </div>
-                    )}
-                    
-                    {/* Status dot */}
-                    <span className={`absolute bottom-1 right-1 w-4 h-4 rounded-full border-2 border-white ${
-                      m.isActive ? 'bg-emerald-500' : 'bg-slate-400'
-                    }`} />
-                  </div>
+      {/* Grid view for researchers */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {filteredMembers.map((m) => {
+          const content = m.translations[0] || { name: "Unknown", role: "Member", bio: "" };
+          
+          return (
+            <div key={m.id} className="bg-white border border-slate-200 overflow-hidden hover:border-blue-500 transition-all group flex flex-col shadow-sm hover:shadow-xl hover:shadow-blue-900/5">
+              <div className="h-32 bg-slate-50 relative overflow-hidden shrink-0 flex items-center justify-center">
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-[0.03] pointer-events-none">
+                   <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#1e3a8a_1px,transparent_1px)] [background-size:16px_16px]" />
                 </div>
+                
+                {m.image ? (
+                  <div className="relative w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden z-10 translate-y-8 group-hover:scale-110 transition-transform duration-500">
+                    <img src={m.image} alt={content.name} className="w-full h-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="relative w-24 h-24 rounded-full border-4 border-white shadow-lg bg-slate-100 flex items-center justify-center z-10 translate-y-8 group-hover:scale-110 transition-transform duration-500 text-slate-400 text-xl font-black">
+                    {getInitials(content.name)}
+                  </div>
+                )}
+              </div>
 
-                {/* Info section */}
-                <div className="text-center mb-4">
-                  <h3 className="font-serif font-bold text-lg text-slate-900 mb-1 line-clamp-1">
-                    {m.translations[0]?.name || "Nom inconnu"}
+              <div className="p-6 pt-12 flex-1 flex flex-col items-center text-center space-y-4">
+                <div className="space-y-1">
+                  <h3 className="font-serif font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                    {content.name}
                   </h3>
-                  <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200 font-medium">
-                    {formatRole(m.translations[0]?.role || m.role || "Chercheur")}
-                  </Badge>
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">
+                    {content.role}
+                  </p>
                 </div>
 
-                {/* Details */}
-                <div className="space-y-2 text-sm text-slate-600 mb-4">
-                  {m.email && (
-                    <div className="flex items-center gap-2 truncate">
-                      <Mail size={14} className="text-slate-400 flex-shrink-0" />
-                      <span className="truncate text-xs">{m.email}</span>
-                    </div>
-                  )}
-                  {m.phone && (
-                    <div className="flex items-center gap-2">
-                      <Phone size={14} className="text-slate-400 flex-shrink-0" />
-                      <span className="truncate text-xs">{m.phone}</span>
-                    </div>
-                  )}
-                  {m.department && (
-                    <div className="flex items-center gap-2">
-                      <MapPin size={14} className="text-slate-400 flex-shrink-0" />
-                      <span className="truncate text-xs">{m.department}</span>
-                    </div>
-                  )}
-                  {m.joinedAt && (
-                    <div className="flex items-center gap-2">
-                      <Calendar size={14} className="text-slate-400 flex-shrink-0" />
-                      <span className="truncate text-xs">Depuis {new Date(m.joinedAt).getFullYear()}</span>
-                    </div>
-                  )}
+                <div className="w-full space-y-2 pt-2 border-t border-slate-50">
+                   {m.email && (
+                     <div className="flex items-center justify-center gap-2 text-[10px] text-slate-500 font-medium">
+                        <Mail size={12} className="text-slate-300" /> {m.email}
+                     </div>
+                   )}
+                   <div className="flex items-center justify-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                      <Hash size={12} className="text-slate-200" /> Order: {m.order}
+                   </div>
                 </div>
 
-                {/* Stats */}
-                <div className="grid grid-cols-2 gap-2 mb-4 pt-3 border-t border-slate-100">
-                  <div className="text-center">
-                    <div className="text-xs font-semibold text-slate-900">{m.publications || 0}</div>
-                    <div className="text-[10px] text-slate-500">Publications</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-xs font-semibold text-slate-900">{m.projects || 0}</div>
-                    <div className="text-[10px] text-slate-500">Projets</div>
-                  </div>
-                </div>
-
-                {/* Actions */}
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    asChild
-                    className="flex-1 text-xs hover:bg-slate-50"
-                  >
+                <div className="flex items-center justify-center gap-2 pt-4 mt-auto w-full">
+                  <Button size="sm" variant="ghost" className="h-9 w-9 p-0 text-slate-400 hover:text-blue-600" asChild>
                     <Link href={`/admin/members/${m.id}/edit`}>
-                      <Edit size={14} className="mr-1" /> Modifier
+                      <Edit size={16} />
                     </Link>
                   </Button>
                   <DeleteButton id={m.id} type="member" />
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+          );
+        })}
 
-      {/* LIST VIEW */}
-      {viewMode === "list" && (
-        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden">
-          {members.map((m, index) => (
-            <div
-              key={m.id}
-              className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 hover:bg-slate-50 transition-colors duration-200 ${
-                index !== members.length - 1 ? 'border-b border-slate-100' : ''
-              }`}
-            >
-              {/* Avatar */}
-              <div className="flex items-center gap-3 w-full sm:w-auto">
-                {m.image ? (
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
-                    <Image
-                      src={m.image}
-                      alt={m.translations[0]?.name || "Avatar"}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold ${getAvatarColor(m.id)} flex-shrink-0`}>
-                    {getInitials(m.translations[0]?.name || "Unknown")}
-                  </div>
-                )}
-                
-                <div className="flex-1 min-w-0 sm:hidden">
-                  <h3 className="font-serif font-bold text-slate-900 truncate">
-                    {m.translations[0]?.name || "Nom inconnu"}
-                  </h3>
-                  <Badge variant="outline" className="mt-1 text-[10px]">
-                    {formatRole(m.translations[0]?.role || m.role || "Chercheur")}
-                  </Badge>
-                </div>
-              </div>
+        {/* Empty state component already handled by initial logic if filteredMembers.length === 0 */}
+      </div>
 
-              {/* Info - Hidden on mobile (already shown above) */}
-              <div className="hidden sm:block flex-1 min-w-0">
-                <h3 className="font-serif font-bold text-slate-900 truncate">
-                  {m.translations[0]?.name || "Nom inconnu"}
-                </h3>
-                <div className="flex items-center gap-2 mt-1">
-                  <Badge variant="outline" className="text-[10px]">
-                    {formatRole(m.translations[0]?.role || m.role || "Chercheur")}
-                  </Badge>
-                  <span className={`w-2 h-2 rounded-full ${
-                    m.isActive ? 'bg-emerald-500' : 'bg-slate-400'
-                  }`} />
-                </div>
-              </div>
-
-              {/* Contact info */}
-              <div className="flex-1 text-sm text-slate-600 hidden lg:block">
-                {m.email && (
-                  <div className="flex items-center gap-2 truncate">
-                    <Mail size={14} className="text-slate-400" />
-                    <span className="truncate">{m.email}</span>
-                  </div>
-                )}
-              </div>
-
-              {/* Stats */}
-              <div className="hidden md:flex items-center gap-4 text-xs">
-                <div className="text-center">
-                  <div className="font-semibold text-slate-900">{m.publications || 0}</div>
-                  <div className="text-[10px] text-slate-500">Pub.</div>
-                </div>
-                <div className="text-center">
-                  <div className="font-semibold text-slate-900">{m.projects || 0}</div>
-                  <div className="text-[10px] text-slate-500">Proj.</div>
-                </div>
-              </div>
-
-              {/* Actions */}
-              <div className="flex gap-2 w-full sm:w-auto justify-end">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  asChild
-                  className="hover:bg-slate-200"
-                >
-                  <Link href={`/admin/members/${m.id}/edit`}>
-                    <Edit size={16} />
-                  </Link>
-                </Button>
-                <DeleteButton id={m.id} type="member" />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Empty state */}
-      {members.length === 0 && (
-        <div className="text-center py-12 bg-white border border-slate-200 rounded-xl">
-          <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <UserPlus size={32} className="text-slate-400" />
+      {filteredMembers.length === 0 && (
+          <div className="p-20 text-center bg-slate-50 border border-slate-200 border-dashed">
+            <UserPlus size={48} className="mx-auto text-slate-200 mb-4" />
+            <p className="text-slate-400 font-serif italic">No team members found matching your search.</p>
           </div>
-          <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">
-            Aucun membre pour le moment
-          </h3>
-          <p className="text-sm text-slate-500 mb-6">
-            Commencez par ajouter votre premier membre de recherche.
-          </p>
-          <Button asChild className="bg-slate-900 hover:bg-blue-600">
-            <Link href="/admin/members/new" className="flex items-center gap-2">
-              <UserPlus size={18} /> Ajouter un membre
-            </Link>
-          </Button>
-        </div>
       )}
     </div>
   );

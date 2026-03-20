@@ -3,9 +3,7 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { Resend } from 'resend';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendContactNotification, sendReplyNotification } from "./mail-service";
 
 export interface ContactMessageResult {
   success: boolean;
@@ -27,34 +25,8 @@ export async function sendContactMessage(formData: any): Promise<ContactMessageR
       },
     });
 
-    // NOTIFICATION À TOUS LES ADMINS
-    const admins = await db.user.findMany({ where: { role: 'ADMIN' } });
-    const adminEmails = admins.map(a => a.email).filter(Boolean);
-
-    if (adminEmails.length > 0) {
-      try {
-        await resend.emails.send({
-          from: 'CREDDA-ULPGL <onboarding@resend.dev>', // Utilisez votre domaine vérifié
-          to: adminEmails,
-          subject: `📬 NOUVEAU MESSAGE: ${formData.subject}`,
-          html: `
-            <div style="font-family: sans-serif;">
-              <h2 style="color:#1e3a8a;">Nouveau message de contact</h2>
-              <p><strong>De:</strong> ${formData.name} (${formData.email})</p>
-              <p><strong>Sujet:</strong> ${formData.subject}</p>
-              <p><strong>Message:</strong></p>
-              <div style="background:#f3f4f6; padding:15px;">
-                ${formData.message.substring(0, 200)}${formData.message.length > 200 ? '...' : ''}
-              </div>
-              <p><a href="${process.env.NEXTAUTH_URL}/admin/messages/${newMessage.id}">Voir dans l'admin</a></p>
-            </div>
-          `
-        });
-      } catch (emailError) {
-        console.error("❌ Erreur envoi email admin:", emailError);
-        // Ne pas bloquer le message si l'email échoue
-      }
-    }
+    // NOTIFICATION À L'ADMIN (via mail-service)
+    await sendContactNotification(formData.name, formData.email, formData.message);
 
     revalidatePath("/admin/messages");
     return { success: true, data: newMessage };
@@ -76,30 +48,16 @@ export async function replyToContactMessage(id: string, replyText: string): Prom
       return { success: false, error: "Message non trouvé" };
     }
 
-    // Envoyer la réponse par email
-    try {
-      await resend.emails.send({
-        from: 'CREDDA-ULPGL <onboarding@resend.dev>',
-        to: [message.email],
-        subject: `RE: ${message.subject}`,
-        html: `
-          <div style="font-family: serif;">
-            <p>Bonjour ${message.name},</p>
-            <div style="background:#f8fafc; padding:20px; border-left:4px solid #1e3a8a;">
-              ${replyText.replace(/\n/g, '<br/>')}
-            </div>
-            <br/>
-            <p>Cordialement,</p>
-            <p><strong>L'équipe du CREDDA-ULPGL</strong></p>
-            <hr style="border:1px solid #e2e8f0;"/>
-            <p style="font-size:12px; color:#64748b;">
-              Message original: "${message.message.substring(0, 100)}..."
-            </p>
-          </div>
-        `
-      });
-    } catch (emailError) {
-      console.error("❌ Erreur envoi réponse:", emailError);
+    // Envoyer la réponse (via mail-service)
+    const emailRes = await sendReplyNotification(
+      message.email, 
+      message.name, 
+      message.subject, 
+      replyText,
+      message.message
+    );
+
+    if (!emailRes.success) {
       return { success: false, error: "Erreur lors de l'envoi de l'email" };
     }
 

@@ -3,65 +3,113 @@
     "research": "Recherche",
     "clinical": "Clinique Juridique",
     "publications": "Publications",
-    "about": "À propos",
-    "contact": "Contact"
+    "about": "L'Institution",
+    "contact": "Contact",
+    "login": "Se connecter",
+    "ticker": {
+      "item1": "Nouvelle publication sur la justice climatique en RDC",
+      "item2": "Clinique mobile prévue à Kalehe le 25 mars",
+      "item3": "Partenariat renforcé avec l'Université d'Oxford",
+      "item4": "Rapport 2025 sur la démocratie disponible"
+    }
   },
   "HomePage": {
     "hero": {
-      "badge": "CREDDA - ULPGL Excellence",
+      "badge": "Excellence CREDDA - ULPGL",
       "slides": [
         {
-          "title": "L'excellence au service de la Démocratie.",
-          "desc": "Le CREDDA produit une recherche-action de pointe pour transformer les institutions africaines."
+          "title": "L'Excellence au service de la Démocratie.",
+          "description": "Le CREDDA produit une recherche de haut niveau pour transformer les institutions africaines."
         },
         {
           "title": "Clinique Juridique Environnementale.",
-          "desc": "Nous protégeons les droits des communautés et la biodiversité par le droit."
+          "description": "Nous protégeons les droits des communautés et la biodiversité par le droit."
         },
         {
-          "title": "Hub de Coopération Internationale.",
-          "desc": "Partenaire des plus grandes universités pour un impact local durable."
+          "title": "Hub de Collaboration Internationale.",
+          "description": "Partenariat avec les grandes universités pour un développement durable."
         }
       ],
       "cta_publications": "Nos Publications",
-      "cta_contact": "Contact"
+      "cta_contact": "En savoir plus",
+      "title_part1": "Justice",
+      "title_part2": "& Recherche"
     },
     "stats": {
-      "years": "Années d'Expertise en recherche-action",
+      "years": "Années d'Expertise en recherche",
       "pubs": "Documents Scientifiques & Rapports",
-      "partners": "Partenaires Académiques Mondiaux",
-      "cases": "Bénéficiaires de la Clinique Juridique"
+      "partners": "Partenaires Internationaux",
+      "cases": "Bénéficiaires de la Clinique",
+      "articles": "Articles de Recherche",
+      "members": "Membres de l'Équipe"
+    },
+    "about": {
+      "badge": "Héritage Académique",
+      "title": "Définir l'Avenir de la <br /> <span>Recherche Juridique</span>",
+      "description_p1": "Le Centre de Recherche sur la Démocratie et le Développement en Afrique (CREDDA) est une institution d'excellence dédiée à l'analyse rigoureuse des défis juridiques et sociaux.",
+      "description_p2": "Affilié à l'ULPGL-Goma, nous combinons expertise académique et action de terrain pour promouvoir une justice équitable et durable à travers le continent."
     },
     "research": {
-      "badge": "Recherche Active",
-      "title": "Explorer les <span>Frontières</span> du Savoir.",
-      "description": "Nos axes de recherche s'articulent autour des défis contemporains de la gouvernance en Afrique.",
-      "cta": "Consulter tout le domaine"
+      "badge": "Intelligence & Analyse",
+      "title": "Recherche Vedette",
+      "subtitle": "& Publications Scientifiques",
+      "description": "Nos axes de recherche adressent les défis de la gouvernance en Afrique.",
+      "cta": "Accéder aux Archives Complètes",
+      "read_more": "Lire le Journal Complet",
+      "journal": "Étude de Cas",
+      "lab": "Labo CREDDA"
     },
     "clinical": {
-      "badge": "Impact de Terrain",
-      "title": "La Clinique Juridique & Environnementale.",
-      "description": "Plus qu'un centre d'étude, le CREDDA agit. Nous accompagnons les communautés locales dans la sécurisation foncière et la protection des écosystèmes forestiers.",
+      "badge": "Action Terrain & Justice",
+      "title": "Clinique Juridique pour la",
+      "subtitle": "Protection Environnementale",
+      "description": "Nous portons la voix des communautés et de la nature devant les instances juridiques. Nos cliniques mobiles assurent une présence continue sur le terrain.",
       "actions": {
         "legal": {
-          "title": "Assistance Juridique",
+          "title": "Aide Juridique",
           "desc": "Médiation et défense des droits des vulnérables."
         },
         "land": {
-          "title": "Protection Foncière",
-          "desc": "Sécurisation des terres face aux pressions industrielles."
+          "title": "Justice Foncière",
+          "desc": "Sécurisation des droits des communautés locales et autochtones."
+        },
+        "mobile": {
+          "title": "Cliniques Mobiles",
+          "desc": "Assistance juridique gratuite au cœur des zones vulnérables."
         }
       },
-      "cta": "Nos actions cliniques"
+      "cta": "Soumettre un Cas Juridique",
+      "impact": "Impact Terrain",
+      "families": "Plus de {count} familles assistées"
     },
     "team": {
       "title": "Leadership Scientifique",
-      "subtitle": "Le Corps de Recherche",
+      "subtitle": "L'Équipe de Recherche",
       "badge": "Notre Équipe"
     },
     "testimonials": {
       "badge": "Confiance Internationale",
-      "title": "Ils nous font confiance."
+      "title_alt": "Reconnaissance Internationale",
+      "items": [
+        {
+          "name": "David MICHAEL PEYTON",
+          "role": "Candidat au PhD, Université Northwestern",
+          "text": "Je n'aurais pas pu rêver de meilleurs partenaires de recherche que le corps professoral et le personnel du CREDDA-ULPGL. Ils ont non seulement pu soutenir plusieurs types de collecte de données, mais ont également offert des opportunités de rétroaction de la part d'universitaires congolais.",
+          "image": "/images/testimonials/Peyton.webp"
+        },
+        {
+          "name": "Heather LYNNE ZIMMERMAN",
+          "role": "Étudiante en Master, London School of Economics (LSE)",
+          "text": "Cher Professeur Kennedy Kihangi, merci beaucoup de m'avoir accueillie si généreusement dans la communauté ! Je suis reconnaissante pour les idées et les commentaires offerts sur mes recherches. J'ai hâte de revenir à Goma.",
+          "image": "/images/testimonials/heather.webp"
+        },
+        {
+          "name": "Britta Sjöstedt",
+          "role": "Candidate au PhD, Université de Lund",
+          "text": "J'ai visité l'ULPGL en 2015 pour mener des recherches pour mon doctorat. Le professeur Kennedy KIHANGI BINDU a été un excellent hôte qui a aidé à entrer en contact avec d'autres chercheurs et organisations.",
+          "image": "/images/testimonials/britta.webp"
+        }
+      ]
     },
     "library": {
       "badge": "Ressources",
@@ -69,24 +117,33 @@
       "description": "Découvrez nos derniers rapports de recherche, analyses juridiques et études de cas.",
       "cta": "Explorer les archives",
       "stats": {
-        "publications": "Rapports Archivés",
+        "publications": "Rapports d'Archive",
         "clinical": "Cas Cliniques",
         "research": "Études Scientifiques",
-        "total": "Ressources Totales"
+        "total": "Total des Ressources"
       }
     },
     "partners": {
-      "title": "Réseau Académique International"
+      "title": "Réseau Global de Partenaires",
+      "items": [
+        "Amnesty.webp", "McCain.webp", "Northwestern.webp", "TWB.webp",
+        "worldbank.webp", "Ceni.webp", "Monusco.webp", "Oxford.webp",
+        "Uhaki.webp", "Harvard.webp", "Morehouse.webp", "PNUD.webp", "ulpgl.webp"
+      ]
     },
     "cta": {
-      "title": "Bâtir l'avenir par la <span>Science</span>.",
+      "badge": "Rejoignez le Mouvement",
+      "title": "Construire l'avenir par la <span>Science</span>.",
       "partner": "Devenir Partenaire",
-      "about": "Le Projet CREDDA"
+      "about": "Le Projet CREDDA",
+      "mission": "Lire notre Mission",
+      "collaboration": "Collaborer avec les meilleurs au monde",
+      "portal": "Portail Chercheur"
     },
     "Gallery": {
       "badge": "En Images",
       "title": "Le CREDDA en <span>Action</span>",
-      "description": "Découvrez nos activités de recherche, cliniques et partenariats à travers une sélection d'images.",
+      "description": "Découvrez nos activités de recherche, nos travaux de clinique et nos collaborations à travers une sélection de photos.",
       "cta": "Voir toute la galerie",
       "modal": {
         "close": "Fermer",
@@ -94,59 +151,6 @@
         "next": "Suivant"
       }
     }
-  },
-  "about": {
-    "since": "Depuis",
-    "watch_video": "Visionner le film institutionnel",
-    "hero": {
-      "title1": "L'Elite de la",
-      "title2": "Recherche",
-      "title3": "en Afrique des Grands Lacs."
-    },
-    "who_we_are": "Qui sommes-nous ?",
-    "mission_title": "Une institution académique dédiée au",
-    "mission_italic": "Progrès Social",
-    "mission_description": "Le CREDDA n'est pas seulement un laboratoire d'idées. C'est le bras scientifique de l'ULPGL qui fait le pont entre les théories du droit et les réalités du terrain en République Démocratique du Congo.",
-    "achievements": [
-      "Production scientifique certifiée à l'international",
-      "Assistance juridique gratuite pour les vulnérables",
-      "Observatoire de la démocratie dans les Grands Lacs",
-      "Expertise foncière et environnementale unique"
-    ],
-    "years_excellence": "Années d'Excellence",
-    "contact_us": "Nous contacter",
-    "compass": "Notre Boussole",
-    "mission_vision_title": "Une mission claire pour une Afrique résiliente.",
-    "mission": "Notre Mission",
-    "mission_text": "Produire une recherche-action de pointe pour éclairer les politiques publiques et renforcer l'État de droit en RDC.",
-    "vision": "Notre Vision",
-    "vision_text": "Devenir le hub de référence interdisciplinaire pour la transformation des conflits en Afrique Centrale.",
-    "values": "Nos Valeurs",
-    "values_text": "Intégrité académique, neutralité politique, et engagement envers les droits des communautés vulnérables.",
-    "values_list": {
-      "excellence": "Excellence",
-      "neutrality": "Neutralité",
-      "engagement": "Engagement",
-      "innovation": "Innovation"
-    },
-    "location": "Localisation",
-    "find_us": "Retrouvez-nous à Goma.",
-    "location_description": "Le siège du CREDDA est situé au sein du Campus Salomon de l'ULPGL, un cadre académique d'exception au coeur de la ville de Goma.",
-    "address": "Adresse Physique",
-    "full_address": [
-      "Université Libre des Pays des Grands Lacs (ULPGL),",
-      "Campus Salomon, Avenue de la Corniche,",
-      "Quartier Himbi, Goma, RDC."
-    ],
-    "stats": {
-      "years": "Années d'Expertise",
-      "publications": "Publications Scientifiques",
-      "partners": "Partenaires Internationaux",
-      "beneficiaries": "Bénéficiaires"
-    },
-    "cta_title": "Prêt à collaborer pour le changement ?",
-    "become_partner": "Devenir Partenaire",
-    "meet_team": "Toute l'équipe"
   },
   "NotFound": {
     "badge": "Erreur",
@@ -161,44 +165,97 @@
     "contact": "Contact",
     "help": "Besoin d'aide ?"
   },
+  "about": {
+    "since": "Depuis",
+    "watch_video": "Voir le film institutionnel",
+    "hero": {
+      "title1": "L'Élite de la",
+      "title2": "Recherche",
+      "title3": "En Afrique des Grands Lacs."
+    },
+    "who_we_are": "Qui sommes-nous ?",
+    "mission_title": "Une institution académique dédiée au",
+    "mission_italic": "Progrès Sociétal",
+    "mission_description": "Le CREDDA n'est pas qu'un think tank. C'est le bras scientifique de l'ULPGL qui concrétise le lien entre les théories du droit et les réalités du terrain en RDC.",
+    "achievements": [
+      "Production scientifique certifiée internationalement",
+      "Aide juridique gratuite pour les vulnérables",
+      "Observatoire de la démocratie dans les Grands Lacs",
+      "Expertise unique en foncier et environnement"
+    ],
+    "years_excellence": "Années d'Excellence",
+    "contact_us": "Contactez-nous",
+    "compass": "Notre Boussole",
+    "mission_vision_title": "Une mission claire pour une Afrique résiliente.",
+    "mission": "Notre Mission",
+    "mission_text": "Produire une recherche de haute qualité pour orienter les politiques publiques et renforcer l’État de droit en RDC.",
+    "vision": "Notre Vision",
+    "vision_text": "Devenir le principal hub interdisciplinaire de transformation des conflits en Afrique Centrale.",
+    "values": "Nos Valeurs",
+    "values_text": "Intégrité académique, neutralité politique et engagement envers les droits des communautés vulnérables.",
+    "values_list": {
+      "excellence": "Excellence",
+      "neutrality": "Neutralité",
+      "engagement": "Engagement",
+      "innovation": "Innovation"
+    },
+    "location": "Localisation",
+    "find_us": "Retrouvez-nous à Goma.",
+    "location_description": "Le siège du CREDDA est situé au sein du Campus Salomon de l'ULPGL, un cadre académique privilégié au cœur de la ville de Goma.",
+    "address": "Adresse Physique",
+    "full_address": [
+      "Université Libre des Pays des Grands Lacs (ULPGL),",
+      "Campus Salomon, Avenue de la Corniche,",
+      "Quartier Himbi, Goma, RDC."
+    ],
+    "stats": {
+      "years": "Années d'Expertise",
+      "publications": "Publications Scientifiques",
+      "partners": "Partenaires Internationaux",
+      "beneficiaries": "Bénéficiaires"
+    },
+    "cta_title": "Prêt à collaborer pour le changement ?",
+    "become_partner": "Devenir Partenaire",
+    "meet_team": "Notre Équipe"
+  },
   "ResearchPage": {
     "header": {
       "badge": "Production Scientifique",
-      "title": "Recherches <span>&</span> Analyses.",
+      "title": "Recherche <span>&</span> Analyses.",
       "description": "Découvrez nos travaux sur la gouvernance, la démocratie et le développement durable en Afrique, produits par nos chercheurs et partenaires internationaux."
     },
     "filters": {
       "all": "Tous les travaux",
       "count": "{count} document | {count} documents",
-      "available": "disponible | disponibles"
+      "available": "disponibles"
     },
     "article": {
       "badge": "Recherche",
       "paper": "CREDDA Paper",
       "authors": "Équipe de recherche CREDDA",
       "readMore": "Accéder au rapport complet",
-      "readingTime": "Lecture: {time} min",
+      "readingTime": "Lecture : {time} min",
       "pdf": "Version PDF",
-      "noExcerpt": "Résumé non disponible",
+      "noExcerpt": "Aucun résumé disponible",
       "noTitle": "Titre non disponible"
     },
     "empty": {
       "title": "Archives en cours de numérisation",
-      "description": "Nos équipes travaillent actuellement à l'intégration des rapports récents. Revenez très bientôt pour consulter nos dernières avancées.",
+      "description": "Nos équipes sont actuellement en train d'intégrer les derniers rapports. Veuillez revenir bientôt pour voir nos dernières avancées.",
       "subscribe": "S'abonner aux alertes",
       "backHome": "Retour à l'accueil"
     },
     "cta": {
       "title": "Bibliothèque Physique",
-      "description": "Le CREDDA dispose également d'un centre de documentation physique ouvert aux chercheurs sur le campus de l'ULPGL à Goma.",
+      "description": "Le CREDDA dispose également d'un centre de documentation ouvert aux chercheurs sur le campus de l'ULPGL à Goma.",
       "button": "Prendre rendez-vous"
     }
   },
   "ResearchDetailPage": {
-    "back": "Retour aux recherches",
+    "back": "Retour à la recherche",
     "ref": "REF",
     "authors": "Équipe CREDDA",
-    "readingTime": "{time} min de lecture",
+    "readingTime": "Lecture {time} min",
     "excerpt": {
       "title": "Résumé"
     },
@@ -218,17 +275,17 @@
   },
   "ClinicalPage": {
     "header": {
-      "badge": "Domaine Clinique & Terrain",
+      "badge": "Clinique & Terrain",
       "title": "La Justice par <span>l'Action Scientifique</span>.",
-      "description": "La Clinique Juridique et Environnementale du CREDDA accompagne les communautés dans la protection de leurs droits et la préservation de la biodiversité."
+      "description": "La Clinique Juridique et Environnementale du CREDDA accompagne les communautés dans la défense de leurs droits et la préservation de la biodiversité."
     },
     "values": [
       {
-        "title": "Accompagnement Juridique",
-        "desc": "Médiation et assistance pour les vulnérables."
+        "title": "Aide Juridique",
+        "desc": "Médiation et assistance aux vulnérables."
       },
       {
-        "title": "Droits Environnementaux",
+        "title": "Justice Environnementale",
         "desc": "Protection des écosystèmes du Bassin du Congo."
       },
       {
@@ -238,17 +295,17 @@
     ],
     "article": {
       "badge": "Action Clinique",
-      "readMore": "Consulter le rapport clinique",
-      "noExcerpt": "Résumé non disponible",
+      "readMore": "Voir le rapport clinique",
+      "noExcerpt": "Aucun résumé disponible",
       "noTitle": "Titre non disponible"
     },
     "empty": {
       "title": "Archives cliniques en cours de mise à jour",
-      "description": "Nos équipes de terrain finalisent les rapports d'intervention. Revenez très bientôt pour consulter nos dernières actions juridiques.",
+      "description": "Nos équipes de terrain finalisent les rapports d'intervention. Veuillez revenir bientôt pour consulter nos dernières actions juridiques.",
       "button": "Retour à l'accueil"
     },
     "cta": {
-      "title": "Besoin d'un accompagnement juridique ou foncier ?",
+      "title": "Besoin d'aide juridique ou foncière ?",
       "description": "Le CREDDA met son expertise au service des communautés locales. Nos experts reçoivent vos demandes chaque semaine.",
       "button1": "Soumettre un cas clinique",
       "button2": "Contact d'urgence"
@@ -258,9 +315,9 @@
     "back": "Retour aux actions cliniques",
     "location": "Nord-Kivu, RDC",
     "certified": "Rapport Certifié",
-    "attachments": "Pièces jointes et média",
-    "download": "Télécharger l'annexe",
-    "gallery": "Illustration terrain",
+    "attachments": "Pièces jointes & médias",
+    "download": "Télécharger la pièce jointe",
+    "gallery": "Preuves de terrain",
     "notFound": {
       "title": "Action clinique non trouvée",
       "description": "L'action clinique que vous recherchez n'existe pas ou a été déplacée."
@@ -268,7 +325,7 @@
   },
   "PublicationsPage": {
     "header": {
-      "badge": "Open Access Repository",
+      "badge": "Open Archive",
       "title": "Bibliothèque <span>Numérique</span>",
       "description": "Publications scientifiques, rapports cliniques et études de cas en libre accès",
       "stats": {
@@ -287,7 +344,7 @@
       "reset": "Réinitialiser les filtres",
       "results": "{count} publication trouvée | {count} publications trouvées",
       "filteredBy": {
-        "year": "en {year}",
+        "year": "année {year}",
         "domain": " • {domain}"
       }
     },
@@ -296,9 +353,9 @@
         "research": "Recherche",
         "clinical": "Clinique"
       },
-      "authors": "Chercheur(s) Principal(aux)",
+      "authors": "Chercheur Principal",
       "affiliation": "CREDDA - ULPGL Hub",
-      "readingTime": "Lecture: {time} min",
+      "readingTime": "Lecture : {time} min",
       "views": "{count} vues",
       "doi": "DOI: {doi}",
       "pdf": "PDF",
@@ -309,46 +366,46 @@
     "empty": {
       "title": "Aucune publication trouvée",
       "description": {
-        "yearDomain": "Aucune publication {domain} pour l'année {year}",
+        "yearDomain": "Aucune publication de {domain} pour l'année {year}",
         "year": "Aucune publication disponible pour l'année {year}",
-        "domain": "Aucune publication {domain} disponible",
+        "domain": "Aucune publication de {domain} disponible",
         "default": "Aucune publication disponible pour le moment"
       },
-      "button1": "Voir toutes",
-      "button2": "Suggérer un document"
+      "button1": "Voir tout",
+      "button2": "Proposer un document"
     }
   },
   "PublicationDetailPage": {
     "back": "Retour à la bibliothèque",
     "badge": {
-      "research": "RECHERCHE PAPER",
-      "clinical": "CLINIQUE PAPER"
+      "research": "RESEARCH PAPER",
+      "clinical": "CLINICAL PAPER"
     },
     "actions": {
       "download": "Télécharger le PDF",
       "cite": "Citer"
     },
     "metadata": {
-      "publication": "Publication : {year}",
+      "publication": "Publié en {year}",
       "openAccess": "Open Access",
-      "authors": "Chercheur(s) Principal(aux)",
+      "authors": "Chercheur Principal",
       "affiliation": "Affiliation"
     },
-    "abstract": "Abstract",
+    "abstract": "Résumé",
     "tags": {
       "democracy": "#Démocratie",
       "drc": "#RDC",
       "governance": "#Gouvernance"
     },
     "recommendations": {
-      "title": "Lectures Complémentaires",
+      "title": "Lectures Recommandées",
       "subtitle": "Publications Similaires",
       "cta": "Explorer la bibliothèque",
       "read": "Consulter"
     },
     "citation": {
       "title": "Référence Bibliographique",
-      "copy": "Copier la citation",
+      "copy": "Copier la référence",
       "copied": "Copié !",
       "format": "{authors} ({year}). « {title} ». CREDDA-ULPGL Scientific Repository."
     },
@@ -359,13 +416,13 @@
   },
   "TeamPage": {
     "header": {
-      "badge": "Corps Académique",
+      "badge": "Conseil Académique",
       "title": "Nos <span>Chercheurs</span> & Experts.",
-      "description": "Une équipe interdisciplinaire dédiée à la production de savoirs critiques et à l'excellence scientifique en Afrique."
+      "description": "Une équipe pluridisciplinaire engagée pour la production de savoir critique et l'excellence scientifique en Afrique."
     },
     "empty": {
       "title": "Annuaire en cours de mise à jour",
-      "description": "L'annuaire de nos chercheurs est actuellement en cours de mise à jour. Veuillez revenir prochainement."
+      "description": "L'annuaire de nos chercheurs est actuellement en cours d'actualisation. Veuillez revenir bientôt."
     },
     "contact": {
       "email": "Contacter par email",
@@ -376,16 +433,16 @@
     "header": {
       "badge": "Moteur de recherche",
       "title": "Résultats pour : <span>\"{query}\"</span>",
-      "results": "Nous avons trouvé {count} correspondance(s) dans la base de données du CREDDA."
+      "results": "Nous avons trouvé {count} correspondances dans la base de données du CREDDA."
     },
     "sections": {
-      "articles": "Analyses & Travaux",
+      "articles": "Travaux et Analyses",
       "publications": "Publications PDF",
-      "members": "Membres de l'équipe"
+      "members": "Membres de l'Équipe"
     },
     "empty": {
       "title": "Aucun résultat trouvé",
-      "description": "Vérifiez l'orthographe ou essayez avec des termes plus généraux."
+      "description": "Vérifiez l'orthographe ou essayez avec des termes plus génériques."
     },
     "highlight": {
       "authors": "Auteurs : "
@@ -395,10 +452,10 @@
     "header": {
       "badge": "Liaison Institutionnelle",
       "title": "Parlons du <span>Futur</span>.",
-      "description": "Recherche scientifique, expertise clinique ou partenariats stratégiques : notre secrétariat vous oriente vers les bons experts."
+      "description": "Recherche scientifique, expertise clinique ou partenariat stratégique : notre secrétariat vous orientera vers les experts adéquats."
     },
     "info": {
-      "title": "Contact Hub",
+      "title": "Hub de Contact",
       "description": "Accès direct aux départements de recherche et de clinique juridique de l'ULPGL.",
       "items": [
         {
@@ -414,14 +471,14 @@
           "content": "+243 812 345 678"
         },
         {
-          "title": "Heures d'ouverture",
-          "content": "Lun - Ven: 08:30 - 16:30"
+          "title": "Heures d'Ouverture",
+          "content": "Lun - Ven : 08:30 - 16:30"
         }
       ],
-      "social": "Connectivité Sociale"
+      "social": "Réseaux Sociaux"
     },
     "form": {
-      "title": "Envoyez une requête scientifique",
+      "title": "Soumettre une requête scientifique",
       "fields": {
         "name": {
           "label": "Identité Complète",
@@ -429,18 +486,18 @@
           "required": "*"
         },
         "email": {
-          "label": "Courriel Institutionnel",
+          "label": "Email Institutionnel",
           "placeholder": "adresse@institution.org",
           "required": "*"
         },
         "subject": {
-          "label": "Objet de la Correspondance",
-          "placeholder": "Ex: Demande de partenariat scientifique ou expertise clinique",
+          "label": "Objet du Contact",
+          "placeholder": "Ex: Requête de collaboration scientifique ou expertise clinique",
           "required": "*"
         },
         "message": {
-          "label": "Détails de votre requête",
-          "placeholder": "Rédigez ici votre message à l'attention du secrétariat du CREDDA...",
+          "label": "Détails de votre Requête",
+          "placeholder": "Décrivez votre message à l'attention du secrétariat du CREDDA...",
           "required": "*"
         }
       },
@@ -449,47 +506,47 @@
       "error": {
         "invalid": "Réponse invalide du serveur",
         "generic": "Une erreur est survenue lors de l'envoi du message.",
-        "connection": "Erreur de connexion au serveur. Veuillez réessayer plus tard."
+        "connection": "Erreur de connexion. Veuillez réessayer plus tard."
       },
       "success": {
         "title": "Requête Enregistrée.",
-        "description": "Votre message a été transmis avec succès au <strong>Secrétariat Scientifique du CREDDA-ULPGL</strong>. Un accusé de réception vous sera envoyé par courriel après examen de votre demande par nos experts.",
-        "button": "Nouvelle correspondance"
+        "description": "Votre message a été transmis avec succès au <strong>Secrétariat Scientifique du CREDDA-ULPGL</strong>. Vous recevrez une confirmation par email après examen par nos experts.",
+        "button": "Nouveau message"
       }
     },
     "map": {
-      "badge": "Géolocalisation",
-      "title": "Le Campus Salomon",
+      "badge": "Localisation",
+      "title": "Campus Salomon",
       "gps": "Coordonnées GPS",
-      "location": "Quartier Himbi, Goma",
-      "description": "Suivez l'avenue de la Corniche jusqu'au portail principal du Campus Salomon."
+      "location": "Himbi, Goma",
+      "description": "Suivre l'Avenue de la Corniche jusqu'à l'entrée principale du Campus Salomon."
     },
     "faq": {
       "security": {
-        "title": "Sécurité des données",
-        "description": "Vos informations sont chiffrées et ne sont jamais partagées."
+        "title": "Sécurité des Données",
+        "description": "Vos informations sont cryptées et ne sont jamais partagées."
       },
       "regional": {
         "title": "Portée Régionale",
-        "description": "Nous intervenons partout dans la région des Grands Lacs."
+        "description": "Nous opérons sur toute la région des Grands Lacs."
       }
     }
   },
   "LoginPage": {
     "left": {
       "badge": "Espace Sécurisé",
-      "title": "Portail de Gestion <br/><span>Scientifique</span>.",
+      "title": "Portail de Gestion <span>Scientifique</span>.",
       "description": "Bienvenue sur l'interface d'administration du CREDDA. Cet espace est réservé aux chercheurs et administrateurs autorisés.",
-      "footer": "Protection des données conforme"
+      "footer": "Protection des données active"
     },
     "right": {
       "back": "Retour au site",
       "logo": "CREDDA<span>.ULPGL</span>",
-      "title": "Connexion Admin",
-      "subtitle": "Veuillez entrer vos paramètres d'accès.",
+      "title": "Login Admin",
+      "subtitle": "Veuillez saisir vos identifiants d'accès.",
       "fields": {
         "email": {
-          "placeholder": "Adresse email professionnelle"
+          "placeholder": "Adresse email académique"
         },
         "password": {
           "placeholder": "Mot de passe"
@@ -499,22 +556,105 @@
       "submitting": "Connexion...",
       "errors": {
         "invalid": "Identifiants invalides",
-        "connection": "Erreur de connexion au serveur"
+        "connection": "Erreur de connexion"
       },
       "forgotPassword": "Mot de passe oublié ?"
     }
   },
+  "RegisterPage": {
+    "left": {
+      "badge": "Rejoindre le CREDDA",
+      "title": "Devenez acteur de la <span>Recherche</span>.",
+      "description": "Créez votre compte pour accéder aux ressources exclusives, contribuer aux travaux scientifiques ou suivre vos cas cliniques.",
+      "footer": "Inscription sécurisée et vérifiée"
+    },
+    "right": {
+      "back": "Retour",
+      "logo": "CREDDA<span>.ULPGL</span>",
+      "title": "Créer un compte",
+      "subtitle": "Suivez les étapes pour rejoindre notre réseau.",
+      "steps": {
+        "account": "Compte",
+        "profile": "Profil",
+        "details": "Détails"
+      },
+      "fields": {
+        "email": { "label": "Email Professionnel", "placeholder": "votre@email.com" },
+        "password": { "label": "Mot de passe", "placeholder": "••••••••" },
+        "confirmPassword": { "label": "Confirmer", "placeholder": "••••••••" },
+        "name": { "label": "Nom Complet", "placeholder": "Pr. / Dr. / Nom" },
+        "phone": { "label": "Téléphone", "placeholder": "+243..." },
+        "organization": { "label": "Organisation / Université", "placeholder": "Ex: ULPGL Goma" },
+        "requestedRole": { "label": "Rôle Souhaité", "placeholder": "Chercheur, Éditeur, Clinicien..." },
+        "bio": { "label": "Bio / Motivation", "placeholder": "Décrivez brièvement votre parcours ou intérêt..." }
+      },
+      "submit": "Terminer l'inscription",
+      "next": "Étape suivante",
+      "prev": "Précédent",
+      "submitting": "Traitement...",
+      "success": {
+        "title": "Demande Envoyée !",
+        "description": "Votre compte a été créé avec succès. Il est actuellement <strong>en attente d'approbation</strong> par l'administration du CREDDA. Vous recevrez un email dès validation.",
+        "button": "Retour à l'accueil"
+      },
+      "errors": {
+        "passwordsDontMatch": "Les mots de passe ne correspondent pas",
+        "missingFields": "Veuillez remplir tous les champs obligatoires",
+        "emailExists": "Cet email est déjà utilisé",
+        "generic": "Une erreur est survenue lors de l'inscription"
+      }
+    }
+  },
+  "ProfilePage": {
+    "title": "Mon Profil",
+    "subtitle": "Gérez vos informations personnelles et votre biographie scientifique.",
+    "fields": {
+      "name": "Nom Complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "organization": "Organisation / Université",
+      "bio": "Bio / Motivation",
+      "image": "Lien de la photo"
+    },
+    "actions": {
+      "save": "Enregistrer les modifications",
+      "upload": "Changer la photo",
+      "saving": "Enregistrement..."
+    },
+    "success": "Profil mis à jour avec succès !",
+    "error": "Erreur lors de la mise à jour du profil."
+  },
+  "SecurityPage": {
+    "title": "Sécurité",
+    "subtitle": "Protégez votre compte en changeant votre mot de passe.",
+    "fields": {
+      "current": "Mot de passe actuel",
+      "new": "Nouveau mot de passe",
+      "confirm": "Confirmer le nouveau mot de passe"
+    },
+    "actions": {
+      "update": "Mettre à jour le mot de passe",
+      "updating": "Mise à jour..."
+    },
+    "success": "Mot de passe modifié avec succès !",
+    "error": "Erreur lors du changement de mot de passe.",
+    "errors": {
+      "wrongCurrent": "Le mot de passe actuel est incorrect",
+      "dontMatch": "Les nouveaux mots de passe ne correspondent pas"
+    }
+  },
   "Footer": {
     "identity": {
-      "description": "Institution d'excellence de l'Université Libre des Pays des Grands Lacs dédiée à la recherche scientifique et à la pratique clinique juridique."
+      "badge": "Research & Impact Hub",
+      "description": "Institution d'excellence de l'Université Libre des Pays des Grands Lacs dédiée à la recherche scientifique et à la pratique clinique du droit."
     },
     "expertise": {
       "title": "Domaines d'Expertise",
       "items": [
-        "Démocratie & Élections",
+        "Démocratie et Élections",
         "Gouvernance Foncière",
         "Justice Environnementale",
-        "Paix & Résolution de Conflits"
+        "Paix et Résolution des Conflits"
       ]
     },
     "resources": {
@@ -525,15 +665,15 @@
           "href": "/about"
         },
         {
-          "label": "Bibliothèque de Rapports",
+          "label": "Bibliothèque des Rapports",
           "href": "/publications"
         },
         {
-          "label": "Corps de Recherche",
+          "label": "Équipe de Recherche",
           "href": "/team"
         },
         {
-          "label": "Partenariats Scientifiques",
+          "label": "Collaboration Scientifique",
           "href": "/contact"
         }
       ],
@@ -543,40 +683,140 @@
       "title": "Secrétariat Goma",
       "address": {
         "line1": "Campus ULPGL, Quartier Himbi,",
-        "line2": "Goma, Nord-Kivu, RD Congo."
+        "line2": "Goma, Nord-Kivu, RDC."
       },
       "phone": "+243 812 345 678",
       "email": "contact@credda-ulpgl.org"
     },
     "bottom": {
-      "copyright": "© {year} CREDDA-ULPGL. All Rights Reserved.",
+      "copyright": "© {year} CREDDA-ULPGL. Tous droits réservés.",
       "legal": "Mentions Légales",
-      "privacy": "Politique de Confidentialité",
-      "system": "Système Opérationnel"
+      "privacy": "Confidentialité",
+      "system": "Système Opérationnel",
+      "affiliation": "AFFILIÉ À L'UNIVERSITÉ ULPGL"
     }
   },
   "GalleryPage": {
     "back": "Retour à l'accueil",
-    "badge": "Médiathèque",
+    "badge": "Photothèque",
     "title": "Galerie <span>Institutionnelle</span>",
-    "description": "Plongez au cœur des activités du CREDDA à travers une sélection d'images capturant nos moments de recherche, de clinique et de collaboration.",
+    "description": "Plongez au cœur des activités du CREDDA à travers une sélection de clichés capturant nos recherches, nos travaux cliniques et nos collaborations.",
     "stats": {
       "total": "Images",
       "categories": "Catégories",
-      "featured": "À la une"
+      "featured": "En Vedette"
     },
     "filters": {
       "all": "Toutes"
     },
-    "results": "{count} image sur {total}",
+    "results": "Image {count} sur {total}",
     "featured": "À la une",
     "download": "Télécharger",
     "share": "Partager",
-    "like": "J'aime",
-    "liked": "J'aime déjà",
+    "like": "Aimer",
+    "liked": "Déjà aimé",
     "empty": {
-      "title": "Galerie en cours d'enrichissement",
-      "description": "Nos équipes préparent une sélection d'images. Revenez très bientôt pour découvrir nos activités en photos."
+      "title": "La galerie s'enrichit",
+      "description": "Nos équipes préparent une sélection de photos. Revenez bientôt pour découvrir nos activités en images."
     }
+  },
+  "CDEPage": {
+    "header": {
+      "badge": "Programme Spécial CDE",
+      "title": "Clinique de <span>Droit Environnemental</span>",
+      "description": "Une institution d'excellence au sein du CREDDA-ULPGL dédiée à la protection de l'environnement et des droits des communautés locales."
+    },
+    "intro": {
+      "title": "Contexte et Justification",
+      "text": "Le lancement de la Clinique de Droit Environnemental (CDE) répond au besoin impérieux d'apporter des solutions pratiques pour la justice sociale et l’accès à la justice, un droit constitutionnel reconnu aux peuples autochtones pygmées et aux communautés locales en RDC."
+    },
+    "mission": {
+      "title": "Notre Mission",
+      "items": [
+        "Conseil et orientation juridique pour les justiciables",
+        "Rédaction d’actes juridiques simples (plaintes, requêtes)",
+        "Médiation et conciliation communautaire",
+        "Assistance juridique sous supervision",
+        "Cliniques mobiles et campagnes de sensibilisation au droit"
+      ]
+    },
+    "strategic_axes": {
+      "title": "Axes Stratégiques",
+      "axes": [
+        {
+          "title": "Renforcement des Capacités",
+          "desc": "Formation des étudiants, magistrats et leaders communautaires."
+        },
+        {
+          "title": "Contentieux d'Intérêt Public",
+          "desc": "Décourager les développements nuisibles et la pollution."
+        },
+        {
+          "title": "Plaidoyer",
+          "desc": "Influencer les lois environnementales et les politiques publiques."
+        },
+        {
+          "title": "Aide Juridique Gratuite",
+          "desc": "Services gracieux pour les populations vulnérables."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Signaler une injustice environnementale",
+      "description": "Vous êtes victime de pollution, de conflit foncier ou de déforestation ? Nous pouvons vous aider.",
+      "button": "Soumettre mon cas"
+    }
+  },
+  "Track": {
+    "badge": "Portail de Suivi Sécurisé",
+    "title": "Suivez Votre Dossier.",
+    "description": "Entrez votre numéro de téléphone enregistré pour accéder à votre statut et suivre la progression de votre dossier juridique.",
+    "placeholder": "Numéro de téléphone (+243...)",
+    "submit": "Accéder au Registre",
+    "results_title": "Dossiers Enregistrés",
+    "last_update": "Dernière Mise à jour",
+    "no_records": "Aucun Dossier Trouvé",
+    "no_records_desc": "Nous n'avons trouvé aucun cas clinique associé à ce numéro de téléphone. Veuillez vérifier le numéro ou contacter notre bureau.",
+    "confidentiality_title": "Confidentialité",
+    "confidentiality_desc": "Vos données sont protégées par le secret judiciaire. L'accès est restreint aux bénéficiaires enregistrés.",
+    "authority_title": "Autorité Légale",
+    "authority_desc": "Les statuts sont mis à jour en temps réel par nos experts juridiques après chaque étape procédurale."
+  },
+  "Search": {
+    "placeholder": "Chercher un rapport, un expert ou un article...",
+    "min_chars": "Saisissez au moins 2 caractères",
+    "sections": {
+      "articles": "Travaux & Analyses",
+      "publications": "Bibliothèque PDF"
+    },
+    "footer_hint": "Appuyez sur Entrée pour voir tout",
+    "esc_hint": "pour fermer"
+  },
+  "PublicationsHero": {
+    "latest": "Dernière Publication",
+    "readingTime": "{time} MIN DE LECTURE",
+    "access": "Accéder au Journal Complet",
+    "preview": "Aperçu PDF"
+  },
+  "ClinicalMap": {
+    "badge": "Accès Géographique",
+    "title": "Présence sur le Terrain",
+    "description": "Le CREDDA déploie ses experts au plus près des communautés. Nos cliniques fixes et mobiles couvrent les points stratégiques de la région des Grands Lacs.",
+    "loading": "Chargement des données géographiques...",
+    "mobile": "Clinique Mobile",
+    "fixed": "Centre Fixe"
+  },
+  "Navbar": {
+    "institution": "L'Institution",
+    "expertise": "Expertises",
+    "research": "Axes de Recherche",
+    "clinical": "Clinique Juridique",
+    "library": "Bibliothèque",
+    "researchers": "Chercheurs",
+    "gallery": "Galerie",
+    "contact": "Contact",
+    "portal": "Portail",
+    "consult": "Consulter le département",
+    "search": "Rechercher"
   }
 }

@@ -1,3 +1,4 @@
+/** @jest-environment node */
 // __tests__/integration/api/gallery.test.ts
 import { GET } from '@/app/api/admin/gallery/route'
 import { db } from '@/lib/db'
@@ -42,7 +43,6 @@ describe('GET /api/admin/gallery', () => {
     
     ;(db.galleryImage.findMany as jest.Mock).mockResolvedValue(mockImages)
 
-    // ✅ CORRIGÉ: GET ne prend pas de paramètre
     const response = await GET()
     const json = await response.json()
 
@@ -58,13 +58,14 @@ describe('GET /api/admin/gallery', () => {
     expect(response.status).toBe(401)
   })
 
-  it('should handle errors gracefully', async () => {
+  it('should handle database errors gracefully (Resilience Layer)', async () => {
     ;(db.galleryImage.findMany as jest.Mock).mockRejectedValue(new Error('Database error'))
 
     const response = await GET()
     const json = await response.json()
 
-    expect(response.status).toBe(500)
-    expect(json).toEqual({ error: "Erreur serveur" })
+    // The resilience layer now returns 200 [] on DB failure to prevent UI crashes
+    expect(response.status).toBe(200)
+    expect(json).toEqual([])
   })
 })
