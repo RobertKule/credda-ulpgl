@@ -4,7 +4,14 @@
     "clinical": "Clinique Juridique",
     "publications": "Publications",
     "about": "L'Institution",
-    "contact": "Contact"
+    "contact": "Contact",
+    "login": "Se connecter",
+    "ticker": {
+      "item1": "Nouvelle publication sur la justice climatique en RDC",
+      "item2": "Clinique mobile prévue à Kalehe le 25 mars",
+      "item3": "Partenariat renforcé avec l'Université d'Oxford",
+      "item4": "Rapport 2025 sur la démocratie disponible"
+    }
   },
   "HomePage": {
     "hero": {
@@ -12,15 +19,15 @@
       "slides": [
         {
           "title": "L'Excellence au service de la Démocratie.",
-          "desc": "Le CREDDA produit une recherche de haut niveau pour transformer les institutions africaines."
+          "description": "Le CREDDA produit une recherche de haut niveau pour transformer les institutions africaines."
         },
         {
           "title": "Clinique Juridique Environnementale.",
-          "desc": "Nous protégeons les droits des communautés et la biodiversité par le droit."
+          "description": "Nous protégeons les droits des communautés et la biodiversité par le droit."
         },
         {
           "title": "Hub de Collaboration Internationale.",
-          "desc": "Partenariat avec les grandes universités pour un développement durable."
+          "description": "Partenariat avec les grandes universités pour un développement durable."
         }
       ],
       "cta_publications": "Nos Publications",
@@ -125,6 +132,7 @@
       ]
     },
     "cta": {
+      "badge": "Rejoignez le Mouvement",
       "title": "Construire l'avenir par la <span>Science</span>.",
       "partner": "Devenir Partenaire",
       "about": "Le Projet CREDDA",
@@ -527,7 +535,7 @@
   "LoginPage": {
     "left": {
       "badge": "Espace Sécurisé",
-      "title": "Portail de Gestion <br/><span>Scientifique</span>.",
+      "title": "Portail de Gestion <span>Scientifique</span>.",
       "description": "Bienvenue sur l'interface d'administration du CREDDA. Cet espace est réservé aux chercheurs et administrateurs autorisés.",
       "footer": "Protection des données active"
     },

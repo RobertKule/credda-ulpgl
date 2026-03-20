@@ -4,7 +4,14 @@
     "clinical": "Legal Clinic",
     "publications": "Publications",
     "about": "The Institution",
-    "contact": "Contact"
+    "contact": "Contact",
+    "login": "Login",
+    "ticker": {
+      "item1": "New publication on climate justice in DRC",
+      "item2": "Mobile clinic scheduled in Kalehe on March 25",
+      "item3": "Strengthened partnership with Oxford University",
+      "item4": "2025 Democracy Report now available"
+    }
   },
   "HomePage": {
     "hero": {
@@ -12,15 +19,15 @@
       "slides": [
         {
           "title": "Excellence for Democracy.",
-          "desc": "CREDDA produces high-level research to transform African institutions."
+          "description": "CREDDA produces high-level research to transform African institutions."
         },
         {
           "title": "Environmental Law Clinic.",
-          "desc": "We protect community rights and biodiversity through law."
+          "description": "We protect community rights and biodiversity through law."
         },
         {
           "title": "International Collaboration Hub.",
-          "desc": "Partnering with major universities for sustainable development."
+          "description": "Partnering with major universities for sustainable development."
         }
       ],
       "cta_publications": "Our Publications",
@@ -126,6 +133,7 @@
       ]
     },
     "cta": {
+      "badge": "Join the Movement",
       "title": "Building the future through <span>Science</span>.",
       "partner": "Become a Partner",
       "about": "The CREDDA Project",
@@ -528,7 +536,7 @@
   "LoginPage": {
     "left": {
       "badge": "Secure Space",
-      "title": "Scientific Management <br/><span>Portal</span>.",
+      "title": "Scientific Management <span>Portal</span>.",
       "description": "Welcome to CREDDA management interface. This space is reserved for authorized researchers and administrators.",
       "footer": "Active data protection"
     },

@@ -3,8 +3,15 @@
     "research": "Utafiti",
     "clinical": "Kliniki ya Sheria",
     "publications": "Machapisho",
-    "about": "Kuhusu Sisi",
-    "contact": "Wasiliana"
+    "about": "Taasisi",
+    "contact": "Wasiliana nasi",
+    "login": "Ingia",
+    "ticker": {
+      "item1": "Chapisho jipya kuhusu haki ya hali ya hewa nchini RDC",
+      "item2": "Kliniki inayotembea imepangwa Kalehe Machi 25",
+      "item3": "Ushirikiano ulioimarishwa na Chuo Kikuu cha Oxford",
+      "item4": "Ripoti ya Demokrasia ya 2025 inapatikana"
+    }
   },
 
   "HomePage": {
@@ -13,15 +20,15 @@
       "slides": [
         {
           "title": "Ubora kwa ajili ya Demokrasia.",
-          "desc": "CREDDA huzalisha utafiti wa hali ya juu kubadilisha taasisi za Afrika."
+          "description": "CREDDA huzalisha utafiti wa hali ya juu kubadilisha taasisi za Afrika."
         },
         {
           "title": "Kliniki ya Sheria ya Mazingira.",
-          "desc": "Tunalinda haki za jamii na bioanuwai kupitia sheria."
+          "description": "Tunalinda haki za jamii na bioanuwai kupitia sheria."
         },
         {
           "title": "Kitovu cha Ushirikiano wa Kimataifa.",
-          "desc": "Tunashirikiana na vyuo vikuu vikubwa kwa maendeleo endelevu."
+          "description": "Tunashirikiana na vyuo vikuu vikubwa kwa maendeleo endelevu."
         }
       ],
       "cta_publications": "Machapisho Yetu",
@@ -126,6 +133,7 @@
       ]
     },
     "cta": {
+      "badge": "Jiunge na Harakati",
       "title": "Kujenga mustakabari kupitia <span>Sayansi</span>.",
       "partner": "Kuwa Mshirika",
       "about": "Mradi wa CREDDA",
@@ -533,7 +541,7 @@
   "LoginPage": {
     "left": {
       "badge": "Eneo Salama",
-      "title": "Portal ya Usimamizi <br/><span>Kisayansi</span>.",
+      "title": "Portal ya Usimamizi <span>Kisayansi</span>.",
       "description": "Karibu kwenye kiolesura cha usimamizi cha CREDDA. Eneo hili limehifadhiwa kwa watafiti na wasimamizi walioidhinishwa.",
       "footer": "Ulinzi wa data unaofaa"
     },
