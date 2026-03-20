@@ -1,10 +1,12 @@
 // app/api/admin/testimonials/[id]/route.ts
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-export async function PATCH(req: Request, { params }: { params: { id: string } }) {
-  const session = await auth();
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
@@ -12,7 +14,7 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
 
     // Update main fields
     await db.testimonial.update({
-      where: { id: params.id },
+      where: { id },
       data: { authorName, authorRole, isPublished }
     });
 
@@ -20,15 +22,15 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
     if (translations && Array.isArray(translations)) {
       for (const t of translations) {
         await db.testimonialTranslation.upsert({
-          where: { testimonialId_language: { testimonialId: params.id, language: t.language } },
+          where: { testimonialId_language: { testimonialId: id, language: t.language } },
           update: { quote: t.quote },
-          create: { testimonialId: params.id, language: t.language, quote: t.quote }
+          create: { testimonialId: id, language: t.language, quote: t.quote }
         });
       }
     }
 
     const updated = await db.testimonial.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { translations: true }
     });
 
@@ -38,12 +40,13 @@ export async function PATCH(req: Request, { params }: { params: { id: string } }
   }
 }
 
-export async function DELETE(req: Request, { params }: { params: { id: string } }) {
-  const session = await auth();
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    await db.testimonial.delete({ where: { id: params.id } });
+    await db.testimonial.delete({ where: { id } });
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: "Deletion failed" }, { status: 500 });

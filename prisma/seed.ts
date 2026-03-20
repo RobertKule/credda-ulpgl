@@ -81,7 +81,7 @@ async function main() {
           domain: 'RESEARCH',
           published: true,
           featured: true,
-          categoryId: catResearch?.id,
+          categoryId: catResearch?.id as string,
           translations: {
             create: [
               { language: 'fr', title: pub.title_fr, content: pub.content, excerpt: pub.desc_fr },

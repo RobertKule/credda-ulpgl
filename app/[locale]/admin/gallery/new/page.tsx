@@ -14,10 +14,15 @@ export default async function NewGalleryImagePage() {
     await db.galleryImage.create({
       data: {
         src,
-        title,
         category,
-        description,
-        order: 0
+        order: 0,
+        translations: {
+          create: [
+            { language: 'fr', title, description: description || null },
+            { language: 'en', title, description: description || null },
+            { language: 'sw', title, description: description || null }
+          ]
+        }
       }
     });
     

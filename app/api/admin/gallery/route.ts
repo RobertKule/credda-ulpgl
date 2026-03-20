@@ -45,11 +45,16 @@ export async function POST(request: Request) {
     const image = await db.galleryImage.create({
       data: {
         src: body.src,
-        title: body.title,
         category: body.category,
-        description: body.description || null,
         order: (lastImage?.order ?? -1) + 1,
-        featured: body.featured || false
+        featured: body.featured || false,
+        translations: {
+          create: [
+            { language: 'fr', title: body.title, description: body.description || null },
+            { language: 'en', title: body.title, description: body.description || null },
+            { language: 'sw', title: body.title, description: body.description || null }
+          ]
+        }
       }
     });
 

@@ -51,7 +51,7 @@ describe('Article Actions Service', () => {
       const result = await createArticle({ slug: 'existing' });
       
       expect(result.success).toBe(false);
-      expect(result.error).toBe("Erreur lors de la création de l'article");
+      expect((result as any).error).toBe("Erreur lors de la création de l'article");
     });
   });
 

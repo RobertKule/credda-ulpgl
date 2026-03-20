@@ -27,8 +27,7 @@ if (!connectionString) {
   console.error("❌ DATABASE_URL is missing in .env")
 }
 
-// Ensure connection string has correct SSL parameters for Neon if needed
-// Optimization: Check if sslmode is already present to avoid duplicates
+// Ensure connection string has correct SSL/Pooler parameters
 const finalConnectionString = connectionString.includes('sslmode=') 
   ? connectionString 
   : (connectionString + (connectionString.includes('?') ? '&' : '?') + 'sslmode=require');
@@ -45,14 +44,15 @@ if (!globalForPrisma.pool || (process.env.NODE_ENV === 'development' && currentC
 
   const pool = new Pool({ connectionString: finalConnectionString });
   
-  pool.on('error', (err) => {
+  pool.on('error', (err: any) => {
     console.error('❌ Unexpected error on idle client', err);
   });
 
   (pool as any)._configuredWith = finalConnectionString;
   
   globalForPrisma.pool = pool;
-  globalForPrisma.adapter = new PrismaNeon(pool);
+  // Use 'as any' to solve type mismatch in some versions of adapter-neon
+  globalForPrisma.adapter = new PrismaNeon(pool as any);
   globalForPrisma.prisma = undefined;
 }
 
@@ -60,6 +60,14 @@ if (!globalForPrisma.prisma) {
   try {
     globalForPrisma.prisma = new PrismaClient({
       adapter: globalForPrisma.adapter,
+      // Provide explicit datasource URL even with adapter to satisfy internal Prisma initialization
+      // This solves the "No database host" error in some environments
+      // @ts-ignore
+      datasources: {
+        db: {
+          url: finalConnectionString
+        }
+      },
       log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
     })
   } catch (error) {

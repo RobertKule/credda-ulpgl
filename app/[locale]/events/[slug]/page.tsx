@@ -73,7 +73,7 @@ export default async function EventDetailPage({
                    </div>
                    <div>
                       <p className="text-[9px] text-white/20 uppercase font-black tracking-widest">Horaire</p>
-                      <p className="text-sm font-bold text-[#F5F2EC]">{event.time || "09:00 - 15:30"}</p>
+                      <p className="text-sm font-bold text-[#F5F2EC]">09:00 - 15:30</p>
                    </div>
                 </div>
              </div>

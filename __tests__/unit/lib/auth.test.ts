@@ -106,7 +106,7 @@ describe('Auth Configuration (auth.ts)', () => {
       const session: any = { user: {} };
       const token: any = { id: 'u1', role: 'ADMIN', image: 'avatar.png' };
       
-      const result = await authOptions.callbacks!.session!({ session, token } as any);
+      const result = await (authOptions.callbacks as any).session({ session, token });
       
       expect(result.user.id).toBe('u1');
       expect(result.user.role).toBe('ADMIN');

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Calendar, User, ArrowLeft, Share2, Download, Clock } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
+import { Button } from "@/components/ui/button";
 
 export async function generateMetadata({ 
   params 
@@ -13,7 +14,10 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   const article = await db.article.findUnique({
     where: { slug },
-    include: { translations: { where: { language: locale } } }
+    include: { 
+      translations: { where: { language: locale } },
+      category: { select: { translations: { where: { language: locale }, select: { name: true } } } }
+    }
   });
 
   if (!article) return { title: "Publication - CREDDA" };
@@ -21,7 +25,7 @@ export async function generateMetadata({
 
   return {
     title: `${t?.title || "Recherche"} | CREDDA-ULPGL`,
-    description: t?.description || t?.excerpt || "Rapport de recherche scientifique du CREDDA.",
+    description: t?.excerpt || "Rapport de recherche scientifique du CREDDA.",
   };
 }
 
@@ -33,7 +37,10 @@ export default async function PublicationDetailPage({
   const { locale, slug } = await params;
   const article = await db.article.findUnique({
     where: { slug },
-    include: { translations: { where: { language: locale } } }
+    include: { 
+      translations: { where: { language: locale } },
+      category: { select: { translations: { where: { language: locale }, select: { name: true } } } }
+    }
   });
 
   if (!article) notFound();
@@ -57,7 +64,7 @@ export default async function PublicationDetailPage({
           <header className="mb-20">
              <div className="flex items-center gap-4 mb-8">
                 <span className="px-3 py-1 border border-[#C9A84C]/20 text-[#C9A84C] text-[9px] uppercase tracking-widest font-bold">
-                  {article.category || "Research Paper"}
+                  {(article as any).category?.translations?.[0]?.name || "Research Paper"}
                 </span>
                 <div className="h-[1px] flex-1 bg-white/5" />
              </div>
@@ -105,7 +112,7 @@ export default async function PublicationDetailPage({
              <div className="lg:col-span-3">
                 <div className="prose prose-invert prose-gold max-w-none">
                    <p className="text-xl text-[#F5F2EC]/60 font-serif italic mb-12 leading-relaxed">
-                      {t?.description || t?.excerpt}
+                      {t?.excerpt}
                    </p>
                    
                    <div className="h-[1px] w-full bg-white/5 mb-12" />
