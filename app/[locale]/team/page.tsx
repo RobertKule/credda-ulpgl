@@ -1,114 +1,123 @@
 // app/[locale]/team/page.tsx
 import { db } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "@/navigation";
+import Link from "next/link";
 import {
   Mail, Linkedin, Users, GraduationCap,
-  SearchX, Globe, ChevronRight
+  SearchX, Globe, ChevronRight, Award
 } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 
 interface Props {
-  params: Promise<{ locale: string }>;
+  params: { locale: string };
 }
 
 export default async function TeamPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'TeamPage' });
 
-  let members: any[] = [];
-  try {
-    members = await db.member.findMany({
-      include: {
-        translations: { where: { language: locale } }
-      },
-      orderBy: { order: "asc" }
-    });
-  } catch (error) {
-    console.error("⚠️ Database connection failed in TeamPage. Using fallbacks.", error);
-  }
+  // Optimization: catch error to avoid total page crash
+  const members = await db.member.findMany({
+    include: {
+      translations: { where: { language: locale } }
+    },
+    orderBy: { order: 'asc' }
+  }).catch((err) => {
+    console.error("Team DB Fetch Error:", err);
+    return [];
+  });
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">
       {/* --- HEADER --- */}
-      <header className="bg-[#050a15] text-white py-24 border-b border-white/5">
-        <div className="container mx-auto px-6">
-          <div className="max-w-3xl space-y-6">
-            <Badge className="bg-blue-600 rounded-none px-4 py-1 uppercase tracking-[0.2em] text-[10px] font-bold">
-              {t('header.badge')}
-            </Badge>
-            <h1 className="text-5xl lg:text-7xl font-serif font-bold italic leading-tight">
-              <span dangerouslySetInnerHTML={{ __html: t.raw('header.title') }} />
+      <header className="max-w-7xl mx-auto mb-24">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 border-b border-white/5 pb-16">
+          <div className="max-w-3xl">
+            <span className="text-[10px] uppercase tracking-[0.6em] font-outfit font-bold text-[#C9A84C] block mb-8">Leadership Scientifique</span>
+            <h1 className="text-6xl md:text-8xl font-fraunces font-extrabold text-[#F5F2EC] leading-[0.85] mb-10">
+               Nos <span className="text-[#C9A84C] italic-accent">Chercheurs</span> & Experts.
             </h1>
-            <p className="text-xl text-slate-400 font-light leading-relaxed">
-              {t('header.description')}
+            <p className="text-xl text-[#F5F2EC]/40 font-outfit font-light leading-relaxed">
+              Une équipe pluridisciplinaire engagée pour la production de savoir critique et l'excellence scientifique en Afrique.
             </p>
+          </div>
+          
+          <div className="hidden lg:flex items-center gap-8">
+             <div className="text-center">
+                <p className="text-3xl font-fraunces font-extrabold text-[#C9A84C]">{members.length}</p>
+                <p className="text-[9px] uppercase font-outfit font-bold tracking-widest text-white/20">Chercheurs</p>
+             </div>
+             <div className="w-[1px] h-12 bg-white/10" />
+             <div className="text-center">
+                <p className="text-3xl font-fraunces font-extrabold text-[#C9A84C]">24</p>
+                <p className="text-[9px] uppercase font-outfit font-bold tracking-widest text-white/20">Expertises</p>
+             </div>
           </div>
         </div>
       </header>
 
       {/* --- GRID ÉQUIPE --- */}
-      <section className="container mx-auto px-6 py-24">
+      <section className="max-w-7xl mx-auto">
         {members.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
             {members.map((member) => {
               const content = member.translations[0];
               if (!content) return null;
 
               return (
-                <div key={member.id} className="group space-y-6">
-                  {/* Photo de profil : Grayscale to Color */}
-                  <div className="relative aspect-[4/5] overflow-hidden bg-slate-100 border border-slate-100">
+                <div key={member.id} className="group">
+                  {/* Photo Profile */}
+                  <div className="relative aspect-[3/4] overflow-hidden bg-[#111110] border border-white/5 mb-8">
                     {member.image ? (
                       <Image
                         src={member.image.replace(/\\/g, '/').replace(/^public\//, '/')}
                         alt={content.name}
                         fill
-                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-200">
-                        <Users size={80} strokeWidth={1} />
+                      <div className="w-full h-full flex items-center justify-center text-white/5">
+                        <Users size={120} strokeWidth={0.5} />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-blue-900/5 group-hover:bg-transparent transition-colors" />
+                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0C0C0A] to-transparent opacity-60" />
                   </div>
 
                   {/* Infos */}
                   <div className="space-y-4">
-                    <div className="space-y-1">
-                      <h2 className="text-2xl font-serif font-bold text-slate-900 tracking-tight">
+                    <div className="space-y-2">
+                       <span className="text-[9px] font-outfit font-bold uppercase tracking-[0.3em] text-[#C9A84C]">
+                        {content.role || "Chercheur"}
+                      </span>
+                      <h2 className="text-3xl font-bricolage font-bold text-[#F5F2EC] group-hover:text-[#C9A84C] transition-colors">
                         {content.name}
                       </h2>
-                      <p className="text-blue-600 text-xs font-bold uppercase tracking-[0.2em]">
-                        {content.role}
-                      </p>
                     </div>
 
-                    <div className="h-px w-12 bg-blue-600 transition-all group-hover:w-full duration-500" />
+                    <div className="h-[1px] w-12 bg-[#C9A84C] transition-all group-hover:w-full duration-700" />
 
                     {content.bio && (
-                      <p className="text-slate-500 text-sm font-light leading-relaxed line-clamp-3">
+                      <p className="text-[#F5F2EC]/40 text-sm font-outfit font-light leading-relaxed line-clamp-3">
                         {content.bio}
                       </p>
                     )}
 
                     {/* Social links */}
-                    <div className="flex gap-4 pt-2">
+                    <div className="flex gap-6 pt-4">
                       {member.email && (
                         <a
                           href={`mailto:${member.email}`}
-                          className="p-2 border border-slate-100 text-slate-400 hover:text-blue-600 transition-all group"
-                          title={t('contact.email')}
+                          className="text-white/20 hover:text-[#C9A84C] transition-colors"
+                          title="Contact Email"
                         >
                           <Mail size={16} />
                         </a>
                       )}
                       <a
                         href="#"
-                        className="p-2 border border-slate-100 text-slate-400 hover:text-blue-600 transition-all group"
-                        title={t('contact.linkedin')}
+                        className="text-white/20 hover:text-[#C9A84C] transition-colors"
+                        title="LinkedIn Profile"
                       >
                         <Linkedin size={16} />
                       </a>
@@ -119,17 +128,10 @@ export default async function TeamPage({ params }: Props) {
             })}
           </div>
         ) : (
-          <div className="py-24 text-center max-w-2xl mx-auto">
-            <div className="relative mb-8">
-              <div className="absolute inset-0 bg-blue-600/5 blur-3xl rounded-full" />
-              <SearchX size={80} className="mx-auto text-slate-300 relative z-10" strokeWidth={1} />
-            </div>
-            <h3 className="text-3xl font-serif font-bold text-slate-900 mb-4">
-              {t('empty.title')}
-            </h3>
-            <p className="text-slate-500 font-light text-lg">
-              {t('empty.description')}
-            </p>
+          <div className="py-40 text-center border border-dashed border-white/10">
+             <SearchX size={64} className="mx-auto text-white/10 mb-8" />
+             <h3 className="text-2xl font-fraunces font-bold text-white mb-4">Annuaire en cours d'actualisation</h3>
+             <p className="text-white/30 font-outfit font-light max-w-sm mx-auto">L'équipe du CREDDA s'agrandit. Les profils de nos nouveaux chercheurs seront bientôt disponibles.</p>
           </div>
         )}
       </section>
