@@ -1,23 +1,27 @@
-import { Playfair_Display, Montserrat, Inter } from "next/font/google";
+import { Fraunces, Bricolage_Grotesque, Outfit } from 'next/font/google'
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap",
-});
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  style: ['normal', 'italic'],
+  variable: '--font-fraunces',
+  display: 'swap',
+})
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  variable: "--font-montserrat",
-  display: "swap",
-});
+const bricolage = Bricolage_Grotesque({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-bricolage',
+  display: 'swap',
+})
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-outfit',
+  display: 'swap',
+})
 
 export const metadata = {
   title: "CREDDA-ULPGL | Research Center on Democracy & Development",
@@ -30,8 +34,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html className={`${playfair.variable} ${montserrat.variable} ${inter.variable} scroll-smooth`}>
-      <body className="font-sans antialiased text-[#2D3748] bg-[#F7FAFC]">
+    <html lang="fr" className={`${fraunces.variable} ${bricolage.variable} ${outfit.variable} scroll-smooth`}>
+      <body className="font-outfit antialiased bg-[#0C0C0A] text-[#F5F2EC]">
         {children}
       </body>
     </html>
