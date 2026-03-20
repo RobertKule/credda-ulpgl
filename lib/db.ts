@@ -5,7 +5,7 @@ import { PrismaNeon } from '@prisma/adapter-neon'
 import ws from 'ws'
 
 // Fix for Node.js environments where WebSocket isn't global
-if (typeof WebSocket === 'undefined') {
+if (typeof WebSocket === 'undefined' || (typeof process !== 'undefined' && process.env.NODE_ENV === 'development')) {
   neonConfig.webSocketConstructor = ws
 }
 
@@ -20,7 +20,7 @@ const connectionString = rawConnectionString.trim().replace(/^"|"$/g, '');
 
 if (process.env.NODE_ENV === 'development') {
   console.log("--- [DB NEON-SERVERLESS MODE] ---")
-  console.log("DATABASE_URL length:", connectionString.length)
+  console.log("DATABASE_URL present:", !!connectionString)
 }
 
 if (!connectionString) {
@@ -28,7 +28,10 @@ if (!connectionString) {
 }
 
 // Ensure connection string has correct SSL parameters for Neon if needed
-const finalConnectionString = connectionString + (connectionString.includes('?') ? '&' : '?') + 'sslmode=require';
+// Optimization: Check if sslmode is already present to avoid duplicates
+const finalConnectionString = connectionString.includes('sslmode=') 
+  ? connectionString 
+  : (connectionString + (connectionString.includes('?') ? '&' : '?') + 'sslmode=require');
 
 // In development, we force recreation if the current pool doesn't match the env
 const currentConfig = (globalForPrisma.pool as any)?._configuredWith;
@@ -54,11 +57,15 @@ if (!globalForPrisma.pool || (process.env.NODE_ENV === 'development' && currentC
 }
 
 if (!globalForPrisma.prisma) {
-  globalForPrisma.prisma = new PrismaClient({
-    adapter: globalForPrisma.adapter,
-    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-  })
+  try {
+    globalForPrisma.prisma = new PrismaClient({
+      adapter: globalForPrisma.adapter,
+      log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+    })
+  } catch (error) {
+    console.error("❌ Failed to initialize PrismaClient with adapter:", error)
+  }
 }
 
-export const db = globalForPrisma.prisma
+export const db = globalForPrisma.prisma!
 export const prisma = db
