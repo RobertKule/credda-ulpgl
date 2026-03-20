@@ -4,33 +4,41 @@ import path from 'path'
 // Explicitly load .env from root
 dotenv.config({ path: path.resolve(process.cwd(), '.env') })
 
+import bcrypt from 'bcryptjs'
+
 import { PrismaClient } from '@prisma/client'
-import { Pool } from 'pg'
-import { PrismaPg } from '@prisma/adapter-pg'
-
-const connectionStringRaw = (process.env.DATABASE_URL || "").trim().replace(/^"|"$/g, '');
-const connectionString = connectionStringRaw.includes('?') 
-  ? `${connectionStringRaw}&uselibpqcompat=true&sslmode=require`
-  : `${connectionStringRaw}?uselibpqcompat=true&sslmode=require`;
-console.log('📡 DB URL (SSL Compatible) Length:', connectionString.length);
-
-if (!connectionString) {
-  throw new Error('❌ DATABASE_URL is missing!');
-}
-
-const pool = new Pool({ 
-  connectionString,
-  max: 1,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 10000,
-});
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function main() {
-  console.log('🚀 Starting Seeding...');
+  const prisma = new PrismaClient();
+  console.log('🚀 Starting Seeding over native TCP connection...');
+
+
+  // 0. ADMIN USER
+  try {
+    console.log('⏳ Hashing password...');
+    const hashedAdminPassword = await bcrypt.hash('Rkule@02', 10);
+    console.log('⏳ Upserting user...');
+    await prisma.user.upsert({
+      where: { email: 'rkule880@gmail.com' },
+      update: {
+        password: hashedAdminPassword,
+        role: 'SUPER_ADMIN',
+        status: 'APPROVED',
+      },
+      create: {
+        email: 'rkule880@gmail.com',
+        name: 'Super Admin',
+        password: hashedAdminPassword,
+        role: 'SUPER_ADMIN',
+        status: 'APPROVED',
+      }
+    });
+    console.log('✅ Admin user UPSERTED: rkule880@gmail.com');
+  } catch (e) {
+    console.error('❌ Failed to upsert Admin user:', e);
+  }
 
   // 1. CATEGORIES
   let catResearch;
@@ -174,5 +182,5 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-    await pool.end();
+    process.exit(0);
   });

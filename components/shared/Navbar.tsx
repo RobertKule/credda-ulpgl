@@ -126,7 +126,7 @@ export default function Navbar() {
 
               {/* AUTH BUTTON */}
               <Link
-                href={session ? "/admin" : "/admin/login"}
+                href={session ? "/admin" : "/login"}
                 className="px-4 py-2.5 border border-[#C9A84C] text-[#C9A84C] text-[9px] font-outfit font-semibold uppercase tracking-widest hover:bg-[#C9A84C] hover:text-[#0C0C0A] transition-all rounded-sm"
               >
                 {session ? 'Dashboard' : t('login') || 'Se connecter'}
@@ -224,7 +224,7 @@ export default function Navbar() {
                </div>
                
                <Link
-                  href={session ? "/admin" : "/admin/login"}
+                  href={session ? "/admin" : "/login"}
                   onClick={() => setIsOpen(false)}
                   className="w-full py-4 border border-[#C9A84C] text-[#C9A84C] text-center text-[10px] font-outfit font-bold uppercase tracking-[0.2em]"
                 >
