@@ -4,171 +4,119 @@
 import { Link, usePathname } from "./../../navigation";
 import { useLocale, useTranslations } from "next-intl";
 import {
-  Globe, Menu, X, Search, Mail,
-  Landmark, ExternalLink, ChevronDown,
-  ArrowRight, ShieldCheck, Newspaper, Scale
+  Menu, X, ArrowRight, Search
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SearchModal from "./SearchModal";
-import { useSession, signOut } from "next-auth/react";
-import { 
-  User, 
-  Settings, 
-  LogOut, 
-  Shield, 
-  LayoutDashboard,
-  UserCircle
-} from "lucide-react";
-
-type LabelType = {
-  fr: string;
-  en: string;
-  sw: string;
-};
-
-type NavLink = {
-  href?: string;
-  label: LabelType;
-  dropdown?: { href: string; label: LabelType; icon: any }[];
-};
+import { useSession } from "next-auth/react";
 
 export default function Navbar() {
-  const locale = useLocale() as keyof LabelType;
+  const locale = useLocale();
   const pathname = usePathname();
-  const t = useTranslations('Navbar');
+  const t = useTranslations('Navigation');
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { data: session, status } = useSession();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const tickerItems = Object.values(t.raw('ticker') || {});
+
   const navLinks = [
-    { href: "/about", label: t('institution') },
-    {
-      label: t('expertise'),
-      dropdown: [
-        { href: "/research", label: t('research'), icon: Newspaper },
-        { href: "/clinical", label: t('clinical'), icon: Scale },
-        { href: "/publications", label: t('library'), icon: ShieldCheck },
-      ]
-    },
-    { href: "/team", label: t('researchers') },
-    { href: "/gallery", label: t('gallery') },
-    { href: "/contact", label: t('contact') },
+    { href: "/about", label: t('about') },
+    { href: "/research", label: t('research') },
+    { href: "/programmes", label: "Programmes" },
+    { href: "/publications", label: t('publications') },
+    { href: "/events", label: "Événements" },
   ];
 
   return (
     <>
-      <header className={`fixed top-0 w-full z-[99999] transition-all duration-700 ${isScrolled ? "py-3" : "py-6"}`}>
+      {/* NEWS TICKER */}
+      <div className="fixed top-0 w-full z-[100] bg-[#111110] border-b border-white/5 py-1.5 overflow-hidden">
+        <div className="flex whitespace-nowrap animate-ticker">
+          {[...tickerItems, ...tickerItems].map((item: any, i) => (
+            <span key={i} className="mx-12 text-[10px] font-outfit font-medium uppercase tracking-[0.2em] text-[#F5F2EC]/60 flex items-center gap-4">
+              <span className="w-1.5 h-1.5 bg-[#C9A84C] rounded-full" />
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <header 
+        className={`fixed top-8 w-full z-[99] transition-all duration-700 ${
+          isScrolled ? "py-2" : "py-6"
+        }`}
+      >
         {/* BACKGROUND */}
         <div 
           className={`absolute inset-0 transition-all duration-700 ${
-            isScrolled ? "bg-white/90 backdrop-blur-xl border-b border-slate-200/80 shadow-sm" : "bg-[#050a15]"
+            isScrolled 
+              ? "bg-[#0C0C0A]/90 backdrop-blur-xl border-b border-white/5 shadow-2xl" 
+              : "bg-transparent"
           }`} 
         />
 
         <div className="container mx-auto px-6 relative flex items-center justify-between">
           
           {/* LOGO AREA */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative">
-              <div className="w-10 h-10 bg-primary flex items-center justify-center text-white font-black text-xl">C</div>
-              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-accent" />
-            </div>
-            <div className="flex flex-col leading-tight">
-              <span className={`font-heading font-black tracking-tighter transition-all duration-500 ${isScrolled ? "text-lg text-primary" : "text-2xl text-white"}`}>
-                CREDDA<span className="text-accent">.</span>
+          <Link href="/" className="flex items-center gap-4 group">
+            <div className="relative flex flex-col items-start translate-y-1">
+              <span className="font-bricolage font-extrabold text-2xl lg:text-3xl tracking-tighter text-[#F5F2EC] leading-none">
+                CREDDA<span className="text-[#C9A84C]">·</span>CDE
               </span>
-              <span className={`text-[9px] uppercase tracking-[0.3em] font-black text-slate-400 transition-all duration-500 block overflow-hidden ${isScrolled ? "opacity-0 h-0" : "opacity-100 h-auto mt-1"}`}>
-                Research & Clinic
+              <span className="text-[8px] uppercase tracking-[0.4em] font-outfit font-medium text-[#F5F2EC]/40 mt-1 pl-0.5">
+                Research & Legal Clinic
               </span>
             </div>
           </Link>
 
           {/* DESKTOP NAV */}
-          <div className="hidden lg:flex items-center gap-2">
+          <nav className="hidden lg:flex items-center gap-2">
             {navLinks.map((link, idx) => (
-              <div 
+              <Link 
                 key={idx}
-                className="relative"
-                onMouseEnter={() => setActiveDropdown(link.label)}
-                onMouseLeave={() => setActiveDropdown(null)}
+                href={link.href}
+                className={`relative px-4 py-2 text-[10px] font-outfit font-medium uppercase tracking-[0.2em] transition-all group ${
+                  pathname === link.href ? "text-[#C9A84C]" : "text-[#F5F2EC]/70 hover:text-[#F5F2EC]"
+                }`}
               >
-                {link.dropdown ? (
-                  <>
-                    <button className={`px-5 py-2 text-[10px] font-heading font-black uppercase tracking-[0.2em] flex items-center gap-2 transition-all group ${isScrolled ? "text-anthracite/80 hover:text-primary" : "text-white/90 hover:text-white"}`}>
-                      {link.label}
-                      <ChevronDown size={12} className={`transition-transform duration-500 ${activeDropdown === link.label ? "rotate-180" : ""}`} />
-                    </button>
-                    
-                    <AnimatePresence>
-                      {activeDropdown === link.label && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 5 }}
-                          className="absolute top-full left-0 w-72 pt-4"
-                        >
-                          <div className="bg-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-slate-100 p-2 overflow-hidden">
-                            {link.dropdown.map((item, i) => (
-                              <Link 
-                                key={i}
-                                href={item.href}
-                                className="flex items-center gap-4 p-4 hover:bg-slate-50 transition-all group/item"
-                              >
-                                <div className="p-2 bg-slate-50 group-hover/item:bg-white group-hover/item:shadow-sm transition-all border border-transparent group-hover/item:border-slate-100">
-                                  <item.icon size={18} className="text-primary/60 group-hover/item:text-primary" />
-                                </div>
-                                <div className="flex flex-col">
-                                  <span className="text-xs font-black uppercase tracking-wider text-anthracite">{item.label}</span>
-                                  <span className="text-[9px] text-slate-400 font-medium">{t('consult')}</span>
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </>
-                ) : (
-                  <Link 
-                    href={link.href!}
-                    className={`px-5 py-2 text-[10px] font-heading font-black uppercase tracking-[0.2em] transition-all relative group ${isScrolled ? "text-anthracite/80 hover:text-primary" : "text-white/90 hover:text-white"}`}
-                  >
-                    {link.label}
-                    <span className="absolute bottom-0 left-5 right-5 h-[1.5px] bg-accent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                  </Link>
-                )}
-              </div>
+                {link.label}
+                <span className={`absolute bottom-0 left-4 right-4 h-[1px] bg-[#C9A84C] transition-transform duration-500 origin-left ${
+                  pathname === link.href ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                }`} />
+              </Link>
             ))}
 
             {/* ACTION AREA */}
-            <div className="ml-6 flex items-center gap-4 border-l border-slate-100 pl-8">
+            <div className="ml-6 flex items-center gap-6 border-l border-white/10 pl-8">
+              {/* SEARCH BUTTON */}
               <button 
                 onClick={() => setIsSearchOpen(true)}
-                className={`p-2 transition-colors ${isScrolled ? "text-anthracite/60 hover:text-primary" : "text-white/60 hover:text-white"}`}
-                title={t('search')}
+                className="p-2 text-[#F5F2EC]/40 hover:text-[#C9A84C] transition-colors"
+                title="Rechercher"
               >
                 <Search size={18} />
               </button>
 
               {/* LOCALE SWITCHER */}
-              <div className="flex gap-1.5">
+              <div className="flex items-center gap-1.5 bg-white/5 p-1 rounded-sm border border-white/5">
                 {['fr', 'en', 'sw'].map((l) => (
                   <Link
                     key={l}
                     href={pathname}
                     locale={l}
-                    className={`text-[9px] font-black w-7 h-7 flex items-center justify-center transition-all ${
-                      locale === l ? "bg-primary text-white" : "text-slate-400 hover:text-primary"
+                    className={`text-[9px] font-outfit font-bold w-7 h-7 flex items-center justify-center transition-all ${
+                      locale === l 
+                        ? "bg-[#C9A84C] text-[#0C0C0A]" 
+                        : "text-[#F5F2EC]/40 hover:text-[#F5F2EC]/70"
                     }`}
                   >
                     {l.toUpperCase()}
@@ -176,193 +124,126 @@ export default function Navbar() {
                 ))}
               </div>
 
-              {/* AUTH AREA */}
-              <div className="flex items-center gap-4 border-l border-slate-100 pl-8">
-                {status === "authenticated" ? (
-                  <div className="relative">
-                    <button
-                      onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                      className="flex items-center gap-2 group p-1.5 hover:bg-slate-50 transition-all rounded-lg"
-                    >
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20 overflow-hidden">
-                        {session.user?.image ? (
-                          <img src={session.user.image} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                          <User size={16} />
-                        )}
-                      </div>
-                      <ChevronDown size={12} className={`text-slate-400 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
-                    </button>
+              {/* AUTH BUTTON */}
+              <Link
+                href={session ? "/admin" : "/admin/login"}
+                className="px-4 py-2.5 border border-[#C9A84C] text-[#C9A84C] text-[9px] font-outfit font-semibold uppercase tracking-widest hover:bg-[#C9A84C] hover:text-[#0C0C0A] transition-all rounded-sm"
+              >
+                {session ? 'Dashboard' : t('login') || 'Se connecter'}
+              </Link>
 
-                    <AnimatePresence>
-                      {isUserMenuOpen && (
-                        <>
-                          <div 
-                            className="fixed inset-0 z-10" 
-                            onClick={() => setIsUserMenuOpen(false)} 
-                          />
-                          <motion.div
-                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                            className="absolute right-0 mt-3 w-56 bg-white border border-slate-100 shadow-xl z-20 overflow-hidden"
-                          >
-                            <div className="p-4 border-b border-slate-50 bg-slate-50/50">
-                              <p className="text-[10px] font-black uppercase tracking-widest text-primary mb-0.5">
-                                {session?.user?.role || 'USER'}
-                              </p>
-                              <p className="text-xs font-bold text-slate-800 truncate">
-                                {session?.user?.name || session?.user?.email || 'Utilisateur'}
-                              </p>
-                            </div>
-                            <div className="p-1">
-                              {(session.user?.role === 'ADMIN' || session.user?.role === 'SUPER_ADMIN' || session.user?.role === 'EDITOR') && (
-                                <Link
-                                  href="/admin"
-                                  onClick={() => setIsUserMenuOpen(false)}
-                                  className="flex items-center gap-3 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-primary transition-all"
-                                >
-                                  <LayoutDashboard size={14} />
-                                  Dashboard Admin
-                                </Link>
-                              )}
-                              <Link
-                                href="/profile"
-                                onClick={() => setIsUserMenuOpen(false)}
-                                className="flex items-center gap-3 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-primary transition-all"
-                              >
-                                <UserCircle size={14} />
-                                Mon Profil
-                              </Link>
-                              <Link
-                                href="/security"
-                                onClick={() => setIsUserMenuOpen(false)}
-                                className="flex items-center gap-3 px-3 py-2 text-xs font-bold text-slate-600 hover:bg-slate-50 hover:text-primary transition-all"
-                              >
-                                <Shield size={14} />
-                                Sécurité
-                              </Link>
-                              <button
-                                onClick={() => signOut()}
-                                className="w-full flex items-center gap-3 px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 transition-all border-t border-slate-50 mt-1"
-                              >
-                                <LogOut size={14} />
-                                Déconnexion
-                              </button>
-                            </div>
-                          </motion.div>
-                        </>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-3">
-                    <Link
-                      href="/login"
-                      className={`text-[10px] font-black uppercase tracking-[0.2em] transition-all px-4 py-2 hover:bg-primary/5 rounded-lg ${
-                        isScrolled ? "text-anthracite/80 hover:text-primary" : "text-white/80 hover:text-white"
-                      }`}
-                    >
-                      Connexion
-                    </Link>
-                    <Link 
-                      href="/register" 
-                      className={`px-6 py-2.5 text-[10px] font-black uppercase tracking-[0.2em] transition-all shadow-lg ${
-                        isScrolled ? "bg-primary text-white hover:bg-black shadow-primary/10" : "bg-white text-primary hover:bg-accent hover:text-primary shadow-white/10"
-                      }`}
-                    >
-                      S'inscrire
-                    </Link>
-                  </div>
-                )}
-              </div>
+              {/* CONTACT BUTTON */}
+              <Link
+                href="/contact"
+                className="px-6 py-2.5 bg-[#C9A84C] text-[#0C0C0A] text-[10px] font-outfit font-bold uppercase tracking-widest hover:bg-[#E8C97A] transition-all flex items-center gap-2 ring-1 ring-[#C9A84C]/20"
+              >
+                {t('contact')}
+                <ArrowRight size={12} />
+              </Link>
             </div>
-          </div>
+          </nav>
 
-          {/* MOBILE TOGGLE */}
-          <button 
-            className="lg:hidden p-2 text-primary border border-slate-100"
-            onClick={() => setIsOpen(true)}
-          >
-            <Menu size={24} />
-          </button>
+          {/* MOBILE TOGGLE AREA */}
+          <div className="flex items-center gap-4 lg:hidden">
+            <button 
+              onClick={() => setIsSearchOpen(true)}
+              className="p-2 text-[#F5F2EC]/60 hover:text-[#C9A84C] transition-colors"
+            >
+              <Search size={22} />
+            </button>
+            <button 
+              className="p-2 text-[#F5F2EC]/80 hover:text-[#C9A84C] transition-colors"
+              onClick={() => setIsOpen(true)}
+            >
+              <Menu size={24} />
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* MOBILE MENU FULLSCREEN */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[200] bg-white flex flex-col"
+            initial={{ opacity: 0, x: "100%" }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: "100%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed inset-0 z-[200] bg-[#0C0C0A] flex flex-col"
           >
-            <div className="p-8 flex justify-between items-center border-b border-slate-100">
-               <span className="font-heading font-black tracking-tighter text-2xl">
-                 CREDDA<span className="text-accent">.</span>
+            <div className="p-8 flex justify-between items-center border-b border-white/5">
+               <span className="font-bricolage font-extrabold tracking-tighter text-2xl text-[#F5F2EC]">
+                 CREDDA<span className="text-[#C9A84C]">·</span>CDE
                </span>
-               <button onClick={() => setIsOpen(false)} className="p-2 bg-slate-100 rounded-full">
+               <button 
+                onClick={() => setIsOpen(false)} 
+                className="p-3 bg-white/5 text-[#F5F2EC] rounded-full hover:bg-[#C9A84C] hover:text-[#0C0C0A] transition-all"
+              >
                  <X size={24} />
                </button>
             </div>
 
             <div className="flex-1 overflow-y-auto p-12 flex flex-col justify-center">
-              <nav className="space-y-8">
+              <nav className="space-y-6">
                 {navLinks.map((link, i) => (
                   <motion.div 
                     key={i}
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.1 }}
                   >
-                    {link.dropdown ? (
-                      <div className="space-y-4">
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">{link.label}</span>
-                        <div className="flex flex-col gap-4 pl-4 border-l-2 border-slate-100">
-                          {link.dropdown.map((item, j) => (
-                            <Link 
-                              key={j} 
-                              href={item.href} 
-                              onClick={() => setIsOpen(false)}
-                              className="text-4xl font-serif font-black hover:text-primary transition-colors"
-                            >
-                              {item.label}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <Link 
-                        href={link.href!} 
-                        onClick={() => setIsOpen(false)}
-                        className="text-6xl font-serif font-black hover:text-accent transition-all leading-[0.9]"
-                      >
-                        {link.label}
-                      </Link>
-                    )}
+                    <Link 
+                      href={link.href} 
+                      onClick={() => setIsOpen(false)}
+                      className="text-5xl font-fraunces font-extrabold text-[#F5F2EC] hover:text-[#C9A84C] transition-all leading-tight block"
+                    >
+                      {link.label}
+                    </Link>
                   </motion.div>
                 ))}
               </nav>
             </div>
             
-            {/* MOBILE FOOTER */}
-            <div className="p-12 border-t border-slate-100 bg-slate-50 flex flex-col gap-6">
-               <div className="flex gap-4">
+            <div className="p-12 border-t border-white/5 bg-[#111110] flex flex-col gap-6">
+               <div className="flex gap-2">
                  {['fr', 'en', 'sw'].map((l) => (
-                    <Link key={l} href={pathname} locale={l} onClick={() => setIsOpen(false)} className={`text-xs font-black p-2 border ${locale === l ? 'bg-primary text-white border-primary' : 'border-slate-200'}`}>
+                    <Link 
+                      key={l} 
+                      href={pathname} 
+                      locale={l} 
+                      onClick={() => setIsOpen(false)} 
+                      className={`flex-1 text-center py-3 text-xs font-outfit font-bold border ${
+                        locale === l 
+                          ? 'bg-[#C9A84C] text-[#0C0C0A] border-[#C9A84C]' 
+                          : 'text-[#F5F2EC]/40 border-white/5'
+                      }`}
+                    >
                       {l.toUpperCase()}
                     </Link>
                  ))}
                </div>
-               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
-                 Centre de Recherche sur la Démocratie <br/> et le Développement en Afrique
-               </p>
+               
+               <Link
+                  href={session ? "/admin" : "/admin/login"}
+                  onClick={() => setIsOpen(false)}
+                  className="w-full py-4 border border-[#C9A84C] text-[#C9A84C] text-center text-[10px] font-outfit font-bold uppercase tracking-[0.2em]"
+                >
+                  {session ? "Tableau de Bord" : "Accès Admin"}
+               </Link>
+
+               <Link
+                  href="/contact"
+                  onClick={() => setIsOpen(false)}
+                  className="w-full py-5 bg-[#C9A84C] text-[#0C0C0A] text-center text-xs font-outfit font-bold uppercase tracking-[0.2em]"
+                >
+                  {t('contact')}
+               </Link>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* SEARCH MODAL */}
       <SearchModal
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
