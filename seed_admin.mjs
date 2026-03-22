@@ -13,9 +13,9 @@ async function seedUser() {
     
     console.log("Executing Upsert Query over HTTP...");
     const res = await sql`
-      INSERT INTO "User" (id, email, password, role, status, "createdAt") 
-      VALUES ('admin-rkule-seed-777', 'rkule880@gmail.com', ${hash}, 'SUPER_ADMIN', 'APPROVED', NOW())
-      ON CONFLICT (email) DO UPDATE SET password = ${hash}, role = 'SUPER_ADMIN', status = 'APPROVED'
+      INSERT INTO "User" (id, email, password, role, "createdAt") 
+      VALUES ('admin-rkule-seed-777', 'rkule880@gmail.com', ${hash}, 'ADMIN', NOW())
+      ON CONFLICT (email) DO UPDATE SET password = ${hash}, role = 'ADMIN'
     `;
     
     console.log("✅ Admin user UPSERTED SUCCESSFULLY via HTTP API!");
