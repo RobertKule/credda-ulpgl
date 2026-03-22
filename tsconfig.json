@@ -38,6 +38,12 @@
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "jest.config.ts",
+    "jest.setup.ts",
+    "mini_seed.ts",
+    "prisma/seed.ts",
+    "playwright.config.ts",
+    "__tests__"
   ]
 }
