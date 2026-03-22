@@ -12,7 +12,7 @@ export default function ClinicalSection() {
   const t = useTranslations('HomePage');
   
   return (
-    <section className="py-40 bg-[#111110] text-[#F5F2EC] relative overflow-hidden">
+    <section className="py-40 bg-card text-foreground relative overflow-hidden">
       {/* DECORATIVE NUMBER */}
       <div className="absolute top-20 left-10 lg:left-20 pointer-events-none select-none opacity-5">
          <span className="text-[20rem] lg:text-[25rem] font-fraunces font-extrabold italic text-[#C9A84C] leading-none">03</span>
@@ -37,14 +37,14 @@ export default function ClinicalSection() {
             </GSAPReveal>
             
             <GSAPReveal direction="up" delay={0.2}>
-              <h2 className="text-6xl md:text-8xl font-fraunces font-extrabold mb-12 leading-[0.9] tracking-tighter">
+              <h2 className="text-6xl md:text-8xl font-fraunces font-extrabold text-foreground mb-12 leading-[0.9] tracking-tighter">
                 {t('clinical.title')} <br /> 
                 <span className="italic-accent block mt-4">{t('clinical.subtitle')}</span>
               </h2>
             </GSAPReveal>
 
             <GSAPReveal direction="up" delay={0.4}>
-              <p className="text-[#F5F2EC]/60 text-xl font-outfit font-light leading-relaxed mb-16 border-l border-white/10 pl-10 ml-1">
+              <p className="text-muted-foreground text-xl font-outfit font-light leading-relaxed mb-16 border-l border-border pl-10 ml-1">
                 {t('clinical.description')}
               </p>
             </GSAPReveal>
@@ -52,20 +52,20 @@ export default function ClinicalSection() {
             <div className="grid sm:grid-cols-2 gap-12 mb-16">
               <GSAPReveal direction="up" delay={0.6}>
                 <div className="space-y-6 group">
-                  <div className="w-14 h-14 bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] group-hover:text-[#0C0C0A] transition-all duration-700">
+                  <div className="w-14 h-14 bg-muted border border-border flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700">
                     <TreePine size={24} />
                   </div>
-                  <h4 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-[#F5F2EC]">{t('clinical.actions.land.title')}</h4>
-                  <p className="text-base text-[#F5F2EC]/40 leading-relaxed font-outfit italic border-t border-white/5 pt-6">{t('clinical.actions.land.desc')}</p>
+                  <h4 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.land.title')}</h4>
+                  <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border pt-6">{t('clinical.actions.land.desc')}</p>
                 </div>
               </GSAPReveal>
               <GSAPReveal direction="up" delay={0.8}>
                 <div className="space-y-6 group">
-                  <div className="w-14 h-14 bg-white/5 border border-white/5 flex items-center justify-center group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] group-hover:text-[#0C0C0A] transition-all duration-700">
+                  <div className="w-14 h-14 bg-muted border border-border flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700">
                     <Scale size={24} />
                   </div>
-                  <h4 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-[#F5F2EC]">{t('clinical.actions.mobile.title')}</h4>
-                  <p className="text-base text-[#F5F2EC]/40 leading-relaxed font-outfit italic border-t border-white/5 pt-6">{t('clinical.actions.mobile.desc')}</p>
+                  <h4 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.mobile.title')}</h4>
+                  <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border pt-6">{t('clinical.actions.mobile.desc')}</p>
                 </div>
               </GSAPReveal>
             </div>
@@ -73,7 +73,7 @@ export default function ClinicalSection() {
             <GSAPReveal direction="up" delay={1.0}>
               <Link 
                 href="/clinical" 
-                className="group relative inline-flex items-center gap-6 px-12 py-6 bg-[#C9A84C] text-[#0C0C0A] font-outfit font-bold uppercase tracking-widest text-xs overflow-hidden transition-all hover:scale-105"
+                className="group relative inline-flex items-center gap-6 px-12 py-6 bg-primary text-primary-foreground font-outfit font-bold uppercase tracking-widest text-xs overflow-hidden transition-all hover:scale-105"
               >
                 <span className="relative z-10 flex items-center gap-3">
                   {t('clinical.cta')} <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-500" />
@@ -82,8 +82,8 @@ export default function ClinicalSection() {
             </GSAPReveal>
           </motion.div>
 
-          <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-sm ring-1 ring-white/5">
-             <div className="absolute inset-0 bg-gradient-to-t from-[#0C0C0A] via-transparent to-transparent z-10 opacity-60" />
+          <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-sm ring-1 ring-border">
+             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 opacity-60" />
              <Image 
                 src="/images/clinical-hero.webp" 
                 alt="Clinical Field Work" 
@@ -92,12 +92,12 @@ export default function ClinicalSection() {
               />
             
             {/* Impact Badge */}
-            <GSAPReveal direction="left" delay={0.5} className="absolute bottom-12 left-0 bg-[#C9A84C] p-10 z-20 max-w-[280px] shadow-2xl">
+            <GSAPReveal direction="left" delay={0.5} className="absolute bottom-12 left-0 bg-primary p-10 z-20 max-w-[280px] shadow-2xl">
               <div className="flex items-center gap-4 mb-6">
-                <MapPin size={24} className="text-[#0C0C0A]" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0C0C0A]">{t('clinical.impact')}</span>
+                <MapPin size={24} className="text-primary-foreground" />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-foreground">{t('clinical.impact')}</span>
               </div>
-              <p className="text-3xl font-fraunces font-extrabold text-[#0C0C0A] leading-tight">{t('clinical.families', { count: 2400 })}</p>
+              <p className="text-3xl font-fraunces font-extrabold text-primary-foreground leading-tight">{t('clinical.families', { count: 2400 })}</p>
             </GSAPReveal>
           </div>
         </div>
