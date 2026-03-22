@@ -3,7 +3,7 @@ import "./globals.css";
 
 const fraunces = Fraunces({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['400', '600', '700'],
   style: ['normal', 'italic'],
   variable: '--font-fraunces',
   display: 'swap',
@@ -11,7 +11,7 @@ const fraunces = Fraunces({
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
+  weight: ['600', '700', '800'],
   variable: '--font-bricolage',
   display: 'swap',
 })
@@ -35,7 +35,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={`${fraunces.variable} ${bricolage.variable} ${outfit.variable} scroll-smooth`}>
-      <body className="font-outfit antialiased bg-[#0C0C0A] text-[#F5F2EC]">
+      <body className="font-outfit antialiased bg-background text-foreground">
         {children}
       </body>
     </html>

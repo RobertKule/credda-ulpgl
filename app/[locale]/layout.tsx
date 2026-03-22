@@ -18,7 +18,7 @@ export default async function RootLayout({
   return (
     <Providers locale={locale} messages={messages}>
       <Navbar />
-      <div className="m-0 p-0 pt-12">
+      <div className="m-0 p-0 pt-24 min-h-[calc(100vh-6rem)] bg-background text-foreground">
         {children}
       </div>
       <Footer />
