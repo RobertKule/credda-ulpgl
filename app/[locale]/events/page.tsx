@@ -1,7 +1,18 @@
 // app/[locale]/events/page.tsx
+import type { Metadata } from "next";
+import { localePageMetadata } from "@/lib/page-metadata";
 import { db } from "@/lib/db";
 import { Calendar, MapPin, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return localePageMetadata(locale, "events");
+}
 
 export default async function EventsPage({ 
   params 

@@ -1,5 +1,6 @@
 // app/[locale]/clinical/page.tsx
 import { db } from "@/lib/db";
+import { safeQuery } from "@/lib/db-safe";
 import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,28 +25,32 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'ClinicalPage' });
 
-  let articles: any[] = [];
-  let sessions: any[] = [];
-  try {
-    const [fetchedArticles, fetchedSessions] = await Promise.all([
-      db.article.findMany({
-        where: { domain: "CLINICAL", published: true },
-        include: {
-          translations: { where: { language: locale } },
-          category: { include: { translations: { where: { language: locale } } } },
-        },
-        orderBy: { createdAt: "desc" },
-      }),
-      db.clinicSession.findMany({
-        where: { date: { gte: new Date() } },
-        orderBy: { date: "asc" }
-      })
-    ]);
-    articles = fetchedArticles;
-    sessions = fetchedSessions;
-  } catch (error) {
-    console.error("Database connection failed in ClinicalPage", error);
-  }
+  const [fetchedArticles, fetchedSessions] = await Promise.all([
+    safeQuery(
+      () =>
+        db.article.findMany({
+          where: { domain: "CLINICAL", published: true },
+          include: {
+            translations: { where: { language: locale } },
+            category: { include: { translations: { where: { language: locale } } } }
+          },
+          orderBy: { createdAt: "desc" }
+        }),
+      [],
+      "clinical:articles"
+    ),
+    safeQuery(
+      () =>
+        db.clinicSession.findMany({
+          where: { date: { gte: new Date() } },
+          orderBy: { date: "asc" }
+        }),
+      [],
+      "clinical:sessions"
+    )
+  ]);
+  const articles = fetchedArticles;
+  const sessions = fetchedSessions;
 
   return (
     <main className="min-h-screen bg-soft-cream/30">

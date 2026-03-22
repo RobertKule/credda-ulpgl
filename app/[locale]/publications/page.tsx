@@ -1,8 +1,18 @@
 // app/[locale]/publications/page.tsx
+import type { Metadata } from "next";
+import { localePageMetadata } from "@/lib/page-metadata";
 import { db } from "@/lib/db";
-import { useTranslations, useLocale } from "next-intl";
 import { ArrowRight, FileText, Calendar, User } from "lucide-react";
 import Link from "next/link";
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return localePageMetadata(locale, "publications");
+}
 
 export default async function PublicationsPage({ 
   params 

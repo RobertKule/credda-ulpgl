@@ -1,6 +1,18 @@
 // app/[locale]/page.tsx
 import { db } from "@/lib/db";
+import { safeQuery } from "@/lib/db-safe";
+import { localePageMetadata } from "@/lib/page-metadata";
+import type { Metadata } from "next";
 import HomeClient from "./HomeClient";
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return localePageMetadata(locale, "home");
+}
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -17,95 +29,114 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     clinicalArticles: 0,
   };
 
-  try {
-    const [
-      dbFeaturedResearch,
-      dbLatestReports,
-      dbTeam,
-      dbGalleryImages,
-      totalArticles,
-      totalPubs,
-      totalMembers,
-      researchCount,
-      clinicalCount,
-      clinicalCaseCount
-    ] = await Promise.all([
-      // 1. Articles Featured
-      db.article.findMany({
-        where: { domain: "RESEARCH", published: true },
-        take: 4,
-        select: {
-          id: true,
-          slug: true,
-          mainImage: true,
-          createdAt: true,
-          translations: { where: { language: locale }, select: { title: true, excerpt: true } },
-          category: { select: { translations: { where: { language: locale }, select: { name: true } } } }
-        },
-        orderBy: { createdAt: "desc" }
-      }),
-      // 2. Dernières Publications PDF
-      db.publication.findMany({
-        take: 3,
-        select: {
-          id: true,
-          slug: true,
-          year: true,
-          domain: true,
-          pdfUrl: true,
-          createdAt: true,
-          translations: { where: { language: locale }, select: { title: true } }
-        },
-        orderBy: { year: "desc" }
-      }),
-      // 3. Équipe
-      db.member.findMany({
-        select: {
-          id: true,
-          image: true,
-          translations: { where: { language: locale }, select: { name: true, role: true } }
-        },
-        orderBy: { order: "asc" }
-      }),
-      // 4. Galerie Images
-      db.galleryImage.findMany({
-        where: { featured: true },
-        take: 8,
-        orderBy: { order: 'asc' },
-        select: { 
-          id: true, 
-          src: true, 
-          category: true, 
-          translations: {
-            where: { language: locale },
-            select: { title: true, description: true }
+  const [
+    dbFeaturedResearch,
+    dbLatestReports,
+    dbTeam,
+    dbGalleryImages,
+    totalArticles,
+    totalPubs,
+    totalMembers,
+    researchCount,
+    clinicalCount,
+    clinicalCaseCount
+  ] = await Promise.all([
+    safeQuery(
+      () =>
+        db.article.findMany({
+          where: { domain: "RESEARCH", published: true },
+          take: 4,
+          select: {
+            id: true,
+            slug: true,
+            mainImage: true,
+            createdAt: true,
+            translations: { where: { language: locale }, select: { title: true, excerpt: true } },
+            category: { select: { translations: { where: { language: locale }, select: { name: true } } } }
+          },
+          orderBy: { createdAt: "desc" }
+        }),
+      [],
+      "home:featuredResearch"
+    ),
+    safeQuery(
+      () =>
+        db.publication.findMany({
+          take: 3,
+          select: {
+            id: true,
+            slug: true,
+            year: true,
+            domain: true,
+            pdfUrl: true,
+            createdAt: true,
+            translations: { where: { language: locale }, select: { title: true } }
+          },
+          orderBy: { year: "desc" }
+        }),
+      [],
+      "home:latestReports"
+    ),
+    safeQuery(
+      () =>
+        db.member.findMany({
+          select: {
+            id: true,
+            image: true,
+            translations: { where: { language: locale }, select: { name: true, role: true } }
+          },
+          orderBy: { order: "asc" }
+        }),
+      [],
+      "home:team"
+    ),
+    safeQuery(
+      () =>
+        db.galleryImage.findMany({
+          where: { featured: true },
+          take: 8,
+          orderBy: { order: "asc" },
+          select: {
+            id: true,
+            src: true,
+            category: true,
+            translations: {
+              where: { language: locale },
+              select: { title: true, description: true }
+            }
           }
-        }
-      }),
-      // 5. Statistiques détaillées
-      db.article.count({ where: { published: true } }),
-      db.publication.count(),
-      db.member.count(),
-      db.article.count({ where: { domain: "RESEARCH", published: true } }),
-      db.article.count({ where: { domain: "CLINICAL", published: true } }),
-      (db as any).clinicalCase.count(),
-    ]);
+        }),
+      [],
+      "home:gallery"
+    ),
+    safeQuery(() => db.article.count({ where: { published: true } }), 0, "home:countArticles"),
+    safeQuery(() => db.publication.count(), 0, "home:countPubs"),
+    safeQuery(() => db.member.count(), 0, "home:countMembers"),
+    safeQuery(
+      () => db.article.count({ where: { domain: "RESEARCH", published: true } }),
+      0,
+      "home:countResearch"
+    ),
+    safeQuery(
+      () => db.article.count({ where: { domain: "CLINICAL", published: true } }),
+      0,
+      "home:countClinical"
+    ),
+    safeQuery(() => db.clinicalCase.count(), 0, "home:countClinicalCases")
+  ]);
 
-    featuredResearch = dbFeaturedResearch;
-    latestReports = dbLatestReports;
-    team = dbTeam;
-    galleryImages = dbGalleryImages;
-    stats = {
-      totalResources: totalArticles + totalPubs,
-      publications: totalPubs,
-      members: totalMembers,
-      researchArticles: researchCount,
-      clinicalArticles: clinicalCount,
-      clinicalCases: clinicalCaseCount,
-    } as any;
-  } catch (error) {
-    console.error("⚠️ Database connection failed in HomePage. Using fallbacks.", error);
-  }
+  featuredResearch = dbFeaturedResearch;
+  latestReports = dbLatestReports;
+  team = dbTeam;
+  galleryImages = dbGalleryImages;
+  stats = {
+    totalResources: totalArticles + totalPubs,
+    publications: totalPubs,
+    members: totalMembers,
+    researchArticles: researchCount,
+    clinicalArticles: clinicalCount,
+    clinicalCases: clinicalCaseCount
+  } as any;
 
   const sanitizedTeam = team.map(member => ({
     ...member,
