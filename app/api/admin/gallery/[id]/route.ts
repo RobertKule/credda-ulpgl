@@ -1,6 +1,7 @@
 // app/api/admin/gallery/[id]/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { auth } from "@/lib/auth";
 
 // ✅ FORCER nodejs runtime
 export const runtime = 'nodejs';
@@ -11,6 +12,11 @@ interface Props {
 
 export async function GET(request: Request, { params }: Props) {
   try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { id } = await params;
     
     const image = await db.galleryImage.findUnique({
@@ -36,6 +42,11 @@ export async function GET(request: Request, { params }: Props) {
 
 export async function PATCH(request: Request, { params }: Props) {
   try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { id } = await params;
     const body = await request.json();
 
@@ -56,6 +67,11 @@ export async function PATCH(request: Request, { params }: Props) {
 
 export async function DELETE(request: Request, { params }: Props) {
   try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { id } = await params;
 
     await db.galleryImage.delete({

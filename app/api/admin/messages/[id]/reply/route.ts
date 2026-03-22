@@ -1,7 +1,7 @@
 // app/api/admin/messages/[id]/reply/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
+import { auth } from "@/lib/auth";
 import { Resend } from 'resend';
 export const runtime = 'nodejs';
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -11,7 +11,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> } // ✅ CHANGER ICI: Promise
 ) {
   try {
-    const session = await getServerSession();
+    const session = await auth();
     if (!session) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
