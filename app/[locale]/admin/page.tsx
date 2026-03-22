@@ -7,6 +7,7 @@ import {
 import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
+import { safeQuery } from "@/lib/db-safe";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -30,49 +31,58 @@ export default async function AdminPage({ params }: Props) {
   let publishedArticles = 0;
   let latestMessages: any[] = [];
 
-  try {
-    const [
-      dbTotalArticles,
-      dbTotalPublications,
-      dbTotalMembers,
-      dbTotalUsers,
-      dbRecentArticles,
-      dbUnreadMessages,
-      dbPublishedArticles,
-      dbLatestMessages
-    ] = await Promise.all([
-      db.article.count(),
-      db.publication.count(),
-      db.member.count(),
-      db.user.count(),
-      db.article.findMany({
-        take: 4,
-        orderBy: { updatedAt: 'desc' },
-        include: { 
-          translations: { where: { language: locale } },
-          category: { include: { translations: { where: { language: locale } } } }
-        }
-      }),
-      db.contactMessage.count({ where: { status: "UNREAD" } }),
-      db.article.count({ where: { published: true } }),
-      db.contactMessage.findMany({
-        take: 3,
-        orderBy: { createdAt: 'desc' },
-      })
-    ]);
+  const [
+    dbTotalArticles,
+    dbTotalPublications,
+    dbTotalMembers,
+    dbTotalUsers,
+    dbRecentArticles,
+    dbUnreadMessages,
+    dbPublishedArticles,
+    dbLatestMessages
+  ] = await Promise.all([
+    safeQuery(() => db.article.count(), 0, "admin:countArticles"),
+    safeQuery(() => db.publication.count(), 0, "admin:countPublications"),
+    safeQuery(() => db.member.count(), 0, "admin:countMembers"),
+    safeQuery(() => db.user.count(), 0, "admin:countUsers"),
+    safeQuery(
+      () =>
+        db.article.findMany({
+          take: 4,
+          orderBy: { updatedAt: "desc" },
+          include: {
+            translations: { where: { language: locale } },
+            category: { include: { translations: { where: { language: locale } } } }
+          }
+        }),
+      [],
+      "admin:recentArticles"
+    ),
+    safeQuery(
+      () => db.contactMessage.count({ where: { status: "UNREAD" } }),
+      0,
+      "admin:unreadMessages"
+    ),
+    safeQuery(() => db.article.count({ where: { published: true } }), 0, "admin:publishedArticles"),
+    safeQuery(
+      () =>
+        db.contactMessage.findMany({
+          take: 3,
+          orderBy: { createdAt: "desc" }
+        }),
+      [],
+      "admin:latestMessages"
+    )
+  ]);
 
-    totalArticles = dbTotalArticles;
-    totalPublications = dbTotalPublications;
-    totalMembers = dbTotalMembers;
-    totalUsers = dbTotalUsers;
-    recentArticles = dbRecentArticles;
-    unreadMessages = dbUnreadMessages;
-    publishedArticles = dbPublishedArticles;
-    latestMessages = dbLatestMessages;
-
-  } catch (error) {
-    console.error("⚠️ Database connection failed in Admin Dashboard. Using fallbacks.", error);
-  }
+  totalArticles = dbTotalArticles;
+  totalPublications = dbTotalPublications;
+  totalMembers = dbTotalMembers;
+  totalUsers = dbTotalUsers;
+  recentArticles = dbRecentArticles;
+  unreadMessages = dbUnreadMessages;
+  publishedArticles = dbPublishedArticles;
+  latestMessages = dbLatestMessages;
 
   const stats = [
     { 
