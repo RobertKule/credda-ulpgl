@@ -4,12 +4,16 @@
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 
-export async function getFeaturedGalleryImages(limit = 20) {
+/** Titles live on GalleryImageTranslation only — never rely on a non-existent GalleryImage.title. */
+export async function getFeaturedGalleryImages(limit = 20, locale = "fr") {
   try {
     const images = await db.galleryImage.findMany({
       where: { featured: true },
-      orderBy: { order: 'asc' },
-      take: limit
+      orderBy: { order: "asc" },
+      take: limit,
+      include: {
+        translations: { where: { language: locale } }
+      }
     });
     return images;
   } catch (error) {
@@ -22,10 +26,13 @@ export async function getAllGalleryImages() {
   try {
     const images = await db.galleryImage.findMany({
       orderBy: [
-        { featured: 'desc' },
-        { order: 'asc' },
-        { createdAt: 'desc' }
-      ]
+        { featured: "desc" },
+        { order: "asc" },
+        { createdAt: "desc" }
+      ],
+      include: {
+        translations: true
+      }
     });
     return images;
   } catch (error) {
@@ -34,10 +41,13 @@ export async function getAllGalleryImages() {
   }
 }
 
-export async function getGalleryImageById(id: string) {
+export async function getGalleryImageById(id: string, locale?: string) {
   try {
     const image = await db.galleryImage.findUnique({
-      where: { id }
+      where: { id },
+      include: {
+        translations: locale ? { where: { language: locale } } : true
+      }
     });
     return image;
   } catch (error) {

@@ -2,6 +2,7 @@
 "use server";
 
 import { db } from "@/lib/db";
+import { safeQuery } from "@/lib/db-safe";
 import { revalidatePath } from "next/cache";
 import { sendContactNotification, sendReplyNotification } from "./mail-service";
 
@@ -140,11 +141,15 @@ export async function getAllMessages(status?: string, limit: number = 20, cursor
 export async function getMessageStats(): Promise<ContactMessageResult> {
   try {
     const [total, unread, read, archived, replied] = await Promise.all([
-      db.contactMessage.count(),
-      db.contactMessage.count({ where: { status: "UNREAD" } }),
-      db.contactMessage.count({ where: { status: "READ" } }),
-      db.contactMessage.count({ where: { status: "ARCHIVED" } }),
-      db.contactMessage.count({ where: { NOT: { repliedAt: null } } })
+      safeQuery(() => db.contactMessage.count(), 0, "contactStats:total"),
+      safeQuery(() => db.contactMessage.count({ where: { status: "UNREAD" } }), 0, "contactStats:unread"),
+      safeQuery(() => db.contactMessage.count({ where: { status: "READ" } }), 0, "contactStats:read"),
+      safeQuery(() => db.contactMessage.count({ where: { status: "ARCHIVED" } }), 0, "contactStats:archived"),
+      safeQuery(
+        () => db.contactMessage.count({ where: { NOT: { repliedAt: null } } }),
+        0,
+        "contactStats:replied"
+      )
     ]);
 
     return {
