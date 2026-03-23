@@ -865,7 +865,12 @@
         "title": "Your Rights",
         "content": "You have the right to access, rectify and delete your data upon request to privacy@credda-ulpgl.org."
       }
-    ]
+    ],
+    "footer": {
+      "title": "Need more information?",
+      "description": "For any questions regarding our privacy policy or to exercise your rights, please do not hesitate to contact us.",
+      "cta": "Write to the secretariat"
+    }
   },
   "LegalPage": {
     "header": {

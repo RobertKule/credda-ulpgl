@@ -864,7 +864,12 @@
         "title": "Vos Droits",
         "content": "Vous disposez d'un droit d'accès, de rectification et d'effacement de vos données sur simple demande à privacy@credda-ulpgl.org."
       }
-    ]
+    ],
+    "footer": {
+      "title": "Besoin de plus d'informations ?",
+      "description": "Pour toute question concernant notre politique de confidentialité ou pour exercer vos droits, n'hésitez pas à nous contacter.",
+      "cta": "Écrire au secrétariat"
+    }
   },
   "LegalPage": {
     "header": {

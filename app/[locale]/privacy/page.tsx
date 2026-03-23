@@ -70,15 +70,15 @@ export default function PrivacyPage() {
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto p-12 rounded-[2.5rem] bg-primary/5 border border-primary/10 text-center relative overflow-hidden">
             <MailCheck className="mx-auto mb-6 text-primary opacity-50" size={48} />
-            <h3 className="text-3xl font-serif text-slate-900 mb-4">Besoin de plus d'informations ?</h3>
+            <h3 className="text-3xl font-serif text-slate-900 mb-4">{t("footer.title")}</h3>
             <p className="text-slate-600 text-lg mb-8 max-w-2xl mx-auto">
-              Pour toute question concernant notre politique de confidentialité ou pour exercer vos droits, n'hésitez pas à nous contacter.
+              {t("footer.description")}
             </p>
             <a 
               href="mailto:contact@credda-ulpgl.org" 
               className="inline-flex items-center px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:bg-slate-800 transition-colors"
             >
-              Écrire au secrétariat
+              {t("footer.cta")}
             </a>
           </div>
         </div>
