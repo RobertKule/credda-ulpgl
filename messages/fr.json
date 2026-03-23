@@ -840,5 +840,55 @@
     "portal": "Portail",
     "consult": "Consulter le département",
     "search": "Rechercher"
+  },
+  "PrivacyPage": {
+    "header": {
+      "badge": "Protection des données",
+      "title": "Politique de <span>Confidentialité</span>",
+      "description": "Le CREDDA-ULPGL s'engage à protéger vos informations personnelles conformément aux standards éthiques et académiques."
+    },
+    "sections": [
+      {
+        "title": "Données Collectées",
+        "content": "Nous collectons les données fournies via nos formulaires (contact, inscription, suivi clinique) : nom, email, téléphone, et affiliation institutionnelle."
+      },
+      {
+        "title": "Finalités du Traitement",
+        "content": "Vos données sont utilisées pour le suivi des cas de la clinique juridique, la diffusion de nos publications et la gestion de notre réseau de chercheurs."
+      },
+      {
+        "title": "Sécurité & Conservation",
+        "content": "Les données sont cryptées et stockées sur des serveurs sécurisés. L'accès est strictement restreint au secrétariat scientifique."
+      },
+      {
+        "title": "Vos Droits",
+        "content": "Vous disposez d'un droit d'accès, de rectification et d'effacement de vos données sur simple demande à privacy@credda-ulpgl.org."
+      }
+    ]
+  },
+  "LegalPage": {
+    "header": {
+      "badge": "Informations Officielles",
+      "title": "Mentions <span>Légales</span>",
+      "description": "Informations juridiques relatives à l'institution et aux conditions d'utilisation du site."
+    },
+    "sections": [
+      {
+        "title": "Éditeur du Site",
+        "content": "Centre de Recherche sur la Démocratie et le Développement en Afrique (CREDDA-ULPGL), une institution académique de l'Université Libre des Pays des Grands Lacs (ULPGL-Goma)."
+      },
+      {
+        "title": "Direction",
+        "content": "Directeur de la Publication : Prof. Dr. Kennedy Kihangi Bindu, Directeur du CREDDA."
+      },
+      {
+        "title": "Siège Social",
+        "content": "Campus Salomon, Avenue de la Corniche, Q. Himbi, Goma, Nord-Kivu, République Démocratique du Congo."
+      },
+      {
+        "title": "Propriété Intellectuelle",
+        "content": "Tous les rapports, articles et contenus multimédias sont la propriété exclusive du CREDDA-ULPGL, sauf mention contraire. Toute reproduction est soumise à autorisation préalable."
+      }
+    ]
   }
 }

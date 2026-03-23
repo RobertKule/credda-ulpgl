@@ -841,5 +841,55 @@
     "portal": "Portal",
     "consult": "Consult Department",
     "search": "Search"
+  },
+  "PrivacyPage": {
+    "header": {
+      "badge": "Data Protection",
+      "title": "Privacy <span>Policy</span>",
+      "description": "CREDDA-ULPGL is committed to protecting your personal information in accordance with ethical and academic standards."
+    },
+    "sections": [
+      {
+        "title": "Data Collected",
+        "content": "We collect data provided via our forms (contact, registration, clinical tracking): name, email, phone, and institutional affiliation."
+      },
+      {
+        "title": "Processing Purposes",
+        "content": "Your data is used for tracking legal clinic cases, distributing our publications, and managing our researcher network."
+      },
+      {
+        "title": "Security & Retention",
+        "content": "Data is encrypted and stored on secure servers. Access is strictly restricted to the scientific secretariat."
+      },
+      {
+        "title": "Your Rights",
+        "content": "You have the right to access, rectify and delete your data upon request to privacy@credda-ulpgl.org."
+      }
+    ]
+  },
+  "LegalPage": {
+    "header": {
+      "badge": "Official Information",
+      "title": "Legal <span>Mentions</span>",
+      "description": "Legal information regarding the institution and site terms of use."
+    },
+    "sections": [
+      {
+        "title": "Site Publisher",
+        "content": "Center for Research on Democracy and Development in Africa (CREDDA-ULPGL), an academic institution of the Free University of the Great Lakes Countries (ULPGL-Goma)."
+      },
+      {
+        "title": "Management",
+        "content": "Publisher: Prof. Dr. Kennedy Kihangi Bindu, Director of CREDDA."
+      },
+      {
+        "title": "Headquarters",
+        "content": "Salomon Campus, Avenue de la Corniche, Q. Himbi, Goma, North Kivu, Democratic Republic of the Congo."
+      },
+      {
+        "title": "Intellectual Property",
+        "content": "All reports, articles and multimedia content are the exclusive property of CREDDA-ULPGL, unless otherwise stated. Any reproduction is subject to prior authorization."
+      }
+    ]
   }
 }
