@@ -3,6 +3,7 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { safeQuery } from "@/lib/db-safe";
 
 export interface ClinicalCaseResult {
   success: boolean;
@@ -55,50 +56,54 @@ export async function submitClinicalCase(formData: any): Promise<ClinicalCaseRes
 }
 
 export async function getCasesByPhone(phone: string): Promise<ClinicalCaseResult> {
-  try {
-    const cases = await db.clinicalCase.findMany({
-      where: {
-        beneficiary: {
-          phone: phone
-        }
-      },
-      orderBy: { createdAt: 'desc' }
-    });
-
-    return { success: true, data: cases };
-  } catch (error) {
-    console.error("❌ Erreur récupération cas par téléphone:", error);
-    return { success: false, error: "Erreur lors de la récupération des cas" };
-  }
+  return safeQuery<ClinicalCaseResult>(
+    async () => {
+      const cases = await db.clinicalCase.findMany({
+        where: {
+          beneficiary: {
+            phone: phone
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      });
+      return { success: true, data: cases };
+    },
+    { success: false, error: "Erreur lors de la récupération des cas" },
+    "services/clinical:getCasesByPhone"
+  );
 }
 
 export async function getAllClinicalCases(): Promise<ClinicalCaseResult> {
-  try {
-    const cases = await db.clinicalCase.findMany({
-      include: { beneficiary: true },
-      orderBy: { createdAt: 'desc' }
-    });
-    return { success: true, data: cases };
-  } catch (error) {
-    return { success: false, error: "Erreur de récupération globale" };
-  }
+  return safeQuery<ClinicalCaseResult>(
+    async () => {
+      const cases = await db.clinicalCase.findMany({
+        include: { beneficiary: true },
+        orderBy: { createdAt: 'desc' }
+      });
+      return { success: true, data: cases };
+    },
+    { success: false, error: "Erreur de récupération globale" },
+    "services/clinical:getAll"
+  );
 }
 
 export async function getClinicalCaseById(id: string): Promise<ClinicalCaseResult> {
-  try {
-    const caseItem = await db.clinicalCase.findUnique({
-      where: { id },
-      include: { 
-        beneficiary: true,
-        notes: {
-          orderBy: { createdAt: 'desc' }
+  return safeQuery<ClinicalCaseResult>(
+    async () => {
+      const caseItem = await db.clinicalCase.findUnique({
+        where: { id },
+        include: { 
+          beneficiary: true,
+          notes: {
+            orderBy: { createdAt: 'desc' }
+          }
         }
-      }
-    });
-    return { success: true, data: caseItem };
-  } catch (error) {
-    return { success: false, error: "Cas non trouvé" };
-  }
+      });
+      return { success: true, data: caseItem };
+    },
+    { success: false, error: "Cas non trouvé" },
+    "services/clinical:getCaseById"
+  );
 }
 
 export async function updateClinicalCaseStatus(id: string, status: string): Promise<ClinicalCaseResult> {

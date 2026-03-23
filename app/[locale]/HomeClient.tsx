@@ -23,6 +23,7 @@ export default function HomeClient({
   team = [],
   galleryImages = [],
   testimonials = [],
+  partners = [],
   dbStats = { totalResources: 0, publications: 0, clinicalArticles: 0, researchArticles: 0, clinicalCases: 0 }
 }: any) {
   const t = useTranslations('HomePage');
@@ -36,7 +37,7 @@ export default function HomeClient({
       <Stats 
         years={new Date().getFullYear() - 2008} 
         totalResources={dbStats?.totalResources || 150} 
-        partners={(t.raw('partners.items') || []).length} 
+        partners={(partners ?? []).length} 
         clinicalCases={dbStats?.clinicalCases || 120}
       />
 
@@ -135,7 +136,7 @@ export default function HomeClient({
             </div>
             <div className="lg:w-3/4 overflow-hidden relative group">
               <div className="flex gap-20 animate-infinite-scroll group-hover:[animation-play-state:paused] grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-1000">
-                {[...(t.raw('partners.items') || []), ...(t.raw('partners.items') || [])].map((partner: string, i: number) => (
+                {[...(partners ?? []), ...(partners ?? [])].map((partner: string, i: number) => (
                   <div key={i} className="flex-shrink-0 w-36 h-20 relative">
                     <Image src={`/images/partenaires/${partner}`} alt="Partner" fill className="object-contain" />
                   </div>

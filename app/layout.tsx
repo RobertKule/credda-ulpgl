@@ -7,13 +7,15 @@ const fraunces = Fraunces({
   style: ['normal', 'italic'],
   variable: '--font-fraunces',
   display: 'swap',
+  preload: true,
 })
 
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
-  weight: ['600', '700', '800'],
+  weight: ['400', '500', '600', '700', '800'],
   variable: '--font-bricolage',
   display: 'swap',
+  preload: true,
 })
 
 const outfit = Outfit({
@@ -21,6 +23,7 @@ const outfit = Outfit({
   weight: ['300', '400', '500', '600'],
   variable: '--font-outfit',
   display: 'swap',
+  preload: true,
 })
 
 export const metadata = {
