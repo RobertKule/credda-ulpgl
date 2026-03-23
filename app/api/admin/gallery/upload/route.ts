@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import { z } from "zod";
+import { auth } from "@/lib/auth";
 
 export const runtime = 'nodejs';
 
@@ -30,6 +31,11 @@ const imageSchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const formData = await request.formData();
     const file = formData.get("file") as File;
 

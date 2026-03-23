@@ -24,10 +24,13 @@ describe('Gallery Actions Service', () => {
       
       const result = await getFeaturedGalleryImages(10);
       
-      expect(db.galleryImage.findMany).toHaveBeenCalledWith(expect.objectContaining({
-        where: { featured: true },
-        take: 10
-      }));
+      expect(db.galleryImage.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { featured: true },
+          take: 10,
+          include: { translations: { where: { language: "fr" } } }
+        })
+      );
       expect(result).toEqual(mockImages);
     });
 
@@ -42,9 +45,12 @@ describe('Gallery Actions Service', () => {
     it('should fetch all images with specific ordering', async () => {
       (db.galleryImage.findMany as jest.Mock).mockResolvedValue([]);
       await getAllGalleryImages();
-      expect(db.galleryImage.findMany).toHaveBeenCalledWith(expect.objectContaining({
-        orderBy: expect.any(Array)
-      }));
+      expect(db.galleryImage.findMany).toHaveBeenCalledWith(
+        expect.objectContaining({
+          orderBy: expect.any(Array),
+          include: { translations: true }
+        })
+      );
     });
   });
 
@@ -53,7 +59,12 @@ describe('Gallery Actions Service', () => {
       const mockImg = { id: 'im1' };
       (db.galleryImage.findUnique as jest.Mock).mockResolvedValue(mockImg);
       const result = await getGalleryImageById('im1');
-      expect(db.galleryImage.findUnique).toHaveBeenCalledWith({ where: { id: 'im1' } });
+      expect(db.galleryImage.findUnique).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: "im1" },
+          include: { translations: true }
+        })
+      );
       expect(result).toEqual(mockImg);
     });
   });

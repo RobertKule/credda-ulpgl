@@ -10,7 +10,7 @@ export default function Hero() {
   const t = useTranslations('HomePage');
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden bg-[#0C0C0A] flex items-center">
+    <section className="relative min-h-screen w-full overflow-hidden bg-background flex items-center">
       {/* BACKGROUND VIDEO */}
       <video
         autoPlay
@@ -22,8 +22,8 @@ export default function Hero() {
         <source src="/video/hero-bg.mp4" type="video/mp4" />
       </video>
       
-      {/* DARK OVERLAY */}
-      <div className="absolute inset-0 bg-black/55 z-[1]" />
+      {/* Overlay: darkens video in dark mode, lifts to light paper in light mode */}
+      <div className="absolute inset-0 bg-black/55 z-[1] light:bg-white/60" />
 
       {/* GRID BACKGROUND */}
       <div className="absolute inset-0 bg-grid-move opacity-20 pointer-events-none z-[2]" />
@@ -48,26 +48,28 @@ export default function Hero() {
             </div>
 
             {/* MAIN TITLE */}
-            <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-fraunces font-extrabold text-[#F5F2EC] leading-[0.85] tracking-tighter mb-12">
+            <h1 className="text-5xl md:text-7xl lg:text-[8rem] font-fraunces font-extrabold text-foreground leading-[0.9] tracking-tighter mb-12">
               <span className="block italic">
-                {t('hero.title_part1') || "Justice"}
+                {t('hero.title_part1')}
               </span>
-              <span className="block text-[#C9A84C] relative">
-                {t('hero.title_part2') || "& Research"}
-                <span className="absolute -bottom-4 left-0 w-24 h-1 bg-[#C9A84C]/20" />
-              </span>
+              {t('hero.title_part2')?.trim() ? (
+                <span className="block text-[#C9A84C] relative mt-2">
+                  {t('hero.title_part2')}
+                  <span className="absolute -bottom-4 left-0 w-24 h-1 bg-[#C9A84C]/20" />
+                </span>
+              ) : null}
             </h1>
 
             {/* DESCRIPTION */}
-            <p className="text-lg md:text-xl text-[#F5F2EC]/60 font-outfit font-light max-w-2xl leading-relaxed mb-16 border-l border-white/10 pl-10 ml-1">
-              {t('hero.slides.0.description') || "Leading legal research and clinical excellence in the Great Lakes region, dedicated to democracy and sustainable development."}
+            <p className="text-lg md:text-xl text-muted-foreground font-outfit font-light max-w-2xl leading-relaxed mb-16 border-l border-border pl-10 ml-1">
+              {t('hero.subtitle')}
             </p>
 
             {/* ACTIONS */}
             <div className="flex flex-wrap gap-8 items-center">
               <Link 
                 href="/publications" 
-                className="group relative px-12 py-6 bg-[#C9A84C] text-[#0C0C0A] font-outfit font-bold uppercase tracking-widest text-xs overflow-hidden transition-all hover:scale-105 active:scale-95"
+                className="group relative px-12 py-6 bg-primary text-primary-foreground font-outfit font-bold uppercase tracking-widest text-xs overflow-hidden transition-all hover:scale-105 active:scale-95"
               >
                 <span className="relative z-10 flex items-center gap-3">
                   {t('hero.cta_publications') || "Our Publications"} 
@@ -77,9 +79,9 @@ export default function Hero() {
               
               <Link 
                 href="/about" 
-                className="group flex items-center gap-5 text-[#F5F2EC] hover:text-[#C9A84C] transition-all duration-500"
+                className="group flex items-center gap-5 text-foreground hover:text-primary transition-all duration-500"
               >
-                <div className="w-16 h-16 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#C9A84C] group-hover:bg-[#C9A84C]/10 transition-all duration-700 relative">
+                <div className="w-16 h-16 rounded-full border border-border flex items-center justify-center group-hover:border-primary group-hover:bg-primary/10 transition-all duration-700 relative">
                    <div className="absolute inset-0 rounded-full border border-[#C9A84C]/0 group-hover:border-[#C9A84C]/40 group-hover:scale-125 transition-all duration-700" />
                   <Play size={18} fill="currentColor" className="ml-1" />
                 </div>
@@ -93,7 +95,7 @@ export default function Hero() {
       {/* DECORATIVE ELEMENTS */}
       <div className="absolute bottom-16 right-16 z-20 hidden lg:block">
         <div className="flex flex-col items-end gap-2 text-right">
-          <p className="text-[10px] uppercase tracking-[0.3em] font-outfit font-medium text-[#F5F2EC]/20">Location</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] font-outfit font-medium text-foreground/20">Location</p>
           <p className="text-xs font-fraunces italic text-[#C9A84C]">ULPGL University, Goma, DRC</p>
         </div>
       </div>

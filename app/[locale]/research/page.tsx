@@ -1,5 +1,8 @@
 // app/[locale]/research/page.tsx
+import type { Metadata } from "next";
+import { localePageMetadata } from "@/lib/page-metadata";
 import { db } from "@/lib/db";
+import { safeQuery } from "@/lib/db-safe";
 import { getTranslations } from "next-intl/server";
 import { 
   SearchX, 
@@ -14,6 +17,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Suspense } from "react";
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return localePageMetadata(locale, "research");
+}
 
 export default async function ResearchPage({ 
   params 
@@ -32,19 +44,19 @@ export default async function ResearchPage({
 async function ResearchContent({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'ResearchPage' });
   
-  // Use Promise.allSettled to ensure that one failure doesn't block the whole page
-  const [articlesResult] = await Promise.allSettled([
-    db.article.findMany({
-      where: { domain: "RESEARCH", published: true },
-      include: { 
-        translations: { where: { language: locale } } 
-      },
-      orderBy: { createdAt: "desc" },
-      take: 20
-    })
-  ]);
-
-  const articles = articlesResult.status === 'fulfilled' ? articlesResult.value : [];
+  const articles = await safeQuery(
+    () =>
+      db.article.findMany({
+        where: { domain: "RESEARCH", published: true },
+        include: {
+          translations: { where: { language: locale } }
+        },
+        orderBy: { createdAt: "desc" },
+        take: 20
+      }),
+    [],
+    "research:list"
+  );
 
   return (
     <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">

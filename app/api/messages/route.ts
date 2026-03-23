@@ -1,11 +1,12 @@
 // app/api/admin/messages/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
+import { safeQuery } from "@/lib/db-safe";
+import { auth } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await auth();
     if (!session) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
@@ -23,19 +24,25 @@ export async function GET(req: NextRequest) {
     }
 
     // Compter les messages non lus (pour le badge)
-    const unreadCount = await db.contactMessage.count({
-      where: { status: "UNREAD" }
-    });
+    const unreadCount = await safeQuery(
+      () => db.contactMessage.count({ where: { status: "UNREAD" } }),
+      0,
+      "api/messages:unreadCount"
+    );
 
-    // Récupérer les messages
     const [messages, total] = await Promise.all([
-      db.contactMessage.findMany({
-        where,
-        orderBy: { createdAt: "desc" },
-        skip,
-        take: limit
-      }),
-      db.contactMessage.count({ where })
+      safeQuery(
+        () =>
+          db.contactMessage.findMany({
+            where,
+            orderBy: { createdAt: "desc" },
+            skip,
+            take: limit
+          }),
+        [],
+        "api/messages:list"
+      ),
+      safeQuery(() => db.contactMessage.count({ where }), 0, "api/messages:total")
     ]);
 
     return NextResponse.json({

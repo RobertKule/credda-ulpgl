@@ -2,6 +2,7 @@
 @import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant light (.light &);
 
 @theme inline {
   --color-background: var(--background);
@@ -45,6 +46,19 @@
 
 :root {
   --radius: 0rem;
+  /* Theme tokens (dark default) */
+  --bg: #0d0d0b;
+  --bg2: #121210;
+  --bg3: #181816;
+  --color-text: #f5f2ec;
+  --color-muted: rgba(245, 242, 236, 0.58);
+  --color-card: #121210;
+  --gold: #c9a84c;
+  --gold2: #e8c97a;
+  --gold-dim: rgba(201, 168, 76, 0.1);
+  --border: rgba(245, 242, 236, 0.07);
+  --border-gold: rgba(201, 168, 76, 0.2);
+
   --background: #0C0C0A;
   --foreground: #F5F2EC;
   --card: #111110;
@@ -65,6 +79,30 @@
   --ring: #C9A84C;
 }
 
+html.light {
+  --bg: #f8f6f1;
+  --bg2: #ffffff;
+  --bg3: #f0ede6;
+  --color-text: #1a1814;
+  --color-muted: rgba(26, 24, 20, 0.62);
+  --color-card: #ffffff;
+  --gold: #a8862e;
+  --gold2: #c9a84c;
+  --gold-dim: rgba(168, 134, 46, 0.1);
+  --border: rgba(26, 24, 20, 0.08);
+  --border-gold: rgba(168, 134, 46, 0.25);
+
+  --background: #f8f6f1;
+  --foreground: #1a1814;
+  --card: #ffffff;
+  --card-foreground: #1a1814;
+  --popover: #ffffff;
+  --popover-foreground: #1a1814;
+  --muted: #f0ede6;
+  --muted-foreground: rgba(26, 24, 20, 0.62);
+  --border: rgba(26, 24, 20, 0.08);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -74,7 +112,8 @@
   }
   html {
     scroll-behavior: smooth;
-    background-color: #0C0C0A;
+    background-color: var(--background);
+    color: var(--foreground);
   }
   h1 {
     @apply font-fraunces font-[800] tracking-[-0.02em];

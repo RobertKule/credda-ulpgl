@@ -1,5 +1,6 @@
 // lib/auth.ts
 import { NextAuthOptions } from "next-auth";
+import { getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db as prisma } from "@/lib/db";
 import bcrypt from "bcryptjs";
@@ -35,8 +36,16 @@ export const authOptions: NextAuthOptions = {
         }
 
         // 2. Recherche en base de données
+        // 2. Recherche en base de données avec select explicite pour éviter les colonnes non-migrées (ex: status)
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email }
+          where: { email: credentials.email },
+          select: {
+            id: true,
+            email: true,
+            password: true,
+            role: true,
+            name: true,
+          }
         });
 
         if (!user) {
@@ -49,16 +58,11 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Email ou mot de passe incorrect");
         }
 
-        if (user.status !== "APPROVED") {
-          throw new Error("Votre compte est en attente d'approbation ou a été désactivé.");
-        }
-
         return {
           id: user.id,
           email: user.email,
           name: user.name,
           role: user.role,
-          image: user.image,
         };
       }
     })
@@ -90,3 +94,8 @@ export const authOptions: NextAuthOptions = {
     error: "/login"
   }
 };
+
+/** Server-side session (next-auth v4); use in API routes and RSC. */
+export async function auth() {
+  return getServerSession(authOptions);
+}

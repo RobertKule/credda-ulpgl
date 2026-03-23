@@ -1,4 +1,6 @@
 // app/[locale]/team/page.tsx
+import type { Metadata } from "next";
+import { localePageMetadata } from "@/lib/page-metadata";
 import { db } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -10,7 +12,12 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 
 interface Props {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  return localePageMetadata(locale, "team");
 }
 
 export default async function TeamPage({ params }: Props) {

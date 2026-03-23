@@ -54,22 +54,22 @@ export default function Stats({ years, totalResources, partners, clinicalCases =
   ];
 
   return (
-    <section className="py-32 bg-[#0C0C0A] border-y border-white/5 overflow-hidden relative">
+    <section className="py-32 bg-background border-y border-border overflow-hidden relative">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-0">
           {stats.map((stat, idx) => (
             <GSAPReveal key={idx} direction="up" delay={idx * 0.1}>
-              <div className="relative flex flex-col items-center text-center lg:border-r last:border-0 border-white/5 px-10 group">
-                <div className="mb-8 p-6 bg-white/5 border border-white/5 group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] transition-all duration-700 relative overflow-hidden">
-                  <stat.icon size={26} className="text-[#C9A84C] group-hover:text-[#0C0C0A] transition-colors relative z-10" />
+              <div className="relative flex flex-col items-center text-center lg:border-r last:border-0 border-border px-10 group">
+                <div className="mb-8 p-6 bg-muted border border-border group-hover:bg-primary group-hover:border-primary transition-all duration-700 relative overflow-hidden">
+                  <stat.icon size={26} className="text-primary group-hover:text-primary-foreground transition-colors relative z-10" />
                   <div className="absolute inset-0 bg-[#C9A84C]/20 scale-0 group-hover:scale-150 transition-transform duration-700 -z-0 blur-xl" />
                 </div>
                 
-                <div className="text-6xl md:text-7xl font-serif font-black text-[#F5F2EC] mb-6 tracking-tighter tabular-nums leading-none">
+                <div className="text-6xl md:text-7xl font-serif font-black text-foreground mb-6 tracking-tighter tabular-nums leading-none">
                   <Counter value={stat.value} suffix={stat.suffix} />
                 </div>
                 
-                <p className="text-[10px] uppercase tracking-[0.5em] font-medium text-[#F5F2EC]/40 group-hover:text-[#C9A84C] transition-colors duration-500 max-w-[150px] leading-relaxed">
+                <p className="text-[10px] uppercase tracking-[0.5em] font-medium text-muted-foreground group-hover:text-primary transition-colors duration-500 max-w-[150px] leading-relaxed">
                   {stat.label}
                 </p>
                 

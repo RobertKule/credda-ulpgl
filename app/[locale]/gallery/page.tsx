@@ -1,6 +1,17 @@
 // app/[locale]/gallery/page.tsx
+import type { Metadata } from "next";
+import { localePageMetadata } from "@/lib/page-metadata";
 import { db } from "@/lib/db";
 import { Camera, Image as ImageIcon, Filter, Maximize2 } from "lucide-react";
+
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  return localePageMetadata(locale, "gallery");
+}
 
 export default async function GalleryPage({ 
   params 

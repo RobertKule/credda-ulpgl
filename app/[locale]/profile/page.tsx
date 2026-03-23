@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter, useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { 
@@ -22,7 +23,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function ProfilePage() {
-  const { data: session, update } = useSession();
+  const { data: session, update, status } = useSession();
+  const router = useRouter();
+  const { locale } = useParams<{ locale: string }>();
   const t = useTranslations('ProfilePage');
   
   const [formData, setFormData] = useState({
@@ -35,6 +38,12 @@ export default function ProfilePage() {
   
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push(`/${locale}/login`);
+    }
+  }, [status, router, locale]);
 
   useEffect(() => {
     if (session?.user) {
@@ -90,7 +99,7 @@ export default function ProfilePage() {
     }
   };
 
-  if (!session) {
+  if (status === "loading" || !session) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <Loader2 className="animate-spin text-primary" size={40} />

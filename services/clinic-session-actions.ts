@@ -3,6 +3,7 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { safeQuery } from "@/lib/db-safe";
 
 export interface ClinicSessionResult {
   success: boolean;
@@ -11,30 +12,33 @@ export interface ClinicSessionResult {
 }
 
 export async function getAllClinicSessions(): Promise<ClinicSessionResult> {
-  try {
-    const sessions = await db.clinicSession.findMany({
-      orderBy: { date: 'desc' }
-    });
-    return { success: true, data: sessions };
-  } catch (error) {
-    console.error("❌ Erreur récupération sessions:", error);
-    return { success: false, error: "Erreur lors de la récupération des sessions" };
-  }
+  return safeQuery<ClinicSessionResult>(
+    async () => {
+      const sessions = await db.clinicSession.findMany({
+        orderBy: { date: 'desc' }
+      });
+      return { success: true, data: sessions };
+    },
+    { success: false, error: "Erreur lors de la récupération des sessions" },
+    "services/clinic-session:getAll"
+  );
 }
 
 export async function getUpcomingMobileClinics(): Promise<ClinicSessionResult> {
-  try {
-    const sessions = await db.clinicSession.findMany({
-      where: {
-        isMobile: true,
-        date: { gte: new Date() }
-      },
-      orderBy: { date: 'asc' }
-    });
-    return { success: true, data: sessions };
-  } catch (error) {
-    return { success: false, error: "Erreur lors de la récupération des cliniques mobiles" };
-  }
+  return safeQuery<ClinicSessionResult>(
+    async () => {
+      const sessions = await db.clinicSession.findMany({
+        where: {
+          isMobile: true,
+          date: { gte: new Date() }
+        },
+        orderBy: { date: 'asc' }
+      });
+      return { success: true, data: sessions };
+    },
+    { success: false, error: "Erreur lors de la récupération des cliniques mobiles" },
+    "services/clinic-session:getUpcoming"
+  );
 }
 
 export async function createClinicSession(data: any): Promise<ClinicSessionResult> {

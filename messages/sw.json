@@ -4,8 +4,12 @@
     "clinical": "Kliniki ya Sheria",
     "publications": "Machapisho",
     "about": "Taasisi",
+    "programmes": "Programu",
+    "events": "Matukio",
+    "gallery": "Matunzio",
     "contact": "Wasiliana nasi",
     "login": "Ingia",
+    "dashboard": "Dashibodi",
     "ticker": {
       "item1": "Chapisho jipya kuhusu haki ya hali ya hewa nchini RDC",
       "item2": "Kliniki inayotembea imepangwa Kalehe Machi 25",
@@ -17,6 +21,9 @@
   "HomePage": {
     "hero": {
       "badge": "CREDDA - ULPGL Ubora",
+      "title_part1": "Kituo cha Utafiti na Haki ya Mazingira",
+      "title_part2": "",
+      "subtitle": "CREDDA na Kliniki yake ya Sheria ya Mazingira hufanya kazi kwa upatikanaji wa haki, demokrasia na maendeleo endelevu Afrika — kutoka Goma, kwa ajili ya DRC yote.",
       "slides": [
         {
           "title": "Ubora kwa ajili ya Demokrasia.",
@@ -32,9 +39,7 @@
         }
       ],
       "cta_publications": "Machapisho Yetu",
-      "cta_contact": "Gundua zaidi",
-      "title_part1": "Haki",
-      "title_part2": "& Utafiti"
+      "cta_contact": "Gundua zaidi"
     },
     "stats": {
       "years": "Miaka ya Utaalam wa Utafiti",
@@ -153,15 +158,32 @@
     }
   }
   },
+  "metadata": {
+    "home": { "title": "CREDDA-ULPGL | Utafiti na Haki ya Mazingira", "description": "Kituo cha utafiti na kliniki ya kisheria Goma — demokrasia, maendeleo endelevu na upatikanaji wa haki nchini DRC." },
+    "about": { "title": "Kuhusu | CREDDA-ULPGL", "description": "Taasisi ya ubora iliyounganishwa na ULPGL-Goma." },
+    "team": { "title": "Timu | CREDDA-ULPGL", "description": "Watafiti na wataalamu wa kliniki wa CREDDA." },
+    "research": { "title": "Utafiti | CREDDA-ULPGL", "description": "Kazi kuhusu utawala, demokrasia na maendeleo endelevu." },
+    "programmes": { "title": "Programu | CREDDA-ULPGL", "description": "Maeneo ya kazi ya Kituo na CDE." },
+    "publications": { "title": "Machapisho | CREDDA-ULPGL", "description": "Makala na ripoti za CREDDA." },
+    "events": { "title": "Matukio | CREDDA-ULPGL", "description": "Mkutano na warsha." },
+    "gallery": { "title": "Matunzio | CREDDA-ULPGL", "description": "CREDDA katika picha." },
+    "contact": { "title": "Mawasiliano | CREDDA-ULPGL", "description": "Wasiliana na CREDDA-ULPGL Goma." }
+  },
+  "loading": {
+    "label": "Inapakia"
+  },
   "NotFound": {
     "badge": "Hitilafu",
-    "title": "Ukurasa haukupatikana",
+    "title": "Ukurasa haupatikani",
     "description": "Rasilimali unayotafuta haipo au imehamishwa.",
-    "explore": "Chunguza",
+    "explore": "Viungo muhimu",
     "home": "Mwanzo",
     "research": "Utafiti",
     "clinical": "Kliniki",
     "team": "Timu",
+    "publications": "Machapisho",
+    "events": "Matukio",
+    "gallery": "Matunzio",
     "back": "Rudi",
     "contact": "Wasiliana",
     "help": "Unahitaji msaada?"

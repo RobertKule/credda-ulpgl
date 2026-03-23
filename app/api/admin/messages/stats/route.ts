@@ -1,28 +1,27 @@
 // app/api/admin/messages/stats/route.ts
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
+import { safeQuery } from "@/lib/db-safe";
+import { auth } from "@/lib/auth";
 
 export async function GET() {
   try {
-    const session = await getServerSession();
+    const session = await auth();
     if (!session) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
-    let total = 0, unread = 0, read = 0, archived = 0, replied = 0;
-    try {
-      const [fTotal, fUnread, fRead, fArchived, fReplied] = await Promise.all([
-        db.contactMessage.count(),
-        db.contactMessage.count({ where: { status: "UNREAD" } }),
-        db.contactMessage.count({ where: { status: "READ" } }),
-        db.contactMessage.count({ where: { status: "ARCHIVED" } }),
-        db.contactMessage.count({ where: { NOT: { repliedAt: null } } })
-      ]);
-      total = fTotal; unread = fUnread; read = fRead; archived = fArchived; replied = fReplied;
-    } catch (dbError) {
-      console.error("⚠️ Database failure in messages/stats:", dbError);
-    }
+    const [total, unread, read, archived, replied] = await Promise.all([
+      safeQuery(() => db.contactMessage.count(), 0, "admin/messages/stats:total"),
+      safeQuery(() => db.contactMessage.count({ where: { status: "UNREAD" } }), 0, "admin/messages/stats:unread"),
+      safeQuery(() => db.contactMessage.count({ where: { status: "READ" } }), 0, "admin/messages/stats:read"),
+      safeQuery(() => db.contactMessage.count({ where: { status: "ARCHIVED" } }), 0, "admin/messages/stats:archived"),
+      safeQuery(
+        () => db.contactMessage.count({ where: { NOT: { repliedAt: null } } }),
+        0,
+        "admin/messages/stats:replied"
+      )
+    ]);
 
     return NextResponse.json({
       total,

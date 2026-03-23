@@ -4,8 +4,12 @@
     "clinical": "Clinique Juridique",
     "publications": "Publications",
     "about": "L'Institution",
+    "programmes": "Programmes",
+    "events": "Événements",
+    "gallery": "Galerie",
     "contact": "Contact",
     "login": "Se connecter",
+    "dashboard": "Dashboard",
     "ticker": {
       "item1": "Nouvelle publication sur la justice climatique en RDC",
       "item2": "Clinique mobile prévue à Kalehe le 25 mars",
@@ -16,6 +20,9 @@
   "HomePage": {
     "hero": {
       "badge": "Excellence CREDDA - ULPGL",
+      "title_part1": "Centre de Recherche & Justice Environnementale",
+      "title_part2": "",
+      "subtitle": "Le CREDDA et sa Clinique de Droit de l'Environnement œuvrent pour l'accès à la justice, la démocratie et le développement durable en Afrique — depuis Goma, pour toute la RDC.",
       "slides": [
         {
           "title": "L'Excellence au service de la Démocratie.",
@@ -31,9 +38,7 @@
         }
       ],
       "cta_publications": "Nos Publications",
-      "cta_contact": "En savoir plus",
-      "title_part1": "Justice",
-      "title_part2": "& Recherche"
+      "cta_contact": "En savoir plus"
     },
     "stats": {
       "years": "Années d'Expertise en recherche",
@@ -152,15 +157,32 @@
       }
     }
   },
+  "metadata": {
+    "home": { "title": "CREDDA-ULPGL | Recherche & Justice environnementale", "description": "Centre de recherche et clinique juridique à Goma — démocratie, développement durable et accès à la justice en RDC." },
+    "about": { "title": "À propos | CREDDA-ULPGL", "description": "Institution d'excellence affiliée à l'ULPGL-Goma." },
+    "team": { "title": "Équipe | CREDDA-ULPGL", "description": "Chercheurs et cliniciens du CREDDA." },
+    "research": { "title": "Recherche | CREDDA-ULPGL", "description": "Travaux sur la gouvernance, la démocratie et le développement durable." },
+    "programmes": { "title": "Programmes | CREDDA-ULPGL", "description": "Domaines d'intervention du Centre et de la CDE." },
+    "publications": { "title": "Publications | CREDDA-ULPGL", "description": "Articles et rapports du CREDDA." },
+    "events": { "title": "Événements | CREDDA-ULPGL", "description": "Agenda des conférences et ateliers." },
+    "gallery": { "title": "Galerie | CREDDA-ULPGL", "description": "Photothèque du CREDDA en action." },
+    "contact": { "title": "Contact | CREDDA-ULPGL", "description": "Écrire au CREDDA-ULPGL à Goma." }
+  },
+  "loading": {
+    "label": "Chargement"
+  },
   "NotFound": {
     "badge": "Erreur",
-    "title": "Page non trouvée",
+    "title": "Page introuvable",
     "description": "La ressource que vous recherchez n'existe pas ou a été déplacée.",
-    "explore": "Explorer",
+    "explore": "Liens utiles",
     "home": "Accueil",
     "research": "Recherche",
     "clinical": "Clinique",
     "team": "Équipe",
+    "publications": "Publications",
+    "events": "Événements",
+    "gallery": "Galerie",
     "back": "Retour",
     "contact": "Contact",
     "help": "Besoin d'aide ?"

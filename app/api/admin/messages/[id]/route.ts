@@ -1,14 +1,14 @@
 // app/api/admin/messages/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { getServerSession } from "next-auth";
+import { auth } from "@/lib/auth";
 export const runtime = 'nodejs';
 export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> } // ✅ CORRIGÉ: Promise
 ) {
   try {
-    const session = await getServerSession();
+    const session = await auth();
     if (!session) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
@@ -49,7 +49,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> } // ✅ CORRIGÉ: Promise
 ) {
   try {
-    const session = await getServerSession();
+    const session = await auth();
     if (!session) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }

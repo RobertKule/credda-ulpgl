@@ -1,8 +1,9 @@
 // app/[locale]/security/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter, useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { 
@@ -20,7 +21,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function SecurityPage() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const { locale } = useParams<{ locale: string }>();
   const t = useTranslations('SecurityPage');
   
   const [formData, setFormData] = useState({
@@ -33,6 +36,12 @@ export default function SecurityPage() {
   const [showNew, setShowNew] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "" });
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push(`/${locale}/login`);
+    }
+  }, [status, router, locale]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -75,7 +84,7 @@ export default function SecurityPage() {
     }
   };
 
-  if (!session) {
+  if (status === "loading" || !session) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <Loader2 className="animate-spin text-primary" size={40} />

@@ -3,6 +3,10 @@ import { resend } from "@/lib/resend";
 
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "contact@credda-ulpgl.org";
 
+/** Inbound contact notifications (defaults to official CREDDA inbox) */
+const CONTACT_TO_EMAIL =
+  process.env.CONTACT_TO_EMAIL || "creddaulpgl08@gmail.com";
+
 /**
  * Send an email to admin when a new registration request is submitted
  */
@@ -104,7 +108,7 @@ export async function sendContactNotification(senderName: string, senderEmail: s
      // Notify Admin
      await resend.emails.send({
         from: `Nouveau Message <${FROM_EMAIL}>`,
-        to: [FROM_EMAIL],
+        to: [CONTACT_TO_EMAIL],
         subject: `📬 Nouveau message de ${senderName}`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; color: #334155;">
