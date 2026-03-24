@@ -26,9 +26,8 @@ function applyTheme(mode: ThemeMode) {
   document.documentElement.classList.toggle("light", mode === "light");
 }
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeMode>("dark");
-
+export function ThemeProvider({ children, forcedTheme }: { children: ReactNode, forcedTheme?: ThemeMode }) {
+  const [theme, setThemeState] = useState<ThemeMode>(forcedTheme || "dark");
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY) as ThemeMode | null;
     if (stored === "light" || stored === "dark") {

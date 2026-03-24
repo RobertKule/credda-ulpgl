@@ -1,6 +1,5 @@
 // app/[locale]/clinical/page.tsx
-import { db } from "@/lib/db";
-import { safeQuery } from "@/lib/db-safe";
+import { sql } from "@/lib/db";
 import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,35 +24,32 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'ClinicalPage' });
 
-  const [fetchedArticles, fetchedSessions] = await Promise.all([
-    safeQuery(
-      () =>
-        db.article.findMany({
-          where: { domain: "CLINICAL", published: true },
-          include: {
-            translations: { where: { language: locale } },
-            category: { include: { translations: { where: { language: locale } } } }
-          },
-          orderBy: { createdAt: "desc" }
-        }),
-      [],
-      "clinical:articles"
-    ),
-    safeQuery(
-      () =>
-        db.clinicSession.findMany({
-          where: { date: { gte: new Date() } },
-          orderBy: { date: "asc" }
-        }),
-      [],
-      "clinical:sessions"
-    )
+  const [fetchedArticles, fetchedSessions]: [any, any] = await Promise.all([
+    sql`
+      SELECT a.*, 
+        (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
+        (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations
+      FROM "Article" a
+      WHERE a.domain = 'CLINICAL' AND a.published = TRUE
+      ORDER BY a."createdAt" DESC
+    `.catch(() => []),
+    sql`
+      SELECT * FROM "ClinicSession"
+      WHERE date >= ${new Date().toISOString()}
+      ORDER BY date ASC
+    `.catch(() => [])
   ]);
-  const articles = fetchedArticles;
+
+  const articles = fetchedArticles.map((a: any) => ({
+    ...a,
+    category: {
+      translations: a.category_translations || []
+    }
+  }));
   const sessions = fetchedSessions;
 
   return (
-    <main className="min-h-screen bg-soft-cream/30">
+    <main className="min-h-screen bg-background">
       
       {/* 1. AUTHORITATIVE HERO */}
       <section className="bg-primary text-white pt-32 pb-48 relative overflow-hidden">
@@ -76,8 +72,8 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
 
       {/* 2. REGISTRY STATUS BAR */}
       <div className="container mx-auto px-6 -mt-16 relative z-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 bg-white border border-light-gray shadow-3xl">
-           <div className="p-10 border-r border-light-gray flex items-start gap-6 group hover:bg-soft-cream transition-colors">
+        <div className="grid grid-cols-1 md:grid-cols-3 bg-card border border-border shadow-3xl">
+           <div className="p-10 border-r border-border flex items-start gap-6 group hover:bg-muted transition-colors">
               <div className="p-4 bg-secondary/10 text-secondary">
                 <ShieldCheck size={28} strokeWidth={1.5} />
               </div>
@@ -86,16 +82,16 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
                 <p className="text-anthracite/50 text-sm font-light leading-snug">Accès gratuit aux conseils juridiques pour les vulnérables.</p>
               </div>
            </div>
-           <div className="p-10 border-r border-light-gray flex items-start gap-6 group hover:bg-soft-cream transition-colors">
+           <div className="p-10 border-r border-border flex items-start gap-6 group hover:bg-muted transition-colors">
               <div className="p-4 bg-secondary/10 text-secondary">
                 <Leaf size={28} strokeWidth={1.5} />
               </div>
               <div className="space-y-1">
                 <h3 className="font-serif font-black text-primary uppercase text-xs tracking-widest">Droit de l'Homme</h3>
-                <p className="text-anthracite/50 text-sm font-light leading-snug">Protection des droits fondamentaux en zones post-conflit.</p>
+                <p className="text-muted-foreground text-sm font-light leading-snug">Protection des droits fondamentaux en zones post-conflit.</p>
               </div>
            </div>
-           <div className="p-10 flex items-start gap-6 group hover:bg-soft-cream transition-colors">
+           <div className="p-10 flex items-start gap-6 group hover:bg-muted transition-colors">
               <div className="p-4 bg-secondary/10 text-secondary">
                 <MapPin size={28} strokeWidth={1.5} />
               </div>
@@ -123,17 +119,17 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
 
         {articles.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article) => {
+            {articles.map((article: any) => {
               const translation = article.translations[0];
               const category = article.category?.translations[0]?.name || "Case Study";
               
               return (
-                <article key={article.id} className="group bg-white border border-light-gray flex flex-col hover:border-secondary transition-all">
+                <article key={article.id} className="group bg-card border border-border flex flex-col hover:border-secondary transition-all">
                   <div className="relative aspect-video overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
                     {article.mainImage ? (
                       <Image src={article.mainImage} alt={translation?.title} fill className="object-cover" />
                     ) : (
-                      <div className="w-full h-full bg-soft-cream flex items-center justify-center text-light-gray">
+                      <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">
                         <Gavel size={48} strokeWidth={1} />
                       </div>
                     )}
@@ -143,7 +139,7 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
                   </div>
 
                   <div className="p-10 flex-1 flex flex-col">
-                    <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-anthracite/40 mb-6">
+                    <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground mb-6">
                        <span className="flex items-center gap-1.5"><Calendar size={12} className="text-secondary" /> {new Date(article.createdAt).toLocaleDateString(locale)}</span>
                     </div>
 
@@ -157,14 +153,14 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
                        {translation?.excerpt || "Description synthétique de l'issue juridique et de l'impact social de cette intervention clinique."}
                     </p>
 
-                    <div className="mt-auto pt-8 border-t border-light-gray flex items-center justify-between">
+                    <div className="mt-auto pt-8 border-t border-border flex items-center justify-between">
                        <Link 
                          href={`/clinical/${article.slug}`}
-                         className="text-[9px] font-black uppercase tracking-widest text-primary flex items-center gap-2 group/link"
+                         className="text-[9px] font-black uppercase tracking-widest text-foreground flex items-center gap-2 group/link"
                        >
                          Analyser le cas <ChevronRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
                        </Link>
-                       <FileText size={16} className="text-light-gray" />
+                       <FileText size={16} className="text-muted-foreground" />
                     </div>
                   </div>
                 </article>
@@ -172,10 +168,10 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
             })}
           </div>
         ) : (
-          <div className="py-32 text-center border-2 border-dashed border-light-gray bg-white">
-             <SearchX size={64} className="mx-auto text-light-gray mb-8" strokeWidth={1} />
-             <h3 className="text-3xl font-serif font-black text-primary mb-4">No Active Records</h3>
-             <p className="text-anthracite/40 font-light max-w-md mx-auto mb-12">
+          <div className="py-32 text-center border-2 border-dashed border-border bg-card">
+             <SearchX size={64} className="mx-auto text-muted-foreground mb-8" strokeWidth={1} />
+             <h3 className="text-3xl font-serif font-black text-foreground mb-4">No Active Records</h3>
+             <p className="text-muted-foreground font-light max-w-md mx-auto mb-12">
                Our legal registry is being digitalized. For immediate assistance or historical records, please visit our main office.
              </p>
              <Link href="/contact" className="px-12 py-5 bg-primary text-white font-black uppercase tracking-[0.2em] text-[10px] hover:bg-secondary transition-all">
@@ -186,7 +182,7 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
       </section>
 
       {/* 4. GEOGRAPHIC IMPACT MAP */}
-      <section className="bg-white border-y border-light-gray">
+      <section className="bg-background border-y border-border">
         <div className="container mx-auto px-6 py-32">
           <div className="grid lg:grid-cols-12 gap-16 items-start">
             <div className="lg:col-span-4 space-y-8">
@@ -194,22 +190,22 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
                   <MapPin size={14} />
                   <span>Geographic Access</span>
                </div>
-               <h2 className="text-4xl font-serif font-black text-primary leading-tight">
+               <h2 className="text-4xl font-serif font-black text-foreground leading-tight">
                  Présence sur le <span className="text-blue-600 italic">Terrain</span>.
                </h2>
-               <p className="text-anthracite/50 font-light text-lg leading-relaxed">
+               <p className="text-muted-foreground font-light text-lg leading-relaxed">
                  Le CREDDA déploie ses experts au plus près des communautés. Nos cliniques fixes et mobiles couvrent les points stratégiques de la région des Grands Lacs.
                </p>
                
                <div className="space-y-6 pt-8">
-                  {sessions.length > 0 ? sessions.map(session => (
-                    <div key={session.id} className="p-6 border border-light-gray bg-soft-cream/20 flex gap-4">
-                       <div className="w-10 h-10 bg-primary text-white flex items-center justify-center shrink-0">
+                  {sessions.length > 0 ? sessions.map((session: any) => (
+                    <div key={session.id} className="p-6 border border-border bg-muted flex gap-4">
+                       <div className="w-10 h-10 bg-primary text-primary-foreground flex items-center justify-center shrink-0">
                           <MapPin size={20} />
                        </div>
                        <div>
-                          <h4 className="font-bold text-primary">{session.title}</h4>
-                          <p className="text-xs text-anthracite/50 mb-2">{session.location}</p>
+                          <h4 className="font-bold text-foreground">{session.title}</h4>
+                          <p className="text-xs text-muted-foreground mb-2">{session.location}</p>
                           <span className="text-[10px] font-black uppercase text-secondary tracking-widest">
                             {new Date(session.date).toLocaleDateString(locale)}
                           </span>
@@ -221,7 +217,7 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
                </div>
             </div>
             <div className="lg:col-span-8">
-               <div className="bg-white p-2 border border-light-gray shadow-2xl relative">
+               <div className="bg-card p-2 border border-border shadow-2xl relative">
                   <ClinicalMap sessions={sessions} />
                   <div className="absolute bottom-6 right-6 z-20 bg-primary px-6 py-4 text-white">
                      <p className="text-[9px] font-black uppercase tracking-[0.3em]">Operational Centers</p>
@@ -237,7 +233,7 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
       </section>
 
       {/* 5. CLINICAL CALL TO ACTION */}
-      <section className="bg-secondary/10 py-32 border-t border-light-gray">
+      <section className="bg-muted py-32 border-t border-border">
         <div className="container mx-auto px-6">
           <div className="bg-primary p-12 lg:p-24 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-16">
              <div className="absolute top-0 right-0 w-1/3 h-full bg-secondary/10 -skew-x-12 translate-x-1/2 pointer-events-none" />

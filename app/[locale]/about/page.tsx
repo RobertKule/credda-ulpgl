@@ -1,200 +1,219 @@
-// app/[locale]/about/page.tsx
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import {
-  CheckCircle2, Target,
-  Globe2, GraduationCap, ArrowRight,
-  ShieldCheck, Award, Users2, MapPin, Scale, BookOpen, FileText, Landmark
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { 
+  Play, Pause, Volume2, VolumeX, Maximize, EyeOff, Eye,
+  ArrowRight, Landmark, Target, Globe2, ShieldCheck, MapPin, 
+  ChevronDown, Scale, BookOpen, Quote
 } from "lucide-react";
-import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import { ScrollReveal } from "@/components/shared/ScrollReveal";
 
-export default function AboutPage() {
-  const t = useTranslations('about');
+const ABOUT_PAD = "w-full px-5 sm:px-8 lg:px-12 xl:px-16";
 
-  const legalFoundations = [
-    "Constitution RDC du 18 février 2006",
-    "Loi no 22/030 du 15 juillet 2022 (peuples autochtones pygmées)",
-    "Déclaration universelle des droits de l'homme",
-    "Charte africaine des droits de l'homme et des peuples",
-    "Convention sur la diversité biologique",
-    "Déclaration ONU sur les droits des peuples autochtones"
-  ];
+export default function PremiumAboutPage() {
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isCinemaMode, setIsCinemaMode] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <main className="min-h-screen bg-[#0C0C0A] overflow-x-hidden">
-
-      {/* --- 1. HERO SECTION --- */}
-      <section className="relative pt-48 pb-40 overflow-hidden bg-black flex items-center justify-center">
-        {/* VIDEO BACKGROUND */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden scale-[1.3]">
-           <iframe 
-             src="https://www.youtube.com/embed/V-MVLqjQMIc?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&playlist=V-MVLqjQMIc&start=12" 
-             className="w-full h-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 aspect-video min-w-full min-h-full"
-             frameBorder="0"
-             allow="autoplay; encrypted-media"
-           />
-           <div className="absolute inset-0 bg-[#0C0C0A]/70 backdrop-blur-[2px]" />
+    <main className="bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+      
+      {/* --- 1. HISTOIRE (HERO IMMERSIF) --- */}
+      <section className="relative flex h-[110vh] w-full items-center justify-center overflow-hidden">
+        
+        {/* BACKGROUND VIDEO LAYER */}
+        <div className="absolute inset-0 z-0">
+          <video
+            ref={videoRef}
+            autoPlay
+            muted={isMuted}
+            loop
+            playsInline
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 
+              ${isCinemaMode ? 'scale-100' : 'scale-110 opacity-60'}`}
+          >
+            <source src="/video/hero-bg.mp4" type="video/mp4" />
+          </video>
+          
+          <div className={`absolute inset-0 transition-all duration-1000 z-10 
+            ${isCinemaMode ? 'bg-black/10' : 'bg-background/70 backdrop-blur-[2px]'}`} 
+          />
+          <div className="absolute inset-0 z-20 bg-gradient-to-b from-transparent via-transparent to-background" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
+        {/* CUSTOM PLAY/PAUSE OVERLAY */}
+        <div 
+          className="absolute inset-0 z-40 flex items-center justify-center group cursor-pointer"
+          onClick={togglePlay}
+        >
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileHover={{ opacity: 1, scale: 1 }}
+            className="w-24 h-24 rounded-full border border-white/20 bg-black/20 backdrop-blur-xl flex items-center justify-center text-white transition-all group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] group-hover:text-black"
+          >
+            {isPlaying ? <Pause size={32} /> : <Play size={32} className="ml-2" />}
+          </motion.div>
+        </div>
+
+        {/* CONTENT LAYER */}
+        <AnimatePresence>
+          {!isCinemaMode && (
+            <motion.div 
+              initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
+              className="relative z-30 container mx-auto px-6 text-center pointer-events-none"
             >
-              <Badge className="bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20 rounded-none px-6 py-2 uppercase font-outfit font-bold tracking-[0.4em] text-[10px] mb-12">
-                Héritage Scientifique • {t('since')} 2008
+              <Badge className="bg-transparent border border-[#C9A84C]/30 text-[#C9A84C] rounded-none px-8 py-2 text-[10px] tracking-[0.5em] uppercase mb-12">
+                Fondé en 2008 • Excellence Académique
               </Badge>
-              <h1 className="text-6xl md:text-8xl lg:text-9xl font-fraunces font-extrabold text-[#F5F2EC] leading-[0.85] mb-12 italic">
-                {t('hero.title1')} <span className="text-[#C9A84C]">{t('hero.title2')}</span> <br />
-                {t('hero.title3')}
+              
+              <h1 className="text-7xl md:text-[10rem] font-serif font-light leading-none mb-12 tracking-tighter">
+                Penser le <span className="italic text-[#C9A84C]">Droit</span>,<br />
+                Bâtir l&apos;<span className="font-bold">Avenir</span>.
               </h1>
-              <p className="text-xl text-[#F5F2EC]/40 font-outfit font-light max-w-3xl mx-auto leading-relaxed border-t border-white/5 pt-10">
-                Le CREDDA combine excellence académique et action concrète pour bâtir un État de droit exemplaire en Afrique centrale.
+              
+              <div className="max-w-2xl mx-auto h-[1px] bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent my-12" />
+              
+              <p className="max-w-xl mx-auto text-lg text-muted-foreground font-light leading-relaxed">
+                Le CREDDA est l&apos;épicentre de la recherche juridique en RDC, fusionnant rigueur scientifique et engagement social.
               </p>
             </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* FLOATING CONTROLS (Glassmorphism) */}
+        <div className="absolute bottom-12 right-12 z-50 flex items-center gap-2 p-2 bg-muted/20 backdrop-blur-2xl border border-border">
+          <ControlButton 
+            active={isCinemaMode}
+            onClick={() => setIsCinemaMode(!isCinemaMode)} 
+            icon={isCinemaMode ? <Eye size={18} /> : <EyeOff size={18} />} 
+            label={isCinemaMode ? "Infos" : "Cinéma"}
+          />
+          <div className="w-[1px] h-4 bg-white/10 mx-1" />
+          <ControlButton onClick={() => setIsMuted(!isMuted)} icon={isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />} />
         </div>
       </section>
 
-      {/* --- 2. MISSION & VISION --- */}
-      <section className="py-32 max-w-7xl mx-auto px-6 lg:px-12">
-         <div className="grid md:grid-cols-3 gap-8">
-            <Card 
-               icon={<Target className="text-[#C9A84C]" />} 
-               title={t('mission')} 
-               text={t('mission_text')} 
-            />
-            <Card 
-               icon={<Globe2 className="text-[#C9A84C]" />} 
-               title={t('vision')} 
-               text={t('vision_text')} 
-            />
-            <Card 
-               icon={<ShieldCheck className="text-[#C9A84C]" />} 
-               title={t('values')} 
-               text={t('values_text')} 
-            />
-         </div>
-      </section>
-
-      {/* --- 3. HISTOIRE & ACHIEVEMENTS --- */}
-      <section className="py-32 bg-[#111110] border-y border-white/5">
-         <div className="max-w-7xl mx-auto px-6 lg:px-12">
-            <div className="grid lg:grid-cols-2 gap-24 items-center">
-               <div className="relative aspect-square">
-                  <div className="absolute inset-0 border border-[#C9A84C]/20 -translate-x-6 -translate-y-6" />
-                  <div className="w-full h-full relative overflow-hidden">
-                     <Image src="/images/director3.webp" alt="Research Action" fill className="object-cover grayscale" />
-                  </div>
-                  <div className="absolute bottom-12 right-12 bg-[#0C0C0A] p-10 border border-[#C9A84C]/30">
-                     <p className="text-5xl font-fraunces font-extrabold text-[#C9A84C]">25+</p>
-                     <p className="text-[10px] uppercase font-outfit font-bold tracking-widest text-[#F5F2EC]/40 pt-2">{t('years_excellence')}</p>
-                  </div>
-               </div>
-
-               <div className="space-y-12">
-                  <div className="space-y-6">
-                     <span className="text-[10px] font-outfit font-bold uppercase tracking-[0.4em] text-[#C9A84C]">{t('who_we_are')}</span>
-                     <h2 className="text-4xl md:text-6xl font-fraunces font-bold text-[#F5F2EC] leading-tight">
-                        {t('mission_title')} <span className="italic text-[#C9A84C]">{t('mission_italic')}</span>.
-                     </h2>
-                  </div>
-                  
-                  <p className="text-lg text-[#F5F2EC]/50 font-outfit font-light leading-loose">
-                     {t('mission_description')}
+      {/* --- 2. MISSION (PHILOSOPHIE) --- */}
+      <div className={`${ABOUT_PAD} py-24 lg:py-40`}>
+        <ScrollReveal className="w-full">
+            <section>
+              <div className="grid lg:grid-cols-12 gap-12 items-center">
+                <div className="lg:col-span-5 space-y-8">
+                  <span className="text-[#C9A84C] text-xs font-bold tracking-[0.3em] uppercase">Notre Manifeste</span>
+                  <h2 className="text-5xl font-serif leading-tight">
+                    Une vision <br /><span className="italic">transformatrice</span> du droit.
+                  </h2>
+                  <p className="text-muted-foreground leading-loose font-light">
+                    Au-delà des textes, nous croyons en un droit vivant. Un droit qui protège les écosystèmes du Bassin du Congo et garantit la dignité des peuples autochtones. 
+                    Le CREDDA n&apos;est pas seulement un laboratoire, c&apos;est un bouclier juridique.
                   </p>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                     {t.raw('achievements').map((item: string, idx: number) => (
-                        <div key={idx} className="flex gap-4 items-start">
-                           <CheckCircle2 className="text-[#C9A84C] shrink-0" size={18} />
-                           <span className="text-xs text-[#F5F2EC]/70 uppercase font-outfit font-bold tracking-widest">{item}</span>
-                        </div>
-                     ))}
+                  <div className="pt-8">
+                     <Button variant="outline" className="rounded-none border-[#C9A84C]/30 text-[#C9A84C] hover:bg-[#C9A84C] hover:text-black px-10 py-6 transition-all">
+                        Découvrir nos publications <ArrowRight className="ml-4" size={16} />
+                     </Button>
                   </div>
-               </div>
-            </div>
-         </div>
-      </section>
+                </div>
+                
+                <div className="lg:col-span-7 grid grid-cols-2 gap-4">
+                   <StatCard icon={<Scale size={32}/>} number="15+" label="Années de recherche" />
+                   <StatCard icon={<BookOpen size={32}/>} number="200+" label="Articles publiés" />
+                   <StatCard icon={<Globe2 size={32}/>} number="12" label="Partenariats globaux" />
+                   <StatCard icon={<ShieldCheck size={32}/>} number="100%" label="Engagement local" />
+                </div>
+              </div>
+            </section>
+          </ScrollReveal>
+      </div>
 
-      {/* --- 4. FONDEMENTS JURIDIQUES (NEW) --- */}
-      <section className="py-32 max-w-7xl mx-auto px-6 lg:px-12">
-         <div className="text-center mb-24">
-            <span className="text-[10px] font-outfit font-bold uppercase tracking-[0.4em] text-[#C9A84C] block mb-6">Cadre Légal</span>
-            <h2 className="text-4xl md:text-6xl font-fraunces font-bold text-[#F5F2EC]">Fondements <span className="italic-accent">Juridiques</span></h2>
-         </div>
-
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {legalFoundations.map((foundation, idx) => (
-               <div key={idx} className="p-10 border border-white/5 bg-white/5 hover:border-[#C9A84C]/30 transition-all group">
-                  <Landmark className="text-[#C9A84C]/40 group-hover:text-[#C9A84C] mb-8 transition-colors" size={32} />
-                  <p className="text-[#F5F2EC] font-bricolage font-bold text-xl leading-snug">
-                     {foundation}
-                  </p>
-               </div>
-            ))}
-         </div>
-      </section>
-
-      {/* --- 5. LOCATION & CONTACT --- */}
-      <section className="py-32 bg-[#111110] border-t border-white/5">
-         <div className="max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 gap-24 items-center">
-            <div className="space-y-12">
-               <div className="space-y-6">
-                  <div className="flex items-center gap-4 text-[#C9A84C]">
-                    <MapPin size={24} />
-                    <span className="text-[10px] font-outfit font-bold uppercase tracking-[0.4em]">{t('location')}</span>
-                  </div>
-                  <h3 className="text-4xl md:text-6xl font-fraunces font-bold text-[#F5F2EC]">
-                    {t('find_us')}
+      {/* --- 3. EQUIPE/CITATION (BREAK) --- */}
+      <div className={`${ABOUT_PAD} py-24 lg:py-40`}>
+        <ScrollReveal className="w-full">
+            <section className="flex justify-center text-center">
+               <div className="max-w-4xl px-6">
+                  <Quote size={60} className="mx-auto mb-12 text-primary/10" />
+                  <h3 className="text-3xl md:text-5xl font-serif italic leading-relaxed text-foreground/80">
+                    &quot;Le droit ne doit pas seulement être dit, il doit être vécu au service de la justice climatique et sociale.&quot;
                   </h3>
                </div>
-               <p className="text-lg text-[#F5F2EC]/40 font-outfit font-light leading-relaxed">
-                 {t('location_description')}
-               </p>
-               <div className="pt-10 border-t border-white/5">
-                 <p className="text-[10px] uppercase tracking-widest font-outfit font-bold text-[#C9A84C] mb-4">{t('address')}</p>
-                 <p className="text-[#F5F2EC] font-fraunces text-2xl italic leading-relaxed">
-                   {t.raw('full_address').join(', ')}
-                 </p>
-               </div>
-               
-               <Button asChild className="bg-[#C9A84C] text-[#0C0C0A] rounded-none py-8 px-12 font-outfit font-bold uppercase tracking-widest text-[10px] hover:bg-[#E8C97A]">
-                  <Link href="/contact" className="flex gap-4">
-                     {t('contact_us')} <ArrowRight size={14} />
-                  </Link>
-               </Button>
-            </div>
+            </section>
+          </ScrollReveal>
+      </div>
 
-            <div className="aspect-square bg-black border border-white/10 p-4">
-               <iframe
-                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.102660144983!2d29.21980311475458!3d-1.6836423987723048!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dd0f81d11e5f8f%3A0xc36e3c5443c7b3c2!2sULPGL%20Salomon!5e0!3m2!1sfr!2s!4v1707600000000!5m2!1sfr!2s"
-                 className="w-full h-full grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-1000"
-                 allowFullScreen
-                 loading="lazy"
-               />
-            </div>
-         </div>
-      </section>
+      {/* --- 4. FONDEMENTS (PILIERS) --- */}
+      <div className={`${ABOUT_PAD} bg-card py-24 lg:py-40`}>
+        <ScrollReveal className="w-full">
+            <section className="bg-card">
+              <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
+                <h2 className="text-6xl font-serif italic">Les Piliers <br /><span className="not-italic font-bold">Légaux</span></h2>
+                <p className="max-w-md text-muted-foreground border-l border-primary pl-6">
+                  Nos actions s&apos;inscrivent dans le respect strict des cadres normatifs nationaux et internationaux.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0 border border-white/5">
+                {["Constitution RDC", "Loi 22/030 (Autochtones)", "Charte Africaine", "Convention Diversité Bio", "Déclaration ONU", "Droit de l'Environnement"].map((title, i) => (
+                  <div key={i} className="group p-16 border border-border hover:bg-primary transition-all duration-500 cursor-default">
+                    <Landmark size={24} className="mb-8 text-primary group-hover:text-primary-foreground transition-colors" />
+                    <h3 className="text-xl font-bold group-hover:text-primary-foreground transition-colors">{title}</h3>
+                    <p className="mt-4 text-sm text-muted-foreground group-hover:text-primary-foreground/60 transition-colors">Référence fondamentale de nos analyses juridiques et cliniques.</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </ScrollReveal>
+      </div>
 
     </main>
   );
 }
 
-function Card({ icon, title, text }: { icon: React.ReactNode, title: string, text: string }) {
-   return (
-      <div className="p-16 border border-white/5 bg-[#111110] group hover:border-[#C9A84C]/30 transition-all">
-         <div className="w-16 h-16 rounded-full bg-black flex items-center justify-center mb-10 group-hover:scale-110 transition-transform border border-white/5">
-            {icon}
-         </div>
-         <h4 className="text-3xl font-bricolage font-bold text-[#F5F2EC] mb-8">{title}</h4>
-         <p className="text-[#F5F2EC]/40 font-outfit font-light leading-relaxed">{text}</p>
+// COMPOSANTS LOCAUX
+function ControlButton({ onClick, icon, label, active }: any) {
+  return (
+    <button 
+      onClick={onClick}
+      className={`flex items-center gap-2 px-4 py-2 transition-all duration-300 ${active ? 'bg-[#C9A84C] text-black' : 'hover:bg-white/10'}`}
+    >
+      {icon}
+      {label && <span className="text-[10px] font-bold uppercase tracking-tighter">{label}</span>}
+    </button>
+  );
+}
+
+function StatCard({ icon, number, label }: any) {
+  return (
+    <div className="p-12 bg-muted border border-border flex flex-col items-start gap-6 hover:border-primary/40 transition-all">
+      <div className="text-primary">{icon}</div>
+      <div>
+        <div className="text-4xl font-bold mb-1">{number}</div>
+        <div className="text-[10px] uppercase tracking-widest text-muted-foreground/60 font-bold">{label}</div>
       </div>
-   );
+    </div>
+  );
 }

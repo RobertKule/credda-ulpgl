@@ -1,8 +1,7 @@
 // app/[locale]/research/page.tsx
 import type { Metadata } from "next";
 import { localePageMetadata } from "@/lib/page-metadata";
-import { db } from "@/lib/db";
-import { safeQuery } from "@/lib/db-safe";
+import { sql } from "@/lib/db";
 import { getTranslations } from "next-intl/server";
 import { 
   SearchX, 
@@ -17,6 +16,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Suspense } from "react";
+import { ScrollReveal } from "@/components/shared/ScrollReveal";
 
 export async function generateMetadata({
   params
@@ -44,44 +44,47 @@ export default async function ResearchPage({
 async function ResearchContent({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'ResearchPage' });
   
-  const articles = await safeQuery(
-    () =>
-      db.article.findMany({
-        where: { domain: "RESEARCH", published: true },
-        include: {
-          translations: { where: { language: locale } }
-        },
-        orderBy: { createdAt: "desc" },
-        take: 20
-      }),
-    [],
-    "research:list"
-  );
+  const articles: any = await sql`
+    SELECT a.id, a.slug, a."mainImage" as image, a."createdAt", a.domain,
+      (SELECT json_agg(tr) FROM "ArticleTranslation" tr WHERE tr."articleId" = a.id AND tr.language = ${locale}) as translations
+    FROM "Article" a
+    WHERE a.domain = 'RESEARCH' AND a.published = true
+    ORDER BY a."createdAt" DESC
+    LIMIT 20
+  `.catch(() => []);
 
   return (
-    <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">
+    <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
       {/* 1. HEADER */}
-      <header className="max-w-7xl mx-auto mb-20 text-center relative overflow-hidden py-20 px-10 border border-white/5 bg-[#111110]">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9A84C]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-        
-        <span className="text-[10px] uppercase tracking-[0.6em] font-black text-[#C9A84C] block mb-8">Intelligence & Analyse</span>
-        <h1 className="text-5xl md:text-8xl font-serif font-black text-[#F5F2EC] mb-10 leading-[0.85]">
-           Recherche <span className="text-[#C9A84C] italic">&</span> Analyses.
-        </h1>
-        <p className="text-lg text-[#F5F2EC]/40 max-w-2xl mx-auto font-light leading-relaxed">
-           Explorez nos travaux sur la gouvernance, la démocratie et le développement durable en Afrique, produits par nos chercheurs et partenaires.
-        </p>
-      </header>
+      <section style={{ padding: '80px 40px 64px', borderBottom: '1px solid rgba(245,242,236,0.07)', marginBottom: '80px' }}>
+        <ScrollReveal>
+          <header className="max-w-7xl mx-auto text-center relative overflow-hidden py-20 px-10 border border-border bg-card shadow-sm">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9A84C]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+            
+            <p style={{ fontFamily: 'var(--font-outfit)', fontSize: '9px', letterSpacing: '0.2em', color: '#C9A84C', textTransform: 'uppercase', fontWeight: 600, marginBottom: 16 }}>
+              CREDDA · Intelligence & Analyse
+            </p>
+            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1, mb: 10 }}>
+               Recherche <em style={{ fontStyle: 'italic', color: '#C9A84C' }}>& Analyses.</em>
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed mt-10">
+               Explorez nos travaux sur la gouvernance, la démocratie et le développement durable en Afrique, produits par nos chercheurs et partenaires.
+            </p>
+          </header>
+        </ScrollReveal>
+      </section>
 
       {/* 2. RESEARCH GRID */}
       <section className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {articles.length > 0 ? articles.map((doc: any) => (
-           <ResearchCard key={doc.id} doc={doc} locale={locale} />
+        {articles.length > 0 ? articles.map((doc: any, i: number) => (
+           <ScrollReveal key={doc.id} delay={i * 0.08}>
+             <ResearchCard doc={doc} locale={locale} />
+           </ScrollReveal>
         )) : (
-          <div className="col-span-full py-40 text-center border-2 border-dashed border-white/5">
-             <SearchX size={64} className="mx-auto text-white/10 mb-8" />
-             <h3 className="text-2xl font-serif font-black text-white mb-4">Foundations of Knowledge</h3>
-             <p className="text-white/30 max-w-sm mx-auto font-light">Nos archives numériques sont en cours d'expansion. Revenez bientôt pour les derniers rapports.</p>
+          <div className="col-span-full py-40 text-center border-2 border-dashed border-border">
+             <SearchX size={64} className="mx-auto text-foreground/10 mb-8" />
+             <h3 className="text-2xl font-serif font-black text-foreground mb-4">Foundations of Knowledge</h3>
+             <p className="text-muted-foreground max-w-sm mx-auto font-light">Nos archives numériques sont en cours d'expansion. Revenez bientôt pour les derniers rapports.</p>
           </div>
         )}
       </section>
@@ -94,7 +97,7 @@ async function ResearchContent({ locale }: { locale: string }) {
          <p className="text-[#0C0C0A]/60 text-lg font-medium max-w-2xl mx-auto mb-12">
             Le CREDDA accueille les contributions de chercheurs externes. Soumettez vos travaux pour une parution dans nos prochaines éditions.
          </p>
-         <Link href="/contact" className="inline-flex items-center gap-4 bg-[#0C0C0A] text-white px-10 py-6 font-black uppercase text-[10px] tracking-widest hover:px-12 transition-all">
+         <Link href="/contact" className="inline-flex items-center gap-4 bg-background text-foreground px-10 py-6 font-black uppercase text-[10px] tracking-widest hover:bg-foreground hover:text-background transition-all border border-foreground/10">
             Soumettre un Article <ArrowRight size={14} />
          </Link>
       </section>
@@ -105,12 +108,12 @@ async function ResearchContent({ locale }: { locale: string }) {
 function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
   const t = doc.translations?.[0];
   return (
-    <Link href={`/publications/${doc.slug || doc.id}`} className="group block bg-[#111110] border border-white/5 hover:border-[#C9A84C]/50 transition-all duration-700">
+    <Link href={`/publications/${doc.slug || doc.id}`} className="group block bg-card border border-border hover:border-primary/50 transition-all duration-700">
        <div className="relative aspect-[4/5] overflow-hidden bg-black">
           {doc.image ? (
             <Image src={doc.image} alt="Research paper" fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-white/5 border-b border-white/5">
+            <div className="w-full h-full flex items-center justify-center text-foreground/5 border-b border-border/5">
                <FileText size={100} strokeWidth={0.5} />
             </div>
           )}
@@ -121,15 +124,15 @@ function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
           </div>
        </div>
        <div className="p-10">
-          <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-white/20 mb-6">
+          <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground/40 mb-6">
              <span>{new Date(doc.createdAt).getFullYear()} Edition</span>
              <span className="w-1 h-1 bg-[#C9A84C] rounded-full" />
              <span className="flex items-center gap-2"><Clock size={12} /> 12 Min Read</span>
           </div>
-          <h3 className="text-2xl font-serif font-black text-[#F5F2EC] mb-6 line-clamp-2 leading-tight group-hover:text-[#C9A84C] transition-colors">
+          <h3 className="text-2xl font-serif font-black text-foreground mb-6 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
              {t?.title || "Research Project"}
           </h3>
-          <p className="text-[#F5F2EC]/30 text-sm font-light leading-relaxed line-clamp-3 mb-8">
+          <p className="text-muted-foreground text-sm font-light leading-relaxed line-clamp-3 mb-8">
              {t?.excerpt || t?.description || "Detailed analysis of legal frameworks and societal progress within the African Great Lakes Region."}
           </p>
           <div className="inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-[#C9A84C] group-hover:gap-6 transition-all">
@@ -142,11 +145,11 @@ function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
 
 function ResearchLoading() {
    return (
-    <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">
+    <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
       <div className="max-w-7xl mx-auto">
-        <div className="h-[400px] w-full bg-white/5 animate-pulse mb-12" />
+        <div className="h-[400px] w-full bg-border/20 animate-pulse mb-12" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[1,2,3].map(i => <div key={i} className="h-[600px] w-full bg-white/5 animate-pulse" />)}
+          {[1,2,3].map(i => <div key={i} className="h-[600px] w-full bg-border/20 animate-pulse" />)}
         </div>
       </div>
     </main>

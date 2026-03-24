@@ -6,26 +6,14 @@ dotenv.config({ path: path.resolve(process.cwd(), '.env') })
 
 import bcrypt from 'bcryptjs'
 import { PrismaClient } from '@prisma/client'
-import { Pool, neonConfig } from '@neondatabase/serverless'
-import { PrismaNeon } from '@prisma/adapter-neon'
-import ws from 'ws'
-
-// Use the same WebSocket-based Neon driver as lib/db.ts
-neonConfig.webSocketConstructor = ws
-
-const connectionString = (process.env.DATABASE_URL || '').trim()
-if (!connectionString) {
-  throw new Error('DATABASE_URL is missing or empty in .env')
-}
-
-const pool = new Pool({ connectionString })
-const adapter = new PrismaNeon(pool as any)
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function main() {
-  const prisma = new PrismaClient({ adapter })
-  console.log('🚀 Starting CREDDA-ULPGL seed (Neon WebSocket driver)...');
+  const prisma = new PrismaClient({
+    log: ['error', 'warn'],
+  })
+  console.log('🚀 Starting CREDDA-ULPGL seed (Standard Prisma)...');
 
   // ── 0. ADMIN USERS ──────────────────────────────────────────────────────
   try {

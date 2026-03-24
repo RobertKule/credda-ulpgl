@@ -31,6 +31,11 @@ export default function GSAPReveal({
   useEffect(() => {
     const el = elementRef.current;
     if (!el) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      gsap.set(el, { opacity: 1, x: 0, y: 0 });
+      return;
+    }
 
     const vars = {
       opacity: 0,

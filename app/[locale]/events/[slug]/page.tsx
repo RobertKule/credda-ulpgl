@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
-import { db } from "@/lib/db";
-import { safeQuery } from "@/lib/db-safe";
+import { sql } from "@/lib/db";
 import { Link } from "@/navigation";
 import Image from "next/image";
 import { ArrowLeft, Calendar, Clock, MapPin, Tag } from "lucide-react";
@@ -10,47 +9,59 @@ type Props = { params: Promise<{ locale: string; slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const event = await safeQuery(
-    () =>
-      db.event.findUnique({
-        where: { slug },
-        include: {
-          translations: { where: { language: locale } }
-        }
-      }),
-    null,
-    "events:metadata"
-  );
-  if (!event || !event.isPublished) {
+  try {
+    const [event] = (await sql`
+      SELECT e.*, 
+        (SELECT json_agg(t) FROM "EventTranslation" t WHERE t."eventId" = e.id AND t.language = ${locale}) as translations
+      FROM "Event" e
+      WHERE e.slug = ${slug}
+    `) as any[];
+    
+    if (!event || !event.isPublished) {
+      return { title: "Événement | CREDDA-ULPGL" };
+    }
+    const title = event.translations?.[0]?.title ?? "";
+    return {
+      title: `${title} | CREDDA-ULPGL`,
+      description: event.translations?.[0]?.description?.slice(0, 160) ?? ""
+    };
+  } catch (error) {
     return { title: "Événement | CREDDA-ULPGL" };
   }
-  const title = event.translations[0]?.title ?? "";
-  return {
-    title: `${title} | CREDDA-ULPGL`,
-    description: event.translations[0]?.description?.slice(0, 160) ?? ""
-  };
 }
 
 export default async function EventDetailPage({ params }: Props) {
   const { locale, slug } = await params;
 
-  const event = await safeQuery(
-    () =>
-      db.event.findUnique({
-        where: { slug },
-        include: {
-          translations: { where: { language: locale } },
-          galleryImages: {
-            orderBy: { order: "asc" },
-            include: {
-              translations: { where: { language: locale } }
-            }
-          }
-        }
-      }),
-    null,
-    "events:detail"
-  );
+  let event: any = null;
+  try {
+    const [eventResult] = (await sql`
+      SELECT e.*, 
+        (SELECT json_agg(t) FROM "EventTranslation" t WHERE t."eventId" = e.id AND t.language = ${locale}) as translations
+      FROM "Event" e
+      WHERE e.slug = ${slug}
+    `) as any[];
+
+    if (!eventResult) {
+      notFound(); // Or handle as per your application's error strategy
+    }
+
+    const galleryImages = await sql`
+      SELECT gi.*, 
+        (SELECT json_agg(t) FROM "GalleryImageTranslation" t WHERE t."galleryImageId" = gi.id AND t.language = ${locale}) as translations
+      FROM "GalleryImage" gi
+      WHERE gi."eventId" = ${eventResult.id}
+      ORDER BY gi."order" ASC
+    `.catch(() => []);
+
+    event = {
+        ...eventResult,
+        translations: eventResult.translations || [],
+        galleryImages: galleryImages || []
+    };
+  } catch (error) {
+    console.error("⚠️ Database connection failed in EventDetailPage", error);
+  }
 
   if (!event || !event.isPublished) {
     notFound();
@@ -134,7 +145,7 @@ export default async function EventDetailPage({ params }: Props) {
               Galerie
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {event.galleryImages.map((img) => {
+              {event.galleryImages.map((img: any) => {
                 const caption = img.translations[0]?.title ?? "";
                 return (
                   <figure key={img.id} className="space-y-2">

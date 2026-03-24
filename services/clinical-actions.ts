@@ -1,7 +1,4 @@
-// services/clinical-actions.ts
-"use server";
-
-import { db } from "@/lib/db";
+import { sql, db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { safeQuery } from "@/lib/db-safe";
 
@@ -12,6 +9,7 @@ export interface ClinicalCaseResult {
 }
 
 export async function submitClinicalCase(formData: any): Promise<ClinicalCaseResult> {
+  // ... (keeping Prisma for writes for now)
   try {
     // 1. Gérer le bénéficiaire (recherche par téléphone pour éviter les doublons simples)
     let beneficiary = await db.beneficiary.findFirst({
@@ -56,21 +54,19 @@ export async function submitClinicalCase(formData: any): Promise<ClinicalCaseRes
 }
 
 export async function getCasesByPhone(phone: string): Promise<ClinicalCaseResult> {
-  return safeQuery<ClinicalCaseResult>(
-    async () => {
-      const cases = await db.clinicalCase.findMany({
-        where: {
-          beneficiary: {
-            phone: phone
-          }
-        },
-        orderBy: { createdAt: 'desc' }
-      });
-      return { success: true, data: cases };
-    },
-    { success: false, error: "Erreur lors de la récupération des cas" },
-    "services/clinical:getCasesByPhone"
-  );
+  try {
+    const cases = await sql`
+      SELECT cc.* 
+      FROM "ClinicalCase" cc
+      JOIN "Beneficiary" b ON cc."beneficiaryId" = b.id
+      WHERE b.phone = ${phone}
+      ORDER BY cc."createdAt" DESC
+    `;
+    return { success: true, data: cases };
+  } catch (error) {
+    console.error("❌ Error fetching cases by phone:", error);
+    return { success: false, error: "Erreur lors de la récupération des cas" };
+  }
 }
 
 export async function getAllClinicalCases(): Promise<ClinicalCaseResult> {

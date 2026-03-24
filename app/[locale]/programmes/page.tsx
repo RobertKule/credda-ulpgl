@@ -81,7 +81,7 @@ export async function generateMetadata({
 export default function ProgrammesPage() {
   // Page must be localized
   return (
-    <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">
+    <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
       {/* HERO SECTION */}
       <div className="max-w-7xl mx-auto mb-20 text-center">
         <div className="inline-block px-4 py-1.5 border border-[#C9A84C]/30 mb-8">
@@ -89,10 +89,10 @@ export default function ProgrammesPage() {
              Expertise & Action
            </span>
         </div>
-        <h1 className="text-5xl md:text-7xl font-serif font-black text-[#F5F2EC] mb-8 leading-[1.1]">
+        <h1 className="text-5xl md:text-7xl font-serif font-black text-foreground mb-8 leading-[1.1]">
           Domaines <span className="text-[#C9A84C] italic">d'Intervention</span>
         </h1>
-        <p className="text-lg md:text-xl text-[#F5F2EC]/60 font-sans font-light max-w-3xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl text-muted-foreground font-sans font-light max-w-3xl mx-auto leading-relaxed">
           La Clinique de Droit Environnemental (CDE) du CREDDA déploie ses compétences à travers sept axes stratégiques pour une justice sociale et durable.
         </p>
       </div>
@@ -142,13 +142,13 @@ export default function ProgrammesPage() {
       </div>
 
       {/* CTA SECTION */}
-      <div className="max-w-5xl mx-auto bg-gradient-to-r from-[#111110] to-[#0C0C0A] border border-white/5 p-12 lg:p-20 text-center relative overflow-hidden group">
+      <div className="max-w-5xl mx-auto bg-card border border-border p-12 lg:p-20 text-center relative overflow-hidden group">
          <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9A84C]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 group-hover:bg-[#C9A84C]/10 transition-all duration-700" />
          
-         <h2 className="text-3xl md:text-5xl font-serif font-black text-[#F5F2EC] mb-8 relative z-10">
+         <h2 className="text-3xl md:text-5xl font-serif font-black text-foreground mb-8 relative z-10">
             Prêt à collaborer pour <span className="italic-accent">le changement</span> ?
          </h2>
-         <p className="text-lg text-[#F5F2EC]/50 font-sans font-light mb-12 max-w-2xl mx-auto relative z-10">
+         <p className="text-lg text-muted-foreground font-sans font-light mb-12 max-w-2xl mx-auto relative z-10">
             Que vous soyez une institution, une communauté ou un chercheur, le CREDDA est ouvert aux partenariats stratégiques.
          </p>
          <Link 
@@ -170,15 +170,15 @@ function ProgramCard({ title, desc, icon, span = "", bg = "bg-white/5" }: {
   bg?: string;
 }) {
   return (
-    <div className={`p-10 border border-white/5 flex flex-col justify-between group hover:border-[#C9A84C]/30 transition-all duration-500 ${bg} ${span}`}>
+    <div className={`p-10 border border-border flex flex-col justify-between group hover:border-[#C9A84C]/30 transition-all duration-500 ${bg} ${span}`}>
        <div>
-         <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center mb-8 border border-white/10 group-hover:scale-110 group-hover:border-[#C9A84C]/50 transition-all duration-500">
+         <div className="w-14 h-14 rounded-full bg-muted flex items-center justify-center mb-8 border border-border group-hover:scale-110 group-hover:border-[#C9A84C]/50 transition-all duration-500">
            {icon}
          </div>
-         <h3 className="text-xl md:text-2xl font-serif font-black text-[#F5F2EC] mb-6 group-hover:text-[#C9A84C] transition-colors">
+         <h3 className="text-xl md:text-2xl font-serif font-black text-foreground mb-6 group-hover:text-[#C9A84C] transition-colors">
            {title}
          </h3>
-         <p className="text-sm text-[#F5F2EC]/40 leading-relaxed font-light">
+         <p className="text-sm text-muted-foreground leading-relaxed font-light">
            {desc}
          </p>
        </div>

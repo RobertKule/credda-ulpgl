@@ -1,31 +1,20 @@
 // app/api/admin/gallery/upload/route.ts
 import { NextResponse } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
+import { uploadFile } from "@/lib/storage";
 
 export const runtime = 'nodejs';
 
-// Configuration Cloudinary
-if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-  console.error("❌ Cloudinary credentials missing");
-}
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-const IMAGE_MAX_BYTES = 5 * 1024 * 1024; // 5 MB
+const IMAGE_MAX_BYTES = 10 * 1024 * 1024; // 10 MB
 
 const imageSchema = z.object({
   file: z
     .custom<File>((val) => val instanceof File, "Le fichier doit être un fichier valide")
-    .refine((f) => f.size <= IMAGE_MAX_BYTES, "L'image ne doit pas dépasser 5MB")
+    .refine((f) => f.size <= IMAGE_MAX_BYTES, "L'image ne doit pas dépasser 10MB")
     .refine(
-      (f) => ["image/jpeg", "image/png", "image/webp"].includes(f.type),
-      "Seuls les formats JPEG, PNG et WebP sont acceptés"
+      (f) => ["image/jpeg", "image/png", "image/webp", "image/gif"].includes(f.type),
+      "Seuls les formats JPEG, PNG, GIF et WebP sont acceptés"
     ),
 });
 
@@ -49,8 +38,6 @@ export async function POST(request: Request) {
     const validation = imageSchema.safeParse({ file });
     
     if (!validation.success) {
-      // ✅ CORRECTION: validation.error existe, pas validation.error.errors
-      // Il faut accéder directement à validation.error
       const errorMessage = validation.error.issues[0]?.message || "Validation échouée";
       return NextResponse.json(
         { error: errorMessage },
@@ -59,30 +46,13 @@ export async function POST(request: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    
-    const result = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          folder: "credda_gallery",
-          format: "webp",
-          transformation: [
-            { width: 1200, crop: "limit" },
-            { quality: "auto" },
-          ],
-        },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        }
-      );
-      uploadStream.end(buffer);
-    });
+    const url = await uploadFile(buffer, file.name, file.type, "gallery");
 
-    return NextResponse.json({ url: (result as any).secure_url });
-  } catch (error) {
+    return NextResponse.json({ url, success: true });
+  } catch (error: any) {
     console.error("Erreur upload:", error);
     return NextResponse.json(
-      { error: "Erreur lors de l'upload" },
+      { error: error.message || "Erreur lors de l'upload" },
       { status: 500 }
     );
   }

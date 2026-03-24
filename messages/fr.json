@@ -7,6 +7,7 @@
     "programmes": "Programmes",
     "events": "Événements",
     "gallery": "Galerie",
+    "team": "L'Équipe",
     "contact": "Contact",
     "login": "Se connecter",
     "dashboard": "Dashboard",
@@ -50,7 +51,7 @@
     },
     "about": {
       "badge": "Héritage Académique",
-      "title": "Définir l'Avenir de la <br /> <span>Recherche Juridique</span>",
+      "title": "Définir l'Avenir de la  <span>Recherche Juridique</span>",
       "description_p1": "Le Centre de Recherche sur la Démocratie et le Développement en Afrique (CREDDA) est une institution d'excellence dédiée à l'analyse rigoureuse des défis juridiques et sociaux.",
       "description_p2": "Affilié à l'ULPGL-Goma, nous combinons expertise académique et action de terrain pour promouvoir une justice équitable et durable à travers le continent."
     },
@@ -89,6 +90,7 @@
     },
     "team": {
       "title": "Leadership Scientifique",
+      "title_alt": "Leadership Scientifique",
       "subtitle": "L'Équipe de Recherche",
       "badge": "Notre Équipe"
     },
@@ -131,9 +133,19 @@
     "partners": {
       "title": "Réseau Global de Partenaires",
       "items": [
-        "Amnesty.webp", "McCain.webp", "Northwestern.webp", "TWB.webp",
-        "worldbank.webp", "Ceni.webp", "Monusco.webp", "Oxford.webp",
-        "Uhaki.webp", "Harvard.webp", "Morehouse.webp", "PNUD.webp", "ulpgl.webp"
+        "Amnesty.webp",
+        "McCain.webp",
+        "Northwestern.webp",
+        "TWB.webp",
+        "worldbank.webp",
+        "Ceni.webp",
+        "Monusco.webp",
+        "Oxford.webp",
+        "Uhaki.webp",
+        "Harvard.webp",
+        "Morehouse.webp",
+        "PNUD.webp",
+        "ulpgl.webp"
       ]
     },
     "cta": {
@@ -158,15 +170,42 @@
     }
   },
   "metadata": {
-    "home": { "title": "CREDDA-ULPGL | Recherche & Justice environnementale", "description": "Centre de recherche et clinique juridique à Goma — démocratie, développement durable et accès à la justice en RDC." },
-    "about": { "title": "À propos | CREDDA-ULPGL", "description": "Institution d'excellence affiliée à l'ULPGL-Goma." },
-    "team": { "title": "Équipe | CREDDA-ULPGL", "description": "Chercheurs et cliniciens du CREDDA." },
-    "research": { "title": "Recherche | CREDDA-ULPGL", "description": "Travaux sur la gouvernance, la démocratie et le développement durable." },
-    "programmes": { "title": "Programmes | CREDDA-ULPGL", "description": "Domaines d'intervention du Centre et de la CDE." },
-    "publications": { "title": "Publications | CREDDA-ULPGL", "description": "Articles et rapports du CREDDA." },
-    "events": { "title": "Événements | CREDDA-ULPGL", "description": "Agenda des conférences et ateliers." },
-    "gallery": { "title": "Galerie | CREDDA-ULPGL", "description": "Photothèque du CREDDA en action." },
-    "contact": { "title": "Contact | CREDDA-ULPGL", "description": "Écrire au CREDDA-ULPGL à Goma." }
+    "home": {
+      "title": "CREDDA-ULPGL | Recherche & Justice environnementale",
+      "description": "Centre de recherche et clinique juridique à Goma — démocratie, développement durable et accès à la justice en RDC."
+    },
+    "about": {
+      "title": "À propos | CREDDA-ULPGL",
+      "description": "Institution d'excellence affiliée à l'ULPGL-Goma."
+    },
+    "team": {
+      "title": "Équipe | CREDDA-ULPGL",
+      "description": "Chercheurs et cliniciens du CREDDA."
+    },
+    "research": {
+      "title": "Recherche | CREDDA-ULPGL",
+      "description": "Travaux sur la gouvernance, la démocratie et le développement durable."
+    },
+    "programmes": {
+      "title": "Programmes | CREDDA-ULPGL",
+      "description": "Domaines d'intervention du Centre et de la CDE."
+    },
+    "publications": {
+      "title": "Publications | CREDDA-ULPGL",
+      "description": "Articles et rapports du CREDDA."
+    },
+    "events": {
+      "title": "Événements | CREDDA-ULPGL",
+      "description": "Agenda des conférences et ateliers."
+    },
+    "gallery": {
+      "title": "Galerie | CREDDA-ULPGL",
+      "description": "Photothèque du CREDDA en action."
+    },
+    "contact": {
+      "title": "Contact | CREDDA-ULPGL",
+      "description": "Écrire au CREDDA-ULPGL à Goma."
+    }
   },
   "loading": {
     "label": "Chargement"
@@ -601,14 +640,38 @@
         "details": "Détails"
       },
       "fields": {
-        "email": { "label": "Email Professionnel", "placeholder": "votre@email.com" },
-        "password": { "label": "Mot de passe", "placeholder": "••••••••" },
-        "confirmPassword": { "label": "Confirmer", "placeholder": "••••••••" },
-        "name": { "label": "Nom Complet", "placeholder": "Pr. / Dr. / Nom" },
-        "phone": { "label": "Téléphone", "placeholder": "+243..." },
-        "organization": { "label": "Organisation / Université", "placeholder": "Ex: ULPGL Goma" },
-        "requestedRole": { "label": "Rôle Souhaité", "placeholder": "Chercheur, Éditeur, Clinicien..." },
-        "bio": { "label": "Bio / Motivation", "placeholder": "Décrivez brièvement votre parcours ou intérêt..." }
+        "email": {
+          "label": "Email Professionnel",
+          "placeholder": "votre@email.com"
+        },
+        "password": {
+          "label": "Mot de passe",
+          "placeholder": "••••••••"
+        },
+        "confirmPassword": {
+          "label": "Confirmer",
+          "placeholder": "••••••••"
+        },
+        "name": {
+          "label": "Nom Complet",
+          "placeholder": "Pr. / Dr. / Nom"
+        },
+        "phone": {
+          "label": "Téléphone",
+          "placeholder": "+243..."
+        },
+        "organization": {
+          "label": "Organisation / Université",
+          "placeholder": "Ex: ULPGL Goma"
+        },
+        "requestedRole": {
+          "label": "Rôle Souhaité",
+          "placeholder": "Chercheur, Éditeur, Clinicien..."
+        },
+        "bio": {
+          "label": "Bio / Motivation",
+          "placeholder": "Décrivez brièvement votre parcours ou intérêt..."
+        }
       },
       "submit": "Terminer l'inscription",
       "next": "Étape suivante",
@@ -840,5 +903,60 @@
     "portal": "Portail",
     "consult": "Consulter le département",
     "search": "Rechercher"
+  },
+  "PrivacyPage": {
+    "header": {
+      "badge": "Protection des données",
+      "title": "Politique de <span>Confidentialité</span>",
+      "description": "Le CREDDA-ULPGL s'engage à protéger vos informations personnelles conformément aux standards éthiques et académiques."
+    },
+    "sections": [
+      {
+        "title": "Données Collectées",
+        "content": "Nous collectons les données fournies via nos formulaires (contact, inscription, suivi clinique) : nom, email, téléphone, et affiliation institutionnelle."
+      },
+      {
+        "title": "Finalités du Traitement",
+        "content": "Vos données sont utilisées pour le suivi des cas de la clinique juridique, la diffusion de nos publications et la gestion de notre réseau de chercheurs."
+      },
+      {
+        "title": "Sécurité & Conservation",
+        "content": "Les données sont cryptées et stockées sur des serveurs sécurisés. L'accès est strictement restreint au secrétariat scientifique."
+      },
+      {
+        "title": "Vos Droits",
+        "content": "Vous disposez d'un droit d'accès, de rectification et d'effacement de vos données sur simple demande à privacy@credda-ulpgl.org."
+      }
+    ],
+    "footer": {
+      "title": "Besoin de plus d'informations ?",
+      "description": "Pour toute question concernant notre politique de confidentialité ou pour exercer vos droits, n'hésitez pas à nous contacter.",
+      "cta": "Écrire au secrétariat"
+    }
+  },
+  "LegalPage": {
+    "header": {
+      "badge": "Informations Officielles",
+      "title": "Mentions <span>Légales</span>",
+      "description": "Informations juridiques relatives à l'institution et aux conditions d'utilisation du site."
+    },
+    "sections": [
+      {
+        "title": "Éditeur du Site",
+        "content": "Centre de Recherche sur la Démocratie et le Développement en Afrique (CREDDA-ULPGL), une institution académique de l'Université Libre des Pays des Grands Lacs (ULPGL-Goma)."
+      },
+      {
+        "title": "Direction",
+        "content": "Directeur de la Publication : Prof. Dr. Kennedy Kihangi Bindu, Directeur du CREDDA."
+      },
+      {
+        "title": "Siège Social",
+        "content": "Campus Salomon, Avenue de la Corniche, Q. Himbi, Goma, Nord-Kivu, République Démocratique du Congo."
+      },
+      {
+        "title": "Propriété Intellectuelle",
+        "content": "Tous les rapports, articles et contenus multimédias sont la propriété exclusive du CREDDA-ULPGL, sauf mention contraire. Toute reproduction est soumise à autorisation préalable."
+      }
+    ]
   }
 }

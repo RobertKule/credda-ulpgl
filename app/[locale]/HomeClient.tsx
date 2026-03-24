@@ -1,4 +1,3 @@
-// app/[locale]/HomeClient.tsx
 "use client";
 
 import React from "react";
@@ -11,192 +10,228 @@ import TestimonialSection from "@/components/home/TestimonialSection";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Quote, ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink, ShieldCheck } from "lucide-react";
 import { Link } from "@/navigation";
 import GSAPReveal from "@/components/shared/GSAPReveal";
+import { ScrollReveal } from "@/components/shared/ScrollReveal";
+import HomePageBackdrop from "@/components/home/HomePageBackdrop";
+import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
 
+const SECTION_PAD = "w-full px-5 sm:px-8 lg:px-12 xl:px-16";
 
 export default function HomeClient({
   locale,
   featuredResearch = [],
-  latestReports = [],
   team = [],
-  galleryImages = [],
-  testimonials = [],
   partners = [],
-  dbStats = { totalResources: 0, publications: 0, clinicalArticles: 0, researchArticles: 0, clinicalCases: 0 }
+  testimonials = [],
+  dbStats = { totalResources: 0, clinicalCases: 0 }
 }: any) {
   const t = useTranslations('HomePage');
 
   return (
-    <main className="flex flex-col w-full bg-background overflow-hidden text-foreground">
-      {/* 1. HERO SECTION */}
+    <div className="relative isolate min-h-screen bg-background">
+      <HomePageBackdrop />
+      <main className="relative z-10 flex flex-col w-full overflow-hidden text-foreground selection:bg-primary selection:text-primary-foreground">
+      
       <Hero />
 
-      {/* 2. STATS SECTION */}
-      <Stats 
-        years={new Date().getFullYear() - 2008} 
-        totalResources={dbStats?.totalResources || 150} 
-        partners={(partners ?? []).length} 
-        clinicalCases={dbStats?.clinicalCases || 120}
-      />
+      <div className="relative z-20 -mt-6 sm:-mt-8">
+        <ScrollReveal>
+          <Stats 
+            years={new Date().getFullYear() - 2008} 
+            totalResources={dbStats?.totalResources || 150} 
+            partners={(partners ?? []).length} 
+            clinicalCases={dbStats?.clinicalCases || 120}
+          />
+        </ScrollReveal>
+      </div>
 
-      {/* 3. ABOUT / STORYTELLING SECTION */}
-      <section className="py-40 bg-card relative overflow-hidden">
-        {/* DECORATIVE NUMBER */}
-        <div className="absolute top-20 left-10 lg:left-20 pointer-events-none select-none opacity-5">
-           <span className="text-[20rem] lg:text-[25rem] font-fraunces font-extrabold italic text-[#C9A84C] leading-none">01</span>
+      <section
+        id="about"
+        className="relative w-full overflow-hidden bg-[#0D0D0B]/88 py-20 sm:py-24 lg:py-32 xl:py-40 light:bg-background/96 light:backdrop-blur-sm"
+      >
+        <SectionDecorNumber value="01" className="-top-4 right-0 sm:right-4 md:top-8" />
+        <div className="pointer-events-none absolute top-40 right-[-10%] z-0 select-none opacity-[0.02]">
+           <span className="text-[40rem] font-serif font-black italic text-[#C9A84C]">CREDDA</span>
         </div>
 
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-[#C9A84C]/5 skew-x-12 translate-x-1/2 pointer-events-none blur-3xl" />
-        
-        <div className="container mx-auto px-6 relative z-10">
-          <div className="flex flex-col lg:flex-row gap-24 items-center">
-            <div className="lg:w-1/2 relative">
-               <GSAPReveal direction="right">
-                 <div className="relative z-10 aspect-[4/5] bg-muted overflow-hidden rounded-sm ring-1 ring-border shadow-2xl">
-                   <Image 
-                     src="/images/director3.webp" 
-                     alt="About CREDDA" 
-                     fill 
-                     className="object-cover grayscale transition-all duration-1000 hover:grayscale-0 hover:scale-105"
-                   />
-                   <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
-                 </div>
+        <div className={`${SECTION_PAD} relative z-10`}>
+          <ScrollReveal className="w-full">
+            <div className="flex flex-col items-center gap-32 lg:flex-row">
+              <div className="relative group lg:w-5/12">
+                <GSAPReveal direction="right">
+                 <motion.div 
+                   whileHover={{ scale: 1.02, rotateY: 12, skewY: -4 }}
+                   transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                   className="relative z-10 border border-white/10 bg-white/5 p-4 shadow-2xl backdrop-blur-sm transition-all duration-700 group-hover:border-[#C9A84C]/30"
+                 >
+                   <div className="relative aspect-[3/4] origin-bottom overflow-hidden grayscale contrast-125 transition-all duration-1000 group-hover:grayscale-0">
+                     <Image 
+                       src="/images/director3.webp" 
+                       alt="About CREDDA" 
+                       fill 
+                       className="scale-110 object-cover transition-transform duration-1000 group-hover:scale-100"
+                     />
+                   </div>
+                   <div className="absolute -bottom-6 -right-6 bg-[#C9A84C] p-6 font-serif text-sm italic text-black shadow-2xl">
+                      Penser l&apos;État de Droit.
+                   </div>
+                 </motion.div>
                </GSAPReveal>
-               <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-[#C9A84C]/10 blur-[80px] -z-0" />
             </div>
 
-            <div className="lg:w-1/2 space-y-12">
-              <GSAPReveal direction="left" delay={0.2}>
-                <div className="flex items-center gap-4">
-                  <div className="h-[1px] w-12 bg-[#C9A84C]" />
-                  <span className="text-[10px] uppercase tracking-[0.5em] font-medium text-[#C9A84C]">{t('about.badge')}</span>
+            <div className="space-y-16 lg:w-7/12">
+              <GSAPReveal direction="left">
+                <div className="flex items-center gap-6">
+                  <div className="h-[1px] w-20 bg-[#C9A84C]" />
+                  <span className="text-xs font-bold uppercase tracking-[0.6em] text-[#C9A84C]">{t('about.badge')}</span>
                 </div>
                 
-                <h2 className="text-5xl lg:text-8xl font-fraunces font-extrabold text-foreground leading-[0.9] mt-8 mb-10">
-                  {t.rich('about.title', { 
-                    span: (chunks) => <span className="italic-accent">{chunks}</span>,
+                <h2 className="font-serif text-4xl font-extrabold leading-[0.9] tracking-tighter text-foreground sm:text-5xl md:text-6xl lg:text-8xl xl:text-9xl">
+                   {t.rich('about.title', { 
+                    span: (chunks) => <span className="text-[#C9A84C] italic font-light">{chunks}</span>,
                     br: () => <br />
                   })}
                 </h2>
                 
-                <div className="space-y-8 text-muted-foreground text-xl font-outfit font-light leading-relaxed max-w-xl">
-                  <p>
-                    {t('about.description_p1') || "The Center for Research on Democracy and Development in Africa (CREDDA) is an institution of excellence dedicated to the rigorous analysis of legal and social challenges."}
+                <div className="grid gap-10 text-base font-light leading-relaxed text-muted-foreground sm:text-lg md:grid-cols-2 md:gap-12">
+                  <p className="border-l border-border pl-6 sm:pl-8">
+                    {t('about.description_p1')}
                   </p>
-                  <p>
-                    {t('about.description_p2') || "Affiliated with ULPGL-Goma, we combine academic expertise and field action to promote fair and sustainable justice across the continent."}
+                  <p className="border-l border-border pl-6 sm:pl-8">
+                    {t('about.description_p2')}
                   </p>
                 </div>
 
-                <div className="pt-10">
-                  <Link href="/about" className="group flex items-center gap-6">
-                    <div className="relative">
-                       <span className="text-[11px] font-outfit font-bold uppercase tracking-[0.2em] text-foreground group-hover:text-primary transition-colors duration-500">
-                         {t('cta.mission')}
-                       </span>
-                       <div className="absolute -bottom-2 left-0 w-full h-[1px] bg-[#C9A84C]/30 origin-right transition-transform duration-700 scale-x-0 group-hover:scale-x-100 group-hover:origin-left" />
-                    </div>
-                    <div className="w-12 h-12 rounded-full border border-border flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700">
-                      <ArrowRight size={18} />
+                <div className="pt-12">
+                  <Link href="/about" className="group inline-flex items-center gap-8">
+                    <span className="text-xs font-bold uppercase tracking-[0.3em] transition-colors group-hover:text-[#C9A84C]">
+                      {t('cta.mission')}
+                    </span>
+                    <div className="flex h-16 w-16 transform items-center justify-center rounded-full border border-white/20 transition-all duration-500 group-hover:rotate-45 group-hover:border-[#C9A84C] group-hover:bg-[#C9A84C] group-hover:text-black">
+                      <ArrowRight size={24} />
                     </div>
                   </Link>
                 </div>
               </GSAPReveal>
             </div>
-          </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* 4. FEATURED RESEARCH SECTION */}
-      <div className="bg-background">
-        <FeaturedResearch research={featuredResearch} />
-      </div>
-
-      {/* 5. CLINICAL SECTION */}
-      <div className="bg-card">
-        <ClinicalSection />
-      </div>
-
-      {/* 5. TEAM SECTION */}
-      <TeamSection team={team} />
-
-      {/* 6. TESTIMONIALS SECTION */}
-      <TestimonialSection testimonials={testimonials} />
-
-      {/* 7. PARTNERS LOGOS */}
-      <section className="py-32 bg-card overflow-hidden border-b border-border">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row items-center gap-20">
-            <div className="lg:w-1/4">
-               <span className="text-[10px] font-black uppercase tracking-[0.5em] text-foreground/20 leading-loose">
-                 {t('cta.collaboration') || "Trusted by global leaders"}
-               </span>
-            </div>
-            <div className="lg:w-3/4 overflow-hidden relative group">
-              <div className="flex gap-20 animate-infinite-scroll group-hover:[animation-play-state:paused] grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-1000">
-                {[...(partners ?? []), ...(partners ?? [])].map((partner: string, i: number) => (
-                  <div key={i} className="flex-shrink-0 w-36 h-20 relative">
-                    <Image src={`/images/partenaires/${partner}`} alt="Partner" fill className="object-contain" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+      <section className="relative z-10 w-full border-y border-border/50 bg-[#121211]/85 light:bg-card/95 light:backdrop-blur-sm">
+        <div id="research" className={`${SECTION_PAD} pb-8 pt-16 lg:pb-10 lg:pt-20`}>
+          <ScrollReveal className="w-full">
+            <FeaturedResearch research={featuredResearch} />
+          </ScrollReveal>
+        </div>
+        <div id="clinical" className={`${SECTION_PAD} pb-16 lg:pb-20`}>
+          <ScrollReveal className="w-full">
+            <ClinicalSection />
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* 8. FINAL CTA SECTION */}
-      <section className="py-52 bg-background text-foreground relative overflow-hidden">
-        {/* ANIMATED BG FOR CTA */}
-        <div className="absolute inset-0 z-0">
-          <Image src="/images/hero-poster.webp" alt="CTA BG" fill className="object-cover grayscale opacity-20 scale-110" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+      <div
+        id="team"
+        className={`relative ${SECTION_PAD} bg-[#0D0D0B]/82 py-14 sm:py-16 lg:py-24 light:bg-background/96 light:backdrop-blur-sm`}
+      >
+        <ScrollReveal className="w-full">
+          <TeamSection team={team} />
+        </ScrollReveal>
+      </div>
+      <div
+        id="publications"
+        className={`relative ${SECTION_PAD} bg-[#0D0D0B]/86 py-14 sm:py-16 lg:py-24 light:bg-background/96 light:backdrop-blur-sm`}
+      >
+        <ScrollReveal className="w-full">
+          <TestimonialSection testimonials={testimonials} />
+        </ScrollReveal>
+      </div>
+
+      <div
+        id="gallery"
+        className={`relative ${SECTION_PAD} bg-[#121211]/80 py-14 sm:py-16 lg:py-24 light:bg-card/95 light:backdrop-blur-sm`}
+      >
+        <SectionDecorNumber value="06" className="left-2 top-8 sm:left-6" />
+        <ScrollReveal className="relative z-10 w-full overflow-hidden">
+          <p className="mb-10 text-center text-[10px] font-bold uppercase tracking-[0.5em] text-[#C9A84C] lg:mb-14">
+            {t('cta.collaboration')}
+          </p>
+          <div style={{ overflow: 'hidden', borderTop: '1px solid rgba(245,242,236,0.07)', borderBottom: '1px solid rgba(245,242,236,0.07)', padding: '32px 0' }}>
+            <div style={{ display: 'flex', gap: '64px', animation: 'ticker 35s linear infinite', width: 'max-content' }}>
+              {[...(partners ?? []), ...(partners ?? [])].map((p, i) => (
+                <div key={i} style={{ width: 120, height: 48, position: 'relative', filter: 'grayscale(1)', opacity: 0.3, transition: 'all 0.3s' }}
+                     onMouseEnter={e => { e.currentTarget.style.filter = 'grayscale(0)'; e.currentTarget.style.opacity = '1' }}
+                     onMouseLeave={e => { e.currentTarget.style.filter = 'grayscale(1)'; e.currentTarget.style.opacity = '0.3' }}>
+                  <Image src={`/images/partenaires/${p}`} alt="Partner" fill style={{ objectFit: 'contain' }} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <style>{`@keyframes ticker { from { transform: translateX(0) } to { transform: translateX(-50%) } }`}</style>
+        </ScrollReveal>
+      </div>
+
+      <section className="relative flex min-h-[90vh] w-full items-center justify-center overflow-hidden py-20 lg:py-28">
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <div className="h-full w-full scale-110">
+            <Image src="/images/hero-poster.webp" alt="CTA BG" fill className="object-cover opacity-10" />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background" />
         </div>
         
-        <div className="container mx-auto px-6 relative z-10 text-center">
-          <div className="flex flex-col items-center gap-6 mb-16">
-             <div className="w-[1px] h-24 bg-gradient-to-b from-transparent to-[#C9A84C]" />
-             <span className="text-[11px] uppercase tracking-[0.6em] font-black text-[#C9A84C]">{t('cta.badge') || "Join the Movement"}</span>
-          </div>
-          
-          <h2 className="text-5xl md:text-8xl lg:text-[10rem] font-fraunces font-extrabold leading-[0.85] tracking-tighter mb-20">
-            {t.rich('cta.title', {
-              span: (chunks) => <span className="italic text-[#C9A84C]">{chunks}</span>,
-              br: () => <br />
-            })}
-          </h2>
-          
-          <div className="flex flex-col sm:flex-row justify-center gap-8">
-            <Link href="/contact" className="group px-14 py-7 bg-primary text-primary-foreground font-outfit font-bold uppercase tracking-widest text-xs transition-all hover:scale-105 hover:bg-white shadow-2xl shadow-primary/10">
-              {t('cta.partner')}
-            </Link>
-            <Link href="/login" className="group px-14 py-7 border border-border hover:border-primary text-foreground font-outfit font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-4">
-              {t('cta.portal')} <ExternalLink size={16} className="text-[#C9A84C] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </Link>
-          </div>
+        <div className={`${SECTION_PAD} relative z-10 flex w-full justify-center`}>
+          <ScrollReveal className="w-full max-w-4xl text-center">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            className="flex flex-col items-center"
+          >
+            <ShieldCheck size={48} className="mb-12 text-[#C9A84C] opacity-50" />
+            <h2 className="mb-12 max-w-[min(100%,42rem)] font-serif text-4xl font-bold leading-[1.05] tracking-tighter text-foreground sm:mb-16 sm:text-5xl md:mb-20 md:text-7xl lg:text-8xl xl:text-9xl">
+              {t.rich('cta.title', {
+                span: (chunks) => <span className="font-light italic text-[#C9A84C]">{chunks}</span>,
+                br: () => <br />
+              })}
+            </h2>
+            
+            <div className="flex flex-col items-center gap-12 md:flex-row">
+              <Link href="/contact" className="group relative overflow-hidden bg-[#C9A84C] px-16 py-8 text-[10px] font-bold uppercase tracking-[0.2em] text-black transition-all hover:scale-105">
+                <span className="relative z-10">{t('cta.partner')}</span>
+                <div className="absolute inset-0 translate-y-full bg-white transition-transform duration-500 group-hover:translate-y-0" />
+              </Link>
+              
+              <Link href="/login" className="group flex items-center gap-4 text-xs font-bold uppercase tracking-[0.2em] transition-colors hover:text-[#C9A84C]">
+                {t('cta.portal')} 
+                <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 group-hover:border-[#C9A84C]">
+                  <ExternalLink size={14} />
+                </div>
+              </Link>
+            </div>
+          </motion.div>
+          </ScrollReveal>
         </div>
       </section>
 
       <style jsx global>{`
         @keyframes infinite-scroll {
           from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
+          to { transform: translateX(-33.33%); }
         }
         .animate-infinite-scroll {
-          animation: infinite-scroll 50s linear infinite;
+          animation: infinite-scroll 40s linear infinite;
         }
-        @keyframes scroll-line {
-          0% { transform: scaleY(0); transform-origin: top; }
-          50% { transform: scaleY(1); transform-origin: top; }
-          51% { transform: scaleY(1); transform-origin: bottom; }
-          100% { transform: scaleY(0); transform-origin: bottom; }
-        }
-        .animate-scroll-line {
-          animation: scroll-line 3s infinite ease-in-out;
+        .italic-accent {
+          font-family: var(--font-serif);
+          font-style: italic;
+          color: #C9A84C;
         }
       `}</style>
     </main>
+    </div>
   );
 }

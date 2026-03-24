@@ -1,6 +1,5 @@
 // app/[locale]/page.tsx
-import { db } from "@/lib/db";
-import { safeQuery } from "@/lib/db-safe";
+import { sql } from "@/lib/db";
 import { localePageMetadata } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import HomeClient from "./HomeClient";
@@ -16,139 +15,6 @@ export async function generateMetadata({
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-
-  let featuredResearch: any[] = [];
-  let latestReports: any[] = [];
-  let team: any[] = [];
-  let galleryImages: any[] = [];
-  let stats = {
-    totalResources: 0,
-    publications: 0,
-    members: 0,
-    researchArticles: 0,
-    clinicalArticles: 0,
-  };
-
-  const [
-    dbFeaturedResearch,
-    dbLatestReports,
-    dbTeam,
-    dbGalleryImages,
-    totalArticles,
-    totalPubs,
-    totalMembers,
-    researchCount,
-    clinicalCount,
-    clinicalCaseCount
-  ] = await Promise.all([
-    safeQuery(
-      () =>
-        db.article.findMany({
-          where: { domain: "RESEARCH", published: true },
-          take: 4,
-          select: {
-            id: true,
-            slug: true,
-            mainImage: true,
-            createdAt: true,
-            translations: { where: { language: locale }, select: { title: true, excerpt: true } },
-            category: { select: { translations: { where: { language: locale }, select: { name: true } } } }
-          },
-          orderBy: { createdAt: "desc" }
-        }),
-      [],
-      "home:featuredResearch"
-    ),
-    safeQuery(
-      () =>
-        db.publication.findMany({
-          take: 3,
-          select: {
-            id: true,
-            slug: true,
-            year: true,
-            domain: true,
-            pdfUrl: true,
-            createdAt: true,
-            translations: { where: { language: locale }, select: { title: true } }
-          },
-          orderBy: { year: "desc" }
-        }),
-      [],
-      "home:latestReports"
-    ),
-    safeQuery(
-      () =>
-        db.member.findMany({
-          select: {
-            id: true,
-            image: true,
-            translations: { where: { language: locale }, select: { name: true, role: true } }
-          },
-          orderBy: { order: "asc" }
-        }),
-      [],
-      "home:team"
-    ),
-    safeQuery(
-      () =>
-        db.galleryImage.findMany({
-          where: { featured: true },
-          take: 8,
-          orderBy: { order: "asc" },
-          select: {
-            id: true,
-            src: true,
-            category: true,
-            translations: {
-              where: { language: locale },
-              select: { title: true, description: true }
-            }
-          }
-        }),
-      [],
-      "home:gallery"
-    ),
-    safeQuery(() => db.article.count({ where: { published: true } }), 0, "home:countArticles"),
-    safeQuery(() => db.publication.count(), 0, "home:countPubs"),
-    safeQuery(() => db.member.count(), 0, "home:countMembers"),
-    safeQuery(
-      () => db.article.count({ where: { domain: "RESEARCH", published: true } }),
-      0,
-      "home:countResearch"
-    ),
-    safeQuery(
-      () => db.article.count({ where: { domain: "CLINICAL", published: true } }),
-      0,
-      "home:countClinical"
-    ),
-    safeQuery(() => db.clinicalCase.count(), 0, "home:countClinicalCases")
-  ]);
-
-  featuredResearch = dbFeaturedResearch;
-  latestReports = dbLatestReports;
-  team = dbTeam;
-  galleryImages = dbGalleryImages;
-  stats = {
-    totalResources: totalArticles + totalPubs,
-    publications: totalPubs,
-    members: totalMembers,
-    researchArticles: researchCount,
-    clinicalArticles: clinicalCount,
-    clinicalCases: clinicalCaseCount
-  } as any;
-
-  const sanitizedTeam = team.map(member => ({
-    ...member,
-    image: member.image ? member.image.replace(/\\/g, '/').replace(/^public\//, '/') : null
-  }));
-
-  const sanitizedGalleryImages = galleryImages.map(img => ({
-    ...img,
-    src: img.src ? img.src.replace(/\\/g, '/').replace(/^public\//, '/') : '',
-    title: img.translations?.[0]?.title || "",
-    description: img.translations?.[0]?.description || img.description || ""
-  }));
 
   const TESTIMONIALS = [
     {
@@ -177,16 +43,126 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     "Uhaki.webp", "Harvard.webp", "Morehouse.webp", "PNUD.webp", "ulpgl.webp"
   ];
 
-  return (
-    <HomeClient
-      locale={locale}
-      featuredResearch={featuredResearch}
-      latestReports={latestReports}
-      team={sanitizedTeam}
-      galleryImages={sanitizedGalleryImages}
-      testimonials={TESTIMONIALS}
-      partners={PARTNERS}
-      dbStats={stats}
-    />
-  );
+  try {
+    const [
+      featuredResearch,
+      latestReports,
+      team,
+      galleryImages,
+      totalArticlesResult,
+      totalPubsResult,
+      totalMembersResult,
+      researchCountResult,
+      clinicalCountResult,
+      clinicalCaseCountResult
+    ] = (await Promise.all([
+      // featuredResearch
+      sql`
+        SELECT a.id, a.slug, a."mainImage", a."createdAt", a."categoryId",
+          (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
+          (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations
+        FROM "Article" a
+        WHERE a.domain = 'RESEARCH' AND a.published = true
+        ORDER BY a."createdAt" DESC LIMIT 4
+      `,
+      // latestReports
+      sql`
+        SELECT p.id, p.slug, p.year, p.domain, p."pdfUrl", p."createdAt",
+          (SELECT json_agg(t) FROM "PublicationTranslation" t WHERE t."publicationId" = p.id AND t.language = ${locale}) as translations
+        FROM "Publication" p
+        ORDER BY p.year DESC LIMIT 3
+      `,
+      // team
+      sql`
+        SELECT m.id, m.image, m."order",
+          (SELECT json_agg(t) FROM "MemberTranslation" t WHERE t."memberId" = m.id AND t.language = ${locale}) as translations
+        FROM "Member" m
+        ORDER BY m."order" ASC
+      `,
+      // gallery
+      sql`
+        SELECT gi.id, gi.src, gi.category, gi.featured, gi."order",
+          (SELECT json_agg(t) FROM "GalleryImageTranslation" t WHERE t."galleryImageId" = gi.id AND t.language = ${locale}) as translations
+        FROM "GalleryImage" gi
+        WHERE gi.featured = true
+        ORDER BY gi."order" ASC LIMIT 8
+      `,
+      // counts
+      sql`SELECT count(*) FROM "Article" WHERE published = true`,
+      sql`SELECT count(*) FROM "Publication"`,
+      sql`SELECT count(*) FROM "Member"`,
+      sql`SELECT count(*) FROM "Article" WHERE domain = 'RESEARCH' AND published = true`,
+      sql`SELECT count(*) FROM "Article" WHERE domain = 'CLINICAL' AND published = true`,
+      sql`SELECT count(*) FROM "ClinicalCase"`
+    ])) as any[];
+
+    const totalArticles = parseInt(totalArticlesResult[0].count, 10);
+    const totalPubs = parseInt(totalPubsResult[0].count, 10);
+    const totalMembers = parseInt(totalMembersResult[0].count, 10);
+    const researchCount = parseInt(researchCountResult[0].count, 10);
+    const clinicalCount = parseInt(clinicalCountResult[0].count, 10);
+    const clinicalCaseCount = parseInt(clinicalCaseCountResult[0].count, 10);
+
+    const stats = {
+      totalResources: totalArticles + totalPubs,
+      publications: totalPubs,
+      members: totalMembers,
+      researchArticles: researchCount,
+      clinicalArticles: clinicalCount,
+      clinicalCases: clinicalCaseCount
+    };
+
+    const sanitizedTeam = team.map((member: any) => ({
+      ...member,
+      image: member.image ? member.image.replace(/\\/g, '/').replace(/^public\//, '/') : null,
+      translations: member.translations || []
+    }));
+
+    const sanitizedGalleryImages = galleryImages.map((img: any) => ({
+      ...img,
+      src: img.src ? img.src.replace(/\\/g, '/').replace(/^public\//, '/') : '',
+      title: img.translations?.[0]?.title || "",
+      description: img.translations?.[0]?.description || ""
+    }));
+
+    const formattedFeaturedResearch = featuredResearch.map((item: any) => ({
+      ...item,
+      translations: item.translations || [],
+      category: {
+        translations: item.category_translations || []
+      }
+    }));
+
+    const formattedLatestReports = latestReports.map((p: any) => ({
+      ...p,
+      translations: p.translations || []
+    }));
+
+    return (
+      <HomeClient
+        locale={locale}
+        featuredResearch={formattedFeaturedResearch}
+        latestReports={formattedLatestReports}
+        team={sanitizedTeam}
+        galleryImages={sanitizedGalleryImages}
+        testimonials={TESTIMONIALS}
+        partners={PARTNERS}
+        dbStats={stats}
+      />
+    );
+  } catch (error: any) {
+    console.error("[HOME] error:", error.message);
+    return (
+      <HomeClient
+        locale={locale}
+        featuredResearch={[]}
+        latestReports={[]}
+        team={[]}
+        galleryImages={[]}
+        testimonials={TESTIMONIALS}
+        partners={PARTNERS}
+        dbStats={{}}
+      />
+    );
+  }
 }

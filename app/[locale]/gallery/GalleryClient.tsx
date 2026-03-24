@@ -102,10 +102,10 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
               <div className="absolute inset-0 bg-blue-600/5 blur-3xl rounded-full" />
               <Camera size={80} className="mx-auto text-slate-300 relative z-10" strokeWidth={1} />
             </div>
-            <h3 className="text-3xl font-serif font-bold text-slate-900 mb-4">
+            <h3 className="text-3xl font-serif font-bold text-foreground mb-4">
               {t('empty.title')}
             </h3>
-            <p className="text-slate-500 font-light text-lg">
+            <p className="text-muted-foreground font-light text-lg">
               {t('empty.description')}
             </p>
           </div>
@@ -117,12 +117,12 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
   return (
     <>
       {/* Filtres et contrôles */}
-      <section className="sticky top-16 z-30 bg-white/80 backdrop-blur-md border-b border-slate-200 py-4">
+      <section className="sticky top-16 z-30 bg-background/80 backdrop-blur-md border-b border-border py-4">
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
             {/* Filtres par catégorie */}
             <div className="flex items-center gap-3 overflow-x-auto pb-2 lg:pb-0 w-full lg:w-auto">
-              <Filter size={14} className="text-slate-400 shrink-0" />
+              <Filter size={14} className="text-muted-foreground shrink-0" />
               <div className="flex gap-2">
                 {categories.map((cat) => (
                   <motion.button
@@ -132,8 +132,8 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                     onClick={() => setFilter(cat)}
                     className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all whitespace-nowrap rounded-full ${
                       filter === cat
-                        ? 'bg-blue-900 text-white border-blue-900 shadow-lg'
-                        : 'text-slate-500 border-slate-200 hover:border-blue-900 hover:text-blue-900'
+                        ? 'bg-primary text-primary-foreground border-primary shadow-lg'
+                        : 'text-muted-foreground border-border hover:border-primary hover:text-primary'
                     }`}
                   >
                     {cat === "all" ? t('filters.all') : cat}
@@ -143,15 +143,15 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
             </div>
 
             {/* Vue mode */}
-            <div className="flex items-center gap-2 bg-slate-100 p-1 rounded-full">
+            <div className="flex items-center gap-2 bg-muted p-1 rounded-full">
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setViewMode("grid")}
                 className={`p-2 rounded-full transition-colors ${
                   viewMode === "grid"
-                    ? 'bg-white text-blue-900 shadow-md'
-                    : 'text-slate-400 hover:text-blue-900'
+                    ? 'bg-background text-primary shadow-md'
+                    : 'text-muted-foreground hover:text-primary'
                 }`}
               >
                 <Grid size={18} />
@@ -162,8 +162,8 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                 onClick={() => setViewMode("masonry")}
                 className={`p-2 rounded-full transition-colors ${
                   viewMode === "masonry"
-                    ? 'bg-white text-blue-900 shadow-md'
-                    : 'text-slate-400 hover:text-blue-900'
+                    ? 'bg-background text-primary shadow-md'
+                    : 'text-muted-foreground hover:text-primary'
                 }`}
               >
                 <List size={18} />
@@ -176,7 +176,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
             key={`${filter}-${filteredImages.length}`}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-4 text-sm text-slate-500"
+            className="mt-4 text-sm text-muted-foreground"
           >
             {t('results', { 
               count: filteredImages.length,
@@ -204,7 +204,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ delay: idx * 0.05 }}
                   whileHover={{ y: -8 }}
-                  className="group relative aspect-square overflow-hidden bg-slate-100 cursor-pointer rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500"
+                  className="group relative aspect-square overflow-hidden bg-muted cursor-pointer rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500"
                   onClick={() => openLightbox(image, idx)}
                 >
                   {!imageErrors[image.id] ? (
@@ -217,8 +217,8 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                       onError={() => handleImageError(image.id)}
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-slate-200">
-                      <Camera size={40} className="text-slate-400" />
+                    <div className="w-full h-full flex items-center justify-center bg-muted">
+                      <Camera size={40} className="text-muted-foreground/40" />
                     </div>
                   )}
                   
@@ -237,14 +237,14 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                     transition={{ duration: 0.3 }}
                     className="absolute inset-x-0 bottom-0 p-6"
                   >
-                    <Badge className="bg-blue-600 text-white border-0 mb-2 text-[10px] px-2 py-1">
+                    <Badge className="bg-primary text-primary-foreground border-0 mb-2 text-[10px] px-2 py-1">
                       {image.category}
                     </Badge>
                     <h3 className="text-lg font-serif font-bold text-white line-clamp-2">
                       {image.title}
                     </h3>
                     <div className="flex items-center gap-2 mt-2">
-                      <Eye size={14} className="text-blue-400" />
+                      <Eye size={14} className="text-primary" />
                       <span className="text-xs text-white/70">Détails</span>
                     </div>
                   </motion.div>
@@ -302,7 +302,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                   className="break-inside-avoid group relative cursor-pointer mb-6"
                   onClick={() => openLightbox(image, idx)}
                 >
-                  <div className="relative overflow-hidden bg-slate-100 rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500">
+                  <div className="relative overflow-hidden bg-muted rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500">
                     {!imageErrors[image.id] ? (
                       <Image
                         src={image.src}
@@ -440,8 +440,8 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                   onError={() => handleImageError(`lightbox-${selectedImage.id}`)}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-slate-900">
-                  <Camera size={80} className="text-slate-700" />
+                <div className="w-full h-full flex items-center justify-center bg-muted">
+                  <Camera size={80} className="text-muted-foreground" />
                 </div>
               )}
             </motion.div>

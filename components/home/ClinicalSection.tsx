@@ -7,20 +7,17 @@ import { TreePine, Scale, MapPin, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import GSAPReveal from "@/components/shared/GSAPReveal";
+import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
 
 export default function ClinicalSection() {
   const t = useTranslations('HomePage');
   
   return (
-    <section className="py-40 bg-card text-foreground relative overflow-hidden">
-      {/* DECORATIVE NUMBER */}
-      <div className="absolute top-20 left-10 lg:left-20 pointer-events-none select-none opacity-5">
-         <span className="text-[20rem] lg:text-[25rem] font-fraunces font-extrabold italic text-[#C9A84C] leading-none">03</span>
-      </div>
-
+    <section className="relative overflow-hidden bg-transparent py-12 lg:py-20 text-foreground">
+      <SectionDecorNumber value="03" className="-left-2 top-4 sm:left-0 md:top-12" />
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#C9A84C]/5 rounded-full blur-[150px] pointer-events-none" />
       
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="relative z-10 w-full">
         <div className="grid lg:grid-cols-2 gap-24 items-center">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -82,14 +79,16 @@ export default function ClinicalSection() {
             </GSAPReveal>
           </motion.div>
 
-          <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-sm ring-1 ring-border">
+          <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-sm ring-1 ring-border group">
              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 opacity-60" />
-             <Image 
-                src="/images/clinical-hero.webp" 
-                alt="Clinical Field Work" 
-                fill 
-                className="object-cover grayscale transition-all duration-[2000ms] hover:grayscale-0 hover:scale-110"
-              />
+             <div className="h-full w-full">
+               <Image 
+                  src="/images/clinical-hero.webp" 
+                  alt="Clinical Field Work" 
+                  fill 
+                  className="object-cover grayscale transition-all duration-[2000ms] group-hover:grayscale-0 group-hover:scale-110"
+                />
+             </div>
             
             {/* Impact Badge */}
             <GSAPReveal direction="left" delay={0.5} className="absolute bottom-12 left-0 bg-primary p-10 z-20 max-w-[280px] shadow-2xl">

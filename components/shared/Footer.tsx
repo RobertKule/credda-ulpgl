@@ -21,10 +21,10 @@ export default function Footer() {
           <div className="space-y-10">
             <div className="space-y-6">
               <Link href="/" className="flex flex-col group">
-                <span className="font-bricolage font-extrabold text-3xl tracking-tighter text-[#F5F2EC]">
-                  CREDDA<span className="text-[#C9A84C]">·</span>CDE
+                <span className="font-bricolage font-extrabold text-3xl tracking-tighter text-foreground">
+                  CREDDA<span className="text-primary">·</span>CDE
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.4em] font-outfit font-medium text-[#F5F2EC]/40 mt-2">
+                <span className="text-[10px] uppercase tracking-[0.4em] font-outfit font-medium text-muted-foreground mt-2">
                   {t('identity.badge')}
                 </span>
               </Link>
@@ -124,10 +124,10 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-12 border-t border-border flex flex-col lg:flex-row justify-between items-center gap-8">
           <div className="flex flex-col md:flex-row items-center gap-12">
-            <p className="text-[10px] text-foreground/30 uppercase tracking-[0.2em] font-outfit font-medium">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-outfit font-medium">
               {t('bottom.copyright', { year: currentYear })}
             </p>
-            <div className="flex gap-8 text-[9px] uppercase font-outfit font-bold text-foreground/20 tracking-[0.3em]">
+            <div className="flex gap-8 text-[9px] uppercase font-outfit font-bold text-muted-foreground/40 tracking-[0.3em]">
               <Link href="/legal" className="hover:text-primary transition-colors">{t('bottom.legal')}</Link>
               <Link href="/privacy" className="hover:text-primary transition-colors">{t('bottom.privacy')}</Link>
             </div>
@@ -140,7 +140,7 @@ export default function Footer() {
                  {t('bottom.system')}
                </span>
             </div>
-            <div className="text-[10px] font-outfit font-medium text-foreground/20 uppercase tracking-widest">
+            <div className="text-[10px] font-outfit font-medium text-muted-foreground/40 uppercase tracking-widest">
               {t('bottom.affiliation')}
             </div>
           </div>

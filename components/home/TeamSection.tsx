@@ -13,6 +13,7 @@ import {
     CarouselItem,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
 
 export default function TeamSection({ team }: { team: any[] }) {
     const t = useTranslations('HomePage');
@@ -21,13 +22,9 @@ export default function TeamSection({ team }: { team: any[] }) {
     if (!team || team.length === 0) return null;
 
     return (
-        <section className="py-24 lg:py-40 bg-card relative overflow-hidden border-b border-border">
-            {/* DECORATIVE NUMBER */}
-            <div className="absolute top-20 left-10 lg:left-20 pointer-events-none select-none opacity-5">
-               <span className="text-[20rem] lg:text-[25rem] font-fraunces font-extrabold italic text-[#C9A84C] leading-none">04</span>
-            </div>
-
-            <div className="container mx-auto px-6 relative z-10">
+        <section className="relative overflow-hidden border-b border-border bg-transparent py-12 lg:py-24">
+            <SectionDecorNumber value="04" className="left-0 top-6 sm:left-2" />
+            <div className="relative z-10 w-full">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 sm:mb-12 lg:mb-16 gap-6">
                     <div className="max-w-xl lg:max-w-2xl">
                         <Badge className="bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20 rounded-none uppercase text-[10px] tracking-[0.4em] font-outfit font-bold px-4 py-1.5 mb-6">
@@ -79,7 +76,7 @@ export default function TeamSection({ team }: { team: any[] }) {
                                         <h3 className="text-xl font-fraunces font-extrabold text-foreground group-hover:text-primary transition-colors uppercase tracking-tight">
                                             {member.translations[0]?.name}
                                         </h3>
-                                        <p className="text-[10px] text-[#C9A84C]/40 font-outfit font-bold uppercase tracking-widest mt-2">
+                                        <p className="text-[10px] text-primary/60 font-outfit font-bold uppercase tracking-widest mt-2">
                                             {member.translations[0]?.role}
                                         </p>
                                     </div>
