@@ -42,6 +42,7 @@ export default function PremiumAboutPage() {
             height="115%" // Un peu plus haut pour cacher les bords YouTube
             style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%) scale(1.2)' }}
             config={{ youtube: { playerVars: { controls: 0, showinfo: 0, rel: 0, start: 12 } } }}
+            light="/images/hero-poster.webp"
           />
           
           {/* Overlay de texture & Gradient */}
