@@ -11,7 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
-import { SectionNumber } from "@/components/home/SectionNumber";
+
+const ABOUT_PAD = "w-full px-5 sm:px-8 lg:px-12 xl:px-16";
 
 export default function PremiumAboutPage() {
   const [isPlaying, setIsPlaying] = useState(true);
@@ -41,12 +42,7 @@ export default function PremiumAboutPage() {
     <main className="bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
       
       {/* --- 1. HISTOIRE (HERO IMMERSIF) --- */}
-      <div className="container mx-auto px-6 pt-32 relative z-50 pointer-events-none">
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
-          <SectionNumber number="01" />
-        </div>
-      </div>
-      <section className="relative h-[110vh] w-full overflow-hidden flex items-center justify-center -mt-32">
+      <section className="relative flex h-[110vh] w-full items-center justify-center overflow-hidden">
         
         {/* BACKGROUND VIDEO LAYER */}
         <div className="absolute inset-0 z-0">
@@ -124,10 +120,8 @@ export default function PremiumAboutPage() {
       </section>
 
       {/* --- 2. MISSION (PHILOSOPHIE) --- */}
-      <div className="container mx-auto px-6 py-40">
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
-          <SectionNumber number="02" />
-          <ScrollReveal className="w-full">
+      <div className={`${ABOUT_PAD} py-24 lg:py-40`}>
+        <ScrollReveal className="w-full">
             <section>
               <div className="grid lg:grid-cols-12 gap-12 items-center">
                 <div className="lg:col-span-5 space-y-8">
@@ -155,14 +149,11 @@ export default function PremiumAboutPage() {
               </div>
             </section>
           </ScrollReveal>
-        </div>
       </div>
 
       {/* --- 3. EQUIPE/CITATION (BREAK) --- */}
-      <div className="container mx-auto px-6 py-40">
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
-          <SectionNumber number="03" />
-          <ScrollReveal className="w-full">
+      <div className={`${ABOUT_PAD} py-24 lg:py-40`}>
+        <ScrollReveal className="w-full">
             <section className="flex justify-center text-center">
                <div className="max-w-4xl px-6">
                   <Quote size={60} className="mx-auto mb-12 text-primary/10" />
@@ -172,14 +163,11 @@ export default function PremiumAboutPage() {
                </div>
             </section>
           </ScrollReveal>
-        </div>
       </div>
 
       {/* --- 4. FONDEMENTS (PILIERS) --- */}
-      <div className="container mx-auto px-6 py-40 bg-card">
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
-          <SectionNumber number="04" />
-          <ScrollReveal className="w-full">
+      <div className={`${ABOUT_PAD} bg-card py-24 lg:py-40`}>
+        <ScrollReveal className="w-full">
             <section className="bg-card">
               <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
                 <h2 className="text-6xl font-serif italic">Les Piliers <br /><span className="not-italic font-bold">Légaux</span></h2>
@@ -199,7 +187,6 @@ export default function PremiumAboutPage() {
               </div>
             </section>
           </ScrollReveal>
-        </div>
       </div>
 
     </main>

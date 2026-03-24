@@ -7,6 +7,7 @@ import { ArrowRight, Clock, User } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import GSAPReveal from "@/components/shared/GSAPReveal";
+import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
 
 interface FeaturedResearchProps {
   research: any[];
@@ -16,16 +17,12 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
   const t = useTranslations('HomePage');
   
   return (
-    <section className="py-40 bg-background relative overflow-hidden">
-      {/* DECORATIVE NUMBER */}
-      <div className="absolute top-20 right-10 lg:right-20 pointer-events-none select-none opacity-5">
-         <span className="text-[20rem] lg:text-[25rem] font-fraunces font-extrabold italic text-[#C9A84C] leading-none">02</span>
-      </div>
-
+    <section className="relative overflow-hidden bg-transparent py-12 lg:py-20">
+      <SectionDecorNumber value="02" className="-top-6 right-0 sm:-right-2 md:top-0" />
       {/* GRID BACKGROUND */}
-      <div className="absolute inset-0 bg-grid-move opacity-[0.02] pointer-events-none" />
+      <div className="pointer-events-none absolute inset-0 bg-grid-move opacity-[0.02]" />
       
-      <div className="container mx-auto px-6 relative z-10">
+      <div className="relative z-10 w-full">
         <div className="flex flex-col lg:flex-row justify-between items-end gap-12 mb-24">
           <div className="max-w-3xl">
             <GSAPReveal direction="right">

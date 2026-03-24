@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import GSAPReveal from "@/components/shared/GSAPReveal";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
+import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
 
 export interface Testimonial {
     name: string;
@@ -53,11 +54,12 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
     if (!testimonials || testimonials.length === 0) return null;
 
     return (
-        <section className="py-24 lg:py-40 bg-background text-foreground relative overflow-hidden border-y border-border">
-            <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#C9A84C]/5 rounded-full blur-[120px] -mr-40 -mt-20 pointer-events-none" />
+        <section className="relative overflow-hidden border-y border-border bg-transparent py-12 lg:py-24 text-foreground">
+            <SectionDecorNumber value="05" className="right-0 top-16 sm:right-4" />
+            <div className="pointer-events-none absolute -right-40 -top-20 h-[800px] w-[800px] rounded-full bg-[#C9A84C]/5 blur-[120px]" />
             <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#C9A84C]/2 rounded-full blur-[100px] -ml-20 -mb-20 pointer-events-none" />
 
-            <div className="container mx-auto px-6 relative z-10 w-full">
+            <div className="relative z-10 w-full">
                 <div className="grid lg:grid-cols-12 gap-16 lg:gap-12 items-center border-l-2 border-border pl-6 lg:pl-12">
                     <div className="lg:col-span-4 space-y-8">
                         <GSAPReveal direction="left" delay={0.2}>
