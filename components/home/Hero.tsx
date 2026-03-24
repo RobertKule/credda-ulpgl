@@ -1,27 +1,81 @@
-// components/home/Hero.tsx
-"use client";
-
-import { motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "@/navigation";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, Play, Volume2, VolumeX, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export default function Hero() {
   const t = useTranslations('HomePage');
+  const [isMuted, setIsMuted] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
 
   return (
     <section className="relative min-h-screen w-full overflow-hidden bg-background flex items-center">
+      {/* LOADING INDICATOR */}
+      <AnimatePresence>
+        {!isLoaded && (
+          <motion.div 
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 z-[5] bg-[#0C0C0A] flex flex-col items-center justify-center gap-8 overflow-hidden"
+          >
+            {/* SKELETON ANIMATION */}
+            <div className="w-full h-full absolute inset-0 bg-[#111110]">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#C9A84C]/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+            </div>
+            
+            <div className="relative z-10 flex flex-col items-center gap-6">
+              <div className="w-20 h-20 border border-[#C9A84C]/20 rounded-full flex items-center justify-center">
+                <div className="w-12 h-12 border-2 border-t-[#C9A84C] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+              </div>
+              <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-[#C9A84C]/40 animate-pulse">Chargement Expérience</span>
+            </div>
+
+            {/* CSS for shimmer if not in globals */}
+            <style jsx>{`
+              @keyframes shimmer {
+                100% { transform: translateX(100%); }
+              }
+            `}</style>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* BACKGROUND VIDEO */}
       <video
+        ref={videoRef}
         autoPlay
         muted
         loop
         playsInline
+        onLoadedData={() => setIsLoaded(true)}
         poster="/images/hero-poster.webp"
-        className="absolute inset-0 w-full h-full object-cover opacity-60 z-0"
+        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-0 ${isLoaded ? 'opacity-60' : 'opacity-0'}`}
       >
         <source src="/video/hero-bg.mp4" type="video/mp4" />
       </video>
+
+      {/* VIDEO CONTROLS (MUTE/UNMUTE) */}
+      <div className="absolute bottom-12 left-12 z-30 flex items-center gap-4">
+        <button
+          onClick={toggleMute}
+          className="w-12 h-12 flex items-center justify-center rounded-full border border-white/10 bg-black/20 backdrop-blur-md text-white/70 hover:text-[#C9A84C] hover:border-[#C9A84C]/50 transition-all group"
+          title={isMuted ? "Activer le son" : "Désactiver le son"}
+        >
+          {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} className="animate-pulse" />}
+        </button>
+        <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/30 group-hover:text-white/50 transition-colors hidden md:block">
+          {isMuted ? "Audio Off" : "Audio On"}
+        </span>
+      </div>
       
       {/* Overlay: darkens video in dark mode, lifts to light paper in light mode */}
       <div className="absolute inset-0 bg-black/55 z-[1] light:bg-white/60" />

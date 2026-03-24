@@ -55,14 +55,14 @@ async function ResearchContent({ locale }: { locale: string }) {
   return (
     <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">
       {/* 1. HEADER */}
-      <header className="max-w-7xl mx-auto mb-20 text-center relative overflow-hidden py-20 px-10 border border-white/5 bg-[#111110]">
+      <header className="max-w-7xl mx-auto mb-20 text-center relative overflow-hidden py-20 px-10 border border-border bg-card">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9A84C]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
         
         <span className="text-[10px] uppercase tracking-[0.6em] font-black text-[#C9A84C] block mb-8">Intelligence & Analyse</span>
-        <h1 className="text-5xl md:text-8xl font-serif font-black text-[#F5F2EC] mb-10 leading-[0.85]">
+        <h1 className="text-5xl md:text-8xl font-serif font-black text-foreground mb-10 leading-[0.85]">
            Recherche <span className="text-[#C9A84C] italic">&</span> Analyses.
         </h1>
-        <p className="text-lg text-[#F5F2EC]/40 max-w-2xl mx-auto font-light leading-relaxed">
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
            Explorez nos travaux sur la gouvernance, la démocratie et le développement durable en Afrique, produits par nos chercheurs et partenaires.
         </p>
       </header>
@@ -72,7 +72,7 @@ async function ResearchContent({ locale }: { locale: string }) {
         {articles.length > 0 ? articles.map((doc: any) => (
            <ResearchCard key={doc.id} doc={doc} locale={locale} />
         )) : (
-          <div className="col-span-full py-40 text-center border-2 border-dashed border-white/5">
+          <div className="col-span-full py-40 text-center border-2 border-dashed border-border">
              <SearchX size={64} className="mx-auto text-white/10 mb-8" />
              <h3 className="text-2xl font-serif font-black text-white mb-4">Foundations of Knowledge</h3>
              <p className="text-white/30 max-w-sm mx-auto font-light">Nos archives numériques sont en cours d'expansion. Revenez bientôt pour les derniers rapports.</p>
@@ -99,7 +99,7 @@ async function ResearchContent({ locale }: { locale: string }) {
 function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
   const t = doc.translations?.[0];
   return (
-    <Link href={`/publications/${doc.slug || doc.id}`} className="group block bg-[#111110] border border-white/5 hover:border-[#C9A84C]/50 transition-all duration-700">
+    <Link href={`/publications/${doc.slug || doc.id}`} className="group block bg-card border border-border hover:border-primary/50 transition-all duration-700">
        <div className="relative aspect-[4/5] overflow-hidden bg-black">
           {doc.image ? (
             <Image src={doc.image} alt="Research paper" fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" />
@@ -120,10 +120,10 @@ function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
              <span className="w-1 h-1 bg-[#C9A84C] rounded-full" />
              <span className="flex items-center gap-2"><Clock size={12} /> 12 Min Read</span>
           </div>
-          <h3 className="text-2xl font-serif font-black text-[#F5F2EC] mb-6 line-clamp-2 leading-tight group-hover:text-[#C9A84C] transition-colors">
+          <h3 className="text-2xl font-serif font-black text-foreground mb-6 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
              {t?.title || "Research Project"}
           </h3>
-          <p className="text-[#F5F2EC]/30 text-sm font-light leading-relaxed line-clamp-3 mb-8">
+          <p className="text-muted-foreground text-sm font-light leading-relaxed line-clamp-3 mb-8">
              {t?.excerpt || t?.description || "Detailed analysis of legal frameworks and societal progress within the African Great Lakes Region."}
           </p>
           <div className="inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-[#C9A84C] group-hover:gap-6 transition-all">
@@ -136,11 +136,11 @@ function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
 
 function ResearchLoading() {
    return (
-    <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">
+    <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
       <div className="max-w-7xl mx-auto">
-        <div className="h-[400px] w-full bg-white/5 animate-pulse mb-12" />
+        <div className="h-[400px] w-full bg-border/20 animate-pulse mb-12" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[1,2,3].map(i => <div key={i} className="h-[600px] w-full bg-white/5 animate-pulse" />)}
+          {[1,2,3].map(i => <div key={i} className="h-[600px] w-full bg-border/20 animate-pulse" />)}
         </div>
       </div>
     </main>

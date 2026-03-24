@@ -28,7 +28,7 @@ export default function HomeClient({
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
   return (
-    <main className="flex flex-col w-full bg-[#080807] overflow-hidden text-[#F5F2EC] selection:bg-[#C9A84C] selection:text-black">
+    <main className="flex flex-col w-full bg-background overflow-hidden text-foreground selection:bg-primary selection:text-primary-foreground">
       
       {/* 1. HERO SECTION (L'entrée magistrale) */}
       <Hero />
@@ -44,7 +44,7 @@ export default function HomeClient({
       </div>
 
       {/* 3. ABOUT / MANIFESTO (L'âme du CREDDA) */}
-      <section className="py-60 relative overflow-hidden bg-[#080807]">
+      <section id="about" className="py-60 relative overflow-hidden bg-background">
         {/* Background Decorative Element */}
         <motion.div 
           style={{ y: yParallax }}
@@ -56,11 +56,19 @@ export default function HomeClient({
         <div className="container mx-auto px-6 relative z-10">
           <div className="flex flex-col lg:flex-row gap-32 items-center">
             
-            {/* Image avec cadre "Gallery" */}
+            {/* Image avec cadre "Gallery" et effet Oblique */}
             <div className="lg:w-5/12 relative group">
                <GSAPReveal direction="right">
-                 <div className="relative z-10 p-4 border border-white/10 bg-white/5 backdrop-blur-sm shadow-2xl transition-all duration-700 group-hover:border-[#C9A84C]/30">
-                   <div className="relative aspect-[3/4] overflow-hidden grayscale contrast-125 group-hover:grayscale-0 transition-all duration-1000">
+                 <motion.div 
+                   style={{ 
+                     rotateY: useTransform(scrollYProgress, [0.1, 0.3], [0, 15]),
+                     skewY: useTransform(scrollYProgress, [0.1, 0.3], [0, -5]),
+                   }}
+                   whileHover={{ scale: 1.02, rotateY: 20, skewY: -8 }}
+                   transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                   className="relative z-10 p-4 border border-white/10 bg-white/5 backdrop-blur-sm shadow-2xl transition-all duration-700 group-hover:border-[#C9A84C]/30"
+                 >
+                   <div className="relative aspect-[3/4] overflow-hidden grayscale contrast-125 group-hover:grayscale-0 transition-all duration-1000 origin-bottom">
                      <Image 
                        src="/images/director3.webp" 
                        alt="About CREDDA" 
@@ -69,10 +77,10 @@ export default function HomeClient({
                      />
                    </div>
                    {/* Signature / Légende flottante */}
-                   <div className="absolute -bottom-6 -right-6 bg-[#C9A84C] text-black p-6 font-serif italic text-sm">
+                   <div className="absolute -bottom-6 -right-6 bg-[#C9A84C] text-black p-6 font-serif italic text-sm shadow-2xl">
                       Penser l&apos;État de Droit.
                    </div>
-                 </div>
+                 </motion.div>
                </GSAPReveal>
             </div>
 
@@ -84,14 +92,14 @@ export default function HomeClient({
                   <span className="text-xs uppercase tracking-[0.6em] font-bold text-[#C9A84C]">{t('about.badge')}</span>
                 </div>
                 
-                <h2 className="text-6xl lg:text-9xl font-serif font-extrabold text-[#F5F2EC] leading-[0.85] tracking-tighter">
+                <h2 className="text-6xl lg:text-9xl font-serif font-extrabold text-foreground leading-[0.85] tracking-tighter">
                    {t.rich('about.title', { 
                     span: (chunks) => <span className="text-[#C9A84C] italic font-light">{chunks}</span>,
                     br: () => <br />
                   })}
                 </h2>
                 
-                <div className="grid md:grid-cols-2 gap-12 text-[#F5F2EC]/50 text-lg font-light leading-relaxed">
+                <div className="grid md:grid-cols-2 gap-12 text-muted-foreground text-lg font-light leading-relaxed">
                   <p className="border-l border-white/10 pl-8">
                     {t('about.description_p1')}
                   </p>
@@ -117,37 +125,56 @@ export default function HomeClient({
       </section>
 
       {/* 4. SECTIONS FONCTIONNELLES (Research & Clinical) */}
-      <section className="relative z-10 bg-[#111110] border-y border-white/5">
-        <FeaturedResearch research={featuredResearch} />
-        <ClinicalSection />
+      <section className="relative z-10 bg-card border-y border-border">
+        <div id="research">
+          <FeaturedResearch research={featuredResearch} />
+        </div>
+        <div id="clinical">
+          <ClinicalSection />
+        </div>
       </section>
 
       {/* 5. TEAM & SOCIAL PROOF */}
-      <TeamSection team={team} />
-      <TestimonialSection testimonials={testimonials} />
+      <div id="team">
+        <TeamSection team={team} />
+      </div>
+      <div id="publications">
+         <TestimonialSection testimonials={testimonials} />
+      </div>
 
       {/* 6. PARTNERS (Le ruban cinétique) */}
-      <section className="py-40 bg-[#080807]">
-        <div className="container mx-auto px-6 mb-20 text-center">
-            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#C9A84C]">{t('cta.collaboration')}</span>
-        </div>
-        <div className="relative flex overflow-x-hidden border-y border-white/5 py-12 bg-white/[0.02]">
-          <div className="animate-infinite-scroll flex items-center gap-32 whitespace-nowrap">
-            {[...(partners ?? []), ...(partners ?? []), ...(partners ?? [])].map((partner: string, i: number) => (
-              <div key={i} className="w-40 h-16 relative grayscale opacity-30 hover:opacity-100 hover:grayscale-0 transition-all duration-500">
-                <Image src={`/images/partenaires/${partner}`} alt="Partner" fill className="object-contain" />
-              </div>
-            ))}
+      <div id="gallery">
+        <section className="py-40 bg-background">
+          <div className="container mx-auto px-6 mb-20 text-center">
+              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#C9A84C]">{t('cta.collaboration')}</span>
           </div>
-        </div>
-      </section>
+          <div className="relative flex overflow-x-hidden border-y border-white/5 py-12 bg-white/[0.02]">
+            <div className="animate-infinite-scroll flex items-center gap-32 whitespace-nowrap">
+              {[...(partners ?? []), ...(partners ?? []), ...(partners ?? [])].map((partner: string, i: number) => (
+                <div key={i} className="w-40 h-16 relative grayscale opacity-30 hover:opacity-100 hover:grayscale-0 transition-all duration-500">
+                  <Image src={`/images/partenaires/${partner}`} alt="Partner" fill className="object-contain" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
 
       {/* 7. FINAL CALL TO ACTION (Monumental) */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Background cinématique */}
-        <div className="absolute inset-0 z-0">
-          <Image src="/images/hero-poster.webp" alt="CTA BG" fill className="object-cover opacity-10 scale-110" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080807] via-transparent to-[#080807]" />
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <motion.div
+            style={{ 
+              rotateY: useTransform(scrollYProgress, [0.8, 1], [-10, 10]),
+              skewY: useTransform(scrollYProgress, [0.8, 1], [-5, 5]),
+              scale: 1.1
+            }}
+            className="h-full w-full"
+          >
+            <Image src="/images/hero-poster.webp" alt="CTA BG" fill className="object-cover opacity-10" />
+          </motion.div>
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background" />
         </div>
         
         <div className="container mx-auto px-6 relative z-10 text-center">

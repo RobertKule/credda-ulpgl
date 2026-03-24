@@ -21,27 +21,28 @@ export default async function EventsPage({
 }) {
   const { locale } = await params;
   
-  const events = await sql`
+  const eventsData = await sql`
     SELECT e.*, 
       (SELECT json_agg(t) FROM "EventTranslation" t WHERE t."eventId" = e.id AND t.language = ${locale}) as translations
     FROM "Event" e
     ORDER BY e.date ASC
   `.catch(() => []);
+  const events = (eventsData || []) as any[];
 
   const now = new Date();
   const upcomingEvents = events.filter((e: any) => new Date(e.date) >= now);
   const pastEvents = events.filter((e: any) => new Date(e.date) < now);
 
   return (
-    <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">
+    <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
        <div className="max-w-7xl mx-auto">
           {/* HEADER */}
           <div className="text-center mb-24">
              <span className="text-[10px] uppercase tracking-[0.6em] font-outfit font-bold text-[#C9A84C] block mb-6">Agenda Académique</span>
-             <h1 className="text-5xl md:text-8xl font-fraunces font-extrabold text-[#F5F2EC] mb-10 leading-tight">
+             <h1 className="text-5xl md:text-8xl font-fraunces font-extrabold text-foreground mb-10 leading-tight">
                 Événements <span className="text-[#C9A84C] italic-accent">&</span> Conférences
              </h1>
-             <p className="text-lg text-[#F5F2EC]/40 max-w-2xl mx-auto font-outfit font-light">
+             <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-outfit font-light">
                 Participez à nos symposiums, ateliers cliniques et présentations de rapports annuels.
              </p>
           </div>
@@ -49,16 +50,16 @@ export default async function EventsPage({
           {/* UPCOMING EVENTS */}
           <section className="mb-32">
              <div className="flex items-center gap-6 mb-16">
-                <h2 className="text-2xl font-fraunces font-bold text-[#F5F2EC] shrink-0">À Venir</h2>
-                <div className="h-[1px] w-full bg-white/5" />
+                <h2 className="text-2xl font-fraunces font-bold text-foreground shrink-0">À Venir</h2>
+                <div className="h-[1px] w-full bg-border" />
              </div>
 
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {upcomingEvents.length > 0 ? upcomingEvents.map((event: any) => (
                   <EventCard key={event.id} event={event} locale={locale} />
                 )) : (
-                  <div className="col-span-full py-20 text-center bg-[#111110] border border-white/5">
-                     <p className="text-white/20 uppercase font-outfit font-bold tracking-widest text-[10px]">Aucun événement prévu prochainement</p>
+                  <div className="col-span-full py-20 text-center bg-card border border-border">
+                     <p className="text-muted-foreground uppercase font-outfit font-bold tracking-widest text-[10px]">Aucun événement prévu prochainement</p>
                   </div>
                 )}
              </div>
@@ -67,8 +68,8 @@ export default async function EventsPage({
           {/* PAST EVENTS */}
           <section>
              <div className="flex items-center gap-6 mb-16">
-                <h2 className="text-2xl font-fraunces font-bold text-white/30 shrink-0">Archives</h2>
-                <div className="h-[1px] w-full bg-white/5" />
+                <h2 className="text-2xl font-fraunces font-bold text-muted-foreground shrink-0">Archives</h2>
+                <div className="h-[1px] w-full bg-border" />
              </div>
 
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
@@ -91,30 +92,30 @@ function EventCard({ event, locale, isPast = false }: { event: any; locale: stri
   return (
     <Link 
       href={`/events/${event.slug || event.id}`}
-      className="group relative bg-[#111110] border border-white/5 block overflow-hidden transition-all duration-500 hover:border-[#C9A84C]/50"
+      className="group relative bg-card border border-border block overflow-hidden transition-all duration-500 hover:border-[#C9A84C]/50"
     >
        <div className="p-10">
           <div className="flex justify-between items-start mb-12">
-             <div className="flex items-center gap-4 bg-black/40 border border-white/5 p-4 pr-8">
+             <div className="flex items-center gap-4 bg-muted border border-border p-4 pr-8">
                 <div className="text-3xl font-fraunces font-extrabold text-[#C9A84C] leading-none">{day}</div>
-                <div className="h-8 w-[1px] bg-white/10" />
-                <div className="text-[10px] font-outfit font-bold uppercase tracking-widest text-white/40">{month}</div>
+                <div className="h-8 w-[1px] bg-border" />
+                <div className="text-[10px] font-outfit font-bold uppercase tracking-widest text-muted-foreground">{month}</div>
              </div>
              {!isPast && (
                <div className="w-3 h-3 rounded-full bg-[#C9A84C] animate-pulse" />
              )}
           </div>
 
-          <h3 className="text-2xl font-bricolage font-bold text-[#F5F2EC] mb-8 leading-tight group-hover:text-[#C9A84C] transition-colors">
+          <h3 className="text-2xl font-bricolage font-bold text-foreground mb-8 leading-tight group-hover:text-[#C9A84C] transition-colors">
             {t?.title || "Conference CREDDA"}
           </h3>
 
           <div className="space-y-4">
-             <div className="flex items-center gap-3 text-xs text-white/40 font-outfit font-light">
+             <div className="flex items-center gap-3 text-xs text-muted-foreground font-outfit font-light">
                 <MapPin size={14} className="text-[#C9A84C]" />
                 {event.location || "Goma, Campus ULPGL"}
              </div>
-             <div className="flex items-center gap-3 text-xs text-white/40 font-outfit font-light">
+             <div className="flex items-center gap-3 text-xs text-muted-foreground font-outfit font-light">
                 <Clock size={14} className="text-[#C9A84C]" />
                 {event.time || "09:00 - 16:00"}
              </div>

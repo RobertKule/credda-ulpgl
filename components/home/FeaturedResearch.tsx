@@ -50,7 +50,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                 {t('research.cta')}
                 <div className="absolute -bottom-2 left-0 w-full h-[1px] bg-[#C9A84C]/30 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
               </span>
-              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] group-hover:text-[#0C0C0A] transition-all duration-500">
+              <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] group-hover:text-[#0C0C0A] transition-all duration-500">
                 <ArrowRight size={16} />
               </div>
             </Link>
@@ -83,7 +83,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
               </div>
 
               <div className="p-12 flex flex-col flex-grow relative">
-                <div className="flex items-center gap-6 text-[9px] font-outfit font-bold uppercase tracking-widest text-foreground/30 mb-8">
+                <div className="flex items-center gap-6 text-[9px] font-outfit font-bold uppercase tracking-widest text-muted-foreground mb-8">
                   <div className="flex items-center gap-2">
                     <Clock size={12} className="text-[#C9A84C]" />
                     <span>March 2026</span>
@@ -98,7 +98,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                   {item.translations?.[0]?.title}
                 </h3>
 
-                <p className="text-foreground/50 text-base font-outfit font-light leading-relaxed mb-12 line-clamp-3">
+                <p className="text-muted-foreground text-base font-outfit font-light leading-relaxed mb-12 line-clamp-3">
                   {item.translations?.[0]?.excerpt || "Detailed analysis of legal frameworks and environmental challenges in the Great Lakes region..."}
                 </p>
 
@@ -107,7 +107,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                     href={`/research/${item.slug}`} 
                     className="flex items-center justify-between group/link"
                   >
-                    <span className="text-[11px] font-outfit font-bold uppercase tracking-[0.2em] text-foreground/40 group-hover/link:text-primary transition-colors">{t('research.read_more')}</span>
+                    <span className="text-[11px] font-outfit font-bold uppercase tracking-[0.2em] text-muted-foreground group-hover/link:text-primary transition-colors">{t('research.read_more')}</span>
                     <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center group-hover/link:bg-primary group-hover/link:border-primary group-hover/link:text-primary-foreground transition-all duration-700">
                       <ArrowRight size={16} />
                     </div>

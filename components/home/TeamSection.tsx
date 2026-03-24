@@ -79,7 +79,7 @@ export default function TeamSection({ team }: { team: any[] }) {
                                         <h3 className="text-xl font-fraunces font-extrabold text-foreground group-hover:text-primary transition-colors uppercase tracking-tight">
                                             {member.translations[0]?.name}
                                         </h3>
-                                        <p className="text-[10px] text-[#C9A84C]/40 font-outfit font-bold uppercase tracking-widest mt-2">
+                                        <p className="text-[10px] text-primary/60 font-outfit font-bold uppercase tracking-widest mt-2">
                                             {member.translations[0]?.role}
                                         </p>
                                     </div>

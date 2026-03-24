@@ -175,9 +175,19 @@ export default function AdminLogin() {
             <Button 
               type="submit" 
               disabled={isSubmitting} 
-              className="w-full h-16 bg-[#C9A84C] hover:bg-[#E8C97A] text-[#0C0C0A] rounded-none font-black uppercase tracking-[0.3em] text-[10px] transition-all"
+              className="w-full h-16 bg-[#C9A84C] hover:bg-[#E8C97A] text-[#0C0C0A] rounded-none font-black uppercase tracking-[0.3em] text-[10px] transition-all relative overflow-hidden group"
             >
-              {isSubmitting ? <Loader2 className="animate-spin" size={18} /> : t('right.submit')}
+              {isSubmitting ? (
+                <div className="flex items-center gap-3">
+                  <Loader2 className="animate-spin" size={20} />
+                  <span>{t('right.submitting')}</span>
+                </div>
+              ) : (
+                <span className="flex items-center gap-2">
+                  {t('right.submit')}
+                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                </span>
+              )}
             </Button>
           </form>
 

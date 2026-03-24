@@ -1,7 +1,7 @@
 // components/home/ClinicalSection.tsx
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "@/navigation";
 import { TreePine, Scale, MapPin, ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -10,6 +10,7 @@ import GSAPReveal from "@/components/shared/GSAPReveal";
 
 export default function ClinicalSection() {
   const t = useTranslations('HomePage');
+  const { scrollYProgress } = useScroll();
   
   return (
     <section className="py-40 bg-card text-foreground relative overflow-hidden">
@@ -82,14 +83,22 @@ export default function ClinicalSection() {
             </GSAPReveal>
           </motion.div>
 
-          <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-sm ring-1 ring-border">
+          <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-sm ring-1 ring-border group">
              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 opacity-60" />
-             <Image 
-                src="/images/clinical-hero.webp" 
-                alt="Clinical Field Work" 
-                fill 
-                className="object-cover grayscale transition-all duration-[2000ms] hover:grayscale-0 hover:scale-110"
-              />
+             <motion.div
+               style={{ 
+                 rotateY: useTransform(scrollYProgress, [0.3, 0.6], [10, -10]),
+                 skewY: useTransform(scrollYProgress, [0.3, 0.6], [5, -5]),
+               }}
+               className="h-full w-full"
+             >
+               <Image 
+                  src="/images/clinical-hero.webp" 
+                  alt="Clinical Field Work" 
+                  fill 
+                  className="object-cover grayscale transition-all duration-[2000ms] group-hover:grayscale-0 group-hover:scale-110"
+                />
+             </motion.div>
             
             {/* Impact Badge */}
             <GSAPReveal direction="left" delay={0.5} className="absolute bottom-12 left-0 bg-primary p-10 z-20 max-w-[280px] shadow-2xl">

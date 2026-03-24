@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Play, Pause, Volume2, VolumeX, Maximize, EyeOff, Eye,
   ArrowRight, Landmark, Target, Globe2, ShieldCheck, MapPin, 
   ChevronDown, Scale, BookOpen, Quote
 } from "lucide-react";
-import ReactPlayer from "react-player";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
@@ -17,6 +16,18 @@ export default function PremiumAboutPage() {
   const [isMuted, setIsMuted] = useState(true);
   const [isCinemaMode, setIsCinemaMode] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   // Gestion du scroll pour l'élégance du header
   useEffect(() => {
@@ -26,33 +37,44 @@ export default function PremiumAboutPage() {
   }, []);
 
   return (
-    <main className="bg-[#080807] text-[#F5F2EC] selection:bg-[#C9A84C] selection:text-black">
+    <main className="bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
       
       {/* --- 1. HERO IMMERSIF (CINEMATIC) --- */}
       <section className="relative h-[110vh] w-full overflow-hidden flex items-center justify-center">
         
         {/* BACKGROUND VIDEO LAYER */}
         <div className="absolute inset-0 z-0">
-          <ReactPlayer
-            url="https://www.youtube.com/watch?v=V-MVLqjQMIc"
-            playing={isPlaying}
+          <video
+            ref={videoRef}
+            autoPlay
             muted={isMuted}
             loop
-            width="100%"
-            height="115%" // Un peu plus haut pour cacher les bords YouTube
-            style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%) scale(1.2)' }}
-            config={{ youtube: { playerVars: { controls: 0, showinfo: 0, rel: 0, start: 12 } } }}
-            light="/images/hero-poster.webp"
-          />
+            playsInline
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 
+              ${isCinemaMode ? 'scale-100' : 'scale-110 opacity-60'}`}
+          >
+            <source src="/video/hero-bg.mp4" type="video/mp4" />
+          </video>
           
           {/* Overlay de texture & Gradient */}
           <div className={`absolute inset-0 transition-all duration-1000 z-10 
-            ${isCinemaMode ? 'bg-black/20' : 'bg-[#080807]/60 backdrop-blur-[2px]'}`} 
+            ${isCinemaMode ? 'bg-black/10' : 'bg-background/70 backdrop-blur-[2px]'}`} 
           />
-          <div className="absolute inset-0 z-20 bg-gradient-to-b from-transparent via-transparent to-[#080807]" />
-          
-          {/* Effet de grain argentique (Overlay CSS) */}
-          <div className="absolute inset-0 z-25 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+          <div className="absolute inset-0 z-20 bg-gradient-to-b from-transparent via-transparent to-background" />
+        </div>
+
+        {/* CUSTOM PLAY/PAUSE OVERLAY */}
+        <div 
+          className="absolute inset-0 z-40 flex items-center justify-center group cursor-pointer"
+          onClick={togglePlay}
+        >
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileHover={{ opacity: 1, scale: 1 }}
+            className="w-24 h-24 rounded-full border border-white/20 bg-black/20 backdrop-blur-xl flex items-center justify-center text-white transition-all group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] group-hover:text-black"
+          >
+            {isPlaying ? <Pause size={32} /> : <Play size={32} className="ml-2" />}
+          </motion.div>
         </div>
 
         {/* CONTENT LAYER */}
@@ -63,36 +85,28 @@ export default function PremiumAboutPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
-              className="relative z-30 container mx-auto px-6 text-center"
+              className="relative z-30 container mx-auto px-6 text-center pointer-events-none"
             >
               <Badge className="bg-transparent border border-[#C9A84C]/30 text-[#C9A84C] rounded-none px-8 py-2 text-[10px] tracking-[0.5em] uppercase mb-12">
                 Fondé en 2008 • Excellence Académique
               </Badge>
               
-              <h1 className="text-7xl md:text-9xl font-serif font-light leading-none mb-12">
+              <h1 className="text-7xl md:text-[10rem] font-serif font-light leading-none mb-12 tracking-tighter">
                 Penser le <span className="italic text-[#C9A84C]">Droit</span>,<br />
                 Bâtir l&apos;<span className="font-bold">Avenir</span>.
               </h1>
               
               <div className="max-w-2xl mx-auto h-[1px] bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent my-12" />
               
-              <p className="max-w-xl mx-auto text-lg text-[#F5F2EC]/50 font-light leading-relaxed">
+              <p className="max-w-xl mx-auto text-lg text-muted-foreground font-light leading-relaxed">
                 Le CREDDA est l&apos;épicentre de la recherche juridique en RDC, fusionnant rigueur scientifique et engagement social.
               </p>
-
-              <motion.div 
-                animate={{ y: [0, 10, 0] }} 
-                transition={{ repeat: Infinity, duration: 3 }}
-                className="absolute bottom-[-15vh] left-1/2 -translate-x-1/2 text-[#C9A84C]/40"
-              >
-                <ChevronDown size={32} />
-              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
 
         {/* FLOATING CONTROLS (Glassmorphism) */}
-        <div className="absolute bottom-12 right-12 z-50 flex items-center gap-2 p-2 bg-white/5 backdrop-blur-2xl border border-white/10">
+        <div className="absolute bottom-12 right-12 z-50 flex items-center gap-2 p-2 bg-muted/20 backdrop-blur-2xl border border-border">
           <ControlButton 
             active={isCinemaMode}
             onClick={() => setIsCinemaMode(!isCinemaMode)} 
@@ -100,7 +114,6 @@ export default function PremiumAboutPage() {
             label={isCinemaMode ? "Infos" : "Cinéma"}
           />
           <div className="w-[1px] h-4 bg-white/10 mx-1" />
-          <ControlButton onClick={() => setIsPlaying(!isPlaying)} icon={isPlaying ? <Pause size={18} /> : <Play size={18} />} />
           <ControlButton onClick={() => setIsMuted(!isMuted)} icon={isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />} />
         </div>
       </section>
@@ -113,7 +126,7 @@ export default function PremiumAboutPage() {
             <h2 className="text-5xl font-serif leading-tight">
               Une vision <br /><span className="italic">transformatrice</span> du droit.
             </h2>
-            <p className="text-[#F5F2EC]/50 leading-loose font-light">
+            <p className="text-muted-foreground leading-loose font-light">
               Au-delà des textes, nous croyons en un droit vivant. Un droit qui protège les écosystèmes du Bassin du Congo et garantit la dignité des peuples autochtones. 
               Le CREDDA n&apos;est pas seulement un laboratoire, c&apos;est un bouclier juridique.
             </p>
@@ -134,21 +147,21 @@ export default function PremiumAboutPage() {
       </section>
 
       {/* --- 3. FONDEMENTS (GRID BRUTALISTE) --- */}
-      <section className="py-40 bg-[#111110]">
+      <section className="py-40 bg-card">
         <div className="container mx-auto px-6">
           <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
             <h2 className="text-6xl font-serif italic">Les Piliers <br /><span className="not-italic font-bold">Légaux</span></h2>
-            <p className="max-w-md text-[#F5F2EC]/40 border-l border-[#C9A84C] pl-6">
+            <p className="max-w-md text-muted-foreground border-l border-primary pl-6">
               Nos actions s&apos;inscrivent dans le respect strict des cadres normatifs nationaux et internationaux.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-0 border border-white/5">
             {["Constitution RDC", "Loi 22/030 (Autochtones)", "Charte Africaine", "Convention Diversité Bio", "Déclaration ONU", "Droit de l'Environnement"].map((title, i) => (
-              <div key={i} className="group p-16 border border-white/5 hover:bg-[#C9A84C] transition-all duration-500 cursor-default">
-                <Landmark size={24} className="mb-8 text-[#C9A84C] group-hover:text-black transition-colors" />
-                <h3 className="text-xl font-bold group-hover:text-black transition-colors">{title}</h3>
-                <p className="mt-4 text-sm text-[#F5F2EC]/40 group-hover:text-black/60 transition-colors">Référence fondamentale de nos analyses juridiques et cliniques.</p>
+              <div key={i} className="group p-16 border border-border hover:bg-primary transition-all duration-500 cursor-default">
+                <Landmark size={24} className="mb-8 text-primary group-hover:text-primary-foreground transition-colors" />
+                <h3 className="text-xl font-bold group-hover:text-primary-foreground transition-colors">{title}</h3>
+                <p className="mt-4 text-sm text-muted-foreground group-hover:text-primary-foreground/60 transition-colors">Référence fondamentale de nos analyses juridiques et cliniques.</p>
               </div>
             ))}
           </div>
@@ -158,8 +171,8 @@ export default function PremiumAboutPage() {
       {/* --- 4. CITATION (BREAK) --- */}
       <section className="py-40 flex justify-center text-center">
          <div className="max-w-4xl px-6">
-            <Quote size={60} className="mx-auto mb-12 text-[#C9A84C]/20" />
-            <h3 className="text-3xl md:text-5xl font-serif italic leading-relaxed text-[#F5F2EC]/80">
+            <Quote size={60} className="mx-auto mb-12 text-primary/10" />
+            <h3 className="text-3xl md:text-5xl font-serif italic leading-relaxed text-foreground/80">
               &quot;Le droit ne doit pas seulement être dit, il doit être vécu au service de la justice climatique et sociale.&quot;
             </h3>
          </div>
@@ -184,11 +197,11 @@ function ControlButton({ onClick, icon, label, active }: any) {
 
 function StatCard({ icon, number, label }: any) {
   return (
-    <div className="p-12 bg-[#111110] border border-white/5 flex flex-col items-start gap-6 hover:border-[#C9A84C]/40 transition-all">
-      <div className="text-[#C9A84C]">{icon}</div>
+    <div className="p-12 bg-muted border border-border flex flex-col items-start gap-6 hover:border-primary/40 transition-all">
+      <div className="text-primary">{icon}</div>
       <div>
         <div className="text-4xl font-bold mb-1">{number}</div>
-        <div className="text-[10px] uppercase tracking-widest text-[#F5F2EC]/30 font-bold">{label}</div>
+        <div className="text-[10px] uppercase tracking-widest text-muted-foreground/60 font-bold">{label}</div>
       </div>
     </div>
   );
