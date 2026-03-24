@@ -53,9 +53,9 @@ async function ResearchContent({ locale }: { locale: string }) {
   `.catch(() => []);
 
   return (
-    <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">
+    <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
       {/* 1. HEADER */}
-      <header className="max-w-7xl mx-auto mb-20 text-center relative overflow-hidden py-20 px-10 border border-border bg-card">
+      <header className="max-w-7xl mx-auto mb-20 text-center relative overflow-hidden py-20 px-10 border border-border bg-card shadow-sm">
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9A84C]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
         
         <span className="text-[10px] uppercase tracking-[0.6em] font-black text-[#C9A84C] block mb-8">Intelligence & Analyse</span>
@@ -73,9 +73,9 @@ async function ResearchContent({ locale }: { locale: string }) {
            <ResearchCard key={doc.id} doc={doc} locale={locale} />
         )) : (
           <div className="col-span-full py-40 text-center border-2 border-dashed border-border">
-             <SearchX size={64} className="mx-auto text-white/10 mb-8" />
-             <h3 className="text-2xl font-serif font-black text-white mb-4">Foundations of Knowledge</h3>
-             <p className="text-white/30 max-w-sm mx-auto font-light">Nos archives numériques sont en cours d'expansion. Revenez bientôt pour les derniers rapports.</p>
+             <SearchX size={64} className="mx-auto text-foreground/10 mb-8" />
+             <h3 className="text-2xl font-serif font-black text-foreground mb-4">Foundations of Knowledge</h3>
+             <p className="text-muted-foreground max-w-sm mx-auto font-light">Nos archives numériques sont en cours d'expansion. Revenez bientôt pour les derniers rapports.</p>
           </div>
         )}
       </section>
@@ -88,7 +88,7 @@ async function ResearchContent({ locale }: { locale: string }) {
          <p className="text-[#0C0C0A]/60 text-lg font-medium max-w-2xl mx-auto mb-12">
             Le CREDDA accueille les contributions de chercheurs externes. Soumettez vos travaux pour une parution dans nos prochaines éditions.
          </p>
-         <Link href="/contact" className="inline-flex items-center gap-4 bg-[#0C0C0A] text-white px-10 py-6 font-black uppercase text-[10px] tracking-widest hover:px-12 transition-all">
+         <Link href="/contact" className="inline-flex items-center gap-4 bg-background text-foreground px-10 py-6 font-black uppercase text-[10px] tracking-widest hover:bg-foreground hover:text-background transition-all border border-foreground/10">
             Soumettre un Article <ArrowRight size={14} />
          </Link>
       </section>
@@ -104,7 +104,7 @@ function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
           {doc.image ? (
             <Image src={doc.image} alt="Research paper" fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-white/5 border-b border-white/5">
+            <div className="w-full h-full flex items-center justify-center text-foreground/5 border-b border-border/5">
                <FileText size={100} strokeWidth={0.5} />
             </div>
           )}
@@ -115,7 +115,7 @@ function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
           </div>
        </div>
        <div className="p-10">
-          <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-white/20 mb-6">
+          <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground/40 mb-6">
              <span>{new Date(doc.createdAt).getFullYear()} Edition</span>
              <span className="w-1 h-1 bg-[#C9A84C] rounded-full" />
              <span className="flex items-center gap-2"><Clock size={12} /> 12 Min Read</span>

@@ -28,17 +28,17 @@ export default async function GalleryPage({
   `.catch(() => []);
 
   return (
-    <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">
+    <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
        <div className="max-w-7xl mx-auto">
           {/* HEADER */}
-          <div className="flex flex-col md:flex-row items-baseline justify-between gap-6 mb-20 pb-12 border-b border-white/5">
+          <div className="flex flex-col md:flex-row items-baseline justify-between gap-6 mb-20 pb-12 border-b border-border/40">
              <div className="max-w-xl">
-                <span className="text-[10px] uppercase tracking-[0.6em] font-outfit font-bold text-[#C9A84C] block mb-6">Photothèque</span>
-                <h1 className="text-6xl md:text-8xl font-fraunces font-extrabold text-[#F5F2EC] leading-[0.85]">
-                   Le CREDDA en <span className="text-[#C9A84C] italic-accent">Action</span>
+                <span className="text-[10px] uppercase tracking-[0.6em] font-outfit font-bold text-primary block mb-6">Photothèque</span>
+                <h1 className="text-6xl md:text-8xl font-fraunces font-extrabold text-foreground leading-[0.85]">
+                   Le CREDDA en <span className="text-primary italic-accent">Action</span>
                 </h1>
              </div>
-             <p className="text-[#F5F2EC]/30 font-outfit font-light max-w-xs text-sm leading-relaxed">
+             <p className="text-muted-foreground max-w-xs text-sm leading-relaxed">
                 Archives visuelles de nos recherches, cliniques juridiques et collaborations internationales.
              </p>
           </div>
@@ -48,8 +48,8 @@ export default async function GalleryPage({
              {images.length > 0 ? images.map((img: any) => (
                <GalleryItem key={img.id} img={img} />
              )) : (
-               <div className="col-span-full py-40 text-center border border-dashed border-white/10">
-                  <p className="text-white/10 uppercase font-outfit font-bold tracking-widest text-xs">Galerie en cours de synchronisation</p>
+               <div className="col-span-full py-40 text-center border border-dashed border-border">
+                  <p className="text-muted-foreground/30 uppercase font-outfit font-bold tracking-widest text-xs">Galerie en cours de synchronisation</p>
                </div>
              )}
           </div>
@@ -62,7 +62,7 @@ function GalleryItem({ img }: { img: any }) {
   const t = img.translations?.[0];
   
   return (
-    <div className="relative group overflow-hidden break-inside-avoid bg-[#111110] border border-white/5">
+    <div className="relative group overflow-hidden break-inside-avoid bg-card border border-border shadow-xl">
        <img 
           src={img.src} 
           alt={t?.title || "Gallery Image"} 
@@ -73,10 +73,10 @@ function GalleryItem({ img }: { img: any }) {
        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
           <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full bg-[#C9A84C] flex items-center justify-center text-[#0C0C0A]">
+                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground">
                    <ImageIcon size={14} />
                 </div>
-                <span className="text-[9px] font-outfit font-bold uppercase tracking-widest text-[#C9A84C]">
+                <span className="text-[9px] font-outfit font-bold uppercase tracking-widest text-primary">
                   {img.category || "Action"}
                 </span>
              </div>
@@ -88,7 +88,7 @@ function GalleryItem({ img }: { img: any }) {
              </p>
           </div>
           <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-             <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white/60 hover:text-white transition-colors cursor-pointer border border-white/10">
+             <div className="w-10 h-10 rounded-full bg-background/10 backdrop-blur-md flex items-center justify-center text-foreground/60 hover:text-foreground transition-colors cursor-pointer border border-border/10">
                 <Maximize2 size={16} />
              </div>
           </div>
