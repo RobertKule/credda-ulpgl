@@ -92,7 +92,7 @@ export default function Navbar() {
   );
 
   return (
-    <>
+    <div className="overflow-y-scroll h-screen">
        {/* 1. TOP TICKER - Effet d'urgence et prestige */}
       <div className="fixed top-0 w-full z-[100] bg-[#0C0C0A] border-b border-white/5 py-1.5 overflow-hidden">
         <div className="flex whitespace-nowrap animate-ticker">
@@ -229,7 +229,7 @@ export default function Navbar() {
             </div>
 
             {/* Liens du menu mobile - Flex 1 (Scroll area) */}
-            <nav className="min-h-0 flex-1 space-y-10 overflow-x-hidden overflow-y-auto overscroll-y-contain px-5 py-8 scrollbar-hide sm:space-y-12 sm:px-8 sm:py-10">
+            <nav className="min-h-0 flex-1 space-y-10 overflow-x-hidden overflow-y-auto px-5 py-8  sm:space-y-12 sm:px-8 sm:py-10">
               <MobileGroup label="Expertise" links={expertiseLinks} pathname={pathname} activeSection={activeSection} setIsOpen={setIsOpen} />
               <MobileGroup label="Institution" links={institutionLinks} pathname={pathname} activeSection={activeSection} setIsOpen={setIsOpen} />
             </nav>
@@ -308,7 +308,7 @@ export default function Navbar() {
       </AnimatePresence>
 
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} locale={locale} />
-    </>
+      </div>
   );
 }
 
@@ -405,4 +405,5 @@ function MobileGroup({ label, links, pathname, activeSection, setIsOpen }: any) 
       </div>
     </div>
   );
+
 }
