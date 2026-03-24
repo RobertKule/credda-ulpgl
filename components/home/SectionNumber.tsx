@@ -5,8 +5,16 @@ export function SectionNumber({ number }: { number: string }) {
   const ref = useRef<HTMLDivElement>(null)
   const [visible, setVisible] = useState(false)
   const [offset, setOffset] = useState(0)
+  const [reduceMotion, setReduceMotion] = useState(false)
 
   useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) {
+      setReduceMotion(true)
+      setVisible(true)
+      setOffset(0)
+      return
+    }
     const el = ref.current
     if (!el) return
     const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true) }, { threshold: 0.1 })
@@ -28,8 +36,8 @@ export function SectionNumber({ number }: { number: string }) {
       lineHeight: 1,
       color: '#C9A84C',
       opacity: visible ? 0.07 : 0,
-      transform: `translateY(${visible ? offset : 24}px)`,
-      transition: 'opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1)',
+      transform: reduceMotion ? 'none' : `translateY(${visible ? offset : 24}px)`,
+      transition: reduceMotion ? 'none' : 'opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1)',
       userSelect: 'none',
       pointerEvents: 'none',
       flexShrink: 0,

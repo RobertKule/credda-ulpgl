@@ -1,7 +1,8 @@
+'use client'
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Link } from "@/navigation";
-import { ArrowRight, Play, Volume2, VolumeX, Loader2 } from "lucide-react";
+import { ArrowRight, Play, Volume2, VolumeX } from "lucide-react";
 import { useTranslations } from "next-intl";
 import dynamic from 'next/dynamic';
 
@@ -19,13 +20,28 @@ export default function Hero() {
   const t = useTranslations('HomePage');
   const [isMuted, setIsMuted] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [globeReady, setGlobeReady] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { scrollY } = useScroll();
-  const titleY = useTransform(scrollY, [0, 500], [0, -100]);
-  const descY = useTransform(scrollY, [0, 500], [0, -50]);
-  const videoOpacity = useTransform(scrollY, [0, 500], [0.6, 0.2]);
+  const titleY = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : -100]);
+  const descY = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : -50]);
+  const videoOpacity = useTransform(scrollY, [0, 500], [0.6, reduceMotion ? 0.6 : 0.2]);
 
   // Ensure video plays and handles loading state
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setReduceMotion(prefersReducedMotion);
+    setGlobeReady(prefersReducedMotion);
+
+    if (!prefersReducedMotion) {
+      const globeTimer = setTimeout(() => {
+        setGlobeReady(true);
+      }, 120);
+      return () => clearTimeout(globeTimer);
+    }
+  }, []);
+
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch(err => {
@@ -102,7 +118,7 @@ export default function Hero() {
           <motion.div
             key={i}
             initial={{ x: Math.random() * 100 + "%", y: Math.random() * 100 + "%" }}
-            animate={{ 
+            animate={reduceMotion ? undefined : {
               x: [null, Math.random() * 100 + "%", Math.random() * 100 + "%"],
               y: [null, Math.random() * 100 + "%", Math.random() * 100 + "%"],
             }}
@@ -172,8 +188,8 @@ export default function Hero() {
           {/* LEFT COLUMN (60%) */}
           <motion.div
             style={{ 
-              rotateX: mousePos.y * -15, 
-              rotateY: mousePos.x * 15,
+              rotateX: reduceMotion ? 0 : mousePos.y * -15,
+              rotateY: reduceMotion ? 0 : mousePos.x * 15,
               transformStyle: "preserve-3d"
             }}
             transition={{ type: "spring", stiffness: 100, damping: 30 }}
@@ -253,8 +269,8 @@ export default function Hero() {
           {/* RIGHT COLUMN (40% GLOBE) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={isLoaded ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-            transition={{ duration: 1.2, delay: 0.5, ease: [0.19, 1, 0.22, 1] }}
+            animate={globeReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+            transition={reduceMotion ? { duration: 0 } : { duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
             className="hidden lg:flex w-full lg:w-[40%] justify-center items-center z-10"
           >
             <AfricaGlobe />

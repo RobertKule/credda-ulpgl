@@ -79,7 +79,7 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
                                 </button>
                                 <button 
                                   onClick={scrollNext} 
-                                  className="w-14 h-14 rounded-full border border-[#C9A84C] bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C] hover:bg-[#C9A84C]/20 transition-all duration-300"
+                                  className="w-14 h-14 rounded-full border border-[#C9A84C] bg-[#C9A84C] flex items-center justify-center text-[#0D0D0B] hover:bg-[#C9A84C]/90 transition-all duration-300"
                                 >
                                     <ArrowRight size={20} />
                                 </button>

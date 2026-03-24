@@ -10,10 +10,9 @@ import TestimonialSection from "@/components/home/TestimonialSection";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Quote, ArrowRight, ExternalLink, ShieldCheck, Scale, Landmark } from "lucide-react";
+import { ArrowRight, ExternalLink, ShieldCheck } from "lucide-react";
 import { Link } from "@/navigation";
 import GSAPReveal from "@/components/shared/GSAPReveal";
-import { getTranslations } from "next-intl/server";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
 import { SectionNumber } from "@/components/home/SectionNumber";
 
@@ -28,6 +27,10 @@ export default function HomeClient({
   const t = useTranslations('HomePage');
   const { scrollYProgress } = useScroll();
   const yParallax = useTransform(scrollYProgress, [0, 1], [0, -200]);
+  const aboutRotateY = useTransform(scrollYProgress, [0.1, 0.3], [0, 15]);
+  const aboutSkewY = useTransform(scrollYProgress, [0.1, 0.3], [0, -5]);
+  const ctaRotateY = useTransform(scrollYProgress, [0.8, 1], [-10, 10]);
+  const ctaSkewY = useTransform(scrollYProgress, [0.8, 1], [-5, 5]);
 
   return (
     <main className="flex flex-col w-full bg-background overflow-hidden text-foreground selection:bg-primary selection:text-primary-foreground">
@@ -37,12 +40,14 @@ export default function HomeClient({
 
       {/* 2. STATS SECTION (Preuve sociale) */}
       <div className="relative z-20 -mt-10">
-        <Stats 
-          years={new Date().getFullYear() - 2008} 
-          totalResources={dbStats?.totalResources || 150} 
-          partners={(partners ?? []).length} 
-          clinicalCases={dbStats?.clinicalCases || 120}
-        />
+        <ScrollReveal>
+          <Stats 
+            years={new Date().getFullYear() - 2008} 
+            totalResources={dbStats?.totalResources || 150} 
+            partners={(partners ?? []).length} 
+            clinicalCases={dbStats?.clinicalCases || 120}
+          />
+        </ScrollReveal>
       </div>
 
       {/* 3. ABOUT / MANIFESTO (L'âme du CREDDA) */}
@@ -66,8 +71,8 @@ export default function HomeClient({
                <GSAPReveal direction="right">
                  <motion.div 
                    style={{ 
-                     rotateY: useTransform(scrollYProgress, [0.1, 0.3], [0, 15]),
-                     skewY: useTransform(scrollYProgress, [0.1, 0.3], [0, -5]),
+                     rotateY: aboutRotateY,
+                     skewY: aboutSkewY,
                    }}
                    whileHover={{ scale: 1.02, rotateY: 20, skewY: -8 }}
                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
@@ -206,8 +211,8 @@ export default function HomeClient({
         <div className="absolute inset-0 z-0 overflow-hidden">
           <motion.div
             style={{ 
-              rotateY: useTransform(scrollYProgress, [0.8, 1], [-10, 10]),
-              skewY: useTransform(scrollYProgress, [0.8, 1], [-5, 5]),
+              rotateY: ctaRotateY,
+              skewY: ctaSkewY,
               scale: 1.1
             }}
             className="h-full w-full"

@@ -158,10 +158,27 @@ export default function PremiumAboutPage() {
         </div>
       </div>
 
-      {/* --- 3. FONDEMENTS (PILIERS) --- */}
-      <div className="container mx-auto px-6 py-40 bg-card">
+      {/* --- 3. EQUIPE/CITATION (BREAK) --- */}
+      <div className="container mx-auto px-6 py-40">
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
           <SectionNumber number="03" />
+          <ScrollReveal className="w-full">
+            <section className="flex justify-center text-center">
+               <div className="max-w-4xl px-6">
+                  <Quote size={60} className="mx-auto mb-12 text-primary/10" />
+                  <h3 className="text-3xl md:text-5xl font-serif italic leading-relaxed text-foreground/80">
+                    &quot;Le droit ne doit pas seulement être dit, il doit être vécu au service de la justice climatique et sociale.&quot;
+                  </h3>
+               </div>
+            </section>
+          </ScrollReveal>
+        </div>
+      </div>
+
+      {/* --- 4. FONDEMENTS (PILIERS) --- */}
+      <div className="container mx-auto px-6 py-40 bg-card">
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
+          <SectionNumber number="04" />
           <ScrollReveal className="w-full">
             <section className="bg-card">
               <div className="mb-24 flex flex-col md:flex-row md:items-end justify-between gap-8">
@@ -180,23 +197,6 @@ export default function PremiumAboutPage() {
                   </div>
                 ))}
               </div>
-            </section>
-          </ScrollReveal>
-        </div>
-      </div>
-
-      {/* --- 4. EQUIPE/CITATION (BREAK) --- */}
-      <div className="container mx-auto px-6 py-40">
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
-          <SectionNumber number="04" />
-          <ScrollReveal className="w-full">
-            <section className="flex justify-center text-center">
-               <div className="max-w-4xl px-6">
-                  <Quote size={60} className="mx-auto mb-12 text-primary/10" />
-                  <h3 className="text-3xl md:text-5xl font-serif italic leading-relaxed text-foreground/80">
-                    &quot;Le droit ne doit pas seulement être dit, il doit être vécu au service de la justice climatique et sociale.&quot;
-                  </h3>
-               </div>
             </section>
           </ScrollReveal>
         </div>

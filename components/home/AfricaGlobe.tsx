@@ -7,6 +7,7 @@ export default function AfricaGlobe() {
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const ctx = canvas.getContext('2d')!
     const W = canvas.width = 560
     const H = canvas.height = 560
@@ -49,7 +50,7 @@ export default function AfricaGlobe() {
       alpha: Math.random() * 0.5 + 0.1,
     }))
 
-    let rot = 0, t = 0, raf: number
+    let rot = 0, t = 0, raf = 0
 
     function project(lat: number, lon: number, rotation: number) {
       const phi = (lat * Math.PI) / 180
@@ -180,13 +181,16 @@ export default function AfricaGlobe() {
         }
       })
 
+      if (reduceMotion) return
       rot += 0.12
       t += 0.016
       raf = requestAnimationFrame(draw)
     }
 
     draw()
-    return () => cancelAnimationFrame(raf)
+    return () => {
+      if (raf) cancelAnimationFrame(raf)
+    }
   }, [])
 
   return (
