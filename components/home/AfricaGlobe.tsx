@@ -106,8 +106,9 @@ export default function AfricaGlobe() {
     const canvas = canvasRef.current
     if (!canvas) return
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
+    const context = canvas.getContext('2d')
+    if (!context) return
+    const ctx: CanvasRenderingContext2D = context
 
     const palette: Palette = isLight ? paletteLight : paletteDark
 

@@ -1,6 +1,8 @@
 import { sql, db } from "@/lib/db";
-import { revalidatePath } from "next/cache";
 import { safeQuery } from "@/lib/db-safe";
+
+/** Pas de revalidatePath ici : ce module est importé par des Client Components.
+ *  Utiliser router.refresh() côté client après mutation (voir ClinicalCaseForm). */
 
 export interface ClinicalCaseResult {
   success: boolean;
@@ -45,7 +47,6 @@ export async function submitClinicalCase(formData: any): Promise<ClinicalCaseRes
 
     // Optionnel : Notification (pourrait être ajouté ici via Resend)
 
-    revalidatePath("/admin/clinical");
     return { success: true, data: newCase };
   } catch (error) {
     console.error("❌ Erreur soumission cas clinique:", error);
@@ -108,7 +109,6 @@ export async function updateClinicalCaseStatus(id: string, status: string): Prom
       where: { id },
       data: { status: status as any }
     });
-    revalidatePath("/admin/clinical");
     return { success: true, data: updated };
   } catch (error) {
     return { success: false, error: "Erreur de mise à jour" };
@@ -118,7 +118,6 @@ export async function updateClinicalCaseStatus(id: string, status: string): Prom
 export async function deleteClinicalCase(id: string): Promise<ClinicalCaseResult> {
   try {
     await db.clinicalCase.delete({ where: { id } });
-    revalidatePath("/admin/clinical");
     return { success: true };
   } catch (error) {
     return { success: false, error: "Erreur de suppression" };
@@ -154,8 +153,6 @@ export async function updateClinicalCase(id: string, formData: any): Promise<Cli
       });
     }
 
-    revalidatePath("/admin/clinical");
-    revalidatePath(`/admin/clinical/${id}`);
     return { success: true, data: updated };
   } catch (error) {
     console.error("❌ Erreur mise à jour cas clinique:", error);
@@ -172,7 +169,6 @@ export async function addCaseNote(id: string, content: string, clinicianId: stri
         authorId: clinicianId
       }
     });
-    revalidatePath(`/admin/clinical/${id}`);
     return { success: true, data: note };
   } catch (error) {
     return { success: false, error: "Erreur d'ajout de note" };
