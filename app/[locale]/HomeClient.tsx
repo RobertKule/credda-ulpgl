@@ -1,4 +1,3 @@
-// app/[locale]/HomeClient.tsx
 "use client";
 
 import React from "react";
@@ -10,96 +9,104 @@ import TeamSection from "@/components/home/TeamSection";
 import TestimonialSection from "@/components/home/TestimonialSection";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Quote, ArrowRight, ExternalLink } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Quote, ArrowRight, ExternalLink, ShieldCheck, Scale, Landmark } from "lucide-react";
 import { Link } from "@/navigation";
 import GSAPReveal from "@/components/shared/GSAPReveal";
-
+import { getTranslations } from "next-intl/server";
 
 export default function HomeClient({
   locale,
   featuredResearch = [],
-  latestReports = [],
   team = [],
-  galleryImages = [],
-  testimonials = [],
   partners = [],
-  dbStats = { totalResources: 0, publications: 0, clinicalArticles: 0, researchArticles: 0, clinicalCases: 0 }
+  testimonials = [],
+  dbStats = { totalResources: 0, clinicalCases: 0 }
 }: any) {
   const t = useTranslations('HomePage');
+  const { scrollYProgress } = useScroll();
+  const yParallax = useTransform(scrollYProgress, [0, 1], [0, -200]);
 
   return (
-    <main className="flex flex-col w-full bg-background overflow-hidden text-foreground">
-      {/* 1. HERO SECTION */}
+    <main className="flex flex-col w-full bg-[#080807] overflow-hidden text-[#F5F2EC] selection:bg-[#C9A84C] selection:text-black">
+      
+      {/* 1. HERO SECTION (L'entrée magistrale) */}
       <Hero />
 
-      {/* 2. STATS SECTION */}
-      <Stats 
-        years={new Date().getFullYear() - 2008} 
-        totalResources={dbStats?.totalResources || 150} 
-        partners={(partners ?? []).length} 
-        clinicalCases={dbStats?.clinicalCases || 120}
-      />
+      {/* 2. STATS SECTION (Preuve sociale) */}
+      <div className="relative z-20 -mt-10">
+        <Stats 
+          years={new Date().getFullYear() - 2008} 
+          totalResources={dbStats?.totalResources || 150} 
+          partners={(partners ?? []).length} 
+          clinicalCases={dbStats?.clinicalCases || 120}
+        />
+      </div>
 
-      {/* 3. ABOUT / STORYTELLING SECTION */}
-      <section className="py-40 bg-card relative overflow-hidden">
-        {/* DECORATIVE NUMBER */}
-        <div className="absolute top-20 left-10 lg:left-20 pointer-events-none select-none opacity-5">
-           <span className="text-[20rem] lg:text-[25rem] font-fraunces font-extrabold italic text-[#C9A84C] leading-none">01</span>
-        </div>
+      {/* 3. ABOUT / MANIFESTO (L'âme du CREDDA) */}
+      <section className="py-60 relative overflow-hidden bg-[#080807]">
+        {/* Background Decorative Element */}
+        <motion.div 
+          style={{ y: yParallax }}
+          className="absolute top-40 right-[-10%] opacity-[0.02] pointer-events-none select-none"
+        >
+           <span className="text-[40rem] font-serif font-black italic text-[#C9A84C]">CREDDA</span>
+        </motion.div>
 
-        <div className="absolute top-0 right-0 w-1/3 h-full bg-[#C9A84C]/5 skew-x-12 translate-x-1/2 pointer-events-none blur-3xl" />
-        
         <div className="container mx-auto px-6 relative z-10">
-          <div className="flex flex-col lg:flex-row gap-24 items-center">
-            <div className="lg:w-1/2 relative">
+          <div className="flex flex-col lg:flex-row gap-32 items-center">
+            
+            {/* Image avec cadre "Gallery" */}
+            <div className="lg:w-5/12 relative group">
                <GSAPReveal direction="right">
-                 <div className="relative z-10 aspect-[4/5] bg-muted overflow-hidden rounded-sm ring-1 ring-border shadow-2xl">
-                   <Image 
-                     src="/images/director3.webp" 
-                     alt="About CREDDA" 
-                     fill 
-                     className="object-cover grayscale transition-all duration-1000 hover:grayscale-0 hover:scale-105"
-                   />
-                   <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
+                 <div className="relative z-10 p-4 border border-white/10 bg-white/5 backdrop-blur-sm shadow-2xl transition-all duration-700 group-hover:border-[#C9A84C]/30">
+                   <div className="relative aspect-[3/4] overflow-hidden grayscale contrast-125 group-hover:grayscale-0 transition-all duration-1000">
+                     <Image 
+                       src="/images/director3.webp" 
+                       alt="About CREDDA" 
+                       fill 
+                       className="object-cover scale-110 group-hover:scale-100 transition-transform duration-1000"
+                     />
+                   </div>
+                   {/* Signature / Légende flottante */}
+                   <div className="absolute -bottom-6 -right-6 bg-[#C9A84C] text-black p-6 font-serif italic text-sm">
+                      Penser l&apos;État de Droit.
+                   </div>
                  </div>
                </GSAPReveal>
-               <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-[#C9A84C]/10 blur-[80px] -z-0" />
             </div>
 
-            <div className="lg:w-1/2 space-y-12">
-              <GSAPReveal direction="left" delay={0.2}>
-                <div className="flex items-center gap-4">
-                  <div className="h-[1px] w-12 bg-[#C9A84C]" />
-                  <span className="text-[10px] uppercase tracking-[0.5em] font-medium text-[#C9A84C]">{t('about.badge')}</span>
+            {/* Texte Manifeste */}
+            <div className="lg:w-7/12 space-y-16">
+              <GSAPReveal direction="left">
+                <div className="flex items-center gap-6">
+                  <div className="h-[1px] w-20 bg-[#C9A84C]" />
+                  <span className="text-xs uppercase tracking-[0.6em] font-bold text-[#C9A84C]">{t('about.badge')}</span>
                 </div>
                 
-                <h2 className="text-5xl lg:text-8xl font-fraunces font-extrabold text-foreground leading-[0.9] mt-8 mb-10">
-                  {t.rich('about.title', { 
-                    span: (chunks) => <span className="italic-accent">{chunks}</span>,
+                <h2 className="text-6xl lg:text-9xl font-serif font-extrabold text-[#F5F2EC] leading-[0.85] tracking-tighter">
+                   {t.rich('about.title', { 
+                    span: (chunks) => <span className="text-[#C9A84C] italic font-light">{chunks}</span>,
                     br: () => <br />
                   })}
                 </h2>
                 
-                <div className="space-y-8 text-muted-foreground text-xl font-outfit font-light leading-relaxed max-w-xl">
-                  <p>
-                    {t('about.description_p1') || "The Center for Research on Democracy and Development in Africa (CREDDA) is an institution of excellence dedicated to the rigorous analysis of legal and social challenges."}
+                <div className="grid md:grid-cols-2 gap-12 text-[#F5F2EC]/50 text-lg font-light leading-relaxed">
+                  <p className="border-l border-white/10 pl-8">
+                    {t('about.description_p1')}
                   </p>
-                  <p>
-                    {t('about.description_p2') || "Affiliated with ULPGL-Goma, we combine academic expertise and field action to promote fair and sustainable justice across the continent."}
+                  <p className="border-l border-white/10 pl-8">
+                    {t('about.description_p2')}
                   </p>
                 </div>
 
-                <div className="pt-10">
-                  <Link href="/about" className="group flex items-center gap-6">
-                    <div className="relative">
-                       <span className="text-[11px] font-outfit font-bold uppercase tracking-[0.2em] text-foreground group-hover:text-primary transition-colors duration-500">
-                         {t('cta.mission')}
-                       </span>
-                       <div className="absolute -bottom-2 left-0 w-full h-[1px] bg-[#C9A84C]/30 origin-right transition-transform duration-700 scale-x-0 group-hover:scale-x-100 group-hover:origin-left" />
-                    </div>
-                    <div className="w-12 h-12 rounded-full border border-border flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700">
-                      <ArrowRight size={18} />
+                <div className="pt-12">
+                  <Link href="/about" className="inline-flex items-center gap-8 group">
+                    <span className="text-xs font-bold uppercase tracking-[0.3em] group-hover:text-[#C9A84C] transition-colors">
+                      {t('cta.mission')}
+                    </span>
+                    <div className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] group-hover:text-black transition-all duration-500 transform group-hover:rotate-45">
+                      <ArrowRight size={24} />
                     </div>
                   </Link>
                 </div>
@@ -109,92 +116,85 @@ export default function HomeClient({
         </div>
       </section>
 
-      {/* 4. FEATURED RESEARCH SECTION */}
-      <div className="bg-background">
+      {/* 4. SECTIONS FONCTIONNELLES (Research & Clinical) */}
+      <section className="relative z-10 bg-[#111110] border-y border-white/5">
         <FeaturedResearch research={featuredResearch} />
-      </div>
-
-      {/* 5. CLINICAL SECTION */}
-      <div className="bg-card">
         <ClinicalSection />
-      </div>
+      </section>
 
-      {/* 5. TEAM SECTION */}
+      {/* 5. TEAM & SOCIAL PROOF */}
       <TeamSection team={team} />
-
-      {/* 6. TESTIMONIALS SECTION */}
       <TestimonialSection testimonials={testimonials} />
 
-      {/* 7. PARTNERS LOGOS */}
-      <section className="py-32 bg-card overflow-hidden border-b border-border">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row items-center gap-20">
-            <div className="lg:w-1/4">
-               <span className="text-[10px] font-black uppercase tracking-[0.5em] text-foreground/20 leading-loose">
-                 {t('cta.collaboration') || "Trusted by global leaders"}
-               </span>
-            </div>
-            <div className="lg:w-3/4 overflow-hidden relative group">
-              <div className="flex gap-20 animate-infinite-scroll group-hover:[animation-play-state:paused] grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-1000">
-                {[...(partners ?? []), ...(partners ?? [])].map((partner: string, i: number) => (
-                  <div key={i} className="flex-shrink-0 w-36 h-20 relative">
-                    <Image src={`/images/partenaires/${partner}`} alt="Partner" fill className="object-contain" />
-                  </div>
-                ))}
+      {/* 6. PARTNERS (Le ruban cinétique) */}
+      <section className="py-40 bg-[#080807]">
+        <div className="container mx-auto px-6 mb-20 text-center">
+            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#C9A84C]">{t('cta.collaboration')}</span>
+        </div>
+        <div className="relative flex overflow-x-hidden border-y border-white/5 py-12 bg-white/[0.02]">
+          <div className="animate-infinite-scroll flex items-center gap-32 whitespace-nowrap">
+            {[...(partners ?? []), ...(partners ?? []), ...(partners ?? [])].map((partner: string, i: number) => (
+              <div key={i} className="w-40 h-16 relative grayscale opacity-30 hover:opacity-100 hover:grayscale-0 transition-all duration-500">
+                <Image src={`/images/partenaires/${partner}`} alt="Partner" fill className="object-contain" />
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* 8. FINAL CTA SECTION */}
-      <section className="py-52 bg-background text-foreground relative overflow-hidden">
-        {/* ANIMATED BG FOR CTA */}
+      {/* 7. FINAL CALL TO ACTION (Monumental) */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        {/* Background cinématique */}
         <div className="absolute inset-0 z-0">
-          <Image src="/images/hero-poster.webp" alt="CTA BG" fill className="object-cover grayscale opacity-20 scale-110" />
-          <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
+          <Image src="/images/hero-poster.webp" alt="CTA BG" fill className="object-cover opacity-10 scale-110" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#080807] via-transparent to-[#080807]" />
         </div>
         
         <div className="container mx-auto px-6 relative z-10 text-center">
-          <div className="flex flex-col items-center gap-6 mb-16">
-             <div className="w-[1px] h-24 bg-gradient-to-b from-transparent to-[#C9A84C]" />
-             <span className="text-[11px] uppercase tracking-[0.6em] font-black text-[#C9A84C]">{t('cta.badge') || "Join the Movement"}</span>
-          </div>
-          
-          <h2 className="text-5xl md:text-8xl lg:text-[10rem] font-fraunces font-extrabold leading-[0.85] tracking-tighter mb-20">
-            {t.rich('cta.title', {
-              span: (chunks) => <span className="italic text-[#C9A84C]">{chunks}</span>,
-              br: () => <br />
-            })}
-          </h2>
-          
-          <div className="flex flex-col sm:flex-row justify-center gap-8">
-            <Link href="/contact" className="group px-14 py-7 bg-primary text-primary-foreground font-outfit font-bold uppercase tracking-widest text-xs transition-all hover:scale-105 hover:bg-white shadow-2xl shadow-primary/10">
-              {t('cta.partner')}
-            </Link>
-            <Link href="/login" className="group px-14 py-7 border border-border hover:border-primary text-foreground font-outfit font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-4">
-              {t('cta.portal')} <ExternalLink size={16} className="text-[#C9A84C] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-            </Link>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            className="flex flex-col items-center"
+          >
+            <ShieldCheck size={48} className="text-[#C9A84C] mb-12 opacity-50" />
+            <h2 className="text-6xl md:text-9xl font-serif font-bold leading-none tracking-tighter mb-20">
+              {t.rich('cta.title', {
+                span: (chunks) => <span className="italic text-[#C9A84C] font-light">{chunks}</span>,
+                br: () => <br />
+              })}
+            </h2>
+            
+            <div className="flex flex-col md:flex-row items-center gap-12">
+              <Link href="/contact" className="group relative px-16 py-8 bg-[#C9A84C] text-black font-bold uppercase tracking-[0.2em] text-[10px] overflow-hidden transition-all hover:scale-105">
+                <span className="relative z-10">{t('cta.partner')}</span>
+                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+              </Link>
+              
+              <Link href="/login" className="group flex items-center gap-4 text-xs font-bold uppercase tracking-[0.2em] hover:text-[#C9A84C] transition-colors">
+                {t('cta.portal')} 
+                <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-[#C9A84C]">
+                  <ExternalLink size={14} />
+                </div>
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
 
+      {/* STYLES LOCAUX */}
       <style jsx global>{`
         @keyframes infinite-scroll {
           from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
+          to { transform: translateX(-33.33%); }
         }
         .animate-infinite-scroll {
-          animation: infinite-scroll 50s linear infinite;
+          animation: infinite-scroll 40s linear infinite;
         }
-        @keyframes scroll-line {
-          0% { transform: scaleY(0); transform-origin: top; }
-          50% { transform: scaleY(1); transform-origin: top; }
-          51% { transform: scaleY(1); transform-origin: bottom; }
-          100% { transform: scaleY(0); transform-origin: bottom; }
-        }
-        .animate-scroll-line {
-          animation: scroll-line 3s infinite ease-in-out;
+        .italic-accent {
+          font-family: var(--font-serif);
+          font-style: italic;
+          color: #C9A84C;
         }
       `}</style>
     </main>

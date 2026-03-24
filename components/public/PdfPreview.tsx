@@ -11,13 +11,13 @@ interface PdfPreviewProps {
 /**
  * PDF Presentation Card
  *
- * Cloudinary raw-upload URLs serve PDFs with `Content-Disposition: attachment`
- * and may have X-Frame-Options set, which prevents reliable <iframe> embedding.
+ * Supabase Storage public URLs serve PDFs with `Content-Disposition: attachment`
+ * or `inline` and may have security headers.
  * This component renders a clean download/open card instead — always reliable,
  * works on all browsers and devices, no CORS issues.
  *
  * The download handler fetches the file as a blob and saves it with a .pdf
- * filename, regardless of what the Cloudinary URL looks like (e.g. file_ruvfp8).
+ * filename, regardless of what the storage URL looks like.
  */
 export default function PdfPreview({ url }: PdfPreviewProps) {
   const [downloading, setDownloading] = useState(false);
@@ -87,7 +87,7 @@ export default function PdfPreview({ url }: PdfPreviewProps) {
 
       {/* Action buttons */}
       <div className="relative z-10 flex flex-col gap-2 w-full">
-        {/* Ouvrir: use original URL — Cloudinary handles the stream */}
+        {/* Ouvrir: use original URL — Supabase handles the stream */}
         <a
           href={url}
           target="_blank"
