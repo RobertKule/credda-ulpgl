@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
 
   try {
     // Fetch articles with their translations and category translations in one go (or separate for simplicity)
-    const items = await sql`
+    const items = (await sql`
       SELECT a.*, 
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
         (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations
@@ -19,9 +19,9 @@ export async function GET(req: NextRequest) {
       WHERE a.published = true
       ORDER BY a."createdAt" DESC
       LIMIT ${PAGE_SIZE} OFFSET ${skip}
-    `;
+    `) as any[];
 
-    const countResult = await sql`SELECT count(*) FROM "Article" WHERE published = true`;
+    const countResult = (await sql`SELECT count(*) FROM "Article" WHERE published = true`) as any[];
     const total = parseInt(countResult[0].count, 10);
 
     // Map to match expected Prisma structure if needed

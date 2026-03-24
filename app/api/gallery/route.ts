@@ -6,12 +6,12 @@ export async function GET(req: NextRequest) {
   const locale = searchParams.get("locale") || "fr";
 
   try {
-    const images = await sql`
+    const images = (await sql`
       SELECT gi.*, 
         (SELECT json_agg(t) FROM "GalleryImageTranslation" t WHERE t."galleryImageId" = gi.id AND t.language = ${locale}) as translations
       FROM "GalleryImage" gi
       ORDER BY gi."order" ASC
-    `;
+    `) as any[];
 
     const items = images.map((img: any) => ({
       id: img.id,

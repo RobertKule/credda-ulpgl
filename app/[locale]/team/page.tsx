@@ -25,7 +25,7 @@ export default async function TeamPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'TeamPage' });
 
   // Optimization: catch error to avoid total page crash
-  const members = await sql`
+  const members = (await sql`
     SELECT m.*, 
       (SELECT json_agg(t) FROM "MemberTranslation" t WHERE t."memberId" = m.id AND t.language = ${locale}) as translations
     FROM "Member" m
@@ -33,7 +33,7 @@ export default async function TeamPage({ params }: Props) {
   `.catch((err) => {
     console.error("Team DB Fetch Error:", err);
     return [];
-  });
+  })) as any[];
 
   return (
     <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
@@ -68,7 +68,7 @@ export default async function TeamPage({ params }: Props) {
       <section className="max-w-7xl mx-auto">
         {members.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-            {members.map((member) => {
+            {members.map((member: any) => {
               const content = member.translations[0];
               if (!content) return null;
 

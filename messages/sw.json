@@ -18,7 +18,6 @@
       "item4": "Ripoti ya Demokrasia ya 2025 inapatikana"
     }
   },
-
   "HomePage": {
     "hero": {
       "badge": "CREDDA - ULPGL Ubora",
@@ -52,7 +51,7 @@
     },
     "about": {
       "badge": "Urithi wa Kiakademia",
-      "title": "Kufafanua Mustakabali wa <br/> <span>Utafiti wa Kisheria</span>",
+      "title": "Kufafanua Mustakabali wa   <span>Utafiti wa Kisheria</span>",
       "description_p1": "Kituo cha Utafiti wa Demokrasia na Maendeleo barani Afrika (CREDDA) ni taasisi ya ubora iliyojitolea kwa uchambuzi wa kina wa changamoto za kisheria na kijamii.",
       "description_p2": "Ikiwa na ushirikiano na ULPGL-Goma, tunachanganya utaalamu wa kiakademia na hatua za nyanjani ili kukuza haki ya usawa na endelevu kote barani."
     },
@@ -92,7 +91,7 @@
     "team": {
       "title": "Uongozi wa Kisayansi",
       "subtitle": "Timu ya Utafiti",
-       "badge": "Timu Yetu"
+      "badge": "Timu Yetu"
     },
     "testimonials": {
       "badge": "Imani ya Kimataifa",
@@ -133,9 +132,19 @@
     "partners": {
       "title": "Mtandao wa Washirika wa Kiulimwengu",
       "items": [
-        "Amnesty.webp", "McCain.webp", "Northwestern.webp", "TWB.webp",
-        "worldbank.webp", "Ceni.webp", "Monusco.webp", "Oxford.webp",
-        "Uhaki.webp", "Harvard.webp", "Morehouse.webp", "PNUD.webp", "ulpgl.webp"
+        "Amnesty.webp",
+        "McCain.webp",
+        "Northwestern.webp",
+        "TWB.webp",
+        "worldbank.webp",
+        "Ceni.webp",
+        "Monusco.webp",
+        "Oxford.webp",
+        "Uhaki.webp",
+        "Harvard.webp",
+        "Morehouse.webp",
+        "PNUD.webp",
+        "ulpgl.webp"
       ]
     },
     "cta": {
@@ -147,28 +156,55 @@
       "collaboration": "Kushirikiana na Bora Duniani",
       "portal": "Portal ya Watafiti"
     },
-"Gallery": {
-    "badge": "Katika Picha",
-    "title": "CREDDA katika <span>Hatua</span>",
-    "description": "Gundua shughuli zetu za utafiti, kazi za kliniki na ushirikiano kupitia uteuzi wa picha.",
-    "cta": "Tazama nyumba ya sanaa kamili",
-    "modal": {
-      "close": "Funga",
-      "prev": "Iliyopita",
-      "next": "Ijayo"
+    "Gallery": {
+      "badge": "Katika Picha",
+      "title": "CREDDA katika <span>Hatua</span>",
+      "description": "Gundua shughuli zetu za utafiti, kazi za kliniki na ushirikiano kupitia uteuzi wa picha.",
+      "cta": "Tazama nyumba ya sanaa kamili",
+      "modal": {
+        "close": "Funga",
+        "prev": "Iliyopita",
+        "next": "Ijayo"
+      }
     }
-  }
   },
   "metadata": {
-    "home": { "title": "CREDDA-ULPGL | Utafiti na Haki ya Mazingira", "description": "Kituo cha utafiti na kliniki ya kisheria Goma — demokrasia, maendeleo endelevu na upatikanaji wa haki nchini DRC." },
-    "about": { "title": "Kuhusu | CREDDA-ULPGL", "description": "Taasisi ya ubora iliyounganishwa na ULPGL-Goma." },
-    "team": { "title": "Timu | CREDDA-ULPGL", "description": "Watafiti na wataalamu wa kliniki wa CREDDA." },
-    "research": { "title": "Utafiti | CREDDA-ULPGL", "description": "Kazi kuhusu utawala, demokrasia na maendeleo endelevu." },
-    "programmes": { "title": "Programu | CREDDA-ULPGL", "description": "Maeneo ya kazi ya Kituo na CDE." },
-    "publications": { "title": "Machapisho | CREDDA-ULPGL", "description": "Makala na ripoti za CREDDA." },
-    "events": { "title": "Matukio | CREDDA-ULPGL", "description": "Mkutano na warsha." },
-    "gallery": { "title": "Matunzio | CREDDA-ULPGL", "description": "CREDDA katika picha." },
-    "contact": { "title": "Mawasiliano | CREDDA-ULPGL", "description": "Wasiliana na CREDDA-ULPGL Goma." }
+    "home": {
+      "title": "CREDDA-ULPGL | Utafiti na Haki ya Mazingira",
+      "description": "Kituo cha utafiti na kliniki ya kisheria Goma — demokrasia, maendeleo endelevu na upatikanaji wa haki nchini DRC."
+    },
+    "about": {
+      "title": "Kuhusu | CREDDA-ULPGL",
+      "description": "Taasisi ya ubora iliyounganishwa na ULPGL-Goma."
+    },
+    "team": {
+      "title": "Timu | CREDDA-ULPGL",
+      "description": "Watafiti na wataalamu wa kliniki wa CREDDA."
+    },
+    "research": {
+      "title": "Utafiti | CREDDA-ULPGL",
+      "description": "Kazi kuhusu utawala, demokrasia na maendeleo endelevu."
+    },
+    "programmes": {
+      "title": "Programu | CREDDA-ULPGL",
+      "description": "Maeneo ya kazi ya Kituo na CDE."
+    },
+    "publications": {
+      "title": "Machapisho | CREDDA-ULPGL",
+      "description": "Makala na ripoti za CREDDA."
+    },
+    "events": {
+      "title": "Matukio | CREDDA-ULPGL",
+      "description": "Mkutano na warsha."
+    },
+    "gallery": {
+      "title": "Matunzio | CREDDA-ULPGL",
+      "description": "CREDDA katika picha."
+    },
+    "contact": {
+      "title": "Mawasiliano | CREDDA-ULPGL",
+      "description": "Wasiliana na CREDDA-ULPGL Goma."
+    }
   },
   "loading": {
     "label": "Inapakia"
@@ -335,7 +371,6 @@
       "button2": "Mawasiliano ya dharura"
     }
   },
-
   "ClinicalDetailPage": {
     "back": "Rudi kwenye vitendo vya kliniki",
     "location": "Kivu Kaskazini, DRC",
@@ -400,7 +435,6 @@
       "button2": "Pendekeza hati"
     }
   },
-
   "PublicationDetailPage": {
     "back": "Rudi kwenye maktaba",
     "badge": {
@@ -455,7 +489,6 @@
       "linkedin": "Wasifu wa LinkedIn"
     }
   },
-
   "SearchPage": {
     "header": {
       "badge": "Injini ya utafutaji",
@@ -560,7 +593,6 @@
       }
     }
   },
-
   "LoginPage": {
     "left": {
       "badge": "Eneo Salama",
@@ -573,7 +605,6 @@
       "logo": "CREDDA<span>.ULPGL</span>",
       "title": "Kuingia kwa Admin",
       "subtitle": "Tafadhali weka vitambulisho vyako vya ufikiaji.",
-       
       "fields": {
         "email": {
           "placeholder": "Anwani ya barua pepe ya kitaaluma"
@@ -609,14 +640,38 @@
         "details": "Maelezo"
       },
       "fields": {
-        "email": { "label": "Barua Pepe ya Kitaalamu", "placeholder": "yako@email.com" },
-        "password": { "label": "Nywila", "placeholder": "••••••••" },
-        "confirmPassword": { "label": "Thibitisha Nywila", "placeholder": "••••••••" },
-        "name": { "label": "Jina Kamili", "placeholder": "Pr. / Dr. / Jina" },
-        "phone": { "label": "Simu", "placeholder": "+243..." },
-        "organization": { "label": "Shirika / Chuo Kikuu", "placeholder": "Mf: ULPGL Goma" },
-        "requestedRole": { "label": "Jukumu Linalohitajika", "placeholder": "Mtafiti, Mhariri, Kliniki..." },
-        "bio": { "label": "Wasifu / Motisha", "placeholder": "Elezea kwa ufupi historia yako au maslahi yako..." }
+        "email": {
+          "label": "Barua Pepe ya Kitaalamu",
+          "placeholder": "yako@email.com"
+        },
+        "password": {
+          "label": "Nywila",
+          "placeholder": "••••••••"
+        },
+        "confirmPassword": {
+          "label": "Thibitisha Nywila",
+          "placeholder": "••••••••"
+        },
+        "name": {
+          "label": "Jina Kamili",
+          "placeholder": "Pr. / Dr. / Jina"
+        },
+        "phone": {
+          "label": "Simu",
+          "placeholder": "+243..."
+        },
+        "organization": {
+          "label": "Shirika / Chuo Kikuu",
+          "placeholder": "Mf: ULPGL Goma"
+        },
+        "requestedRole": {
+          "label": "Jukumu Linalohitajika",
+          "placeholder": "Mtafiti, Mhariri, Kliniki..."
+        },
+        "bio": {
+          "label": "Wasifu / Motisha",
+          "placeholder": "Elezea kwa ufupi historia yako au maslahi yako..."
+        }
       },
       "submit": "Maliza Usajili",
       "next": "Hatua Inayofuata",

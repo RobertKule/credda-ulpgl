@@ -6,12 +6,12 @@ export async function GET(req: NextRequest) {
   const locale = searchParams.get("locale") || "fr";
 
   try {
-    const members = await sql`
+    const members = (await sql`
       SELECT m.*, 
         (SELECT json_agg(t) FROM "MemberTranslation" t WHERE t."memberId" = m.id AND t.language = ${locale}) as translations
       FROM "Member" m
       ORDER BY m."order" ASC
-    `;
+    `) as any[];
 
     const formattedMembers = members.map((m: any) => ({
       ...m,

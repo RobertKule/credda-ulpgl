@@ -6,13 +6,13 @@ export async function GET(req: NextRequest) {
   const locale = searchParams.get("locale") || "fr";
 
   try {
-    const items = await sql`
+    const items = (await sql`
       SELECT t.*, 
         (SELECT json_agg(tr) FROM "TestimonialTranslation" tr WHERE tr."testimonialId" = t.id AND tr.language = ${locale}) as translations
       FROM "Testimonial" t
       WHERE t."isPublished" = true
       ORDER BY t."createdAt" DESC
-    `;
+    `) as any[];
 
     const formattedItems = items.map((i: any) => ({
       ...i,

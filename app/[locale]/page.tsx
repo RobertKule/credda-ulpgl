@@ -55,7 +55,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       researchCountResult,
       clinicalCountResult,
       clinicalCaseCountResult
-    ] = await Promise.all([
+    ] = (await Promise.all([
       // featuredResearch
       sql`
         SELECT a.id, a.slug, a."mainImage", a."createdAt", a."categoryId",
@@ -94,7 +94,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       sql`SELECT count(*) FROM "Article" WHERE domain = 'RESEARCH' AND published = true`,
       sql`SELECT count(*) FROM "Article" WHERE domain = 'CLINICAL' AND published = true`,
       sql`SELECT count(*) FROM "ClinicalCase"`
-    ]);
+    ])) as any[];
 
     const totalArticles = parseInt(totalArticlesResult[0].count, 10);
     const totalPubs = parseInt(totalPubsResult[0].count, 10);

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Link } from "@/navigation";
 import { ArrowRight, Play, Volume2, VolumeX, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -8,10 +8,27 @@ export default function Hero() {
   const t = useTranslations('HomePage');
   const [isMuted, setIsMuted] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { scrollY } = useScroll();
   const titleY = useTransform(scrollY, [0, 500], [0, -100]);
   const descY = useTransform(scrollY, [0, 500], [0, -50]);
   const videoOpacity = useTransform(scrollY, [0, 500], [0.6, 0.2]);
+
+  // Ensure video plays and handles loading state
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(err => {
+        console.warn("Video autoplay failed:", err);
+      });
+    }
+
+    // Fallback for loader
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // 3D TILT EFFECT
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -89,19 +106,23 @@ export default function Hero() {
       </div>
 
       {/* BACKGROUND VIDEO */}
-      <motion.video
+      <motion.div
         style={{ opacity: videoOpacity }}
-        ref={videoRef}
-        autoPlay
-        muted
-        loop
-        playsInline
-        onLoadedData={() => setIsLoaded(true)}
-        poster="/images/hero-poster.webp"
-        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 z-0`}
+        className="absolute inset-0 w-full h-full z-0 transition-opacity duration-1000"
       >
-        <source src="/video/hero-bg.mp4" type="video/mp4" />
-      </motion.video>
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          onLoadedData={() => setIsLoaded(true)}
+          poster="/images/hero-poster.webp"
+          className="w-full h-full object-cover"
+        >
+          <source src="/video/hero-bg.mp4" type="video/mp4" />
+        </video>
+      </motion.div>
 
       {/* VIDEO CONTROLS */}
       <div className="absolute bottom-20 left-12 z-40 flex items-center gap-6">

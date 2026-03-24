@@ -12,12 +12,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, slug } = await params;
   try {
-    const [article] = await sql`
+    const [article] = (await sql`
       SELECT a.*, 
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations
       FROM "Article" a
       WHERE a.slug = ${slug}
-    `;
+    `) as any[];
 
     if (!article) return { title: "Publication - CREDDA" };
     const t = article.translations?.[0];
@@ -37,13 +37,13 @@ export default async function PublicationDetailPage({
   params: Promise<{ locale: string; slug: string }> 
 }) {
   const { locale, slug } = await params;
-  const [articleResult]: any = await sql`
+  const [articleResult] = (await sql`
     SELECT a.*, 
       (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
       (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations
     FROM "Article" a
     WHERE a.slug = ${slug}
-  `.catch(() => [null]);
+  `.catch(() => [null])) as any[];
 
   const article = articleResult;
   if (article) {

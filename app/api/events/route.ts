@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
       `;
     }
 
-    const events = await query;
+    const events = (await query) as any[];
     
     const formattedEvents = events.map((e: any) => ({
       ...e,

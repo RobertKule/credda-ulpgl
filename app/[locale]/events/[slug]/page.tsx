@@ -10,12 +10,12 @@ type Props = { params: Promise<{ locale: string; slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   try {
-    const [event] = await sql`
+    const [event] = (await sql`
       SELECT e.*, 
         (SELECT json_agg(t) FROM "EventTranslation" t WHERE t."eventId" = e.id AND t.language = ${locale}) as translations
       FROM "Event" e
       WHERE e.slug = ${slug}
-    `;
+    `) as any[];
     
     if (!event || !event.isPublished) {
       return { title: "Événement | CREDDA-ULPGL" };
@@ -35,12 +35,12 @@ export default async function EventDetailPage({ params }: Props) {
 
   let event: any = null;
   try {
-    const [eventResult] = await sql`
+    const [eventResult] = (await sql`
       SELECT e.*, 
         (SELECT json_agg(t) FROM "EventTranslation" t WHERE t."eventId" = e.id AND t.language = ${locale}) as translations
       FROM "Event" e
       WHERE e.slug = ${slug}
-    `;
+    `) as any[];
 
     if (!eventResult) {
       notFound(); // Or handle as per your application's error strategy

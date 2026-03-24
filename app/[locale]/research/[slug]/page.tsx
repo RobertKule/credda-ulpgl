@@ -17,12 +17,12 @@ import ParallaxWrapper from "@/components/shared/ParallaxWrapper";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
   try {
-    const [article] = await sql`
+    const [article] = (await sql`
       SELECT a.*, 
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations
       FROM "Article" a
       WHERE a.slug = ${slug}
-    `;
+    `) as any[];
 
     if (!article || !article.translations || article.translations.length === 0) return { title: "Not Found | CREDDA" };
     const translation = article.translations[0];
@@ -66,13 +66,13 @@ export default async function ResearchDetailPage({
   
   let article = null;
   try {
-    const [articleResult] = await sql`
+    const [articleResult] = (await sql`
       SELECT a.*, 
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
         (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations
       FROM "Article" a
       WHERE a.slug = ${slug}
-    `;
+    `) as any[];
     article = articleResult;
     if (article) {
        article.category = {

@@ -13,12 +13,12 @@ import { getTranslations } from "next-intl/server";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
   try {
-    const [article] = await sql`
+    const [article] = (await sql`
       SELECT a.*, 
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations
       FROM "Article" a
       WHERE a.slug = ${slug}
-    `;
+    `) as any[];
     return { title: `${article?.translations?.[0]?.title || "Clinique"} | CREDDA-ULPGL` };
   } catch (error) {
     return { title: "Clinique | CREDDA-ULPGL" };
@@ -31,14 +31,14 @@ export default async function ClinicalArticlePage({ params }: { params: Promise<
   
   let article = null;
   try {
-    const [articleResult] = await sql`
+    const [articleResult] = (await sql`
       SELECT a.*, 
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
         (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations,
         (SELECT json_agg(m) FROM "Media" m WHERE m."articleId" = a.id) as medias
       FROM "Article" a
       WHERE a.slug = ${slug}
-    `;
+    `) as any[];
     article = articleResult;
     if (article) {
        article.category = {

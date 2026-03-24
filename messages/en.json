@@ -51,7 +51,7 @@
     },
     "about": {
       "badge": "Academic Heritage",
-      "title": "Defining the Future of <br/> <span>Legal Research</span>",
+      "title": "Defining the Future of  <span>Legal Research</span>",
       "description_p1": "The Center for Research on Democracy and Development in Africa (CREDDA) is an institution of excellence dedicated to the rigorous analysis of legal and social challenges.",
       "description_p2": "Affiliated with ULPGL-Goma, we combine academic expertise and field action to promote equitable and sustainable justice across the continent."
     },
@@ -133,9 +133,19 @@
     "partners": {
       "title": "Global Partner Network",
       "items": [
-        "Amnesty.webp", "McCain.webp", "Northwestern.webp", "TWB.webp",
-        "worldbank.webp", "Ceni.webp", "Monusco.webp", "Oxford.webp",
-        "Uhaki.webp", "Harvard.webp", "Morehouse.webp", "PNUD.webp", "ulpgl.webp"
+        "Amnesty.webp",
+        "McCain.webp",
+        "Northwestern.webp",
+        "TWB.webp",
+        "worldbank.webp",
+        "Ceni.webp",
+        "Monusco.webp",
+        "Oxford.webp",
+        "Uhaki.webp",
+        "Harvard.webp",
+        "Morehouse.webp",
+        "PNUD.webp",
+        "ulpgl.webp"
       ]
     },
     "cta": {
@@ -160,15 +170,42 @@
     }
   },
   "metadata": {
-    "home": { "title": "CREDDA-ULPGL | Research & Environmental Justice", "description": "Research centre and legal clinic in Goma — democracy, sustainable development and access to justice in the DRC." },
-    "about": { "title": "About | CREDDA-ULPGL", "description": "Excellence institution affiliated with ULPGL-Goma." },
-    "team": { "title": "Team | CREDDA-ULPGL", "description": "CREDDA researchers and clinic staff." },
-    "research": { "title": "Research | CREDDA-ULPGL", "description": "Work on governance, democracy and sustainable development." },
-    "programmes": { "title": "Programmes | CREDDA-ULPGL", "description": "CREDDA and CDE focus areas." },
-    "publications": { "title": "Publications | CREDDA-ULPGL", "description": "CREDDA articles and reports." },
-    "events": { "title": "Events | CREDDA-ULPGL", "description": "Conferences and workshops." },
-    "gallery": { "title": "Gallery | CREDDA-ULPGL", "description": "CREDDA in pictures." },
-    "contact": { "title": "Contact | CREDDA-ULPGL", "description": "Reach CREDDA-ULPGL in Goma." }
+    "home": {
+      "title": "CREDDA-ULPGL | Research & Environmental Justice",
+      "description": "Research centre and legal clinic in Goma — democracy, sustainable development and access to justice in the DRC."
+    },
+    "about": {
+      "title": "About | CREDDA-ULPGL",
+      "description": "Excellence institution affiliated with ULPGL-Goma."
+    },
+    "team": {
+      "title": "Team | CREDDA-ULPGL",
+      "description": "CREDDA researchers and clinic staff."
+    },
+    "research": {
+      "title": "Research | CREDDA-ULPGL",
+      "description": "Work on governance, democracy and sustainable development."
+    },
+    "programmes": {
+      "title": "Programmes | CREDDA-ULPGL",
+      "description": "CREDDA and CDE focus areas."
+    },
+    "publications": {
+      "title": "Publications | CREDDA-ULPGL",
+      "description": "CREDDA articles and reports."
+    },
+    "events": {
+      "title": "Events | CREDDA-ULPGL",
+      "description": "Conferences and workshops."
+    },
+    "gallery": {
+      "title": "Gallery | CREDDA-ULPGL",
+      "description": "CREDDA in pictures."
+    },
+    "contact": {
+      "title": "Contact | CREDDA-ULPGL",
+      "description": "Reach CREDDA-ULPGL in Goma."
+    }
   },
   "loading": {
     "label": "Loading"
@@ -603,14 +640,38 @@
         "details": "Details"
       },
       "fields": {
-        "email": { "label": "Professional Email", "placeholder": "your@email.com" },
-        "password": { "label": "Password", "placeholder": "••••••••" },
-        "confirmPassword": { "label": "Confirm Password", "placeholder": "••••••••" },
-        "name": { "label": "Full Name", "placeholder": "Pr. / Dr. / Name" },
-        "phone": { "label": "Phone", "placeholder": "+243..." },
-        "organization": { "label": "Organization / University", "placeholder": "Ex: ULPGL Goma" },
-        "requestedRole": { "label": "Desired Role", "placeholder": "Researcher, Editor, Clinician..." },
-        "bio": { "label": "Bio / Motivation", "placeholder": "Briefly describe your background or interest..." }
+        "email": {
+          "label": "Professional Email",
+          "placeholder": "your@email.com"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "••••••••"
+        },
+        "confirmPassword": {
+          "label": "Confirm Password",
+          "placeholder": "••••••••"
+        },
+        "name": {
+          "label": "Full Name",
+          "placeholder": "Pr. / Dr. / Name"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "+243..."
+        },
+        "organization": {
+          "label": "Organization / University",
+          "placeholder": "Ex: ULPGL Goma"
+        },
+        "requestedRole": {
+          "label": "Desired Role",
+          "placeholder": "Researcher, Editor, Clinician..."
+        },
+        "bio": {
+          "label": "Bio / Motivation",
+          "placeholder": "Briefly describe your background or interest..."
+        }
       },
       "submit": "Finish Registration",
       "next": "Next Step",
