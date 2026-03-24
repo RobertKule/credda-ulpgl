@@ -1,50 +1,27 @@
-import { loadEnvConfig } from '@next/env'
 import { PrismaClient } from '@prisma/client'
-import { Pool, neonConfig } from '@neondatabase/serverless'
-import { PrismaNeon } from '@prisma/adapter-neon'
-import type { Pool as NeonPoolType } from '@neondatabase/serverless'
-import ws from 'ws'
 
-if (typeof window === 'undefined') {
-  loadEnvConfig(process.cwd())
-  neonConfig.webSocketConstructor = ws
+declare global {
+  var prisma: PrismaClient | undefined
 }
 
-const rawUrl = process.env.DATABASE_URL
-if (rawUrl === undefined || typeof rawUrl !== 'string') {
-  throw new Error('DATABASE_URL is missing')
-}
-const connectionString = rawUrl.trim()
-if (!connectionString) {
+if (!process.env.DATABASE_URL) {
   throw new Error(
-    'DATABASE_URL is empty — set a valid PostgreSQL connection string (e.g. Neon pooler URL)'
-  )
-}
-if (!/^postgres(ql)?:\/\//i.test(connectionString)) {
-  throw new Error(
-    'DATABASE_URL must start with postgresql:// or postgres:// — check your .env (not loaded in dev?)'
+    '❌ DATABASE_URL manquante.\n' +
+    'Ajouter dans .env.local:\n' +
+    'DATABASE_URL="postgresql://postgres:[pass]@db.[ref].supabase.co:5432/postgres"'
   )
 }
 
-const globalForDb = globalThis as unknown as {
-  prisma: PrismaClient | undefined
-  neonPool: NeonPoolType | undefined
+export const db =
+  globalThis.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+  })
+
+if (process.env.NODE_ENV !== 'production') {
+  globalThis.prisma = db
 }
 
-function getOrCreatePool(): NeonPoolType {
-  if (!globalForDb.neonPool) {
-    globalForDb.neonPool = new Pool({ connectionString })
-  }
-  return globalForDb.neonPool
-}
+export const prisma = db
 
-function createPrismaClient(): PrismaClient {
-  const pool = getOrCreatePool()
-  const adapter = new PrismaNeon(pool as any)
-  return new PrismaClient({ adapter })
-}
-
-const prisma = globalForDb.prisma ?? createPrismaClient()
-globalForDb.prisma = prisma
-
-export const db = prisma
+export const sql = db.$queryRaw.bind(db)
