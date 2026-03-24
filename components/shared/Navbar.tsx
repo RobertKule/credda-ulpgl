@@ -73,7 +73,7 @@ export default function Navbar() {
 
   // Composants réutilisables pour éviter la duplication
   const LanguageSwitcher = () => (
-    <div className="flex items-center gap-1 bg-white/5 dark:bg-black/20 p-1 rounded-full border border-white/10 shadow-inner">
+    <div className="flex items-center gap-1 rounded-full border border-border bg-muted/30 p-1 shadow-inner light:bg-muted/50">
       {["fr", "en", "sw"].map((l) => (
         <Link
           key={l}
@@ -81,8 +81,8 @@ export default function Navbar() {
           locale={l}
           className={`text-[9px] font-bold w-9 h-9 flex items-center justify-center transition-all rounded-full ${
             locale === l
-              ? "bg-[#C9A84C] text-[#0C0C0A] shadow-lg scale-110"
-              : "text-foreground/50 hover:text-foreground hover:bg-white/5"
+              ? "scale-110 bg-[#C9A84C] text-[#0C0C0A] shadow-lg"
+              : "text-foreground/65 hover:bg-background/80 hover:text-foreground light:text-foreground/70"
           }`}
         >
           {l.toUpperCase()}
@@ -209,11 +209,15 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[200] bg-background flex flex-col h-[100dvh] overflow-y-auto"
+            className="fixed inset-0 z-[200] flex h-[100dvh] max-h-[100dvh] min-h-0 flex-col overflow-hidden overscroll-contain bg-background text-foreground pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
           >
             {/* Header mobile - Shrink 0 (Fixed height) */}
-            <div className="shrink-0 p-8 flex justify-between items-center border-b border-border bg-card/30 backdrop-blur-md">
-              <Link href="/" className="font-bricolage font-black text-2xl md:text-3xl tracking-tighter" onClick={() => setIsOpen(false)}>
+            <div className="flex min-w-0 shrink-0 items-center justify-between gap-3 overflow-x-hidden border-b border-border bg-card/40 p-5 backdrop-blur-md sm:p-8">
+              <Link
+                href="/"
+                className="font-bricolage text-xl font-black tracking-tighter text-foreground sm:text-2xl md:text-3xl"
+                onClick={() => setIsOpen(false)}
+              >
                 CREDDA<span className="text-[#C9A84C]">·</span>CDE
               </Link>
               <button
@@ -225,23 +229,23 @@ export default function Navbar() {
             </div>
 
             {/* Liens du menu mobile - Flex 1 (Scroll area) */}
-            <nav className="flex-1 px-8 py-10 overflow-y-auto scrollbar-hide space-y-12">
+            <nav className="min-h-0 flex-1 space-y-10 overflow-x-hidden overflow-y-auto overscroll-y-contain px-5 py-8 scrollbar-hide sm:space-y-12 sm:px-8 sm:py-10">
               <MobileGroup label="Expertise" links={expertiseLinks} pathname={pathname} activeSection={activeSection} setIsOpen={setIsOpen} />
               <MobileGroup label="Institution" links={institutionLinks} pathname={pathname} activeSection={activeSection} setIsOpen={setIsOpen} />
             </nav>
 
             {/* Footer mobile - Shrink 0 (Fixed bottom) */}
-            <div className="shrink-0 p-8 bg-card border-t border-border">
+            <div className="shrink-0 overflow-x-hidden border-t border-border bg-card/95 p-5 sm:p-8">
               <button 
                 onClick={() => setIsFooterExpanded(!isFooterExpanded)}
                 className="w-full flex items-center justify-between mb-8 pb-3 border-b border-white/5 group"
               >
-                <span className="text-[10px] uppercase tracking-[0.4em] font-black text-muted-foreground/30 group-hover:text-[#C9A84C] transition-colors">
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground/70 transition-colors group-hover:text-[#C9A84C]">
                   {isFooterExpanded ? "Moins d'options" : "Plus d'options"}
                 </span>
                 <motion.div
                   animate={{ rotate: isFooterExpanded ? 180 : 0 }}
-                  className="text-muted-foreground/30 group-hover:text-[#C9A84C]"
+                  className="text-muted-foreground/70 group-hover:text-[#C9A84C]"
                 >
                   <ChevronDown size={14} />
                 </motion.div>
@@ -258,11 +262,11 @@ export default function Navbar() {
                   >
                     <div className="grid grid-cols-2 gap-6 mb-10">
                       <div className="space-y-4">
-                        <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-muted-foreground/40">Langue</span>
+                        <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-muted-foreground/80">Langue</span>
                         <LanguageSwitcher />
                       </div>
                       <div className="space-y-4">
-                        <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-muted-foreground/40">Thème</span>
+                        <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-muted-foreground/80">Thème</span>
                         <button 
                           onClick={toggleTheme} 
                           className="w-full h-11 flex items-center justify-between px-5 bg-white/5 border border-white/10 rounded-full text-[11px] font-bold uppercase tracking-wider hover:bg-[#C9A84C] hover:text-black transition-all"
@@ -274,7 +278,7 @@ export default function Navbar() {
                     </div>
 
                     <div className="flex items-center justify-between mb-10 pb-10 border-b border-white/5">
-                      <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-muted-foreground/40">Accès Privé</span>
+                      <span className="text-[9px] font-bold uppercase tracking-[0.4em] text-muted-foreground/80">Accès Privé</span>
                       <Link
                         href={loginHref}
                         onClick={() => setIsOpen(false)}
@@ -381,15 +385,15 @@ function MobileGroup({ label, links, pathname, activeSection, setIsOpen }: any) 
               <Link
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center justify-between p-5 rounded-lg border transition-all ${
+                className={`flex min-h-[4.5rem] items-center justify-between rounded-lg border p-4 transition-all sm:p-5 ${
                   isActive 
-                    ? "bg-[#C9A84C]/10 border-[#C9A84C]/30 text-[#C9A84C]" 
-                    : "bg-white/[0.02] border-white/5 text-foreground/60 hover:border-white/10"
+                    ? "border-[#C9A84C]/40 bg-[#C9A84C]/12 text-[#C9A84C]" 
+                    : "border-border bg-card/50 text-foreground hover:border-border/80 light:bg-muted/40"
                 }`}
               >
-                <div className="flex flex-col">
-                   <span className="text-[10px] uppercase tracking-widest text-[#C9A84C]/40 mb-1">0{i+1}</span>
-                   <span className="text-xl font-fraunces font-bold">{link.label}</span>
+                <div className="min-w-0 flex-1 pr-3">
+                   <span className="mb-1 block text-[10px] uppercase tracking-widest text-[#C9A84C]/70">0{i+1}</span>
+                   <span className="text-lg font-bold leading-snug text-foreground sm:text-xl font-fraunces">{link.label}</span>
                 </div>
                 <div className={`w-8 h-8 rounded-full border border-current flex items-center justify-center transition-all ${isActive ? "bg-[#C9A84C] text-black" : "opacity-20"}`}>
                   <ArrowRight size={14} />

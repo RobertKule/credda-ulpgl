@@ -54,8 +54,8 @@ export default function Stats({ years, totalResources, partners, clinicalCases =
   ];
 
   return (
-    <section className="py-32 bg-background border-y border-border overflow-hidden relative">
-      <div className="container mx-auto px-6">
+    <section className="relative overflow-hidden border-y border-border/50 bg-[#0D0D0B]/85 py-12 sm:py-16 lg:py-24 light:bg-background/96 light:backdrop-blur-sm">
+      <div className="w-full px-5 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-0">
           {stats.map((stat, idx) => (
             <GSAPReveal key={idx} direction="up" delay={idx * 0.1}>

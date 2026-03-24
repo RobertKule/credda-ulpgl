@@ -4,23 +4,15 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { Link } from "@/navigation";
 import { ArrowRight, Play, Volume2, VolumeX } from "lucide-react";
 import { useTranslations } from "next-intl";
-import dynamic from 'next/dynamic';
-
-const AfricaGlobe = dynamic(() => import('@/components/home/AfricaGlobe'), {
-  ssr: false,
-  loading: () => (
-    <div style={{ width: '100%', maxWidth: 560, aspectRatio: '1', background: '#111110', borderRadius: 4, display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center' }}>
-      <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1px solid rgba(201,168,76,0.15)', borderTop: '1px solid #C9A84C', animation: 'spin 1s linear infinite' }} />
-      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
-    </div>
-  )
-});
+import { useTheme } from "@/components/shared/ThemeProvider";
+import { cn } from "@/lib/utils";
 
 export default function Hero() {
   const t = useTranslations('HomePage');
+  const { theme } = useTheme();
+  const isLight = theme === "light";
   const [isMuted, setIsMuted] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [globeReady, setGlobeReady] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { scrollY } = useScroll();
@@ -28,18 +20,9 @@ export default function Hero() {
   const descY = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : -50]);
   const videoOpacity = useTransform(scrollY, [0, 500], [0.6, reduceMotion ? 0.6 : 0.2]);
 
-  // Ensure video plays and handles loading state
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     setReduceMotion(prefersReducedMotion);
-    setGlobeReady(prefersReducedMotion);
-
-    if (!prefersReducedMotion) {
-      const globeTimer = setTimeout(() => {
-        setGlobeReady(true);
-      }, 120);
-      return () => clearTimeout(globeTimer);
-    }
   }, []);
 
   useEffect(() => {
@@ -113,7 +96,12 @@ export default function Hero() {
       </AnimatePresence>
 
       {/* BACKGROUND SIMULATION: FLOATING NODES */}
-      <div className="absolute inset-0 z-[5] pointer-events-none overflow-hidden opacity-40">
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-0 z-[5] overflow-hidden",
+          isLight ? "opacity-15" : "opacity-40"
+        )}
+      >
         {[...Array(6)].map((_, i) => (
           <motion.div
             key={i}
@@ -152,10 +140,20 @@ export default function Hero() {
       </motion.div>
 
       {/* VIDEO CONTROLS */}
-      <div className="absolute bottom-20 left-12 z-40 flex items-center gap-6">
+      <div
+        className={cn(
+          "absolute bottom-20 left-5 z-40 flex items-center gap-4 sm:left-12 sm:gap-6",
+          isLight && "text-foreground"
+        )}
+      >
         <button
           onClick={toggleMute}
-          className="w-16 h-16 flex items-center justify-center rounded-full border border-white/10 bg-black/20 backdrop-blur-xl text-white/70 hover:text-primary hover:border-primary/50 transition-all group relative overflow-hidden"
+          className={cn(
+            "group relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full border backdrop-blur-xl transition-all sm:h-16 sm:w-16",
+            isLight
+              ? "border-border bg-background/70 text-foreground/80 hover:border-primary/50 hover:text-primary"
+              : "border-white/10 bg-black/20 text-white/70 hover:border-primary/50 hover:text-primary"
+          )}
         >
           <motion.div 
              className="absolute inset-0 bg-primary/10 translate-y-full group-hover:translate-y-0 transition-transform"
@@ -163,7 +161,14 @@ export default function Hero() {
           {isMuted ? <VolumeX size={18} className="relative z-10" /> : <Volume2 size={18} className="relative z-10 animate-pulse" />}
         </button>
         <div className="flex flex-col gap-1">
-          <span className="text-[10px] font-black uppercase tracking-[0.4em] text-white/40">Cinematic Audio</span>
+          <span
+            className={cn(
+              "text-[10px] font-black uppercase tracking-[0.4em]",
+              isLight ? "text-muted-foreground" : "text-white/40"
+            )}
+          >
+            Cinematic Audio
+          </span>
           <div className="flex gap-0.5 items-end h-3">
              {[...Array(5)].map((_, i) => (
                <motion.div 
@@ -177,15 +182,25 @@ export default function Hero() {
         </div>
       </div>
       
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/60 z-[1] light:bg-white/40" />
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-0 z-[4]",
+          isLight
+            ? "bg-gradient-to-r from-[#f8f6f1]/97 via-[#f8f6f1]/88 to-[#f8f6f1]/45"
+            : "bg-gradient-to-r from-[#0D0D0B]/94 via-[#0D0D0B]/72 to-[#0D0D0B]/55"
+        )}
+      />
 
       {/* GRID BACKGROUND */}
-      <div className="absolute inset-0 bg-grid-move opacity-20 pointer-events-none z-[2]" />
+      <div
+        className={cn(
+          "pointer-events-none absolute inset-0 z-[5] bg-grid-move",
+          isLight ? "opacity-[0.08]" : "opacity-20"
+        )}
+      />
       
-      <div className="container mx-auto px-6 relative z-30 w-full">
-        <div className="flex flex-col lg:flex-row items-center justify-between w-full h-full gap-12">
-          {/* LEFT COLUMN (60%) */}
+      <div className="relative z-30 w-full px-5 sm:px-8 lg:px-12 xl:px-16">
+        <div className="flex w-full flex-col items-start justify-center py-24 lg:py-32">
           <motion.div
             style={{ 
               rotateX: reduceMotion ? 0 : mousePos.y * -15,
@@ -193,7 +208,7 @@ export default function Hero() {
               transformStyle: "preserve-3d"
             }}
             transition={{ type: "spring", stiffness: 100, damping: 30 }}
-            className="w-full lg:w-[60%] z-10"
+            className="w-full max-w-4xl xl:max-w-5xl z-10"
           >
             <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -212,9 +227,14 @@ export default function Hero() {
             {/* MAIN TITLE WITH PARALLAX */}
             <motion.h1 
               style={{ y: titleY, transform: "translateZ(100px)" }}
-              className="text-6xl md:text-8xl lg:text-[10rem] font-fraunces font-extrabold text-foreground leading-[0.85] tracking-tighter mb-16"
+              className={cn(
+                "mb-10 font-fraunces text-[clamp(2.25rem,8vw,10rem)] font-extrabold leading-[0.88] tracking-tighter text-foreground sm:mb-14 md:mb-16",
+                isLight
+                  ? "[text-shadow:0_2px_0_rgba(255,255,255,0.85),0_1px_3px_rgba(26,24,20,0.12)]"
+                  : "[text-shadow:0_2px_24px_rgba(12,12,10,0.55)]"
+              )}
             >
-              <span className="block italic opacity-40">
+              <span className={cn("block italic", isLight ? "opacity-55" : "opacity-40")}>
                 {t('hero.title_part1')}
               </span>
               <span className="block text-primary relative mt-4">
@@ -231,16 +251,21 @@ export default function Hero() {
             {/* DESCRIPTION */}
             <motion.p 
               style={{ y: descY, transform: "translateZ(60px)" }}
-              className="text-xl md:text-2xl text-muted-foreground font-outfit font-light max-w-2xl leading-relaxed mb-20 border-l-2 border-primary/20 pl-12"
+              className={cn(
+                "mb-14 max-w-2xl border-l-2 border-primary/30 pl-6 font-outfit text-base font-light leading-relaxed text-muted-foreground sm:mb-16 sm:pl-8 sm:text-lg md:mb-20 md:text-xl lg:text-2xl",
+                isLight
+                  ? "[text-shadow:0_1px_2px_rgba(255,255,255,0.9)]"
+                  : "[text-shadow:0_1px_12px_rgba(12,12,10,0.35)]"
+              )}
             >
               {t('hero.subtitle')}
             </motion.p>
 
             {/* ACTIONS */}
-            <div className="flex flex-wrap gap-10 items-center" style={{ transform: "translateZ(80px)" }}>
+            <div className="flex flex-col flex-wrap items-stretch gap-6 sm:flex-row sm:items-center sm:gap-10" style={{ transform: "translateZ(80px)" }}>
               <Link 
                 href="/publications" 
-                className="group relative px-16 py-8 bg-primary text-primary-foreground font-outfit font-black uppercase tracking-[0.3em] text-[10px] overflow-hidden transition-all hover:scale-110 active:scale-95 shadow-2xl"
+                className="group relative inline-flex justify-center px-10 py-6 font-outfit text-[10px] font-black uppercase tracking-[0.3em] text-primary-foreground shadow-2xl transition-all hover:scale-[1.03] active:scale-95 sm:px-14 sm:py-7 md:px-16 md:py-8 bg-primary overflow-hidden"
               >
                 <span className="relative z-10 flex items-center gap-4">
                   {t('hero.cta_publications')} 
@@ -264,16 +289,6 @@ export default function Hero() {
               </Link>
             </div>
             </motion.div>
-          </motion.div>
-
-          {/* RIGHT COLUMN (40% GLOBE) */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={globeReady ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-            transition={reduceMotion ? { duration: 0 } : { duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
-            className="hidden lg:flex w-full lg:w-[40%] justify-center items-center z-10"
-          >
-            <AfricaGlobe />
           </motion.div>
         </div>
       </div>
