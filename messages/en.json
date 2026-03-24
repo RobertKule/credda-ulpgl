@@ -7,6 +7,7 @@
     "programmes": "Programmes",
     "events": "Events",
     "gallery": "Gallery",
+    "team": "Our Team",
     "contact": "Contact",
     "login": "Login",
     "dashboard": "Dashboard",
@@ -50,7 +51,7 @@
     },
     "about": {
       "badge": "Academic Heritage",
-      "title": "Defining the Future of <br /> <span>Legal Research</span>",
+      "title": "Defining the Future of <br/> <span>Legal Research</span>",
       "description_p1": "The Center for Research on Democracy and Development in Africa (CREDDA) is an institution of excellence dedicated to the rigorous analysis of legal and social challenges.",
       "description_p2": "Affiliated with ULPGL-Goma, we combine academic expertise and field action to promote equitable and sustainable justice across the continent."
     },

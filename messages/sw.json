@@ -7,6 +7,7 @@
     "programmes": "Programu",
     "events": "Matukio",
     "gallery": "Matunzio",
+    "team": "Timu Yetu",
     "contact": "Wasiliana nasi",
     "login": "Ingia",
     "dashboard": "Dashibodi",
@@ -51,7 +52,7 @@
     },
     "about": {
       "badge": "Urithi wa Kiakademia",
-      "title": "Kufafanua Mustakabali wa <br /> <span>Utafiti wa Kisheria</span>",
+      "title": "Kufafanua Mustakabali wa <br/> <span>Utafiti wa Kisheria</span>",
       "description_p1": "Kituo cha Utafiti wa Demokrasia na Maendeleo barani Afrika (CREDDA) ni taasisi ya ubora iliyojitolea kwa uchambuzi wa kina wa changamoto za kisheria na kijamii.",
       "description_p2": "Ikiwa na ushirikiano na ULPGL-Goma, tunachanganya utaalamu wa kiakademia na hatua za nyanjani ili kukuza haki ya usawa na endelevu kote barani."
     },
