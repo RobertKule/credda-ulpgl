@@ -64,7 +64,7 @@ async function ResearchContent({ locale }: { locale: string }) {
             <p style={{ fontFamily: 'var(--font-outfit)', fontSize: '9px', letterSpacing: '0.2em', color: '#C9A84C', textTransform: 'uppercase', fontWeight: 600, marginBottom: 16 }}>
               CREDDA · Intelligence & Analyse
             </p>
-            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1, mb: 10 }}>
+            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1, marginBottom: 40 }}>
                Recherche <em style={{ fontStyle: 'italic', color: '#C9A84C' }}>& Analyses.</em>
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed mt-10">

@@ -2,9 +2,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
-import { Resend } from 'resend';
-export const runtime = 'nodejs';
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { getResend } from "@/lib/resend";
+export const runtime = "nodejs";
 
 export async function POST(
   req: NextRequest,
@@ -50,7 +49,7 @@ export async function POST(
 
     // 2. Envoyer l'email via Resend
     try {
-      const { data, error } = await resend.emails.send({
+      const { data, error } = await getResend().emails.send({
         from: 'CREDDA-ULPGL <onboarding@resend.dev>',
         to: [originalMessage.email],
         subject: `Re: ${originalMessage.subject}`,
