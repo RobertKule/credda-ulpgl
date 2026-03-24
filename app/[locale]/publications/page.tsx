@@ -1,7 +1,7 @@
 // app/[locale]/publications/page.tsx
 import type { Metadata } from "next";
 import { localePageMetadata } from "@/lib/page-metadata";
-import { db } from "@/lib/db";
+import { sql } from "@/lib/db";
 import { ArrowRight, FileText, Calendar, User } from "lucide-react";
 import Link from "next/link";
 
@@ -22,16 +22,13 @@ export default async function PublicationsPage({
   const { locale } = await params;
   
   // FETCH DATA
-  const articles = await db.article.findMany({
-    where: { published: true },
-    include: {
-      translations: {
-        where: { language: locale }
-      }
-    },
-    orderBy: { createdAt: 'desc' },
-    take: 12
-  }).catch(() => []);
+  const articles = await sql`
+    SELECT a.*, 
+      (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations
+    FROM "Article" a
+    WHERE a.published = true
+    ORDER BY a."createdAt" DESC LIMIT 12
+  `.catch(() => []);
 
   return (
     <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">

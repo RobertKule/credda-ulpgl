@@ -1,8 +1,7 @@
 // app/[locale]/research/page.tsx
 import type { Metadata } from "next";
 import { localePageMetadata } from "@/lib/page-metadata";
-import { db } from "@/lib/db";
-import { safeQuery } from "@/lib/db-safe";
+import { sql } from "@/lib/db";
 import { getTranslations } from "next-intl/server";
 import { 
   SearchX, 
@@ -44,19 +43,14 @@ export default async function ResearchPage({
 async function ResearchContent({ locale }: { locale: string }) {
   const t = await getTranslations({ locale, namespace: 'ResearchPage' });
   
-  const articles = await safeQuery(
-    () =>
-      db.article.findMany({
-        where: { domain: "RESEARCH", published: true },
-        include: {
-          translations: { where: { language: locale } }
-        },
-        orderBy: { createdAt: "desc" },
-        take: 20
-      }),
-    [],
-    "research:list"
-  );
+  const articles: any = await sql`
+    SELECT a.id, a.slug, a."mainImage" as image, a."createdAt", a.domain,
+      (SELECT json_agg(tr) FROM "ArticleTranslation" tr WHERE tr."articleId" = a.id AND tr.language = ${locale}) as translations
+    FROM "Article" a
+    WHERE a.domain = 'RESEARCH' AND a.published = true
+    ORDER BY a."createdAt" DESC
+    LIMIT 20
+  `.catch(() => []);
 
   return (
     <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">

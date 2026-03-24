@@ -179,7 +179,7 @@ export default function AdminTeamPage() {
                        <Input value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="bg-black/40 border-white/5 rounded-none" />
                    </div>
                    <div className="space-y-2">
-                       <label className="text-[10px] uppercase font-black tracking-widest text-white/20">Image URL (Cloudinary)</label>
+                       <label className="text-[10px] uppercase font-black tracking-widest text-white/20">Image URL (Supabase)</label>
                        <Input value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value })} className="bg-black/40 border-white/5 rounded-none" />
                    </div>
                 </div>

@@ -1,5 +1,4 @@
-// app/[locale]/clinical/[slug]/page.tsx
-import { db } from "@/lib/db";
+import { sql } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
@@ -14,11 +13,13 @@ import { getTranslations } from "next-intl/server";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
   try {
-    const article = await db.article.findUnique({
-      where: { slug },
-      include: { translations: { where: { language: locale } } }
-    });
-    return { title: `${article?.translations[0]?.title || "Clinique"} | CREDDA-ULPGL` };
+    const [article] = await sql`
+      SELECT a.*, 
+        (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations
+      FROM "Article" a
+      WHERE a.slug = ${slug}
+    `;
+    return { title: `${article?.translations?.[0]?.title || "Clinique"} | CREDDA-ULPGL` };
   } catch (error) {
     return { title: "Clinique | CREDDA-ULPGL" };
   }
@@ -30,14 +31,21 @@ export default async function ClinicalArticlePage({ params }: { params: Promise<
   
   let article = null;
   try {
-    article = await db.article.findUnique({
-      where: { slug },
-      include: {
-        translations: { where: { language: locale } },
-        category: { include: { translations: { where: { language: locale } } } },
-        medias: true
-      }
-    });
+    const [articleResult] = await sql`
+      SELECT a.*, 
+        (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
+        (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations,
+        (SELECT json_agg(m) FROM "Media" m WHERE m."articleId" = a.id) as medias
+      FROM "Article" a
+      WHERE a.slug = ${slug}
+    `;
+    article = articleResult;
+    if (article) {
+       article.category = {
+          translations: article.category_translations || []
+       };
+       article.medias = article.medias || [];
+    }
   } catch (error) {
     console.error("⚠️ Database connection failed in ClinicalArticlePage", error);
   }
@@ -105,7 +113,7 @@ export default async function ClinicalArticlePage({ params }: { params: Promise<
                   <Info size={20} className="text-emerald-600" /> {t('attachments')}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {article.medias.map((media) => (
+                  {article.medias.map((media: any) => (
                     <div key={media.id} className="group relative bg-slate-50 border border-slate-100 p-4 transition-all hover:shadow-lg">
                       {media.type === "IMAGE" && (
                         <div className="space-y-3">

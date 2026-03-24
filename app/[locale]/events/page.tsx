@@ -1,7 +1,7 @@
 // app/[locale]/events/page.tsx
 import type { Metadata } from "next";
 import { localePageMetadata } from "@/lib/page-metadata";
-import { db } from "@/lib/db";
+import { sql } from "@/lib/db";
 import { Calendar, MapPin, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -21,12 +21,12 @@ export default async function EventsPage({
 }) {
   const { locale } = await params;
   
-  const events = await db.event.findMany({
-    include: {
-      translations: { where: { language: locale } }
-    },
-    orderBy: { date: 'asc' }
-  }).catch(() => []);
+  const events = await sql`
+    SELECT e.*, 
+      (SELECT json_agg(t) FROM "EventTranslation" t WHERE t."eventId" = e.id AND t.language = ${locale}) as translations
+    FROM "Event" e
+    ORDER BY e.date ASC
+  `.catch(() => []);
 
   const now = new Date();
   const upcomingEvents = events.filter((e: any) => new Date(e.date) >= now);

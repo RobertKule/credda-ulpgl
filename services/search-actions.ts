@@ -1,79 +1,51 @@
 // services/search-actions.ts
 "use server"
 
-import { db } from "@/lib/db";
-import { safeQuery } from "@/lib/db-safe";
+import { sql } from "@/lib/db";
 
 export async function searchEverything(query: string, locale: string) {
   if (!query || query.length < 2) return { articles: [], publications: [], members: [] };
 
-  const [articles, publications, members] = await Promise.all([
-    safeQuery(
-      () =>
-        db.article.findMany({
-          where: {
-            published: true,
-            translations: {
-              some: {
-                language: locale,
-                OR: [{ title: { contains: query } }, { excerpt: { contains: query } }]
-              }
-            }
-          },
-          select: {
-            id: true,
-            slug: true,
-            mainImage: true,
-            translations: { where: { language: locale }, select: { title: true, excerpt: true } }
-          },
-          take: 5
-        }),
-      [],
-      "search:articles"
-    ),
-    safeQuery(
-      () =>
-        db.publication.findMany({
-          where: {
-            translations: {
-              some: {
-                language: locale,
-                OR: [{ title: { contains: query } }, { authors: { contains: query } }]
-              }
-            }
-          },
-          select: {
-            id: true,
-            slug: true,
-            pdfUrl: true,
-            translations: { where: { language: locale }, select: { title: true, authors: true } }
-          },
-          take: 5
-        }),
-      [],
-      "search:publications"
-    ),
-    safeQuery(
-      () =>
-        db.member.findMany({
-          where: {
-            translations: {
-              some: {
-                language: locale,
-                name: { contains: query }
-              }
-            }
-          },
-          select: {
-            id: true,
-            image: true,
-            translations: { where: { language: locale }, select: { name: true, role: true } }
-          },
-          take: 3
-        }),
-      [],
-      "search:members"
-    )
+  const pattern = `%${query}%`;
+
+  const [articles, publications, members]: any = await Promise.all([
+    sql`
+      SELECT a.id, a.slug, a."mainImage",
+        (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations
+      FROM "Article" a
+      WHERE a.published = TRUE 
+        AND EXISTS (
+          SELECT 1 FROM "ArticleTranslation" at 
+          WHERE at."articleId" = a.id 
+            AND at.language = ${locale}
+            AND (at.title ILIKE ${pattern} OR at.excerpt ILIKE ${pattern})
+        )
+      LIMIT 5
+    `.catch(() => []),
+    sql`
+      SELECT p.id, p.slug, p."pdfUrl",
+        (SELECT json_agg(t) FROM "PublicationTranslation" t WHERE t."publicationId" = p.id AND t.language = ${locale}) as translations
+      FROM "Publication" p
+      WHERE EXISTS (
+        SELECT 1 FROM "PublicationTranslation" pt 
+        WHERE pt."publicationId" = p.id 
+          AND pt.language = ${locale}
+          AND (pt.title ILIKE ${pattern} OR pt.authors ILIKE ${pattern})
+      )
+      LIMIT 5
+    `.catch(() => []),
+    sql`
+      SELECT m.id, m.image,
+        (SELECT json_agg(t) FROM "MemberTranslation" t WHERE t."memberId" = m.id AND t.language = ${locale}) as translations
+      FROM "Member" m
+      WHERE EXISTS (
+        SELECT 1 FROM "MemberTranslation" mt 
+        WHERE mt."memberId" = m.id 
+          AND mt.language = ${locale}
+          AND mt.name ILIKE ${pattern}
+      )
+      LIMIT 3
+    `.catch(() => [])
   ]);
 
   return { articles, publications, members };

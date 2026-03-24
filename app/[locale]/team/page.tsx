@@ -1,7 +1,7 @@
 // app/[locale]/team/page.tsx
 import type { Metadata } from "next";
 import { localePageMetadata } from "@/lib/page-metadata";
-import { db } from "@/lib/db";
+import { sql } from "@/lib/db";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import {
@@ -25,12 +25,12 @@ export default async function TeamPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'TeamPage' });
 
   // Optimization: catch error to avoid total page crash
-  const members = await db.member.findMany({
-    include: {
-      translations: { where: { language: locale } }
-    },
-    orderBy: { order: 'asc' }
-  }).catch((err) => {
+  const members = await sql`
+    SELECT m.*, 
+      (SELECT json_agg(t) FROM "MemberTranslation" t WHERE t."memberId" = m.id AND t.language = ${locale}) as translations
+    FROM "Member" m
+    ORDER BY m."order" ASC
+  `.catch((err) => {
     console.error("Team DB Fetch Error:", err);
     return [];
   });

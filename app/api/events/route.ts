@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { safeQuery } from "@/lib/db-safe";
+import { sql } from "@/lib/db";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -9,25 +8,44 @@ export async function GET(req: NextRequest) {
 
   const now = new Date();
 
-  const where: any = { isPublished: true };
-  if (upcoming === "true") {
-    where.date = { gte: now };
-  } else if (upcoming === "false") {
-    where.date = { lt: now };
+  try {
+    let query;
+    if (upcoming === "true") {
+      query = sql`
+        SELECT e.*, 
+          (SELECT json_agg(t) FROM "EventTranslation" t WHERE t."eventId" = e.id AND t.language = ${locale}) as translations
+        FROM "Event" e
+        WHERE e."isPublished" = true AND e.date >= ${now}
+        ORDER BY e.date ASC
+      `;
+    } else if (upcoming === "false") {
+      query = sql`
+        SELECT e.*, 
+          (SELECT json_agg(t) FROM "EventTranslation" t WHERE t."eventId" = e.id AND t.language = ${locale}) as translations
+        FROM "Event" e
+        WHERE e."isPublished" = true AND e.date < ${now}
+        ORDER BY e.date DESC
+      `;
+    } else {
+      query = sql`
+        SELECT e.*, 
+          (SELECT json_agg(t) FROM "EventTranslation" t WHERE t."eventId" = e.id AND t.language = ${locale}) as translations
+        FROM "Event" e
+        WHERE e."isPublished" = true
+        ORDER BY e.date DESC
+      `;
+    }
+
+    const events = await query;
+    
+    const formattedEvents = events.map((e: any) => ({
+      ...e,
+      translations: e.translations || []
+    }));
+
+    return NextResponse.json({ items: formattedEvents });
+  } catch (error: any) {
+    console.error("[API] Events error:", error.message);
+    return NextResponse.json({ items: [] }, { status: 500 });
   }
-
-  const events = await safeQuery(
-    () =>
-      db.event.findMany({
-        where,
-        orderBy: { date: upcoming === "true" ? "asc" : "desc" },
-        include: {
-          translations: { where: { language: locale } }
-        }
-      }),
-    [],
-    "api/events:list"
-  );
-
-  return NextResponse.json({ items: events });
 }

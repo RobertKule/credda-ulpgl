@@ -1,6 +1,5 @@
 // app/[locale]/clinical/page.tsx
-import { db } from "@/lib/db";
-import { safeQuery } from "@/lib/db-safe";
+import { sql } from "@/lib/db";
 import { Link } from "@/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,31 +24,28 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'ClinicalPage' });
 
-  const [fetchedArticles, fetchedSessions] = await Promise.all([
-    safeQuery(
-      () =>
-        db.article.findMany({
-          where: { domain: "CLINICAL", published: true },
-          include: {
-            translations: { where: { language: locale } },
-            category: { include: { translations: { where: { language: locale } } } }
-          },
-          orderBy: { createdAt: "desc" }
-        }),
-      [],
-      "clinical:articles"
-    ),
-    safeQuery(
-      () =>
-        db.clinicSession.findMany({
-          where: { date: { gte: new Date() } },
-          orderBy: { date: "asc" }
-        }),
-      [],
-      "clinical:sessions"
-    )
+  const [fetchedArticles, fetchedSessions]: [any, any] = await Promise.all([
+    sql`
+      SELECT a.*, 
+        (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
+        (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations
+      FROM "Article" a
+      WHERE a.domain = 'CLINICAL' AND a.published = TRUE
+      ORDER BY a."createdAt" DESC
+    `.catch(() => []),
+    sql`
+      SELECT * FROM "ClinicSession"
+      WHERE date >= ${new Date().toISOString()}
+      ORDER BY date ASC
+    `.catch(() => [])
   ]);
-  const articles = fetchedArticles;
+
+  const articles = fetchedArticles.map((a: any) => ({
+    ...a,
+    category: {
+      translations: a.category_translations || []
+    }
+  }));
   const sessions = fetchedSessions;
 
   return (
@@ -123,7 +119,7 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
 
         {articles.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article) => {
+            {articles.map((article: any) => {
               const translation = article.translations[0];
               const category = article.category?.translations[0]?.name || "Case Study";
               
@@ -202,7 +198,7 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
                </p>
                
                <div className="space-y-6 pt-8">
-                  {sessions.length > 0 ? sessions.map(session => (
+                  {sessions.length > 0 ? sessions.map((session: any) => (
                     <div key={session.id} className="p-6 border border-light-gray bg-soft-cream/20 flex gap-4">
                        <div className="w-10 h-10 bg-primary text-white flex items-center justify-center shrink-0">
                           <MapPin size={20} />

@@ -1,5 +1,4 @@
-// app/[locale]/publications/[slug]/page.tsx
-import { db } from "@/lib/db";
+import { sql } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { Calendar, User, ArrowLeft, Share2, Download, Clock } from "lucide-react";
 import Link from "next/link";
@@ -12,21 +11,24 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }> 
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const article = await db.article.findUnique({
-    where: { slug },
-    include: { 
-      translations: { where: { language: locale } },
-      category: { select: { translations: { where: { language: locale }, select: { name: true } } } }
-    }
-  });
+  try {
+    const [article] = await sql`
+      SELECT a.*, 
+        (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations
+      FROM "Article" a
+      WHERE a.slug = ${slug}
+    `;
 
-  if (!article) return { title: "Publication - CREDDA" };
-  const t = article.translations?.[0];
+    if (!article) return { title: "Publication - CREDDA" };
+    const t = article.translations?.[0];
 
-  return {
-    title: `${t?.title || "Recherche"} | CREDDA-ULPGL`,
-    description: t?.excerpt || "Rapport de recherche scientifique du CREDDA.",
-  };
+    return {
+      title: `${t?.title || "Recherche"} | CREDDA-ULPGL`,
+      description: t?.excerpt || "Rapport de recherche scientifique du CREDDA.",
+    };
+  } catch (error) {
+    return { title: "Publication - CREDDA" };
+  }
 }
 
 export default async function PublicationDetailPage({ 
@@ -35,13 +37,20 @@ export default async function PublicationDetailPage({
   params: Promise<{ locale: string; slug: string }> 
 }) {
   const { locale, slug } = await params;
-  const article = await db.article.findUnique({
-    where: { slug },
-    include: { 
-      translations: { where: { language: locale } },
-      category: { select: { translations: { where: { language: locale }, select: { name: true } } } }
-    }
-  });
+  const [articleResult]: any = await sql`
+    SELECT a.*, 
+      (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
+      (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations
+    FROM "Article" a
+    WHERE a.slug = ${slug}
+  `.catch(() => [null]);
+
+  const article = articleResult;
+  if (article) {
+    article.category = {
+      translations: article.category_translations || []
+    };
+  }
 
   if (!article) notFound();
   

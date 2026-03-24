@@ -1,22 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { safeQuery } from "@/lib/db-safe";
+import { sql } from "@/lib/db";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const locale = searchParams.get("locale") || "fr";
 
-  const members = await safeQuery(
-    () =>
-      db.member.findMany({
-        orderBy: { order: "asc" },
-        include: {
-          translations: { where: { language: locale } }
-        }
-      }),
-    [],
-    "api/team:list"
-  );
+  try {
+    const members = await sql`
+      SELECT m.*, 
+        (SELECT json_agg(t) FROM "MemberTranslation" t WHERE t."memberId" = m.id AND t.language = ${locale}) as translations
+      FROM "Member" m
+      ORDER BY m."order" ASC
+    `;
 
-  return NextResponse.json({ items: members });
+    const formattedMembers = members.map((m: any) => ({
+      ...m,
+      translations: m.translations || []
+    }));
+
+    return NextResponse.json({ items: formattedMembers });
+  } catch (error: any) {
+    console.error("[API] Team error:", error.message);
+    return NextResponse.json({ items: [] }, { status: 500 });
+  }
 }

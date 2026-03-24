@@ -1,7 +1,7 @@
 // app/[locale]/gallery/page.tsx
 import type { Metadata } from "next";
 import { localePageMetadata } from "@/lib/page-metadata";
-import { db } from "@/lib/db";
+import { sql } from "@/lib/db";
 import { Camera, Image as ImageIcon, Filter, Maximize2 } from "lucide-react";
 
 export async function generateMetadata({
@@ -20,12 +20,12 @@ export default async function GalleryPage({
 }) {
   const { locale } = await params;
   
-  const images = await db.galleryImage.findMany({
-    orderBy: { order: 'asc' },
-    include: {
-      translations: { where: { language: locale } }
-    }
-  }).catch(() => []);
+  const images = await sql`
+    SELECT gi.*, 
+      (SELECT json_agg(t) FROM "GalleryImageTranslation" t WHERE t."galleryImageId" = gi.id AND t.language = ${locale}) as translations
+    FROM "GalleryImage" gi
+    ORDER BY gi."order" ASC
+  `.catch(() => []);
 
   return (
     <main className="min-h-screen bg-[#0C0C0A] py-24 px-6 lg:px-12">
