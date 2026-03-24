@@ -4,16 +4,18 @@ import { auth } from "@/lib/auth";
 import { uploadFile } from "@/lib/storage";
 
 // --- Configuration de la Route ---
-// Note: Sur Vercel Free, la limite de taille du corps de la requête est de 4.5MB.
-// Pour des fichiers plus gros, il faudra passer par un upload direct côté client (Presigned URL).
-export const maxDuration = 60; // Augmente le timeout à 60s (si supporté par ton plan)
+// Sur Vercel Free, la limite de taille du corps de la requête est de 4.5MB.
+export const maxDuration = 60; 
 
 // --- Constantes de Validation ---
 const IMAGE_MAX_BYTES = 4.5 * 1024 * 1024; // Bridé à 4.5MB pour Vercel Free
-const PDF_MAX_BYTES = 4.5 * 1024 * 1024;   // Idem pour éviter l'erreur 413
+const PDF_MAX_BYTES = 4.5 * 1024 * 1024;   
 
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const ACCEPTED_PDF_TYPES = ["application/pdf"];
+
+// Définition du type attendu par uploadFile pour éviter l'erreur TS
+type AllowedFolders = "articles" | "events" | "gallery" | "team" | "publications";
 
 // --- Zod schemas ---
 const imageSchema = z.object({
@@ -50,7 +52,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "Non autorisé. Veuillez vous connecter." }, { status: 401 });
   }
 
-  // Vérification de la taille globale du Header (prévenir le crash avant parsing)
+  // 1. Vérification Header (Anticiper l'erreur 413)
   const contentLength = parseInt(request.headers.get("content-length") || "0");
   if (contentLength > 4.5 * 1024 * 1024) {
      return NextResponse.json(
@@ -64,7 +66,7 @@ export async function POST(request: Request): Promise<NextResponse> {
     formData = await request.formData();
   } catch (err) {
     return NextResponse.json(
-      { error: "Erreur lors de la lecture du formulaire. Vérifiez le format multipart/form-data." },
+      { error: "Erreur lors de la lecture du formulaire." },
       { status: 400 }
     );
   }
@@ -73,7 +75,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   const uploadType = formData.get("uploadType") || "image";
   const folder = (formData.get("folder") as string) || "gallery";
 
-  // Validation par type
+  // 2. Validation avec Zod
   const isPdf = uploadType === "pdf";
   const schema = isPdf ? pdfSchema : imageSchema;
   const validation = schema.safeParse({ file: rawFile });
@@ -81,7 +83,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (!validation.success) {
     const firstError = Object.values(validation.error.flatten().fieldErrors)[0]?.[0];
     return NextResponse.json(
-      { error: firstError || "Échec de la validation du fichier." },
+      { error: firstError || "Échec de la validation." },
       { status: 400 }
     );
   }
@@ -91,8 +93,8 @@ export async function POST(request: Request): Promise<NextResponse> {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // Déterminer le dossier de destination
-    const targetFolder = isPdf ? "publications" : folder;
+    // 3. Correction de l'erreur TS2345 (Le Type Casting)
+    const targetFolder = (isPdf ? "publications" : folder) as AllowedFolders;
 
     const url = await uploadFile(
       buffer,
@@ -110,7 +112,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   } catch (error: any) {
     console.error("[UPLOAD_ERROR]:", error);
     return NextResponse.json(
-      { error: "Erreur serveur lors de l'envoi vers Supabase." },
+      { error: "Erreur lors de l'envoi vers le stockage." },
       { status: 500 }
     );
   }
