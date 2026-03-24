@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { localePageMetadata } from "@/lib/page-metadata";
 import { sql } from "@/lib/db";
 import { Camera, Image as ImageIcon, Filter, Maximize2 } from "lucide-react";
+import { ScrollReveal } from "@/components/shared/ScrollReveal";
 
 export async function generateMetadata({
   params
@@ -31,22 +32,30 @@ export default async function GalleryPage({
     <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
        <div className="max-w-7xl mx-auto">
           {/* HEADER */}
-          <div className="flex flex-col md:flex-row items-baseline justify-between gap-6 mb-20 pb-12 border-b border-border/40">
-             <div className="max-w-xl">
-                <span className="text-[10px] uppercase tracking-[0.6em] font-outfit font-bold text-primary block mb-6">Photothèque</span>
-                <h1 className="text-6xl md:text-8xl font-fraunces font-extrabold text-foreground leading-[0.85]">
-                   Le CREDDA en <span className="text-primary italic-accent">Action</span>
-                </h1>
-             </div>
-             <p className="text-muted-foreground max-w-xs text-sm leading-relaxed">
-                Archives visuelles de nos recherches, cliniques juridiques et collaborations internationales.
-             </p>
-          </div>
+          <section style={{ padding: '80px 40px 64px', borderBottom: '1px solid rgba(245,242,236,0.07)', marginBottom: '80px' }}>
+            <ScrollReveal>
+              <div className="flex flex-col md:flex-row items-baseline justify-between gap-6 pb-12">
+                 <div className="max-w-xl">
+                    <p style={{ fontFamily: 'var(--font-outfit)', fontSize: '9px', letterSpacing: '0.2em', color: '#C9A84C', textTransform: 'uppercase', fontWeight: 600, marginBottom: 16 }}>
+                      CREDDA · Photothèque
+                    </p>
+                    <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1 }}>
+                       Le CREDDA en <em style={{ fontStyle: 'italic', color: '#C9A84C' }}>Action</em>
+                    </h1>
+                 </div>
+                 <p className="text-muted-foreground max-w-xs text-sm leading-relaxed">
+                    Archives visuelles de nos recherches, cliniques juridiques et collaborations internationales.
+                 </p>
+              </div>
+            </ScrollReveal>
+          </section>
 
           {/* MASONRY-LIKE GRID */}
           <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-             {images.length > 0 ? images.map((img: any) => (
-               <GalleryItem key={img.id} img={img} />
+             {images.length > 0 ? images.map((img: any, i: number) => (
+               <ScrollReveal key={img.id} delay={i * 0.08}>
+                 <GalleryItem img={img} />
+               </ScrollReveal>
              )) : (
                <div className="col-span-full py-40 text-center border border-dashed border-border">
                   <p className="text-muted-foreground/30 uppercase font-outfit font-bold tracking-widest text-xs">Galerie en cours de synchronisation</p>

@@ -4,6 +4,7 @@ import { localePageMetadata } from "@/lib/page-metadata";
 import { sql } from "@/lib/db";
 import { Calendar, MapPin, Clock, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { ScrollReveal } from "@/components/shared/ScrollReveal";
 
 export async function generateMetadata({
   params
@@ -37,15 +38,21 @@ export default async function EventsPage({
     <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
        <div className="max-w-7xl mx-auto">
           {/* HEADER */}
-          <div className="text-center mb-24">
-             <span className="text-[10px] uppercase tracking-[0.6em] font-outfit font-bold text-[#C9A84C] block mb-6">Agenda Académique</span>
-             <h1 className="text-5xl md:text-8xl font-fraunces font-extrabold text-foreground mb-10 leading-tight">
-                Événements <span className="text-[#C9A84C] italic-accent">&</span> Conférences
-             </h1>
-             <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-outfit font-light">
-                Participez à nos symposiums, ateliers cliniques et présentations de rapports annuels.
-             </p>
-          </div>
+          <section style={{ padding: '80px 40px 64px', borderBottom: '1px solid rgba(245,242,236,0.07)', marginBottom: '80px' }}>
+            <ScrollReveal>
+              <div className="text-center mb-12">
+                 <p style={{ fontFamily: 'var(--font-outfit)', fontSize: '9px', letterSpacing: '0.2em', color: '#C9A84C', textTransform: 'uppercase', fontWeight: 600, marginBottom: 16 }}>
+                    CREDDA · Événements
+                 </p>
+                 <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1 }}>
+                    Événements <em style={{ fontStyle: 'italic', color: '#C9A84C' }}>& Conférences</em>
+                 </h1>
+                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-outfit font-light mt-8">
+                    Participez à nos symposiums, ateliers cliniques et présentations de rapports annuels.
+                 </p>
+              </div>
+            </ScrollReveal>
+          </section>
 
           {/* UPCOMING EVENTS */}
           <section className="mb-32">
@@ -55,8 +62,10 @@ export default async function EventsPage({
              </div>
 
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {upcomingEvents.length > 0 ? upcomingEvents.map((event: any) => (
-                  <EventCard key={event.id} event={event} locale={locale} />
+                {upcomingEvents.length > 0 ? upcomingEvents.map((event: any, i: number) => (
+                  <ScrollReveal key={event.id} delay={i * 0.08}>
+                    <EventCard event={event} locale={locale} />
+                  </ScrollReveal>
                 )) : (
                   <div className="col-span-full py-20 text-center bg-card border border-border">
                      <p className="text-muted-foreground uppercase font-outfit font-bold tracking-widest text-[10px]">Aucun événement prévu prochainement</p>
@@ -73,8 +82,10 @@ export default async function EventsPage({
              </div>
 
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
-                {pastEvents.map((event: any) => (
-                  <EventCard key={event.id} event={event} locale={locale} isPast />
+                {pastEvents.map((event: any, i: number) => (
+                  <ScrollReveal key={event.id} delay={i * 0.08}>
+                    <EventCard event={event} locale={locale} isPast />
+                  </ScrollReveal>
                 ))}
              </div>
           </section>

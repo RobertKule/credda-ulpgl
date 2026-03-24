@@ -16,6 +16,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Suspense } from "react";
+import { ScrollReveal } from "@/components/shared/ScrollReveal";
 
 export async function generateMetadata({
   params
@@ -55,22 +56,30 @@ async function ResearchContent({ locale }: { locale: string }) {
   return (
     <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
       {/* 1. HEADER */}
-      <header className="max-w-7xl mx-auto mb-20 text-center relative overflow-hidden py-20 px-10 border border-border bg-card shadow-sm">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9A84C]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
-        
-        <span className="text-[10px] uppercase tracking-[0.6em] font-black text-[#C9A84C] block mb-8">Intelligence & Analyse</span>
-        <h1 className="text-5xl md:text-8xl font-serif font-black text-foreground mb-10 leading-[0.85]">
-           Recherche <span className="text-[#C9A84C] italic">&</span> Analyses.
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
-           Explorez nos travaux sur la gouvernance, la démocratie et le développement durable en Afrique, produits par nos chercheurs et partenaires.
-        </p>
-      </header>
+      <section style={{ padding: '80px 40px 64px', borderBottom: '1px solid rgba(245,242,236,0.07)', marginBottom: '80px' }}>
+        <ScrollReveal>
+          <header className="max-w-7xl mx-auto text-center relative overflow-hidden py-20 px-10 border border-border bg-card shadow-sm">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9A84C]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+            
+            <p style={{ fontFamily: 'var(--font-outfit)', fontSize: '9px', letterSpacing: '0.2em', color: '#C9A84C', textTransform: 'uppercase', fontWeight: 600, marginBottom: 16 }}>
+              CREDDA · Intelligence & Analyse
+            </p>
+            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1, mb: 10 }}>
+               Recherche <em style={{ fontStyle: 'italic', color: '#C9A84C' }}>& Analyses.</em>
+            </h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed mt-10">
+               Explorez nos travaux sur la gouvernance, la démocratie et le développement durable en Afrique, produits par nos chercheurs et partenaires.
+            </p>
+          </header>
+        </ScrollReveal>
+      </section>
 
       {/* 2. RESEARCH GRID */}
       <section className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {articles.length > 0 ? articles.map((doc: any) => (
-           <ResearchCard key={doc.id} doc={doc} locale={locale} />
+        {articles.length > 0 ? articles.map((doc: any, i: number) => (
+           <ScrollReveal key={doc.id} delay={i * 0.08}>
+             <ResearchCard doc={doc} locale={locale} />
+           </ScrollReveal>
         )) : (
           <div className="col-span-full py-40 text-center border-2 border-dashed border-border">
              <SearchX size={64} className="mx-auto text-foreground/10 mb-8" />

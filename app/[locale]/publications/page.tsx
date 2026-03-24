@@ -4,6 +4,7 @@ import { localePageMetadata } from "@/lib/page-metadata";
 import { sql } from "@/lib/db";
 import { ArrowRight, FileText, Calendar, User } from "lucide-react";
 import Link from "next/link";
+import { ScrollReveal } from "@/components/shared/ScrollReveal";
 
 export async function generateMetadata({
   params
@@ -49,24 +50,28 @@ export default async function PublicationsPage({
   return (
     <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
       {/* HEADER */}
-      <div className="max-w-7xl mx-auto mb-20">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-12 border-b border-border">
-          <div className="max-w-2xl">
-            <span className="text-[10px] uppercase tracking-[0.5em] font-outfit font-bold text-[#C9A84C] block mb-6">Archive Ouverte</span>
-            <h1 className="text-5xl md:text-7xl font-fraunces font-extrabold text-foreground leading-[0.9]">
-              Bibliothèque <span className="text-[#C9A84C] italic-accent">Numérique</span>
+      <section style={{ padding: '80px 40px 64px', borderBottom: '1px solid rgba(245,242,236,0.07)', marginBottom: '80px' }}>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8 pb-12">
+          <ScrollReveal>
+            <p style={{ fontFamily: 'var(--font-outfit)', fontSize: '9px', letterSpacing: '0.2em', color: '#C9A84C', textTransform: 'uppercase', fontWeight: 600, marginBottom: 16 }}>
+              CREDDA · Archive Ouverte
+            </p>
+            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1 }}>
+              Bibliothèque <em style={{ fontStyle: 'italic', color: '#C9A84C' }}>Numérique</em>
             </h1>
-          </div>
+          </ScrollReveal>
           <p className="text-muted-foreground font-outfit font-light max-w-xs">
             Publications scientifiques, rapports cliniques et études de cas en libre accès.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* ARTICLES GRID */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {articles.length > 0 ? articles.map((doc: RawArticle) => (
-          <PublicationCard key={doc.id} doc={doc} locale={locale} />
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-6">
+        {articles.length > 0 ? articles.map((doc: RawArticle, i: number) => (
+          <ScrollReveal key={doc.id} delay={i * 0.08}>
+            <PublicationCard doc={doc} locale={locale} />
+          </ScrollReveal>
         )) : (
           <div className="col-span-full py-32 text-center border border-dashed border-border">
              <p className="text-muted-foreground uppercase font-outfit tracking-widest text-[10px] font-bold">Aucune publication disponible</p>

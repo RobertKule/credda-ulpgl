@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
+import { ScrollReveal } from "@/components/shared/ScrollReveal";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -38,42 +39,42 @@ export default async function TeamPage({ params }: Props) {
   return (
     <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
       {/* --- HEADER --- */}
-      <header className="max-w-7xl mx-auto mb-24">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 border-b border-white/5 pb-16">
-          <div className="max-w-3xl">
-            <span className="text-[10px] uppercase tracking-[0.6em] font-outfit font-bold text-primary block mb-8">Leadership Scientifique</span>
-            <h1 className="text-6xl md:text-8xl font-fraunces font-extrabold text-foreground leading-[0.85] mb-10">
-               Nos <span className="text-primary italic-accent">Chercheurs</span> & Experts.
-            </h1>
-            <p className="text-xl text-muted-foreground font-outfit font-light leading-relaxed">
-              Une équipe pluridisciplinaire engagée pour la production de savoir critique et l'excellence scientifique en Afrique.
+      <section style={{ padding: '80px 40px 64px', borderBottom: '1px solid rgba(245,242,236,0.07)', marginBottom: '80px' }}>
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-12 pb-16">
+          <ScrollReveal>
+            <p style={{ fontFamily: 'var(--font-outfit)', fontSize: '9px', letterSpacing: '0.2em', color: '#C9A84C', textTransform: 'uppercase', fontWeight: 600, marginBottom: 16 }}>
+              CREDDA · Équipe
             </p>
-          </div>
+            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1 }}>
+              Nos Chercheurs <em style={{ fontStyle: 'italic', color: '#C9A84C' }}>& Experts</em>
+            </h1>
+          </ScrollReveal>
           
           <div className="hidden lg:flex items-center gap-8">
              <div className="text-center">
-                <p className="text-3xl font-fraunces font-extrabold text-primary">{members.length}</p>
+                <p className="text-3xl font-fraunces font-extrabold text-[#C9A84C]">{members.length}</p>
                 <p className="text-[9px] uppercase font-outfit font-bold tracking-widest text-muted-foreground/30">Chercheurs</p>
              </div>
              <div className="w-[1px] h-12 bg-border/40" />
              <div className="text-center">
-                <p className="text-3xl font-fraunces font-extrabold text-primary">24</p>
+                <p className="text-3xl font-fraunces font-extrabold text-[#C9A84C]">24</p>
                 <p className="text-[9px] uppercase font-outfit font-bold tracking-widest text-muted-foreground/30">Expertises</p>
              </div>
           </div>
         </div>
-      </header>
+      </section>
 
       {/* --- GRID ÉQUIPE --- */}
       <section className="max-w-7xl mx-auto">
         {members.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
-            {members.map((member: any) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24 px-6">
+            {members.map((member: any, i: number) => {
               const content = member.translations[0];
               if (!content) return null;
 
               return (
-                <div key={member.id} className="group">
+                <ScrollReveal key={member.id} delay={i * 0.08}>
+                <div className="group">
                   {/* Photo Profile */}
                   <div className="relative aspect-[3/4] overflow-hidden bg-card border border-border mb-8 shadow-2xl">
                     {member.image ? (
@@ -131,6 +132,7 @@ export default async function TeamPage({ params }: Props) {
                     </div>
                   </div>
                 </div>
+                </ScrollReveal>
               );
             })}
           </div>

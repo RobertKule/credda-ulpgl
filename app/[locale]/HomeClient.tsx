@@ -14,6 +14,8 @@ import { Quote, ArrowRight, ExternalLink, ShieldCheck, Scale, Landmark } from "l
 import { Link } from "@/navigation";
 import GSAPReveal from "@/components/shared/GSAPReveal";
 import { getTranslations } from "next-intl/server";
+import { ScrollReveal } from "@/components/shared/ScrollReveal";
+import { SectionNumber } from "@/components/home/SectionNumber";
 
 export default function HomeClient({
   locale,
@@ -54,10 +56,13 @@ export default function HomeClient({
         </motion.div>
 
         <div className="container mx-auto px-6 relative z-10">
-          <div className="flex flex-col lg:flex-row gap-32 items-center">
-            
-            {/* Image avec cadre "Gallery" et effet Oblique */}
-            <div className="lg:w-5/12 relative group">
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
+            <SectionNumber number="01" />
+            <ScrollReveal className="w-full">
+              <div className="flex flex-col lg:flex-row gap-32 items-center">
+                
+                {/* Image avec cadre "Gallery" et effet Oblique */}
+                <div className="lg:w-5/12 relative group">
                <GSAPReveal direction="right">
                  <motion.div 
                    style={{ 
@@ -120,48 +125,83 @@ export default function HomeClient({
                 </div>
               </GSAPReveal>
             </div>
+              </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
 
       {/* 4. SECTIONS FONCTIONNELLES (Research & Clinical) */}
       <section className="relative z-10 bg-card border-y border-border">
-        <div id="research">
-          <FeaturedResearch research={featuredResearch} />
+        <div id="research" className="container mx-auto px-6 pt-20 pb-10">
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
+            <SectionNumber number="02" />
+            <ScrollReveal className="w-full">
+              <FeaturedResearch research={featuredResearch} />
+            </ScrollReveal>
+          </div>
         </div>
-        <div id="clinical">
-          <ClinicalSection />
+        <div id="clinical" className="container mx-auto px-6 pb-20">
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
+            <SectionNumber number="03" />
+            <ScrollReveal className="w-full">
+              <ClinicalSection />
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 
       {/* 5. TEAM & SOCIAL PROOF */}
-      <div id="team">
-        <TeamSection team={team} />
+      <div id="team" className="container mx-auto px-6 py-20">
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
+          <SectionNumber number="04" />
+          <ScrollReveal className="w-full">
+            <TeamSection team={team} />
+          </ScrollReveal>
+        </div>
       </div>
-      <div id="publications">
-         <TestimonialSection testimonials={testimonials} />
+      <div id="publications" className="container mx-auto px-6 py-20">
+         <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
+           <SectionNumber number="05" />
+           <ScrollReveal className="w-full">
+             <TestimonialSection testimonials={testimonials} />
+           </ScrollReveal>
+         </div>
       </div>
 
       {/* 6. PARTNERS (Le ruban cinétique) */}
-      <div id="gallery">
-        <section className="py-40 bg-background">
-          <div className="container mx-auto px-6 mb-20 text-center">
-              <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#C9A84C]">{t('cta.collaboration')}</span>
-          </div>
-          <div className="relative flex overflow-x-hidden border-y border-white/5 py-12 bg-white/[0.02]">
-            <div className="animate-infinite-scroll flex items-center gap-32 whitespace-nowrap">
-              {[...(partners ?? []), ...(partners ?? []), ...(partners ?? [])].map((partner: string, i: number) => (
-                <div key={i} className="w-40 h-16 relative grayscale opacity-30 hover:opacity-100 hover:grayscale-0 transition-all duration-500">
-                  <Image src={`/images/partenaires/${partner}`} alt="Partner" fill className="object-contain" />
+      <div id="gallery" className="container mx-auto px-6 py-20">
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px' }}>
+          <SectionNumber number="06" />
+          <ScrollReveal className="w-full overflow-hidden">
+            <section className="py-20 bg-background w-full">
+              <div className="container mx-auto px-6 mb-20 text-center">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#C9A84C]">{t('cta.collaboration')}</span>
+              </div>
+              <div style={{ overflow: 'hidden', borderTop: '1px solid rgba(245,242,236,0.07)', borderBottom: '1px solid rgba(245,242,236,0.07)', padding: '32px 0' }}>
+                <div style={{ display: 'flex', gap: '64px', animation: 'ticker 35s linear infinite', width: 'max-content' }}>
+                  {[...(partners ?? []), ...(partners ?? [])].map((p, i) => (
+                    <div key={i} style={{ width: 120, height: 48, position: 'relative', filter: 'grayscale(1)', opacity: 0.3, transition: 'all 0.3s' }}
+                         onMouseEnter={e => { e.currentTarget.style.filter = 'grayscale(0)'; e.currentTarget.style.opacity = '1' }}
+                         onMouseLeave={e => { e.currentTarget.style.filter = 'grayscale(1)'; e.currentTarget.style.opacity = '0.3' }}>
+                      <Image src={`/images/partenaires/${p}`} alt="Partner" fill style={{ objectFit: 'contain' }} />
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
+              </div>
+              <style>{`@keyframes ticker { from { transform: translateX(0) } to { transform: translateX(-50%) } }`}</style>
+            </section>
+          </ScrollReveal>
+        </div>
       </div>
 
       {/* 7. FINAL CALL TO ACTION (Monumental) */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <div className="container mx-auto px-6 pt-20">
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '24px', position: 'relative', zIndex: 50 }}>
+          <SectionNumber number="07" />
+        </div>
+      </div>
+      <section className="relative h-screen flex items-center justify-center overflow-hidden -mt-40">
         {/* Background cinématique */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <motion.div
@@ -178,6 +218,7 @@ export default function HomeClient({
         </div>
         
         <div className="container mx-auto px-6 relative z-10 text-center">
+          <ScrollReveal>
           <motion.div 
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -206,6 +247,7 @@ export default function HomeClient({
               </Link>
             </div>
           </motion.div>
+          </ScrollReveal>
         </div>
       </section>
 

@@ -3,6 +3,17 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { Link } from "@/navigation";
 import { ArrowRight, Play, Volume2, VolumeX, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import dynamic from 'next/dynamic';
+
+const AfricaGlobe = dynamic(() => import('@/components/home/AfricaGlobe'), {
+  ssr: false,
+  loading: () => (
+    <div style={{ width: '100%', maxWidth: 560, aspectRatio: '1', background: '#111110', borderRadius: 4, display: 'flex', alignItems: 'center', justifyItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: 36, height: 36, borderRadius: '50%', border: '1px solid rgba(201,168,76,0.15)', borderTop: '1px solid #C9A84C', animation: 'spin 1s linear infinite' }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+    </div>
+  )
+});
 
 export default function Hero() {
   const t = useTranslations('HomePage');
@@ -156,17 +167,19 @@ export default function Hero() {
       {/* GRID BACKGROUND */}
       <div className="absolute inset-0 bg-grid-move opacity-20 pointer-events-none z-[2]" />
       
-      <div className="container mx-auto px-6 relative z-30">
-        <motion.div
-          style={{ 
-            rotateX: mousePos.y * -15, 
-            rotateY: mousePos.x * 15,
-            transformStyle: "preserve-3d"
-          }}
-          transition={{ type: "spring", stiffness: 100, damping: 30 }}
-          className="max-w-6xl"
-        >
+      <div className="container mx-auto px-6 relative z-30 w-full">
+        <div className="flex flex-col lg:flex-row items-center justify-between w-full h-full gap-12">
+          {/* LEFT COLUMN (60%) */}
           <motion.div
+            style={{ 
+              rotateX: mousePos.y * -15, 
+              rotateY: mousePos.x * 15,
+              transformStyle: "preserve-3d"
+            }}
+            transition={{ type: "spring", stiffness: 100, damping: 30 }}
+            className="w-full lg:w-[60%] z-10"
+          >
+            <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -234,8 +247,19 @@ export default function Hero() {
                 </div>
               </Link>
             </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
+
+          {/* RIGHT COLUMN (40% GLOBE) */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={isLoaded ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+            transition={{ duration: 1.2, delay: 0.5, ease: [0.19, 1, 0.22, 1] }}
+            className="hidden lg:flex w-full lg:w-[40%] justify-center items-center z-10"
+          >
+            <AfricaGlobe />
+          </motion.div>
+        </div>
       </div>
 
       {/* DECORATIVE ELEMENTS */}
