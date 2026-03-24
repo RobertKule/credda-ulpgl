@@ -12,9 +12,16 @@ if (!process.env.DATABASE_URL) {
   )
 }
 
+const databaseUrl = process.env.DATABASE_URL + (process.env.DATABASE_URL.includes('?') ? '&' : '?') + 'connection_limit=10&pool_timeout=20'
+
 export const db =
   globalThis.prisma ??
   new PrismaClient({
+    datasources: {
+      db: {
+        url: databaseUrl,
+      },
+    },
     log: process.env.NODE_ENV === 'production' ? ['error'] : ['query', 'error', 'warn'],
   })
 
