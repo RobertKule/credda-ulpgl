@@ -168,7 +168,9 @@
         "prev": "Previous",
         "next": "Next"
       }
-    }
+    },
+    "intro_subtitle": "Research & Excellence",
+    "about_caption": "Thinking the Rule of Law."
   },
   "metadata": {
     "home": {
@@ -231,9 +233,9 @@
     "since": "Since",
     "watch_video": "Watch institutional film",
     "hero": {
-      "title1": "The Elite of",
-      "title2": "Research",
-      "title3": "In Great Lakes Africa."
+      "badge": "Founded in 2008 • Academic Excellence",
+      "title": "Thinking <italic>Law</italic>, Building the Future.",
+      "desc": "CREDDA is the epicenter of legal research in the DRC, merging scientific rigor and social engagement."
     },
     "who_we_are": "Who are we?",
     "mission_title": "An academic institution dedicated to",
@@ -249,7 +251,12 @@
     "contact_us": "Contact Us",
     "compass": "Our Compass",
     "mission_vision_title": "A clear mission for a resilient Africa.",
-    "mission": "Our Mission",
+    "mission": {
+      "badge": "Our Manifesto",
+      "title": "A <italic>transformative</italic> vision of law.",
+      "desc": "Beyond texts, we believe in living law. A law that protects the Congo Basin ecosystems and guarantees the dignity of indigenous peoples. CREDDA is not just a laboratory, it is a legal shield.",
+      "cta": "Discover our publications"
+    },
     "mission_text": "Produce high-quality research to guide public policies and strengthen the rule of law in the DRC.",
     "vision": "Our Vision",
     "vision_text": "Become the main interdisciplinary hub for conflict transformation in Central Africa.",
@@ -271,14 +278,45 @@
       "Himbi District, Goma, DRC."
     ],
     "stats": {
-      "years": "Years of Expertise",
-      "publications": "Scientific Publications",
-      "partners": "International Partners",
-      "beneficiaries": "Beneficiaries"
+      "y": "Years of research",
+      "p": "Published articles",
+      "g": "Global partnerships",
+      "l": "Local engagement"
     },
     "cta_title": "Ready to collaborate for change?",
     "become_partner": "Become a Partner",
-    "meet_team": "Our Team"
+    "meet_team": "Our Team",
+    "quote": "Law must not only be spoken, it must be lived in the service of climate and social justice.",
+    "pillars": {
+      "title": "The Legal Pillars",
+      "desc": "Our actions are strictly in line with national and international normative frameworks.",
+      "items": [
+        {
+          "t": "DRC Constitution",
+          "desc": "Fundamental reference of our legal and clinical analyses."
+        },
+        {
+          "t": "Law 22/030 (Indigenous)",
+          "desc": "Fundamental reference of our legal and clinical analyses."
+        },
+        {
+          "t": "African Charter",
+          "desc": "Fundamental reference of our legal and clinical analyses."
+        },
+        {
+          "t": "Bio Diversity Convention",
+          "desc": "Fundamental reference of our legal and clinical analyses."
+        },
+        {
+          "t": "UN Declaration",
+          "desc": "Fundamental reference of our legal and clinical analyses."
+        },
+        {
+          "t": "Environmental Law",
+          "desc": "Fundamental reference of our legal and clinical analyses."
+        }
+      ]
+    }
   },
   "ResearchPage": {
     "header": {
@@ -959,5 +997,58 @@
         "content": "All reports, articles and multimedia content are the exclusive property of CREDDA-ULPGL, unless otherwise stated. Any reproduction is subject to prior authorization."
       }
     ]
+  },
+  "AdminDashboard": {
+    "overview": {
+      "badge": "Operational System",
+      "db": "• Database: Neon PostgreSQL",
+      "title": "Dashboard <italic>Overview.</italic>",
+      "subtitle": "Knowledge management for region {locale} • {date}",
+      "viewSite": "View site",
+      "newContent": "New Content"
+    },
+    "stats": {
+      "articles": {
+        "label": "Scientific Articles",
+        "sub": "{count} online"
+      },
+      "publications": {
+        "label": "PDF Library",
+        "sub": "Archived reports"
+      },
+      "members": {
+        "label": "Research Body",
+        "sub": "Experts & Staff"
+      },
+      "messages": {
+        "label": "Contact Requests",
+        "sub": "Unread messages"
+      }
+    },
+    "recent": {
+      "title": "Recent Works",
+      "manage": "Manage all",
+      "untitled": "Untitled",
+      "general": "General",
+      "modified": "Modified on {date}",
+      "published": "Online",
+      "draft": "Draft",
+      "empty": "No content available."
+    },
+    "inbox": {
+      "title": "<italic>Central</italic> Desk",
+      "unread": "{count} New messages waiting"
+    },
+    "health": {
+      "title": "System Integrity",
+      "storage": "PDF Storage",
+      "normal": "Normal",
+      "latency": "API Latency",
+      "desc": "85% of resources translated"
+    },
+    "footer": {
+      "node": "Node: {version} • Prisma 6 • Neon Serverless",
+      "sync": "Last sync: {time}"
+    }
   }
 }

@@ -62,7 +62,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
               viewport={{ once: true }}
-              className="group flex flex-col h-full bg-muted border border-border overflow-hidden transition-all duration-700 hover:border-primary/30 hover:translate-y-[-10px]"
+              className="group flex flex-col h-full bg-muted border border-border overflow-hidden transition-all duration-700 hover:border-primary/30 hover:translate-y-[-10px] rounded-2xl"
             >
               <div className="relative aspect-[16/10] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-1000">
                 <Image 
@@ -73,7 +73,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
                 <div className="absolute top-6 left-6">
-                  <span className="bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-widest px-4 py-2 shadow-2xl">
+                  <span className="bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-widest px-4 py-2 shadow-2xl rounded-md">
                     {item.category?.translations?.[0]?.name || t('research.journal')}
                   </span>
                 </div>

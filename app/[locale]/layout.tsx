@@ -18,7 +18,7 @@ export default async function RootLayout({
   return (
     <Providers locale={locale} messages={messages}>
       <Navbar />
-      <div className="m-0 p-0 pt-24 min-h-[calc(100vh-6rem)] bg-background text-foreground">
+      <div className="m-0 p-0 pt-24 mt-12 min-h-[calc(100vh-6rem)] bg-background text-foreground overflow-x-hidden">
         {children}
       </div>
       <Footer />

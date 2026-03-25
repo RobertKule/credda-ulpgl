@@ -9,6 +9,7 @@ import GSAPReveal from "@/components/shared/GSAPReveal";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
+import { motion, AnimatePresence } from "framer-motion";
 
 export interface Testimonial {
     name: string;
@@ -24,20 +25,18 @@ interface TestimonialSectionProps {
 export default function TestimonialSection({ testimonials = [] }: TestimonialSectionProps) {
     const t = useTranslations('HomePage');
     
+    // Config Embla avec un espacement plus naturel
     const [emblaRef, emblaApi] = useEmblaCarousel(
-      { loop: true, align: "start" },
-      [Autoplay({ delay: 5000, stopOnMouseEnter: true })]
+      { 
+        loop: true, 
+        align: "start",
+        containScroll: "trimSnaps",
+        dragFree: false
+      },
+      [Autoplay({ delay: 6000, stopOnMouseEnter: true })]
     );
 
     const [selectedIndex, setSelectedIndex] = useState(0);
-
-    const scrollPrev = useCallback(() => {
-        if (emblaApi) emblaApi.scrollPrev();
-    }, [emblaApi]);
-
-    const scrollNext = useCallback(() => {
-        if (emblaApi) emblaApi.scrollNext();
-    }, [emblaApi]);
 
     const onSelect = useCallback(() => {
         if (!emblaApi) return;
@@ -54,99 +53,117 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
     if (!testimonials || testimonials.length === 0) return null;
 
     return (
-        <section className="relative overflow-hidden border-y border-border bg-transparent py-12 lg:py-24 text-foreground">
-            <SectionDecorNumber value="05" className="right-0 top-16 sm:right-4" />
-            <div className="pointer-events-none absolute -right-40 -top-20 h-[800px] w-[800px] rounded-full bg-[#C9A84C]/5 blur-[120px]" />
-            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-[#C9A84C]/2 rounded-full blur-[100px] -ml-20 -mb-20 pointer-events-none" />
+        <section className="relative overflow-hidden border-y border-border/10 bg-transparent py-16 lg:py-32 text-foreground">
+            {/* Décoration de section - Plus discrète sur mobile */}
+            <SectionDecorNumber value="05" className="hidden sm:block right-4 top-16 opacity-10" />
+            
+            {/* Glows d'arrière-plan optimisés pour ne pas gêner le texte */}
+            <div className="pointer-events-none absolute -right-40 -top-20 h-[500px] w-[500px] rounded-full bg-primary/5 blur-[100px]" />
 
-            <div className="relative z-10 w-full">
-                <div className="grid lg:grid-cols-12 gap-16 lg:gap-12 items-center border-l-2 border-border pl-6 lg:pl-12">
-                    <div className="lg:col-span-4 space-y-8">
-                        <GSAPReveal direction="left" delay={0.2}>
-                            <Badge className="bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20 rounded-none uppercase text-[10px] tracking-[0.4em] font-outfit font-bold px-4 py-1.5 mb-6">
+            <div className="relative z-10 w-full max-w-[1800px] mx-auto">
+                <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-8 items-start px-6 lg:px-16">
+                    
+                    {/* COLONNE GAUCHE : TITRE & NAV */}
+                    <div className="lg:col-span-4 w-full space-y-8 sticky top-0">
+                        <GSAPReveal direction="left">
+                            <Badge className="bg-primary/10 text-primary border border-primary/20 rounded-none uppercase text-[10px] tracking-[0.4em] font-bold px-4 py-2 mb-4">
                                 {t('testimonials.badge')}
                             </Badge>
-                            <h2 className="text-4xl lg:text-7xl font-fraunces font-extrabold leading-[1] text-foreground">
-                                {t('testimonials.title_alt')}
+                            <h2 className="text-5xl lg:text-7xl xl:text-8xl font-fraunces font-black leading-[0.9] tracking-tighter text-foreground">
+                                {t.rich('testimonials.title_alt', {
+                                    span: (chunks) => <span className="text-primary italic font-light">{chunks}</span>
+                                })}
                             </h2>
                         </GSAPReveal>
 
-                        <GSAPReveal direction="left" delay={0.4}>
-                            <div className="flex gap-4 pt-6">
-                                <button 
-                                  onClick={scrollPrev} 
-                                  className="w-14 h-14 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-white/5 transition-all duration-300"
-                                >
-                                    <ArrowLeft size={20} />
-                                </button>
-                                <button 
-                                  onClick={scrollNext} 
-                                  className="w-14 h-14 rounded-full border border-[#C9A84C] bg-[#C9A84C] flex items-center justify-center text-[#0D0D0B] hover:bg-[#C9A84C]/90 transition-all duration-300"
-                                >
-                                    <ArrowRight size={20} />
-                                </button>
-                            </div>
-                        </GSAPReveal>
+                        <div className="hidden lg:flex gap-4 pt-8">
+                            <button 
+                                onClick={() => emblaApi?.scrollPrev()} 
+                                className="w-16 h-16 rounded-full border border-border flex items-center justify-center hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-500 group"
+                            >
+                                <ArrowLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
+                            </button>
+                            <button 
+                                onClick={() => emblaApi?.scrollNext()} 
+                                className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-primary-foreground hover:scale-110 transition-all duration-500 group"
+                            >
+                                <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
+                            </button>
+                        </div>
                     </div>
 
-                    <div className="lg:col-span-8 w-full overflow-hidden">
-                        <GSAPReveal direction="right" delay={0.6}>
-                            <div className="overflow-hidden w-full cursor-grab active:cursor-grabbing" ref={emblaRef}>
-                                <div className="flex -ml-6 w-full">
-                                    {testimonials.map((testi, idx) => {
-                                        const isActive = selectedIndex === idx;
-                                        return (
-                                            <div 
-                                                key={idx} 
-                                                className="pl-6 shrink-0 basis-full lg:basis-1/2 min-w-0"
+                    {/* COLONNE DROITE : CAROUSEL */}
+                    <div className="lg:col-span-8 w-full">
+                        <div className="overflow-hidden" ref={emblaRef}>
+                            <div className="flex -ml-4 lg:-ml-8">
+                                {testimonials.map((testi, idx) => {
+                                    const isActive = selectedIndex === idx;
+                                    return (
+                                        <div key={idx} className="pl-4 lg:pl-8 shrink-0 basis-[90%] sm:basis-[80%] lg:basis-[55%] min-w-0">
+                                            <motion.div 
+                                                animate={{ 
+                                                    opacity: isActive ? 1 : 0.3,
+                                                    scale: isActive ? 1 : 0.95,
+                                                    y: isActive ? 0 : 20
+                                                }}
+                                                className={`
+                                                    relative h-full flex flex-col p-8 lg:p-14 border transition-all duration-700
+                                                    ${isActive ? 'bg-background/40 backdrop-blur-md border-primary/30 shadow-2xl' : 'bg-muted/10 border-border/50'}
+                                                `}
                                             >
-                                                <div 
-                                                    style={{ 
-                                                        opacity: isActive ? 1 : 0.45, 
-                                                        transform: isActive ? 'scale(1)' : 'scale(0.97)',
-                                                        borderColor: isActive ? 'rgba(201,168,76,0.35)' : 'hsl(var(--border))',
-                                                        transition: 'all 0.5s ease'
-                                                    }}
-                                                    className="bg-muted border p-10 lg:p-12 relative group h-full flex flex-col rounded-none shadow-2xl"
-                                                >
-                                                    <div className="text-[#C9A84C]/10 absolute top-8 right-8">
-                                                        <Quote size={64} />
+                                                <Quote className={`absolute top-8 right-8 transition-colors duration-700 ${isActive ? 'text-primary/20' : 'text-muted/10'}`} size={60} />
+                                                
+                                                {/* Texte du témoignage avec animation interne */}
+                                                <div className="relative z-10 flex-1 flex flex-col justify-center min-h-[200px]">
+                                                    <AnimatePresence mode="wait">
+                                                        {isActive && (
+                                                            <motion.p 
+                                                                initial={{ opacity: 0, y: 10 }}
+                                                                animate={{ opacity: 1, y: 0 }}
+                                                                className="text-xl lg:text-2xl font-light leading-relaxed italic text-foreground/90"
+                                                            >
+                                                                &ldquo;{testi.text}&rdquo;
+                                                            </motion.p>
+                                                        )}
+                                                    </AnimatePresence>
+                                                </div>
+
+                                                {/* Infos auteur */}
+                                                <div className="mt-10 pt-8 border-t border-border/50 flex items-center gap-5">
+                                                    <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-primary/20">
+                                                        <Image src={testi.image} alt={testi.name} fill className="object-cover" />
                                                     </div>
-                                                    <p className="text-lg lg:text-xl font-outfit font-light italic leading-relaxed mb-12 relative z-10 flex-1 text-muted-foreground transition-colors duration-500">
-                                                        &ldquo;{testi.text}&rdquo;
-                                                    </p>
-                                                    <div className="flex items-center gap-6 mt-auto border-t border-border pt-8">
-                                                        <div className="relative w-16 h-16 rounded-sm overflow-hidden border border-border shrink-0">
-                                                            <Image src={testi.image} alt={testi.name} fill className="object-cover" />
-                                                        </div>
-                                                        <div>
-                                                            <h4 className="font-outfit font-bold text-[11px] uppercase tracking-widest text-foreground">{testi.name}</h4>
-                                                            <p className="text-[9px] text-[#C9A84C]/60 font-outfit font-bold uppercase tracking-widest mt-2">{testi.role}</p>
-                                                        </div>
+                                                    <div>
+                                                        <h4 className="font-bold text-xs uppercase tracking-widest text-primary">{testi.name}</h4>
+                                                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1 opacity-70">{testi.role}</p>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
+                                            </motion.div>
+                                        </div>
+                                    );
+                                })}
                             </div>
+                        </div>
 
-                            {/* DOTS Pagnination */}
-                            <div className="flex gap-2 mt-12 justify-center lg:justify-start lg:pl-6">
+                        {/* Pagination & Nav mobile */}
+                        <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-8">
+                            <div className="flex gap-3">
                                 {testimonials.map((_, idx) => (
                                     <button
                                         key={idx}
                                         onClick={() => emblaApi?.scrollTo(idx)}
-                                        style={{
-                                            width: selectedIndex === idx ? '24px' : '6px',
-                                            transition: 'all 0.4s ease'
-                                        }}
-                                        className={`h-[6px] rounded-full inline-block ${selectedIndex === idx ? 'bg-[#C9A84C]' : 'bg-white/20'}`}
-                                        aria-label={`Go to slide ${idx + 1}`}
+                                        className={`h-1.5 rounded-full transition-all duration-500 ${selectedIndex === idx ? 'w-12 bg-primary' : 'w-4 bg-border hover:bg-primary/50'}`}
+                                        aria-label={`Slide ${idx + 1}`}
                                     />
                                 ))}
                             </div>
-                        </GSAPReveal>
+                            
+                            {/* Flèches visibles uniquement sur mobile pour faciliter la nav */}
+                            <div className="flex lg:hidden gap-4">
+                                <button onClick={() => emblaApi?.scrollPrev()} className="p-4 border border-border rounded-full"><ArrowLeft size={20} /></button>
+                                <button onClick={() => emblaApi?.scrollNext()} className="p-4 bg-primary text-primary-foreground rounded-full"><ArrowRight size={20} /></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

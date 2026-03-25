@@ -21,25 +21,19 @@ export default function Hero() {
   const videoOpacity = useTransform(scrollY, [0, 500], [0.6, reduceMotion ? 0.6 : 0.2]);
 
   useEffect(() => {
+    // Détection du mouvement réduit
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     setReduceMotion(prefersReducedMotion);
-  }, []);
-
-  useEffect(() => {
+  
+    // Vidéo et Loader
     if (videoRef.current) {
-      videoRef.current.play().catch(err => {
-        console.warn("Video autoplay failed:", err);
-      });
+      videoRef.current.play().catch(() => {});
     }
-
-    // Fallback for loader
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 2000);
-
-    return () => clearTimeout(timer);
+  
+    // Force le passage à "Loaded" une fois le client prêt
+    setIsLoaded(true); 
   }, []);
-
+  
   // 3D TILT EFFECT
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -96,29 +90,41 @@ export default function Hero() {
       </AnimatePresence>
 
       {/* BACKGROUND SIMULATION: FLOATING NODES */}
-      <div
-        className={cn(
-          "pointer-events-none absolute inset-0 z-[5] overflow-hidden",
-          isLight ? "opacity-15" : "opacity-40"
-        )}
-      >
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{ x: Math.random() * 100 + "%", y: Math.random() * 100 + "%" }}
-            animate={reduceMotion ? undefined : {
-              x: [null, Math.random() * 100 + "%", Math.random() * 100 + "%"],
-              y: [null, Math.random() * 100 + "%", Math.random() * 100 + "%"],
-            }}
-            transition={{ 
-              duration: 20 + Math.random() * 20, 
-              repeat: Infinity, 
-              ease: "linear" 
-            }}
-            className="absolute w-[400px] h-[400px] bg-primary/5 rounded-full blur-[120px]"
-          />
-        ))}
-      </div>
+<div
+  className={cn(
+    "pointer-events-none absolute inset-0 z-[5] overflow-hidden",
+    isLight ? "opacity-15" : "opacity-40"
+  )}
+>
+  {/* On ne rend les nodes que si le composant est monté pour éviter le mismatch SSR */}
+  {isLoaded && [...Array(6)].map((_, i) => (
+    <motion.div
+      key={i}
+      initial={{ 
+        x: `${(i * 15 + 10)}%`, 
+        y: `${(i * 10 + 20)}%` 
+      }}
+      animate={reduceMotion ? undefined : {
+        x: [
+          `${(Math.sin(i) * 30 + 50)}%`, 
+          `${(Math.cos(i) * 30 + 50)}%`, 
+          `${(Math.sin(i + 1) * 30 + 50)}%`
+        ],
+        y: [
+          `${(Math.cos(i) * 30 + 50)}%`, 
+          `${(Math.sin(i) * 30 + 50)}%`, 
+          `${(Math.cos(i + 1) * 30 + 50)}%`
+        ],
+      }}
+      transition={{ 
+        duration: 25 + (i * 5), 
+        repeat: Infinity, 
+        ease: "linear" 
+      }}
+      className="absolute w-[400px] h-[400px] bg-primary/5 rounded-full blur-[120px]"
+    />
+  ))}
+</div>
 
       {/* BACKGROUND VIDEO */}
       <motion.div
@@ -265,7 +271,7 @@ export default function Hero() {
             <div className="flex flex-col flex-wrap items-stretch gap-6 sm:flex-row sm:items-center sm:gap-10" style={{ transform: "translateZ(80px)" }}>
               <Link 
                 href="/publications" 
-                className="group relative inline-flex justify-center px-10 py-6 font-outfit text-[10px] font-black uppercase tracking-[0.3em] text-primary-foreground shadow-2xl transition-all hover:scale-[1.03] active:scale-95 sm:px-14 sm:py-7 md:px-16 md:py-8 bg-primary overflow-hidden"
+                className="group relative inline-flex justify-center px-10 py-6 font-outfit text-[10px] font-black uppercase tracking-[0.3em] text-primary-foreground shadow-2xl transition-all hover:scale-[1.03] active:scale-95 sm:px-14 sm:py-7 md:px-16 md:py-8 bg-primary overflow-hidden rounded-md"
               >
                 <span className="relative z-10 flex items-center gap-4">
                   {t('hero.cta_publications')} 
