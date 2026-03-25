@@ -177,12 +177,15 @@ export default function HomeClient({
         {/* GALLERY / PARTNERS */}
         <section id="gallery" className="relative z-20 py-32 bg-transparent">
           <div className={SECTION_PAD}>
-            <p className="text-center text-[10px] font-black uppercase tracking-[0.5em] text-primary mb-16">
+            <p className="text-center text-[10px] font-black uppercase tracking-[0.5em] text-primary mb-4 lg:mb-6">
               {t('cta.collaboration')}
             </p>
-            <div className="flex gap-16 animate-infinite-scroll py-12 border-y border-border/20">
+            <p className="text-center text-muted-foreground text-sm lg:text-base font-outfit max-w-2xl mx-auto mb-16">
+              Nous collaborons avec des institutions académiques et des organisations internationales de premier plan pour mener à bien nos missions de recherche et d'action.
+            </p>
+            <div className="flex gap-16 md:gap-24 animate-infinite-scroll py-10 lg:py-16 border-y border-border/20 items-center">
               {[...(partners ?? []), ...(partners ?? [])].map((p, i) => (
-                <div key={i} className="relative w-32 h-12 grayscale opacity-60 hover:opacity-100 transition-all duration-500 invert dark:invert-0 shrink-0">
+                <div key={i} className="relative w-40 h-16 md:w-56 md:h-24 opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-500 shrink-0 cursor-pointer">
                   <Image src={`/images/partenaires/${p}`} alt="Partner" fill className="object-contain" />
                 </div>
               ))}

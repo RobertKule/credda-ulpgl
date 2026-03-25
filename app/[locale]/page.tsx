@@ -3,6 +3,8 @@ import { sql } from "@/lib/db";
 import { localePageMetadata } from "@/lib/page-metadata";
 import type { Metadata } from "next";
 import HomeClient from "./HomeClient";
+import fs from "fs";
+import path from "path";
 
 export async function generateMetadata({
   params
@@ -37,11 +39,17 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     }
   ];
 
-  const PARTNERS = [
-    "Amnesty.webp", "McCain.webp", "Northwestern.webp", "TWB.webp",
-    "worldbank.webp", "Ceni.webp", "Monusco.webp", "Oxford.webp",
-    "Uhaki.webp", "Harvard.webp", "Morehouse.webp", "PNUD.webp", "ulpgl.webp"
-  ];
+  let PARTNERS: string[] = [];
+  try {
+    const partnersDir = path.join(process.cwd(), 'public', 'images', 'partenaires');
+    PARTNERS = fs.readdirSync(partnersDir).filter(file => /\.(png|webp|jpe?g|svg)$/i.test(file));
+  } catch (e) {
+    PARTNERS = [
+      "Amnesty.webp", "McCain.webp", "Northwestern.webp", "TWB.webp",
+      "worldbank.webp", "Ceni.webp", "Monusco.webp", "Oxford.webp",
+      "Uhaki.webp", "Harvard.webp", "Morehouse.webp", "PNUD.webp", "ulpgl.webp"
+    ];
+  }
 
   try {
     const [

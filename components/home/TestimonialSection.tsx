@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ArrowRight, Quote } from "lucide-react";
@@ -9,7 +9,7 @@ import GSAPReveal from "@/components/shared/GSAPReveal";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export interface Testimonial {
     name: string;
@@ -25,15 +25,14 @@ interface TestimonialSectionProps {
 export default function TestimonialSection({ testimonials = [] }: TestimonialSectionProps) {
     const t = useTranslations('HomePage');
     
-    // Config Embla avec un espacement plus naturel
+    // Config Embla circulaire avec alignement centré
     const [emblaRef, emblaApi] = useEmblaCarousel(
       { 
         loop: true, 
-        align: "start",
-        containScroll: "trimSnaps",
-        dragFree: false
+        align: "center",
+        skipSnaps: false,
       },
-      [Autoplay({ delay: 6000, stopOnMouseEnter: true })]
+      [Autoplay({ delay: 6000, stopOnInteraction: false })]
     );
 
     const [selectedIndex, setSelectedIndex] = useState(0);
@@ -53,117 +52,100 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
     if (!testimonials || testimonials.length === 0) return null;
 
     return (
-        <section className="relative overflow-hidden border-y border-border/10 bg-transparent py-16 lg:py-32 text-foreground">
-            {/* Décoration de section - Plus discrète sur mobile */}
-            <SectionDecorNumber value="05" className="hidden sm:block right-4 top-16 opacity-10" />
-            
-            {/* Glows d'arrière-plan optimisés pour ne pas gêner le texte */}
-            <div className="pointer-events-none absolute -right-40 -top-20 h-[500px] w-[500px] rounded-full bg-primary/5 blur-[100px]" />
+        <section className="relative overflow-hidden bg-background py-24 lg:py-40 text-foreground">
+            {/* Background elements */}
+            <SectionDecorNumber value="05" className="hidden sm:block right-4 top-16 opacity-5" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
-            <div className="relative z-10 w-full max-w-[1800px] mx-auto">
-                <div className="flex flex-col lg:grid lg:grid-cols-12 gap-12 lg:gap-8 items-start px-6 lg:px-16">
-                    
-                    {/* COLONNE GAUCHE : TITRE & NAV */}
-                    <div className="lg:col-span-4 w-full space-y-8 sticky top-0">
-                        <GSAPReveal direction="left">
-                            <Badge className="bg-primary/10 text-primary border border-primary/20 rounded-none uppercase text-[10px] tracking-[0.4em] font-bold px-4 py-2 mb-4">
-                                {t('testimonials.badge')}
-                            </Badge>
-                            <h2 className="text-5xl lg:text-7xl xl:text-8xl font-fraunces font-black leading-[0.9] tracking-tighter text-foreground">
-                                {t.rich('testimonials.title_alt', {
-                                    span: (chunks) => <span className="text-primary italic font-light">{chunks}</span>
-                                })}
-                            </h2>
-                        </GSAPReveal>
+            <div className="relative z-10 w-full max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12">
+                {/* Section Header */}
+                <div className="flex flex-col items-center text-center mb-16 lg:mb-24">
+                    <GSAPReveal direction="up">
+                        <Badge className="bg-primary/10 text-primary border border-primary/20 rounded-full uppercase text-[10px] tracking-[0.4em] font-bold px-6 py-2 mb-8 lg:mb-12">
+                            {t('testimonials.badge')}
+                        </Badge>
+                        <h2 className="text-5xl lg:text-7xl xl:text-8xl font-fraunces font-black leading-[1.1] tracking-tighter text-foreground max-w-4xl mx-auto">
+                            {t.rich('testimonials.title_alt', {
+                                span: (chunks) => <span className="text-primary italic font-light">{chunks}</span>
+                            })}
+                        </h2>
+                    </GSAPReveal>
+                </div>
 
-                        <div className="hidden lg:flex gap-4 pt-8">
-                            <button 
-                                onClick={() => emblaApi?.scrollPrev()} 
-                                className="w-16 h-16 rounded-full border border-border flex items-center justify-center hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-500 group"
-                            >
-                                <ArrowLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
-                            </button>
-                            <button 
-                                onClick={() => emblaApi?.scrollNext()} 
-                                className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-primary-foreground hover:scale-110 transition-all duration-500 group"
-                            >
-                                <ArrowRight size={24} className="group-hover:translate-x-1 transition-transform" />
-                            </button>
+                {/* Carousel */}
+                <div className="relative">
+                    <div className="overflow-hidden py-10" ref={emblaRef}>
+                                <div className="flex -ml-4 sm:-ml-6 lg:-ml-8 touch-pan-y">
+                            {testimonials.map((testi, idx) => {
+                                const isActive = selectedIndex === idx;
+                                return (
+                                    <div key={idx} className="pl-4 pr-4 sm:pr-0 sm:pl-6 lg:pl-8 flex-[0_0_100%] sm:flex-[0_0_70%] lg:flex-[0_0_55%] min-w-0">
+                                        <motion.div 
+                                            animate={{ 
+                                                opacity: isActive ? 1 : 0.4,
+                                                scale: isActive ? 1 : 0.9,
+                                                y: isActive ? 0 : 20
+                                            }}
+                                            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                                            className={`
+                                                relative h-full aspect-square md:aspect-auto min-h-[380px] md:min-h-[450px] flex flex-col p-6 sm:p-8 md:p-12 lg:p-16 rounded-[2rem] md:rounded-[2.5rem] overflow-hidden border transition-colors duration-700
+                                                ${isActive ? 'bg-card border-primary/30 shadow-[0_20px_50px_rgba(201,168,76,0.1)]' : 'bg-muted/30 border-border/50'}
+                                            `}
+                                        >
+                                            <Quote className="absolute top-6 right-6 md:top-10 md:right-10 text-primary/10 rotate-12 w-16 h-16 md:w-24 md:h-24" />
+                                            
+                                            {/* Testimonial Text */}
+                                            <div className="relative z-10 flex-1 flex flex-col justify-center mb-8 md:mb-12">
+                                                <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-outfit font-light leading-relaxed italic text-foreground tracking-wide">
+                                                    &ldquo;{testi.text}&rdquo;
+                                                </p>
+                                            </div>
+
+                                            {/* Author Info */}
+                                            <div className="mt-auto flex items-center gap-4 md:gap-6">
+                                                <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-primary/30 p-1 bg-background shrink-0">
+                                                    <div className="relative w-full h-full rounded-full overflow-hidden bg-muted">
+                                                        <Image src={testi.image} alt={testi.name} fill className="object-cover" />
+                                                    </div>
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <h4 className="font-bold text-sm md:text-base uppercase tracking-widest text-primary mb-1">{testi.name}</h4>
+                                                    <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-widest opacity-80">{testi.role}</p>
+                                                </div>
+                                            </div>
+                                        </motion.div>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
 
-                    {/* COLONNE DROITE : CAROUSEL */}
-                    <div className="lg:col-span-8 w-full">
-                        <div className="overflow-hidden" ref={emblaRef}>
-                            <div className="flex -ml-4 lg:-ml-8">
-                                {testimonials.map((testi, idx) => {
-                                    const isActive = selectedIndex === idx;
-                                    return (
-                                        <div key={idx} className="pl-4 lg:pl-8 shrink-0 basis-[90%] sm:basis-[80%] lg:basis-[55%] min-w-0">
-                                            <motion.div 
-                                                animate={{ 
-                                                    opacity: isActive ? 1 : 0.3,
-                                                    scale: isActive ? 1 : 0.95,
-                                                    y: isActive ? 0 : 20
-                                                }}
-                                                className={`
-                                                    relative h-full flex flex-col p-8 lg:p-14 border transition-all duration-700
-                                                    ${isActive ? 'bg-background/40 backdrop-blur-md border-primary/30 shadow-2xl' : 'bg-muted/10 border-border/50'}
-                                                `}
-                                            >
-                                                <Quote className={`absolute top-8 right-8 transition-colors duration-700 ${isActive ? 'text-primary/20' : 'text-muted/10'}`} size={60} />
-                                                
-                                                {/* Texte du témoignage avec animation interne */}
-                                                <div className="relative z-10 flex-1 flex flex-col justify-center min-h-[200px]">
-                                                    <AnimatePresence mode="wait">
-                                                        {isActive && (
-                                                            <motion.p 
-                                                                initial={{ opacity: 0, y: 10 }}
-                                                                animate={{ opacity: 1, y: 0 }}
-                                                                className="text-xl lg:text-2xl font-light leading-relaxed italic text-foreground/90"
-                                                            >
-                                                                &ldquo;{testi.text}&rdquo;
-                                                            </motion.p>
-                                                        )}
-                                                    </AnimatePresence>
-                                                </div>
-
-                                                {/* Infos auteur */}
-                                                <div className="mt-10 pt-8 border-t border-border/50 flex items-center gap-5">
-                                                    <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-primary/20">
-                                                        <Image src={testi.image} alt={testi.name} fill className="object-cover" />
-                                                    </div>
-                                                    <div>
-                                                        <h4 className="font-bold text-xs uppercase tracking-widest text-primary">{testi.name}</h4>
-                                                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1 opacity-70">{testi.role}</p>
-                                                    </div>
-                                                </div>
-                                            </motion.div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
+                    {/* Navigation Controls */}
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-8 lg:gap-12 mt-8 lg:mt-16">
+                        <button 
+                            onClick={() => emblaApi?.scrollPrev()} 
+                            className="hidden sm:flex w-14 h-14 rounded-full border border-border items-center justify-center hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-500 group"
+                        >
+                            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                        </button>
+                        
+                        <div className="flex gap-3">
+                            {testimonials.map((_, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => emblaApi?.scrollTo(idx)}
+                                    className={`h-1.5 rounded-full transition-all duration-500 ${selectedIndex === idx ? 'w-12 bg-primary' : 'w-4 bg-border hover:bg-primary/50'}`}
+                                    aria-label={`Slide ${idx + 1}`}
+                                />
+                            ))}
                         </div>
 
-                        {/* Pagination & Nav mobile */}
-                        <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-8">
-                            <div className="flex gap-3">
-                                {testimonials.map((_, idx) => (
-                                    <button
-                                        key={idx}
-                                        onClick={() => emblaApi?.scrollTo(idx)}
-                                        className={`h-1.5 rounded-full transition-all duration-500 ${selectedIndex === idx ? 'w-12 bg-primary' : 'w-4 bg-border hover:bg-primary/50'}`}
-                                        aria-label={`Slide ${idx + 1}`}
-                                    />
-                                ))}
-                            </div>
-                            
-                            {/* Flèches visibles uniquement sur mobile pour faciliter la nav */}
-                            <div className="flex lg:hidden gap-4">
-                                <button onClick={() => emblaApi?.scrollPrev()} className="p-4 border border-border rounded-full"><ArrowLeft size={20} /></button>
-                                <button onClick={() => emblaApi?.scrollNext()} className="p-4 bg-primary text-primary-foreground rounded-full"><ArrowRight size={20} /></button>
-                            </div>
-                        </div>
+                        <button 
+                            onClick={() => emblaApi?.scrollNext()} 
+                            className="hidden sm:flex w-14 h-14 rounded-full bg-primary items-center justify-center text-primary-foreground hover:scale-110 shadow-lg shadow-primary/25 transition-all duration-500 group"
+                        >
+                            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                        </button>
                     </div>
                 </div>
             </div>
