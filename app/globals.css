@@ -1,64 +1,46 @@
 @import "tailwindcss";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
-@custom-variant light (.light &);
-
+/* 1. CONFIGURATION DU THÈME (Tailwind v4 style) */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  
-  --font-fraunces: var(--font-fraunces);
-  --font-bricolage: var(--font-bricolage);
-  --font-outfit: var(--font-outfit);
-  
-  /* Mantain mapping for legacy or general use */
+  /* Polices */
   --font-serif: var(--font-fraunces);
   --font-sans: var(--font-outfit);
   --font-bricolage: var(--font-bricolage);
-  
+
+  /* Couleurs de marque (Directes) */
   --color-primary: #C9A84C;
   --color-secondary: #111110;
   --color-accent: #E8C97A;
-  
   --color-gold: #C9A84C;
   --color-gold-light: #E8C97A;
-  --color-deep-black: #0C0C0A;
-  --color-off-white: #F5F2EC;
 
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
+  /* Mapping des variables sémantiques (Shadcn + Custom) */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
   --color-card: var(--card);
-  
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+
+  /* Border Radius */
   --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
 }
 
+/* 2. VARIABLES CSS (Design System) */
 :root {
-  --radius: 0rem;
-  /* Theme tokens (dark default) */
-  --bg: #0d0d0b;
-  --bg2: #121210;
-  --bg3: #181816;
-  --color-text: #f5f2ec;
-  --color-muted: rgba(245, 242, 236, 0.58);
-  --color-card: #121210;
-  --gold: #c9a84c;
-  --gold2: #e8c97a;
-  --gold-dim: rgba(201, 168, 76, 0.1);
-  --border: rgba(245, 242, 236, 0.07);
-  --border-gold: rgba(201, 168, 76, 0.2);
-
+  --radius: 1rem; /* On peut augmenter pour le style CREDDA */
+  
+  /* MODE SOMBRE (Par défaut) */
   --background: #0C0C0A;
   --foreground: #F5F2EC;
   --card: #111110;
@@ -67,160 +49,71 @@
   --popover-foreground: #F5F2EC;
   --primary: #C9A84C;
   --primary-foreground: #0C0C0A;
-  --secondary: #161614;
-  --secondary-foreground: #F5F2EC;
   --muted: #161614;
   --muted-foreground: rgba(245, 242, 236, 0.6);
-  --accent: #E8C97A;
-  --accent-foreground: #0C0C0A;
-  --destructive: #7F1D1D;
   --border: rgba(245, 242, 236, 0.08);
   --input: rgba(245, 242, 236, 0.08);
   --ring: #C9A84C;
+  --destructive: #7F1D1D;
 }
 
-html.light {
-  --bg: #f8f6f1;
-  --bg2: #ffffff;
-  --bg3: #f0ede6;
-  --color-text: #1a1814;
-  --color-muted: rgba(26, 24, 20, 0.62);
-  --color-card: #ffffff;
-  --gold: #a8862e;
-  --gold2: #c9a84c;
-  --gold-dim: rgba(168, 134, 46, 0.1);
-  --border: rgba(26, 24, 20, 0.08);
-  --border-gold: rgba(168, 134, 46, 0.25);
-
-  --background: #f8f6f1;
-  --foreground: #1a1814;
-  --card: #ffffff;
-  --card-foreground: #1a1814;
-  --popover: #ffffff;
-  --popover-foreground: #1a1814;
-  --muted: #f0ede6;
+/* MODE CLAIR (Override) */
+.light {
+  --background: #F8F6F1;
+  --foreground: #1A1814;
+  --card: #FFFFFF;
+  --card-foreground: #1A1814;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1814;
+  --muted: #F0EDE6;
   --muted-foreground: rgba(26, 24, 20, 0.62);
   --border: rgba(26, 24, 20, 0.08);
+  --input: rgba(26, 24, 20, 0.08);
+  --primary-foreground: #FFFFFF;
 }
 
+/* 3. STYLES DE BASE */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-outfit font-[400] text-[15px] leading-[1.75] antialiased;
+    @apply bg-background text-foreground font-sans antialiased selection:bg-primary selection:text-primary-foreground;
   }
-  html {
-    scroll-behavior: smooth;
-    background-color: var(--background);
-    color: var(--foreground);
-  }
-  h1 {
-    @apply font-fraunces font-[800] tracking-[-0.02em];
-  }
-  h2 {
-    @apply font-fraunces font-[700] tracking-[-0.01em];
-  }
-  h3 {
-    @apply font-bricolage font-[600] text-[20px];
-  }
-  h4 {
-    @apply font-bricolage font-[600];
-  }
-  .italic-accent {
-    @apply font-fraunces italic text-primary;
+  h1, h2, .font-serif {
+    @apply font-serif;
   }
 }
 
+/* 4. COMPOSANTS ET UTILITAIRES OPTIMISÉS */
 @layer utilities {
+  /* Effet Verre (Adaptatif au thème) */
   .glass {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+    @apply bg-card/40 backdrop-blur-xl border border-border;
   }
+
   .glass-gold {
-    @apply bg-gold/5 backdrop-blur-xl border border-gold/20;
-  }
-  
-  /* Scroll Reveal Helper */
-  .reveal {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
-  }
-  .reveal.active {
-    opacity: 1;
-    transform: translateY(0);
+    @apply bg-primary/5 backdrop-blur-xl border border-primary/20;
   }
 
-  /* Card Hover Effect */
-  .card-hover {
-    @apply transition-all duration-500 hover:-translate-y-1 hover:border-gold/50;
+  /* Grid dynamiques */
+  .bg-grid-credda {
+    background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
+    background-size: 30px 30px;
   }
 
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  /* Animations fluides */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1 active:scale-95;
   }
 }
 
-/* Animations Keyframes */
-@keyframes gridMove {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(60px); }
+/* 5. ANIMATIONS (Keyframes standard) */
+@keyframes pulse-gold {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.1); }
 }
 
-@keyframes orbPulse {
-  0%, 100% { transform: scale(1); opacity: 0.2; }
-  50% { transform: scale(1.3); opacity: 0.4; }
-}
-
-@keyframes ticker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-.animate-grid-move {
-  animation: gridMove 20s linear infinite;
-}
-
-.animate-orb-pulse {
-  animation: orbPulse 10s ease-in-out infinite;
-}
-
-.animate-ticker {
-  animation: ticker 40s linear infinite;
-}
-
-/* Base Grid Background */
-.bg-grid-pattern {
-  background-image: 
-    linear-gradient(to right, rgba(245,242,236,0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(245,242,236,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-.bg-grid-move {
-  background-image: 
-    linear-gradient(to right, rgba(245,242,236,0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(245,242,236,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  animation: gridMove 15s linear infinite;
-}
-
-@keyframes scroll-line {
-  0% { transform: scaleY(0); transform-origin: top; }
-  50% { transform: scaleY(1); transform-origin: top; }
-  51% { transform: scaleY(1); transform-origin: bottom; }
-  100% { transform: scaleY(0); transform-origin: bottom; }
-}
-
-.animate-scroll-line {
-  animation: scroll-line 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-}
-
-/* Animated Underline for Titles */
-.underline-gold {
-  @apply relative inline-block after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-gold after:transition-all after:duration-500 hover:after:w-full;
+.animate-pulse-gold {
+  animation: pulse-gold 8s ease-in-out infinite;
 }

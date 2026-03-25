@@ -1,26 +1,50 @@
-'use client'
-import { useRef, useEffect, ReactNode } from 'react'
+"use client";
 
-export function ScrollReveal({ children, delay = 0, className = '' }: { children: ReactNode, delay?: number, className?: string }) {
-  const ref = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduceMotion) {
-      el.style.opacity = '1'
-      el.style.transform = 'none'
-      el.style.transition = 'none'
-      return
-    }
-    el.style.opacity = '0'
-    el.style.transform = 'translateY(32px)'
-    el.style.transition = `opacity 0.8s ${delay}s cubic-bezier(0.16,1,0.3,1), transform 0.8s ${delay}s cubic-bezier(0.16,1,0.3,1)`
-    const obs = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { el.style.opacity = '1'; el.style.transform = 'translateY(0)' }
-    }, { threshold: 0.08 })
-    obs.observe(el)
-    return () => obs.disconnect()
-  }, [delay])
-  return <div ref={ref} className={className}>{children}</div>
+import { motion, Variants } from "framer-motion";
+import { ReactNode } from "react";
+
+interface ScrollRevealProps {
+  children: ReactNode;
+  delay?: number;
+  direction?: "up" | "down" | "left" | "right";
+  className?: string;
 }
+
+export const ScrollReveal = ({ 
+  children, 
+  delay = 0, 
+  direction = "up", 
+  className 
+}: ScrollRevealProps) => {
+  
+  const variants: Variants = {
+    hidden: { 
+      opacity: 0, 
+      y: direction === "up" ? 40 : direction === "down" ? -40 : 0,
+      x: direction === "left" ? 40 : direction === "right" ? -40 : 0,
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      x: 0,
+      transition: { 
+        duration: 0.8, 
+        delay, 
+        // L'ajout de "as const" ou le typage explicite règle l'erreur
+        ease: [0.16, 1, 0.3, 1] 
+      }
+    }
+  };
+
+  return (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-50px" }}
+      variants={variants}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+};
