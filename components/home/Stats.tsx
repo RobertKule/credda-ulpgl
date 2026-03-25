@@ -54,7 +54,7 @@ export default function Stats({ years, totalResources, partners, clinicalCases =
   ];
 
   return (
-    <section className="relative overflow-hidden border-y border-border/50 bg-[#0D0D0B]/85 py-12 sm:py-16 lg:py-24 light:bg-background/96 light:backdrop-blur-sm">
+    <section className="relative overflow-hidden border-y border-border/50 bg-background/90 backdrop-blur-sm py-12 sm:py-16 lg:py-24">
       <div className="w-full px-5 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 lg:gap-0">
           {stats.map((stat, idx) => (
@@ -62,7 +62,7 @@ export default function Stats({ years, totalResources, partners, clinicalCases =
               <div className="relative flex flex-col items-center text-center lg:border-r last:border-0 border-border px-10 group">
                 <div className="mb-8 p-6 bg-muted border border-border group-hover:bg-primary group-hover:border-primary transition-all duration-700 relative overflow-hidden rounded-2xl">
                   <stat.icon size={26} className="text-primary group-hover:text-primary-foreground transition-colors relative z-10" />
-                  <div className="absolute inset-0 bg-[#C9A84C]/20 scale-0 group-hover:scale-150 transition-transform duration-700 -z-0 blur-xl" />
+                  <div className="absolute inset-0 bg-primary/20 scale-0 group-hover:scale-150 transition-transform duration-700 -z-0 blur-xl" />
                 </div>
                 
                 <div className="text-6xl md:text-7xl font-serif font-black text-foreground mb-6 tracking-tighter tabular-nums leading-none">
@@ -74,7 +74,7 @@ export default function Stats({ years, totalResources, partners, clinicalCases =
                 </p>
                 
                 {/* Visual Accent */}
-                <div className="w-1 h-8 bg-gradient-to-b from-[#C9A84C]/50 to-transparent mt-10 scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
+                <div className="w-1 h-8 bg-gradient-to-b from-primary/50 to-transparent mt-10 scale-y-0 group-hover:scale-y-100 transition-transform duration-700 origin-top" />
               </div>
             </GSAPReveal>
           ))}

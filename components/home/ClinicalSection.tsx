@@ -18,13 +18,13 @@ export default function ClinicalSection() {
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#C9A84C]/5 rounded-full blur-[150px] pointer-events-none" />
       
       <div className="relative z-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-24 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             viewport={{ once: true }}
-            className="order-2 lg:order-1"
+            className="order-2 lg:order-1 flex flex-col min-w-0"
           >
             <GSAPReveal direction="right">
               <div className="flex items-center gap-4 mb-10">
@@ -34,14 +34,14 @@ export default function ClinicalSection() {
             </GSAPReveal>
             
             <GSAPReveal direction="up" delay={0.2}>
-              <h2 className="text-6xl md:text-8xl font-fraunces font-extrabold text-foreground mb-12 leading-[0.9] tracking-tighter">
+              <h2 className="text-5xl md:text-6xl xl:text-7xl font-fraunces font-extrabold text-foreground mb-8 lg:mb-12 leading-[1.05] tracking-tighter break-words hyphens-auto">
                 {t('clinical.title')} <br /> 
-                <span className="italic-accent block mt-4">{t('clinical.subtitle')}</span>
+                <span className="italic-accent block mt-3 lg:mt-4 text-primary">{t('clinical.subtitle')}</span>
               </h2>
             </GSAPReveal>
 
             <GSAPReveal direction="up" delay={0.4}>
-              <p className="text-muted-foreground text-xl font-outfit font-light leading-relaxed mb-16 border-l border-border pl-10 ml-1">
+              <p className="text-muted-foreground text-lg lg:text-xl font-outfit font-light leading-relaxed mb-12 lg:mb-16 border-l-2 border-primary/40 pl-6 ml-1 max-w-xl">
                 {t('clinical.description')}
               </p>
             </GSAPReveal>
@@ -79,7 +79,7 @@ export default function ClinicalSection() {
             </GSAPReveal>
           </motion.div>
 
-          <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-3xl ring-1 ring-border group">
+          <div className="relative w-full max-w-md mx-auto lg:max-w-none aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-3xl ring-1 ring-border group">
              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 opacity-60" />
              <div className="h-full w-full">
                <Image 
