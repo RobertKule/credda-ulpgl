@@ -23,18 +23,18 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
       <div className="pointer-events-none absolute inset-0 bg-grid-move opacity-[0.02]" />
       
       <div className="relative z-10 w-full">
-        <div className="flex flex-col lg:flex-row justify-between items-end gap-12 mb-24">
-          <div className="max-w-3xl">
+        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 lg:gap-12 mb-16 lg:mb-24">
+          <div className="max-w-3xl w-full">
             <GSAPReveal direction="right">
-              <div className="flex items-center gap-4 mb-8">
-                <div className="h-[1px] w-12 bg-[#C9A84C]" />
-                <span className="text-[10px] uppercase tracking-[0.5em] font-medium text-[#C9A84C]">{t('research.badge')}</span>
+              <div className="flex items-center gap-4 mb-6 lg:mb-8">
+                <div className="h-[1px] w-12 bg-primary/50" />
+                <span className="text-[10px] uppercase tracking-[0.5em] font-medium text-primary">{t('research.badge')}</span>
               </div>
             </GSAPReveal>
             <GSAPReveal direction="up" delay={0.2}>
-              <h2 className="text-6xl md:text-8xl font-fraunces font-extrabold text-foreground leading-[0.9] tracking-tighter">
+              <h2 className="text-5xl md:text-6xl xl:text-7xl font-fraunces font-extrabold text-foreground leading-[1.05] tracking-tighter break-words hyphens-auto">
                 {t('research.title')} <br /> 
-                <span className="italic-accent block mt-4">{t('research.subtitle')}</span>
+                <span className="italic-accent block mt-3 lg:mt-4 text-primary">{t('research.subtitle')}</span>
               </h2>
             </GSAPReveal>
           </div>
