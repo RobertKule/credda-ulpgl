@@ -167,7 +167,9 @@
         "prev": "Précédent",
         "next": "Suivant"
       }
-    }
+    },
+    "intro_subtitle": "Recherche & Excellence",
+    "about_caption": "Penser l'État de Droit."
   },
   "metadata": {
     "home": {
@@ -230,9 +232,9 @@
     "since": "Depuis",
     "watch_video": "Voir le film institutionnel",
     "hero": {
-      "title1": "L'Élite de la",
-      "title2": "Recherche",
-      "title3": "En Afrique des Grands Lacs."
+      "badge": "Fondé en 2008 • Excellence Académique",
+      "title": "Penser le <italic>Droit</italic>, Bâtir l'Avenir.",
+      "desc": "Le CREDDA est l'épicentre de la recherche juridique en RDC, fusionnant rigueur scientifique et engagement social."
     },
     "who_we_are": "Qui sommes-nous ?",
     "mission_title": "Une institution académique dédiée au",
@@ -248,7 +250,12 @@
     "contact_us": "Contactez-nous",
     "compass": "Notre Boussole",
     "mission_vision_title": "Une mission claire pour une Afrique résiliente.",
-    "mission": "Notre Mission",
+    "mission": {
+      "badge": "Notre Manifeste",
+      "title": "Une vision <italic>transformatrice</italic> du droit.",
+      "desc": "Au-delà des textes, nous croyons en un droit vivant. Un droit qui protège les écosystèmes du Bassin du Congo et garantit la dignité des peuples autochtones. Le CREDDA n'est pas seulement un laboratoire, c'est un bouclier juridique.",
+      "cta": "Découvrir nos publications"
+    },
     "mission_text": "Produire une recherche de haute qualité pour orienter les politiques publiques et renforcer l’État de droit en RDC.",
     "vision": "Notre Vision",
     "vision_text": "Devenir le principal hub interdisciplinaire de transformation des conflits en Afrique Centrale.",
@@ -270,14 +277,45 @@
       "Quartier Himbi, Goma, RDC."
     ],
     "stats": {
-      "years": "Années d'Expertise",
-      "publications": "Publications Scientifiques",
-      "partners": "Partenaires Internationaux",
-      "beneficiaries": "Bénéficiaires"
+      "y": "Années de recherche",
+      "p": "Articles publiés",
+      "g": "Partenariats globaux",
+      "l": "Engagement local"
     },
     "cta_title": "Prêt à collaborer pour le changement ?",
     "become_partner": "Devenir Partenaire",
-    "meet_team": "Notre Équipe"
+    "meet_team": "Notre Équipe",
+    "quote": "Le droit ne doit pas seulement être dit, il doit être vécu au service de la justice climatique et sociale.",
+    "pillars": {
+      "title": "Les Piliers Légaux",
+      "desc": "Nos actions s'inscrivent dans le respect strict des cadres normatifs nationaux et internationaux.",
+      "items": [
+        {
+          "t": "Constitution RDC",
+          "desc": "Référence fondamentale de nos analyses juridiques et cliniques."
+        },
+        {
+          "t": "Loi 22/030 (Autochtones)",
+          "desc": "Référence fondamentale de nos analyses juridiques et cliniques."
+        },
+        {
+          "t": "Charte Africaine",
+          "desc": "Référence fondamentale de nos analyses juridiques et cliniques."
+        },
+        {
+          "t": "Convention Diversité Bio",
+          "desc": "Référence fondamentale de nos analyses juridiques et cliniques."
+        },
+        {
+          "t": "Déclaration ONU",
+          "desc": "Référence fondamentale de nos analyses juridiques et cliniques."
+        },
+        {
+          "t": "Droit de l'Environnement",
+          "desc": "Référence fondamentale de nos analyses juridiques et cliniques."
+        }
+      ]
+    }
   },
   "ResearchPage": {
     "header": {
@@ -958,5 +996,58 @@
         "content": "Tous les rapports, articles et contenus multimédias sont la propriété exclusive du CREDDA-ULPGL, sauf mention contraire. Toute reproduction est soumise à autorisation préalable."
       }
     ]
+  },
+  "AdminDashboard": {
+    "overview": {
+      "badge": "Système Opérationnel",
+      "db": "• Database: Neon PostgreSQL",
+      "title": "Dashboard <italic>Overview.</italic>",
+      "subtitle": "Gestion du savoir pour la région {locale} • {date}",
+      "viewSite": "Voir le site",
+      "newContent": "Nouveau Contenu"
+    },
+    "stats": {
+      "articles": {
+        "label": "Articles Scientifiques",
+        "sub": "{count} en ligne"
+      },
+      "publications": {
+        "label": "Bibliothèque PDF",
+        "sub": "Rapports archivés"
+      },
+      "members": {
+        "label": "Corps de Recherche",
+        "sub": "Experts & Staff"
+      },
+      "messages": {
+        "label": "Requêtes Contact",
+        "sub": "Messages non lus"
+      }
+    },
+    "recent": {
+      "title": "Travaux Récents",
+      "manage": "Gérer tout",
+      "untitled": "Sans titre",
+      "general": "Général",
+      "modified": "Modifié le {date}",
+      "published": "En Ligne",
+      "draft": "Brouillon",
+      "empty": "Aucun contenu disponible."
+    },
+    "inbox": {
+      "title": "<italic>Bureau</italic> Central",
+      "unread": "{count} Nouveaux messages en attente"
+    },
+    "health": {
+      "title": "Intégrité Système",
+      "storage": "Stockage PDF",
+      "normal": "Normal",
+      "latency": "API Latency",
+      "desc": "85% des ressources traduites"
+    },
+    "footer": {
+      "node": "Node: {version} • Prisma 6 • Neon Serverless",
+      "sync": "Last sync: {time}"
+    }
   }
 }

@@ -5,10 +5,10 @@ import {
 } from "lucide-react";
 
 import { Link } from "@/navigation";
-import { Badge } from "@/components/ui/badge";
 import { db } from "@/lib/db";
 import { safeQuery } from "@/lib/db-safe";
 import { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Tableau de Bord | CREDDA Administration",
@@ -20,6 +20,7 @@ interface Props {
 
 export default async function AdminPage({ params }: Props) {
   const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'AdminDashboard' });
 
   // --- RÉCUPÉRATION DES DONNÉES RÉELLES (AVEC FALLBACK) ---
   let totalArticles = 0;
@@ -84,38 +85,38 @@ export default async function AdminPage({ params }: Props) {
   publishedArticles = dbPublishedArticles;
   latestMessages = dbLatestMessages;
 
-  const stats = [
+    const stats = [
     { 
-      label: "Articles Scientifiques", 
+      label: t('stats.articles.label'), 
       value: totalArticles, 
-      sub: `${publishedArticles} en ligne`,
+      sub: t('stats.articles.sub', { count: publishedArticles }),
       icon: <FileText size={22} />, 
       href: "/admin/articles",
       bgColor: "bg-blue-500",
       textColor: "text-blue-600"
     },
     { 
-      label: "Bibliothèque PDF", 
+      label: t('stats.publications.label'), 
       value: totalPublications, 
-      sub: "Rapports archivés",
+      sub: t('stats.publications.sub'),
       icon: <BookOpen size={22} />, 
       href: "/admin/publications",
       bgColor: "bg-emerald-500",
       textColor: "text-emerald-600"
     },
     { 
-      label: "Corps de Recherche", 
+      label: t('stats.members.label'), 
       value: totalMembers, 
-      sub: "Experts & Staff",
+      sub: t('stats.members.sub'),
       icon: <Users size={22} />, 
       href: "/admin/members",
       bgColor: "bg-purple-500",
       textColor: "text-purple-600"
     },
     { 
-      label: "Requêtes Contact", 
+      label: t('stats.messages.label'), 
       value: unreadMessages, 
-      sub: "Messages non lus",
+      sub: t('stats.messages.sub'),
       icon: <MessageSquare size={22} />, 
       href: "/admin/messages",
       bgColor: unreadMessages > 0 ? "bg-amber-500" : "bg-slate-400",
@@ -127,33 +128,33 @@ export default async function AdminPage({ params }: Props) {
     <div className="space-y-10 pb-10">
       
       {/* ========== 1. HEADER EXÉCUTIF ========== */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 border-b border-slate-200 pb-8">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2 mb-2">
-            <Badge className="bg-emerald-500/10 text-emerald-600 border-none rounded-none text-[9px] font-black tracking-widest uppercase">
-              Système Opérationnel
-            </Badge>
-            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">
-              • Database: Neon PostgreSQL
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 border-b border-border pb-8">
+        <div className="space-y-2">
+          <div className="flex items-center gap-4 mb-2">
+            <div className="h-[1px] w-8 bg-primary" />
+            <span className="text-[10px] text-primary font-black uppercase tracking-[0.3em]">
+              {t('overview.badge')}
             </span>
           </div>
-          <h1 className="text-4xl font-serif font-bold text-slate-900 tracking-tight">
-            Dashboard <span className="text-slate-400 font-light italic">Overview</span>
+          <h1 className="text-5xl font-serif font-black text-foreground tracking-tighter uppercase">
+            {t.rich('overview.title', {
+              italic: (chunks) => <span className="text-primary italic">{chunks}</span>
+            })}
           </h1>
-          <p className="text-sm text-slate-500 font-medium">
-            Gestion du savoir pour la région {locale.toUpperCase()} • {new Date().toLocaleDateString(locale, { dateStyle: 'full' })}
+          <p className="text-sm text-muted-foreground font-medium">
+            {t('overview.subtitle', { locale: locale.toUpperCase(), date: new Date().toLocaleDateString(locale, { dateStyle: 'full' }) })}
           </p>
         </div>
         
         <div className="flex gap-3">
           <Link href="/">
-            <button className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 text-slate-700 text-xs font-bold uppercase tracking-widest hover:bg-slate-50 transition-all">
-              <Globe size={16} /> Voir le site
+            <button className="inline-flex items-center gap-2 px-6 py-4 bg-background border border-border text-foreground text-[10px] font-black uppercase tracking-widest hover:bg-muted transition-all">
+              <Globe size={16} /> {t('overview.viewSite')}
             </button>
           </Link>
           <Link href="/admin/articles/new">
-            <button className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white text-xs font-bold uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-600/20">
-              <Plus size={18} /> Nouveau Contenu
+            <button className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-primary/10">
+              <Plus size={18} /> {t('overview.newContent')}
             </button>
           </Link>
         </div>
@@ -165,22 +166,22 @@ export default async function AdminPage({ params }: Props) {
           <Link 
             key={i} 
             href={stat.href}
-            className="group relative bg-white border border-slate-100 p-8 hover:border-blue-600 transition-all shadow-sm hover:shadow-2xl overflow-hidden"
+            className="group relative bg-card border border-border p-8 aspect-square rounded-2xl hover:border-primary/50 hover:-translate-y-1 transition-all shadow-sm hover:shadow-2xl overflow-hidden flex flex-col justify-between"
           >
             {/* Décoration en arrière-plan */}
-            <div className={`absolute -right-4 -top-4 w-24 h-24 ${stat.bgColor} opacity-[0.03] rounded-full group-hover:scale-150 transition-transform duration-700`} />
+            <div className={`absolute -right-4 -top-4 w-32 h-32 bg-primary opacity-[0.03] rounded-full group-hover:scale-150 transition-transform duration-700 pointer-events-none`} />
             
-            <div className="relative z-10 flex flex-col h-full justify-between space-y-4">
-              <div className={`${stat.textColor} p-2 bg-slate-50 w-fit mb-2 group-hover:bg-blue-600 group-hover:text-white transition-colors`}>
+            <div className="relative z-10 flex flex-col h-full justify-between">
+              <div className="text-primary bg-primary/10 p-4 w-fit mb-4 rounded-xl group-hover:bg-primary group-hover:text-primary-foreground border border-primary/20 transition-all duration-300">
                 {stat.icon}
               </div>
               <div>
-                <div className="text-4xl font-serif font-bold text-slate-950">{stat.value}</div>
-                <div className="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">{stat.label}</div>
+                <div className="text-5xl font-serif font-black text-foreground tracking-tighter">{stat.value}</div>
+                <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-2">{stat.label}</div>
               </div>
-              <div className="pt-4 border-t border-slate-50 flex items-center justify-between">
-                <span className="text-[10px] font-bold text-slate-500">{stat.sub}</span>
-                <ArrowUpRight size={14} className="text-slate-300 group-hover:text-blue-600" />
+              <div className="pt-6 mt-auto border-t border-border flex items-center justify-between">
+                <span className="text-[10px] font-bold text-muted-foreground/70">{stat.sub}</span>
+                <ArrowUpRight size={14} className="text-muted-foreground/40 group-hover:text-primary transition-colors" />
               </div>
             </div>
           </Link>
@@ -191,47 +192,48 @@ export default async function AdminPage({ params }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         {/* Colonne : Articles récents (Focus) */}
-        <div className="lg:col-span-2 space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-serif font-bold text-slate-900 flex items-center gap-3">
-              <Newspaper size={20} className="text-blue-600" /> Travaux Récents
+        <div className="lg:col-span-2 space-y-8">
+          <div className="flex items-center justify-between border-b border-border pb-4">
+            <h2 className="text-2xl font-serif font-black uppercase tracking-tighter text-foreground flex items-center gap-3">
+              <div className="w-8 h-8 bg-primary/10 text-primary flex items-center justify-center rounded-lg border border-primary/20"><Newspaper size={16} /></div> 
+              {t('recent.title')}
             </h2>
-            <Link href="/admin/articles" className="text-[10px] font-black uppercase text-blue-600 hover:underline tracking-widest">
-              Gérer tout
+            <Link href="/admin/articles" className="text-[10px] font-black uppercase text-primary hover:underline tracking-widest">
+              {t('recent.manage')}
             </Link>
           </div>
           
-          <div className="bg-white border border-slate-200 divide-y divide-slate-100 shadow-sm">
+          <div className="bg-card border border-border shadow-2xl divide-y divide-border">
             {recentArticles.map((article) => (
               <Link 
                 href={`/admin/articles/edit/${article.id}`}
                 key={article.id} 
-                className="flex items-center p-6 hover:bg-slate-50 transition-colors group"
+                className="flex items-center p-8 hover:bg-muted/30 transition-colors group"
               >
-                <div className="w-12 h-12 bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-blue-100 group-hover:text-blue-600 transition-colors">
+                <div className="w-14 h-14 rounded-xl bg-muted flex items-center justify-center text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors border border-border group-hover:border-primary/20">
                   {article.domain === "RESEARCH" ? <Microscope size={20} /> : <Scale size={20} />}
                 </div>
-                <div className="ml-6 flex-1">
-                  <h4 className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
-                    {article.translations[0]?.title || "Sans titre"}
+                <div className="ml-6 flex-1 space-y-2">
+                  <h4 className="text-base font-serif font-bold text-foreground group-hover:text-primary transition-colors">
+                    {article.translations[0]?.title || t('recent.untitled')}
                   </h4>
-                  <div className="flex items-center gap-3 mt-1">
-                    <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest">
-                      {article.category?.translations[0]?.name || "Général"}
+                  <div className="flex items-center gap-3">
+                    <span className="text-[9px] font-black uppercase text-primary tracking-widest">
+                      {article.category?.translations[0]?.name || t('recent.general')}
                     </span>
-                    <span className="text-[10px] text-slate-300">•</span>
-                    <span className="text-[10px] text-slate-400 italic">
-                      Modifié {new Date(article.updatedAt).toLocaleDateString(locale)}
+                    <span className="text-[10px] text-muted-foreground/30">•</span>
+                    <span className="text-[10px] text-muted-foreground italic">
+                      {t('recent.modified', { date: new Date(article.updatedAt).toLocaleDateString(locale) })}
                     </span>
                   </div>
                 </div>
-                <div className={`px-3 py-1 text-[8px] font-black uppercase tracking-tighter ${article.published ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-500'}`}>
-                  {article.published ? "Publié" : "Draft"}
+                <div className={`px-4 py-2 text-[8px] font-black uppercase tracking-widest border ${article.published ? 'bg-primary/5 text-primary border-primary/20' : 'bg-muted text-muted-foreground border-border'}`}>
+                  {article.published ? t('recent.published') : t('recent.draft')}
                 </div>
-                <ChevronRight size={18} className="ml-6 text-slate-200 group-hover:text-blue-600 group-hover:translate-x-1 transition-all" />
+                <ChevronRight size={18} className="ml-8 text-muted-foreground/30 group-hover:text-primary group-hover:translate-x-2 transition-all" />
               </Link>
             ))}
-            {recentArticles.length === 0 && <p className="p-10 text-center text-slate-400 italic">Aucun contenu disponible.</p>}
+            {recentArticles.length === 0 && <p className="p-10 text-center text-muted-foreground italic font-medium">{t('recent.empty')}</p>}
           </div>
         </div>
 
@@ -239,22 +241,26 @@ export default async function AdminPage({ params }: Props) {
         <div className="space-y-8">
           
           {/* Boite de réception rapide */}
-          <div className="bg-[#050a15] text-white p-8 space-y-6 shadow-2xl relative overflow-hidden">
-             <div className="absolute -right-6 -bottom-6 opacity-10">
-                <MessageSquare size={120} />
+          <div className="bg-[#111110] text-white p-10 space-y-8 shadow-2xl relative overflow-hidden border border-white/5 border-t-primary/50">
+             <div className="absolute -right-6 -bottom-6 text-primary opacity-5">
+                <MessageSquare size={160} />
              </div>
              <div className="relative z-10">
-               <h3 className="text-xl font-serif font-bold italic mb-6">Correspondance</h3>
+               <h3 className="text-2xl font-serif font-black uppercase tracking-tighter mb-8">
+                 {t.rich('inbox.title', {
+                   italic: (chunks) => <span className="text-primary italic">{chunks}</span>
+                 })}
+               </h3>
                <div className="space-y-4">
                  {latestMessages.map(msg => (
-                   <div key={msg.id} className="border-l border-blue-500 pl-4 py-1 group cursor-pointer hover:bg-white/5 transition-colors">
-                      <p className="text-xs font-bold truncate">{msg.subject}</p>
-                      <p className="text-[10px] text-slate-400 mt-1 uppercase tracking-widest">{msg.name}</p>
+                   <div key={msg.id} className="border-l border-primary/50 pl-5 py-2 group cursor-pointer hover:bg-white/5 transition-colors">
+                      <p className="text-sm font-bold text-white group-hover:text-primary transition-colors truncate">{msg.subject}</p>
+                      <p className="text-[10px] text-white/50 mt-1 uppercase tracking-widest">{msg.name}</p>
                    </div>
                  ))}
                  {unreadMessages > 0 && (
-                   <Link href="/admin/messages" className="block pt-4 text-[9px] font-black uppercase text-blue-400 hover:text-white transition-all">
-                     {unreadMessages} Nouveaux messages en attente →
+                   <Link href="/admin/messages" className="block pt-6 text-[10px] font-black uppercase text-primary hover:text-white transition-all">
+                     {t('inbox.unread', { count: unreadMessages })} <ArrowUpRight className="inline ml-1" size={14} />
                    </Link>
                  )}
                </div>
@@ -262,21 +268,23 @@ export default async function AdminPage({ params }: Props) {
           </div>
 
           {/* Health Check Système */}
-          <div className="bg-white border border-slate-100 p-8 space-y-6">
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-slate-400">Intégrité Système</h3>
-            <div className="space-y-4">
-               <div className="flex items-center justify-between text-xs">
-                 <span className="text-slate-500">Stockage PDF (Vercel Blob)</span>
-                 <span className="font-bold text-slate-950">Normal</span>
+          <div className="bg-card border border-border p-10 space-y-8">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" /> {t('health.title')}
+            </h3>
+            <div className="space-y-5">
+               <div className="flex items-center justify-between text-xs font-bold">
+                 <span className="text-muted-foreground uppercase tracking-widest">{t('health.storage')}</span>
+                 <span className="text-foreground">{t('health.normal')}</span>
                </div>
-               <div className="flex items-center justify-between text-xs">
-                 <span className="text-slate-500">API Latency</span>
-                 <span className="font-bold text-emerald-500">24ms</span>
+               <div className="flex items-center justify-between text-xs font-bold">
+                 <span className="text-muted-foreground uppercase tracking-widest">{t('health.latency')}</span>
+                 <span className="text-primary font-serif italic text-sm">24ms</span>
                </div>
-               <div className="w-full bg-slate-100 h-1.5 mt-2">
-                  <div className="bg-blue-600 h-full w-[85%]" />
+               <div className="w-full bg-muted h-1.5 mt-2 rounded-full overflow-hidden">
+                  <div className="bg-primary h-full w-[85%]" />
                </div>
-               <p className="text-[9px] text-slate-400 font-medium italic text-center">85% des articles traduits en 3 langues.</p>
+               <p className="text-[9px] text-muted-foreground/60 font-bold uppercase tracking-widest text-center">{t('health.desc')}</p>
             </div>
           </div>
 
@@ -284,15 +292,15 @@ export default async function AdminPage({ params }: Props) {
       </div>
 
       {/* ========== 4. FOOTER INFO DÉVELOPPEUR ========== */}
-      <div className="bg-slate-50 p-6 border border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div className="bg-card p-6 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 mt-12">
         <div className="flex items-center gap-3">
-          <Database size={16} className="text-slate-400" />
-          <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">
-            Node: {process.version} • Prisma 6 • Neon Serverless
+          <Database size={16} className="text-muted-foreground/50" />
+          <span className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">
+            {t('footer.node', { version: process.version })}
           </span>
         </div>
-        <p className="text-[10px] text-slate-400 italic">
-          Last sync: {new Date().toLocaleTimeString()}
+        <p className="text-[9px] text-muted-foreground/50 font-bold uppercase tracking-widest">
+          {t('footer.sync', { time: new Date().toLocaleTimeString() })}
         </p>
       </div>
 

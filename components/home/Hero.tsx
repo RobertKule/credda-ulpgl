@@ -271,7 +271,7 @@ export default function Hero() {
             <div className="flex flex-col flex-wrap items-stretch gap-6 sm:flex-row sm:items-center sm:gap-10" style={{ transform: "translateZ(80px)" }}>
               <Link 
                 href="/publications" 
-                className="group relative inline-flex justify-center px-10 py-6 font-outfit text-[10px] font-black uppercase tracking-[0.3em] text-primary-foreground shadow-2xl transition-all hover:scale-[1.03] active:scale-95 sm:px-14 sm:py-7 md:px-16 md:py-8 bg-primary overflow-hidden"
+                className="group relative inline-flex justify-center px-10 py-6 font-outfit text-[10px] font-black uppercase tracking-[0.3em] text-primary-foreground shadow-2xl transition-all hover:scale-[1.03] active:scale-95 sm:px-14 sm:py-7 md:px-16 md:py-8 bg-primary overflow-hidden rounded-md"
               >
                 <span className="relative z-10 flex items-center gap-4">
                   {t('hero.cta_publications')} 

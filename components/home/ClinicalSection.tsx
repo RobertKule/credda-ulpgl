@@ -70,7 +70,7 @@ export default function ClinicalSection() {
             <GSAPReveal direction="up" delay={1.0}>
               <Link 
                 href="/clinical" 
-                className="group relative inline-flex items-center gap-6 px-12 py-6 bg-primary text-primary-foreground font-outfit font-bold uppercase tracking-widest text-xs overflow-hidden transition-all hover:scale-105"
+                className="group relative inline-flex items-center gap-6 px-12 py-6 bg-primary text-primary-foreground font-outfit font-bold uppercase tracking-widest text-xs overflow-hidden transition-all hover:scale-105 rounded-md"
               >
                 <span className="relative z-10 flex items-center gap-3">
                   {t('clinical.cta')} <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-500" />
@@ -79,7 +79,7 @@ export default function ClinicalSection() {
             </GSAPReveal>
           </motion.div>
 
-          <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-sm ring-1 ring-border group">
+          <div className="relative aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-3xl ring-1 ring-border group">
              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 opacity-60" />
              <div className="h-full w-full">
                <Image 

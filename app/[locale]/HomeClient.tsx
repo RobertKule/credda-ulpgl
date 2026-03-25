@@ -77,7 +77,7 @@ export default function HomeClient({
               {displayText}<span className="animate-pulse text-primary">_</span>
             </motion.h1>
             <p className="mt-6 text-[10px] sm:text-xs uppercase tracking-[1.2em] text-primary font-bold">
-              Research & Excellence
+              {t('intro_subtitle')}
             </p>
           </motion.div>
         </section>
@@ -99,8 +99,9 @@ export default function HomeClient({
         </div>
 
         {/* ABOUT (Image 3D + Zoom) */}
-        <section id="about" className="relative z-20 py-24 lg:py-40 bg-background/40 dark:bg-black/20 backdrop-blur-sm border-y border-border/10">
-          <SectionDecorNumber value="01" className="right-10 top-10 opacity-20" />
+        <div className="px-4 py-4">
+          <section id="about" className="relative z-20 py-24 lg:py-40 bg-background/40 dark:bg-black/20 backdrop-blur-sm border border-border/10 rounded-3xl overflow-hidden">
+            <SectionDecorNumber value="01" className="right-10 top-10 opacity-20" />
           <div className={SECTION_PAD}>
             <div className="flex flex-col lg:flex-row items-center gap-24 lg:gap-32">
               <div className="relative group lg:w-5/12 perspective-[2000px]">
@@ -115,7 +116,7 @@ export default function HomeClient({
                      <Image src="/images/director3.webp" alt="Director" fill className="object-cover" />
                    </div>
                    <div className="absolute -bottom-6 -right-6 bg-primary p-6 font-serif italic text-primary-foreground shadow-2xl">
-                      Penser l&apos;État de Droit.
+                      {t('about_caption')}
                    </div>
                  </motion.div>
                 </ScrollReveal>
@@ -142,6 +143,7 @@ export default function HomeClient({
             </div>
           </div>
         </section>
+      </div>
 
         {/* RESEARCH (Transparent pour globe max) */}
         <section id="research" className="relative z-20 py-24 bg-transparent">
@@ -150,11 +152,13 @@ export default function HomeClient({
           </div>
         </section>
 
-        <section id="clinical" className="relative z-20 py-24 border-t border-border/10 bg-background/20 backdrop-blur-[2px]">
-          <div className={SECTION_PAD}>
-            <ClinicalSection />
-          </div>
-        </section>
+        <div className="px-4 py-4">
+          <section id="clinical" className="relative z-20 py-24 border border-border/10 rounded-3xl bg-background/20 backdrop-blur-[2px] overflow-hidden">
+            <div className={SECTION_PAD}>
+              <ClinicalSection />
+            </div>
+          </section>
+        </div>
 
         <section id="team" className="relative z-20 py-24 bg-transparent">
           <div className={SECTION_PAD}>
@@ -162,11 +166,13 @@ export default function HomeClient({
           </div>
         </section>
 
-        <section id="publications" className="relative z-20 py-24 bg-background/30 backdrop-blur-sm border-y border-border/10">
-          <div className={SECTION_PAD}>
-            <TestimonialSection testimonials={testimonials} />
-          </div>
-        </section>
+        <div className="px-4 py-4">
+          <section id="publications" className="relative z-20 py-24 bg-background/30 backdrop-blur-sm border border-border/10 rounded-3xl overflow-hidden">
+            <div className={SECTION_PAD}>
+              <TestimonialSection testimonials={testimonials} />
+            </div>
+          </section>
+        </div>
 
         {/* GALLERY / PARTNERS */}
         <section id="gallery" className="relative z-20 py-32 bg-transparent">
@@ -194,8 +200,8 @@ export default function HomeClient({
                 br: () => <br />
               })}
             </h2>
-            <Link href="/contact" className="px-14 py-6 bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest hover:scale-110 transition-transform">
-              Devenir Partenaire
+            <Link href="/contact" className="px-14 py-6 bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest hover:scale-110 transition-transform rounded-md">
+              {t('cta.partner')}
             </Link>
           </motion.div>
         </section>

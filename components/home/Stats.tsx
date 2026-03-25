@@ -60,7 +60,7 @@ export default function Stats({ years, totalResources, partners, clinicalCases =
           {stats.map((stat, idx) => (
             <GSAPReveal key={idx} direction="up" delay={idx * 0.1}>
               <div className="relative flex flex-col items-center text-center lg:border-r last:border-0 border-border px-10 group">
-                <div className="mb-8 p-6 bg-muted border border-border group-hover:bg-primary group-hover:border-primary transition-all duration-700 relative overflow-hidden">
+                <div className="mb-8 p-6 bg-muted border border-border group-hover:bg-primary group-hover:border-primary transition-all duration-700 relative overflow-hidden rounded-2xl">
                   <stat.icon size={26} className="text-primary group-hover:text-primary-foreground transition-colors relative z-10" />
                   <div className="absolute inset-0 bg-[#C9A84C]/20 scale-0 group-hover:scale-150 transition-transform duration-700 -z-0 blur-xl" />
                 </div>
