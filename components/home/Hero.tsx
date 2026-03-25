@@ -223,18 +223,18 @@ export default function Hero() {
             transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
           >
             {/* BADGE */}
-            <div className="flex items-center gap-6 mb-12" style={{ transform: "translateZ(50px)" }}>
+            <div className="flex items-center gap-6 mb-16 lg:mb-20" style={{ transform: "translateZ(50px)" }}>
               <div className="h-[1px] w-16 bg-primary/50" />
               <span className="text-[10px] uppercase tracking-[0.8em] font-black text-primary">
-                 Pôle d'Excellence Scientifique
+                 {t('hero.badge')}
               </span>
             </div>
 
             {/* MAIN TITLE WITH PARALLAX */}
             <motion.h1 
-              style={{ y: titleY, transform: "translateZ(100px)" }}
+              style={{ y: titleY, z: 100 }}
               className={cn(
-                "mb-10 font-fraunces text-[clamp(2.25rem,8vw,10rem)] font-extrabold leading-[0.88] tracking-tighter text-foreground sm:mb-14 md:mb-16",
+                "mb-10 font-fraunces text-[clamp(2.5rem,8vw,9rem)] font-extrabold leading-[1.05] tracking-tighter text-foreground sm:mb-14 md:mb-16",
                 isLight
                   ? "[text-shadow:0_2px_0_rgba(255,255,255,0.85),0_1px_3px_rgba(26,24,20,0.12)]"
                   : "[text-shadow:0_2px_24px_rgba(12,12,10,0.55)]"
@@ -256,7 +256,7 @@ export default function Hero() {
 
             {/* DESCRIPTION */}
             <motion.p 
-              style={{ y: descY, transform: "translateZ(60px)" }}
+              style={{ y: descY, z: 60 }}
               className={cn(
                 "mb-14 max-w-2xl border-l-2 border-primary/30 pl-6 font-outfit text-base font-light leading-relaxed text-muted-foreground sm:mb-16 sm:pl-8 sm:text-lg md:mb-20 md:text-xl lg:text-2xl",
                 isLight
