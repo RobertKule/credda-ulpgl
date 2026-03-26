@@ -42,7 +42,7 @@ export default function Footer() {
                   key={i}
                   href="#" 
                   className="w-12 h-12 border border-border flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-500 group"
-                  aria-label={`Follow us on ${label}`}
+                  aria-label={`Suivez-nous sur ${label}`}
                 >
                   <Icon size={18} className="transition-transform group-hover:scale-110" />
                 </a>

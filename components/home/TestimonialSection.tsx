@@ -128,6 +128,7 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-8 lg:gap-12 mt-8 lg:mt-16">
                         <button 
                             onClick={() => emblaApi?.scrollPrev()} 
+                            aria-label={t('testimonials.prev') || "Précédent"}
                             className="hidden sm:flex w-14 h-14 rounded-md border border-border items-center justify-center hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-500 group"
                         >
                             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
@@ -146,6 +147,7 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
 
                         <button 
                             onClick={() => emblaApi?.scrollNext()} 
+                            aria-label={t('testimonials.next') || "Suivant"}
                             className="hidden sm:flex w-14 h-14 rounded-md bg-primary items-center justify-center text-primary-foreground hover:scale-110 shadow-lg shadow-primary/25 transition-all duration-500 group"
                         >
                             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />

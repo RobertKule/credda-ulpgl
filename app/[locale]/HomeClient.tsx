@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Hero from "@/components/home/Hero";
+import React, { useState, useEffect, Suspense } from "react";
+import dynamic from "next/dynamic";
+const Hero = dynamic(() => import("@/components/home/Hero"), { ssr: false });
 import Stats from "@/components/home/Stats";
 import FeaturedResearch from "@/components/home/FeaturedResearch";
 import ClinicalSection from "@/components/home/ClinicalSection";
@@ -65,27 +66,12 @@ export default function HomeClient({
         {/* INTRO TYPEWRITER */}
         <section className="relative h-[100vh] w-full flex items-center justify-center bg-transparent">
           <motion.div style={{ opacity: introOpacity, scale: introScale, y: introY }} className="text-center">
-            <motion.h2 
-              animate={{ 
-                opacity: [1, 0.9, 1],
-                textShadow: [
-                  "0 0 0px var(--primary)",
-                  "2px 2px 0px rgba(255,0,0,0.3)",
-                  "-2px -2px 0px rgba(0,0,255,0.3)",
-                  "0 0 0px var(--primary)"
-                ]
-              }}
-              transition={{ 
-                duration: 0.2, 
-                repeat: Infinity, 
-                repeatDelay: 4,
-                ease: "linear"
-              }}
+            <motion.div 
               className="font-bricolage text-[18vw] font-black leading-none tracking-tighter text-foreground"
             >
               CREDDA
               <span className="animate-pulse text-primary">_</span>
-            </motion.h2>
+            </motion.div>
             <p className="mt-10 text-[10px] sm:text-xs uppercase tracking-[1.2em] text-primary font-bold">
               {t('intro_subtitle')}
             </p>

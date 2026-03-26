@@ -37,12 +37,14 @@ export default function TeamSection({ team }: { team: any[] }) {
                     <div className="flex gap-2 sm:gap-4">
                         <button
                             onClick={() => carouselRef.current?.scrollPrev()}
+                            aria-label={t('team.prev') || "Précédent"}
                             className="w-14 h-14 rounded-md border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all duration-500"
                         >
                             <ArrowLeft size={20} />
                         </button>
                         <button
                             onClick={() => carouselRef.current?.scrollNext()}
+                            aria-label={t('team.next') || "Suivant"}
                             className="w-14 h-14 rounded-md border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all duration-500"
                         >
                             <ArrowRight size={20} />

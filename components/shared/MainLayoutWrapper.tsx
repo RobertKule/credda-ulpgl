@@ -4,7 +4,9 @@ import { usePathname } from "@/navigation"; // Supposant que /navigation exporte
 import { usePathname as useNextPathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import SystemBanner from "./SystemBanner";
+import dynamic from "next/dynamic";
+
+const SystemBanner = dynamic(() => import("./SystemBanner"), { ssr: false });
 
 export default function MainLayoutWrapper({
   children,

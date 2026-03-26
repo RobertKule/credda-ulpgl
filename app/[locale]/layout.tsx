@@ -63,7 +63,6 @@ export default async function RootLayout({
       <body className="font-outfit antialiased bg-background text-foreground">
         <Providers locale={locale} messages={messages}>
           <MainLayoutWrapper>
-            <SystemBanner />
             {children}
           </MainLayoutWrapper>
         </Providers>
