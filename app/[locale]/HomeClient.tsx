@@ -17,7 +17,6 @@ import { ScrollReveal } from "@/components/shared/ScrollReveal";
 import HomePageBackdrop from "@/components/home/HomePageBackdrop";
 import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
 import AboutVideoSection from "@/components/home/AboutVideoSection";
-import DecodeText from "@/components/shared/DecodeText";
 
 const SECTION_PAD = "w-full px-5 sm:px-8 lg:px-12 xl:px-16";
 
@@ -84,7 +83,7 @@ export default function HomeClient({
               }}
               className="font-bricolage text-[18vw] font-black leading-none tracking-tighter text-foreground"
             >
-              <DecodeText text="CREDDA" />
+              CREDDA
               <span className="animate-pulse text-primary">_</span>
             </motion.h2>
             <p className="mt-10 text-[10px] sm:text-xs uppercase tracking-[1.2em] text-primary font-bold">

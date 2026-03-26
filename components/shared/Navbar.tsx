@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Link, usePathname } from "./../../navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Menu, X, ArrowRight, Search, Sun, Moon, ChevronDown } from "lucide-react";
@@ -16,15 +17,14 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isFooterExpanded, setIsFooterExpanded] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const { data: session } = useSession();
   const { theme, toggleTheme } = useTheme();
   const [activeSection, setActiveSection] = useState("");
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50); // Seuil un peu plus haut pour l'élégance
+      setIsScrolled(window.scrollY > 50);
       
       const sections = ["about", "research", "clinical", "publications", "team"];
       let currentSection = "";
@@ -59,9 +59,6 @@ export default function Navbar() {
     { href: "/events", label: t("events"), id: "events" },
     { href: "/gallery", label: t("gallery"), id: "gallery" }
   ];
-
-  const loginHref = session ? "/admin" : "/login";
-  const loginLabel = session ? t("dashboard") : t("login");
 
   const LanguageSwitcher = () => (
     <div className="flex items-center gap-1 rounded-full border border-border bg-muted/30 p-1 shadow-inner">
@@ -111,13 +108,24 @@ export default function Navbar() {
           }`}
         >
           {/* LOGO */}
-          <Link href="/" className="flex flex-col group py-1" aria-label="CREDDA CDE Home">
-            <span className="font-bricolage font-black text-xl lg:text-2xl tracking-tighter text-foreground leading-none">
-              CREDDA<span className="text-[#C9A84C] animate-pulse">·</span>CDE
-            </span>
-            {!isScrolled && (
-              <span className="text-[7px] uppercase tracking-[0.6em] font-bold text-[#C9A84C]/60 mt-0.5">Legal Excellence</span>
-            )}
+          <Link href="/" className="flex items-center gap-3 group py-1" aria-label="CREDDA CDE Home">
+            <div className="relative w-8 h-8 lg:w-10 lg:h-10 transition-transform duration-500 group-hover:scale-110">
+              <Image 
+                src="/logocredda.png" 
+                alt="CREDDA Logo" 
+                fill 
+                className="object-contain"
+                priority
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bricolage font-black text-lg lg:text-xl tracking-tighter text-foreground leading-none">
+                CREDDA<span className="text-[#C9A84C] animate-pulse">·</span>CDE
+              </span>
+              {!isScrolled && (
+                <span className="text-[7px] uppercase tracking-[0.6em] font-bold text-[#C9A84C]/60 mt-0.5">Legal Excellence</span>
+              )}
+            </div>
           </Link>
 
           {/* DESKTOP MENU */}
@@ -187,7 +195,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* 3. MOBILE MENU OVERLAY - (Inchangé par rapport à la version précédente avec scrollable nav) */}
+      {/* 3. MOBILE MENU OVERLAY */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -197,9 +205,11 @@ export default function Navbar() {
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed inset-0 z-[200] flex h-[100dvh] flex-col bg-background text-foreground overflow-hidden"
           >
-            {/* Header Mobile */}
             <div className="shrink-0 flex items-center justify-between border-b border-border bg-card/40 p-6 backdrop-blur-md">
-              <span className="font-bricolage text-xl font-black tracking-tighter">CREDDA<span className="text-[#C9A84C]">·</span>CDE</span>
+              <span className="font-bricolage text-xl font-black tracking-tighter flex items-center gap-2">
+                <Image src="/logocredda.png" alt="Logo" width={24} height={24} className="object-contain" />
+                CREDDA<span className="text-[#C9A84C]">·</span>CDE
+              </span>
               <button 
                 onClick={() => setIsOpen(false)} 
                 className="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 rounded-full"
@@ -209,16 +219,12 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Scrollable Nav Area */}
             <nav className="flex-1 overflow-y-auto px-6 py-8 space-y-12 overscroll-contain scrollbar-hide">
               <MobileGroup label="Expertise" links={expertiseLinks} pathname={pathname} activeSection={activeSection} setIsOpen={setIsOpen} />
               <MobileGroup label="L'Institution" links={institutionLinks} pathname={pathname} activeSection={activeSection} setIsOpen={setIsOpen} />
             </nav>
 
-            {/* Footer Mobile Fixe */}
             <div className="shrink-0 border-t border-border bg-card/95 p-6 pb-[env(safe-area-inset-bottom,24px)] space-y-4">
-
-              {/* THEME TOGGLE + LANGUAGE SWITCHER */}
               <div className="flex items-center justify-between gap-4">
                 <button
                   onClick={toggleTheme}
@@ -285,8 +291,6 @@ export default function Navbar() {
     </>
   );
 }
-
-// --- SOUS-COMPOSANTS ---
 
 function NavDropdown({ label, links, activeDropdown, setActiveDropdown, pathname, activeSection, isScrolled }: any) {
   const isOpen = activeDropdown === label;
