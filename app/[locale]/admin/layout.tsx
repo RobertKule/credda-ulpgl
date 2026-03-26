@@ -3,19 +3,10 @@ import { redirect } from "next/navigation";
 import { getMessages } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import AdminSidebar from "@/components/admin/AdminSidebar";
-import AdminHeader from "@/components/admin/AdminHeader"; 
+import AdminTopBar from "@/components/admin/AdminTopBar";
+import LoadingModal from "@/components/admin/LoadingModal";
 import { Toaster } from "@/components/ui/toaster";
 import { auth } from "@/lib/auth";
-
-import {
-  LayoutDashboard,
-  FileText,
-  BookOpen,
-  UserCircle,
-  Mail,
-  Users,
-  Layout
-} from "lucide-react";
 
 export default async function AdminLayout({
   children,
@@ -31,15 +22,13 @@ export default async function AdminLayout({
     redirect(`/${locale}/login`);
   }
 
-  // Enforce ADMIN roles for this layout
+  // Enforce ADMIN roles
   if ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "SUPER_ADMIN") {
     redirect(`/${locale}/`);
   }
 
-  // ✅ Messages pour les composants clients
   const messages = await getMessages();
 
-  // ✅ Menu items (données pures, pas de composants)
   const menuItems = [
     { href: "/admin", label: "Dashboard", icon: "LayoutDashboard" },
     { href: "/admin/articles", label: "Articles", icon: "FileText" },
@@ -56,35 +45,34 @@ export default async function AdminLayout({
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <div className="flex min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-
-        {/* ✅ Sidebar (composant client) */}
+      <div className="flex min-h-screen bg-white dark:bg-slate-950 transition-colors duration-500">
+        
+        {/* Sidebar */}
         <AdminSidebar locale={locale} menuItems={menuItems} />
 
-        {/* ✅ Contenu principal */}
-        <div className="flex-1 flex flex-col min-w-0 transition-all duration-300">
+        {/* Espace de Travail */}
+        <div className="flex-1 flex flex-col min-w-0">
+          
+          {/* Top Bar Unifiée */}
+          <AdminTopBar locale={locale} />
 
-          {/* ✅ Header mobile (composant client) */}
-          <AdminHeader locale={locale} />
-
-          {/* ✅ Contenu principal */}
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 xl:p-10 overflow-x-hidden pt-20 lg:pt-24">
-            <div className="max-w-7xl mx-auto">
-              <div className="mb-6 lg:hidden">
-                <p className="text-xs font-black uppercase tracking-widest text-slate-400">
-                  Administration
-                </p>
-              </div>
-              {children}
-               <Toaster />
+          {/* Zone de Contenu */}
+          <main className="flex-1 p-4 sm:p-6 lg:p-10 overflow-x-hidden">
+            <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+               {children}
             </div>
           </main>
 
-          {/* ✅ Footer mobile */}
-          <footer className="lg:hidden bg-white border-t border-slate-200 px-4 py-3 text-center text-[10px] font-bold uppercase tracking-wider text-slate-400">
-            CREDDA-ULPGL • Accès restreint
+          {/* Footer Interne (Optionnel) */}
+          <footer className="px-10 py-6 border-t border-slate-200 dark:border-white/5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-white/20 flex justify-between items-center transition-all">
+             <span>© {new Date().getFullYear()} CREDDA Research Centre</span>
+             <span className="hidden sm:inline">Système d'Accès Sécurisé • v2.5.0</span>
           </footer>
         </div>
+
+        {/* Global Components */}
+        <Toaster />
+        <LoadingModal />
       </div>
     </NextIntlClientProvider>
   );

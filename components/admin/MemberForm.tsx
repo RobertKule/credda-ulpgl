@@ -7,8 +7,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { createMember, updateMember } from "@/services/member-actions";
 import { useRouter } from "next/navigation";
-import { Loader2, Save, Upload, User, X } from "lucide-react";
+import { Save, Upload, User, X } from "lucide-react";
 import Image from "next/image";
+import axios from "axios";
+import { showLoading, hideLoading } from "@/components/admin/LoadingModal";
+import { toast } from "react-hot-toast";
 
 const LANGUAGES = [
   { code: "fr", label: "Français" },
@@ -16,12 +19,9 @@ const LANGUAGES = [
   { code: "sw", label: "Kiswahili" }
 ];
 
-import axios from "axios";
-
 export function MemberForm({ initialData, locale }: { initialData?: any, locale: string }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
 
@@ -45,7 +45,6 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
     }, {})
   );
 
-  // Gestion de l'upload d'image
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -66,12 +65,10 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
 
       if (res.data.url) {
         setBaseData({ ...baseData, image: res.data.url });
-      } else {
-        alert("Erreur lors de l'upload de l'image.");
+        toast.success("Photo téléchargée !");
       }
     } catch (error: any) {
-      const message = error.response?.data?.error ?? "Erreur réseau lors de l'upload.";
-      alert(message);
+      toast.error(error.response?.data?.error ?? "Erreur lors de l'upload.");
     } finally {
       setUploading(false);
       setUploadProgress(0);
@@ -79,7 +76,7 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
+    showLoading(initialData ? "Mise à jour du profil..." : "Création du nouveau membre...");
     const payload = {
       ...baseData,
       translations: LANGUAGES.map(lang => ({
@@ -88,64 +85,72 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
       }))
     };
 
-    const res = initialData
-      ? await updateMember(initialData.id, payload)
-      : await createMember(payload);
+    try {
+      const res = initialData
+        ? await updateMember(initialData.id, payload)
+        : await createMember(payload);
 
-    if (res.success) {
-      router.push(`/${locale}/admin/members`);
-    } else {
-      alert("Erreur lors de l'enregistrement");
-      setLoading(false);
+      if (res.success) {
+        toast.success("Membre enregistré avec succès");
+        router.push(`/${locale}/admin/members`);
+        router.refresh();
+      } else {
+        toast.error(res.error || "Une erreur est survenue");
+      }
+    } catch (error) {
+      toast.error("Erreur de connexion");
+    } finally {
+      hideLoading();
     }
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
-      {/* SECTION IMAGE & INFOS DE BASE */}
       <div className="grid lg:grid-cols-4 gap-8">
-        {/* Upload Zone */}
-        <div className="lg:col-span-1">
-          <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4 block">Photo de profil</label>
-          <div className="relative aspect-[4/5] bg-slate-100 border-2 border-dashed border-slate-200 flex flex-col items-center justify-center overflow-hidden group">
+        {/* Colonne Image */}
+        <div className="lg:col-span-1 space-y-4">
+          <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">Portrait Officiel</label>
+          <div className="relative aspect-[3/4] bg-slate-100 dark:bg-white/5 border-2 border-dashed border-slate-200 dark:border-white/10 flex flex-col items-center justify-center overflow-hidden group rounded-[2rem] shadow-inner transition-colors">
             {baseData.image ? (
               <>
-                <Image src={baseData.image} alt="Preview" fill className="object-cover" />
+                <Image src={baseData.image} alt="Preview" fill className="object-cover transition-transform duration-700 group-hover:scale-110" />
                 <button
                   type="button"
                   onClick={() => setBaseData({ ...baseData, image: "" })}
-                  className="absolute top-2 right-2 p-1 bg-red-600 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-4 right-4 p-2 bg-red-600 text-white rounded-xl opacity-0 group-hover:opacity-100 transition-all shadow-xl active:scale-95"
                 >
-                  <X size={14} />
+                  <X size={16} />
                 </button>
               </>
             ) : (
-              <div className="text-center p-4 w-full">
+              <div className="text-center p-6 w-full h-full flex flex-col items-center justify-center">
                 {uploading ? (
-                  <div className="space-y-3 w-full px-4">
-                    <Loader2 className="animate-spin text-blue-600 mx-auto" size={24} />
-                    <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                  <div className="space-y-4 w-full px-6">
+                    <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-full animate-spin mx-auto" />
+                    <div className="w-full bg-slate-200 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
                       <div 
                         className="bg-blue-600 h-full transition-all duration-300" 
                         style={{ width: `${uploadProgress}%` }}
                       />
                     </div>
-                    <p className="text-[10px] font-bold text-blue-600 uppercase tracking-tighter">Upload: {uploadProgress}%</p>
+                    <p className="text-[9px] font-black text-blue-600 uppercase tracking-widest">Calcul: {uploadProgress}%</p>
                   </div>
                 ) : (
-                  <>
-                    <User size={40} className="text-slate-300 mx-auto mb-2" />
+                  <div className="space-y-6">
+                    <div className="w-20 h-20 bg-slate-200 dark:bg-white/5 rounded-3xl flex items-center justify-center mx-auto transition-colors group-hover:bg-blue-600/10">
+                      <User size={32} className="text-slate-400 group-hover:text-blue-600 transition-colors" />
+                    </div>
                     <Button
                       type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="text-xs text-blue-600"
+                      variant="outline"
+                      className="text-[9px] font-black uppercase tracking-widest border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm rounded-xl px-6 h-12 hover:border-blue-600 transition-all"
                       onClick={() => fileInputRef.current?.click()}
                     >
                       <Upload size={14} className="mr-2" /> Sélectionner
                     </Button>
-                  </>
+                    <p className="text-[8px] font-bold text-slate-400 uppercase tracking-tighter">JPG, PNG ou WEBP • Portrait</p>
+                  </div>
                 )}
               </div>
             )}
@@ -159,76 +164,83 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
           </div>
         </div>
 
-        {/* Inputs de base */}
-        <div className="lg:col-span-3 grid md:grid-cols-2 gap-6 bg-white p-6 border border-slate-200 shadow-sm self-start">
-          <div className="space-y-2">
-            <label className="text-[10px] font-bold uppercase tracking-widest">Email Professionnel</label>
-            <Input value={baseData.email} onChange={(e) => setBaseData({ ...baseData, email: e.target.value })} placeholder="email@credda-ulpgl.org" className="rounded-none h-12" />
-          </div>
-          <div className="space-y-2">
-            <label className="text-[10px] font-bold uppercase tracking-widest">Priorité d'affichage</label>
-            <Input type="number" value={baseData.order} onChange={(e) => setBaseData({ ...baseData, order: parseInt(e.target.value) })} className="rounded-none h-12" />
-            <p className="text-[10px] text-slate-400 italic">0 = Premier, 99 = Dernier</p>
-          </div>
+        {/* Colonne Infos de base */}
+        <div className="lg:col-span-3 space-y-6">
+           <div className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 p-8 rounded-[2.5rem] shadow-sm grid md:grid-cols-2 gap-8 transition-colors">
+              <div className="space-y-3 group">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors">Email de Liaison</label>
+                <Input value={baseData.email} onChange={(e) => setBaseData({ ...baseData, email: e.target.value })} placeholder="email@credda-ulpgl.org" className="rounded-xl h-14 bg-slate-50 dark:bg-white/[0.02] border-slate-100 dark:border-white/5 font-bold text-xs" />
+              </div>
+              <div className="space-y-3 group">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors">Priorité d'affichage</label>
+                <div className="flex items-center gap-4">
+                  <Input type="number" value={baseData.order} onChange={(e) => setBaseData({ ...baseData, order: parseInt(e.target.value) })} className="rounded-xl h-14 bg-slate-50 dark:bg-white/[0.02] border-slate-100 dark:border-white/5 font-bold text-xs max-w-[120px]" />
+                  <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-tight italic leading-tight">
+                    Plus la valeur est basse, plus l'ordre est prioritaire (0 = Top).
+                  </p>
+                </div>
+              </div>
+           </div>
+
+           <Tabs defaultValue="fr" className="w-full">
+            <TabsList className="bg-slate-100 dark:bg-white/5 p-1 rounded-2xl w-full grid grid-cols-3 h-14 transition-colors">
+              {LANGUAGES.map(lang => (
+                <TabsTrigger key={lang.code} value={lang.code} className="rounded-xl font-black uppercase text-[9px] tracking-[0.2em] data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:shadow-sm transition-all">
+                  {lang.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            {LANGUAGES.map(lang => (
+              <TabsContent key={lang.code} value={lang.code} className="p-8 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-[2.5rem] mt-6 space-y-8 shadow-sm transition-colors animate-in fade-in slide-in-from-bottom-2 duration-500">
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Identité Complète ({lang.code})</label>
+                  <Input
+                    placeholder="Ex: Pr. Dr. John Doe"
+                    className="rounded-xl h-14 text-2xl font-serif font-black bg-transparent border-0 border-b border-slate-100 dark:border-white/5 focus-visible:ring-0 focus-visible:border-blue-600 transition-all text-slate-900 dark:text-white px-0"
+                    value={(translations as any)[lang.code].name}
+                    onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], name: e.target.value } })}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Fonction / Titre</label>
+                  <Input
+                    placeholder="Ex: Coordonnateur de Recherche"
+                    className="rounded-xl h-14 bg-slate-50 dark:bg-white/[0.02] border-slate-100 dark:border-white/5 font-bold text-sm text-slate-900 dark:text-white transition-all"
+                    value={(translations as any)[lang.code].role}
+                    onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], role: e.target.value } })}
+                  />
+                </div>
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Parcours & Expertise</label>
+                  <Textarea
+                    placeholder="Décrivez les compétences, l'expertise et le parcours académique du membre..."
+                    className="min-h-[160px] rounded-2xl border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02] italic font-medium p-6 focus:border-blue-600 transition-all text-slate-900 dark:text-white"
+                    value={(translations as any)[lang.code].bio}
+                    onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], bio: e.target.value } })}
+                  />
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
         </div>
       </div>
 
-      <Tabs defaultValue="fr" className="w-full">
-        <TabsList className="bg-slate-100 p-1 rounded-none w-full grid grid-cols-3 h-14">
-          {LANGUAGES.map(lang => (
-            <TabsTrigger key={lang.code} value={lang.code} className="rounded-none font-bold uppercase text-[10px] tracking-[0.2em] data-[state=active]:bg-white">
-              {lang.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-
-        {LANGUAGES.map(lang => (
-          <TabsContent key={lang.code} value={lang.code} className="p-8 bg-white border border-t-0 border-slate-200 space-y-6">
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase text-slate-400">Nom Complet</label>
-              <Input
-                placeholder="Ex: Pr. Dr. John Doe"
-                className="rounded-none h-12 text-lg font-serif"
-                value={(translations as any)[lang.code].name}
-                onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], name: e.target.value } })}
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase text-slate-400">Poste / Rôle</label>
-              <Input
-                placeholder="Ex: Coordonnateur Adjoint"
-                className="rounded-none h-12"
-                value={(translations as any)[lang.code].role}
-                onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], role: e.target.value } })}
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold uppercase text-slate-400">Biographie courte</label>
-              <Textarea
-                placeholder="Décrivez le parcours académique..."
-                className="h-40 rounded-none border-slate-200"
-                value={(translations as any)[lang.code].bio}
-                onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], bio: e.target.value } })}
-              />
-            </div>
-          </TabsContent>
-        ))}
-      </Tabs>
-
-      <div className="flex justify-end gap-4 pt-6 border-t">
+      <div className="flex justify-end gap-4 pt-10 border-t border-slate-100 dark:border-white/5">
         <Button
-          variant="outline"
+          variant="ghost"
           onClick={() => router.back()}
-          className="rounded-none px-8 h-14 uppercase text-xs font-black tracking-widest"
+          className="rounded-xl px-8 h-14 uppercase text-[10px] font-black tracking-widest text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
         >
           Annuler
         </Button>
         <Button
           onClick={handleSubmit}
-          disabled={loading || uploading}
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-none px-12 h-14 uppercase text-xs font-black tracking-widest shadow-xl"
+          disabled={uploading}
+          className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-12 h-14 uppercase text-[10px] font-black tracking-widest shadow-xl shadow-blue-600/20 active:scale-95 transition-all flex items-center gap-3"
         >
-          {loading ? <Loader2 className="animate-spin" /> : <><Save className="mr-2" size={16} /> Enregistrer le profil</>}
+          <Save size={16} /> 
+          {initialData ? "Sauvegarder les modifications" : "Intégrer le membre"}
         </Button>
       </div>
     </div>

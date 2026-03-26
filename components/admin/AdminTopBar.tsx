@@ -1,0 +1,98 @@
+"use client";
+
+import { Search, Sun, Moon, Bell, Maximize2, BellDot } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useTheme } from "@/components/shared/ThemeProvider";
+import { useState, useRef, useEffect } from "react";
+import { Input } from "@/components/ui/input";
+
+export default function AdminTopBar({ locale }: { locale: string }) {
+  const { data: session } = useSession();
+  const { theme, toggleTheme } = useTheme();
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  return (
+    <header className="h-20 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-white/5 sticky top-0 z-40 transition-all duration-500">
+      <div className="h-full px-4 sm:px-6 lg:px-10 flex items-center justify-between gap-6">
+        
+        {/* Barre de Recherche Premium */}
+        <div className={`flex-1 max-w-2xl transition-all duration-500 relative group hidden md:block`}>
+           <div className={`absolute inset-y-0 left-4 flex items-center pointer-events-none transition-colors ${isSearchFocused ? 'text-blue-600' : 'text-slate-400'}`}>
+              <Search size={18} strokeWidth={2.5} />
+           </div>
+           <Input 
+             ref={searchInputRef}
+             onFocus={() => setIsSearchFocused(true)}
+             onBlur={() => setIsSearchFocused(false)}
+             placeholder="Rechercher un article, un membre ou une donnée..."
+             className={`w-full pl-12 h-12 bg-slate-50 dark:bg-white/5 border-transparent dark:border-transparent rounded-2xl font-bold text-xs uppercase tracking-widest focus-visible:ring-blue-600/10 focus:border-blue-600/50 transition-all placeholder:text-slate-400 text-slate-900 dark:text-white`}
+           />
+           <div className="absolute right-4 top-1/2 -translate-y-1/2 hidden lg:flex items-center gap-1">
+              <span className="text-[9px] font-black bg-slate-200 dark:bg-white/10 px-2 py-1 rounded-md text-slate-500 uppercase tracking-tighter">⌘</span>
+              <span className="text-[9px] font-black bg-slate-200 dark:bg-white/10 px-2 py-1 rounded-md text-slate-500 uppercase tracking-tighter">K</span>
+           </div>
+        </div>
+
+        {/* Actions Client-Side */}
+        <div className="flex items-center gap-2 sm:gap-4 lg:gap-6">
+           
+           {/* Mobile Search Trigger */}
+           <button className="md:hidden p-3 bg-slate-50 dark:bg-white/5 rounded-xl text-slate-400 hover:text-blue-600 transition-all active:scale-95">
+              <Search size={20} />
+           </button>
+
+           <div className="h-8 w-[1px] bg-slate-200 dark:bg-white/5 mx-2 hidden sm:block" />
+
+           {/* Theme Switcher */}
+           <button 
+             onClick={toggleTheme} 
+             className="relative w-12 h-12 flex items-center justify-center bg-slate-50 dark:bg-white/5 rounded-2xl text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all overflow-hidden group active:scale-95"
+           >
+              <div className={`absolute transition-transform duration-500 ${theme === 'dark' ? 'translate-y-0' : 'translate-y-12'}`}>
+                 <Moon size={20} />
+              </div>
+              <div className={`absolute transition-transform duration-500 ${theme === 'light' ? 'translate-y-0' : '-translate-y-12'}`}>
+                 <Sun size={20} />
+              </div>
+           </button>
+
+           {/* Notifications */}
+           <button className="w-12 h-12 flex items-center justify-center bg-slate-50 dark:bg-white/5 rounded-2xl text-slate-400 hover:text-blue-600 transition-all relative active:scale-95">
+              <Bell size={20} />
+              <span className="absolute top-3 right-3 w-2 h-2 bg-red-500 rounded-full ring-4 ring-white dark:ring-slate-950 shadow-[0_0_10px_rgba(239,68,68,0.5)]" />
+           </button>
+
+           <div className="h-8 w-[1px] bg-slate-200 dark:bg-white/5 mx-2 hidden lg:block" />
+
+           {/* User Profile Summary */}
+           <div className="hidden lg:flex items-center gap-4 bg-slate-50 dark:bg-white/5 pl-4 pr-2 py-1.5 rounded-2xl border border-transparent hover:border-blue-600/10 transition-all cursor-pointer group">
+              <div className="text-right">
+                 <p className="text-[10px] font-black uppercase tracking-tight text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">
+                   {session?.user?.name || 'Administrateur'}
+                 </p>
+                 <p className="text-[8px] font-black uppercase tracking-[0.2em] text-blue-600/60 leading-none">
+                   Super Admin
+                 </p>
+              </div>
+              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white text-xs font-black shadow-lg shadow-blue-600/20 group-hover:scale-105 transition-transform">
+                 {session?.user?.name?.[0] || 'A'}
+              </div>
+           </div>
+
+        </div>
+      </div>
+    </header>
+  );
+}

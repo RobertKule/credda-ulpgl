@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
@@ -11,9 +11,10 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { createArticle, updateArticle } from "@/services/article-actions"
 import { toast } from "react-hot-toast"
-import { Loader2, Save, Globe, Settings2, Image as ImageIcon, Video, Upload, X } from "lucide-react"
+import { Save, Globe, Settings2, Image as ImageIcon, Video, Upload, X } from "lucide-react"
 import axios from "axios";
 import Image from "next/image";
+import { showLoading, hideLoading } from "@/components/admin/LoadingModal";
 
 const LANGUAGES = [
   { code: "fr", label: "Français" },
@@ -24,7 +25,6 @@ const LANGUAGES = [
 export function ArticleForm({ categories, initialData, isEditing = false }: any) {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [uploadProgress, setUploadProgress] = useState(0)
   
@@ -37,7 +37,6 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
     published: initialData?.published ?? true
   })
 
-  // Initialisation sécurisée des traductions
   const [translations, setTranslations] = useState(() => {
     const t: any = {}
     LANGUAGES.forEach(l => {
@@ -83,7 +82,7 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+    showLoading(isEditing ? "Mise à jour de l'article..." : "Publication de l'article en cours...")
 
     const payload = {
       id: initialData?.id,
@@ -94,31 +93,35 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
       }))
     }
     
-    const res = isEditing ? await updateArticle(payload) : await createArticle(payload)
-    
-    if (res.success) {
-      toast.success(isEditing ? "Mis à jour avec succès" : "Publié avec succès")
-      router.push("/admin/articles")
-      router.refresh()
-    } else {
-      toast.error(res.error || "Une erreur est survenue")
-      setLoading(false)
+    try {
+      const res = isEditing ? await updateArticle(payload) : await createArticle(payload)
+      if (res.success) {
+        toast.success(isEditing ? "Mis à jour avec succès" : "Publié avec succès")
+        router.push("/admin/articles")
+        router.refresh()
+      } else {
+        toast.error(res.error || "Une erreur est survenue")
+      }
+    } catch (error) {
+      toast.error("Erreur de connexion")
+    } finally {
+      hideLoading()
     }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-10">
-      {/* Barre d'action collante */}
-      <div className="sticky top-0 z-30 flex items-center justify-between bg-white/80 backdrop-blur-md py-4 border-b -mx-10 px-10 mb-8">
+      {/* Barre d'action collante (Offset par rapport au TopBar) */}
+      <div className="sticky top-20 z-30 flex items-center justify-between bg-white/80 dark:bg-slate-950/80 backdrop-blur-md py-4 border-b border-slate-200 dark:border-white/5 -mx-4 sm:-mx-6 lg:-mx-10 px-4 sm:px-6 lg:px-10 mb-8 transition-colors">
         <div className="flex items-center gap-2">
           <Settings2 size={18} className="text-slate-400" />
-          <span className="text-sm font-bold uppercase tracking-widest text-slate-500">Configuration de l'article</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Configuration de l'article</span>
         </div>
         <div className="flex gap-3">
-          <Button type="button" variant="ghost" onClick={() => router.back()}>Annuler</Button>
-          <Button disabled={loading || uploading} className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20 px-8">
-            {loading ? <Loader2 className="animate-spin mr-2" size={18} /> : <Save className="mr-2" size={18} />}
-            {isEditing ? "Enregistrer les modifications" : "Publier l'article"}
+          <Button type="button" variant="ghost" onClick={() => router.back()} className="text-[10px] font-black uppercase tracking-widest rounded-xl">Annuler</Button>
+          <Button disabled={uploading} className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20 px-8 rounded-xl font-black text-[10px] uppercase tracking-widest active:scale-95 transition-all">
+            <Save className="mr-2" size={16} />
+            {isEditing ? "Enregistrer" : "Publier"}
           </Button>
         </div>
       </div>
@@ -127,42 +130,45 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
         {/* Colonne Principale : Contenu Multi-langue */}
         <div className="lg:col-span-2 space-y-6">
           <Tabs defaultValue="fr" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 h-12 bg-slate-100 p-1">
+            <TabsList className="grid w-full grid-cols-3 h-14 bg-slate-100 dark:bg-white/5 p-1 rounded-2xl">
               {LANGUAGES.map(l => (
-                <TabsTrigger key={l.code} value={l.code} className="font-bold uppercase text-[10px] tracking-widest">
+                <TabsTrigger key={l.code} value={l.code} className="font-black uppercase text-[9px] tracking-[0.2em] rounded-xl data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:shadow-sm">
                   <Globe size={14} className="mr-2" /> {l.label}
                 </TabsTrigger>
               ))}
             </TabsList>
 
             {LANGUAGES.map(l => (
-              <TabsContent key={l.code} value={l.code} className="mt-6 animate-in fade-in duration-500">
-                <Card className="p-8 space-y-6 rounded-none border-slate-200">
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-black uppercase text-slate-400">Titre Scientifique ({l.code})</Label>
+              <TabsContent key={l.code} value={l.code} className="mt-6 animate-in fade-in slide-in-from-bottom-2 duration-500 outline-none">
+                <Card className="p-8 space-y-8 rounded-[2.5rem] border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 shadow-sm">
+                  <div className="space-y-4">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Titre Scientifique ({l.code})</Label>
                     <Input 
-                      className="text-2xl font-serif font-bold border-0 border-b rounded-none px-0 focus-visible:ring-0 focus-visible:border-blue-600"
+                      className="text-3xl font-serif font-black border-0 border-b border-slate-100 dark:border-white/5 rounded-none px-0 focus-visible:ring-0 focus-visible:border-blue-600 bg-transparent text-slate-900 dark:text-white transition-colors"
                       placeholder="Entrez le titre..."
                       value={translations[l.code].title}
                       onChange={(e) => setTranslations({...translations, [l.code]: {...translations[l.code], title: e.target.value}})}
                     />
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-black uppercase text-slate-400">Résumé / Excerpt</Label>
+                  <div className="space-y-4">
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Résumé / Excerpt</Label>
                     <Textarea 
-                      className="rounded-none border-slate-200 italic"
-                      placeholder="Court résumé de l'article..."
+                      className="rounded-2xl border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02] italic font-medium min-h-[100px] focus:border-blue-600 transition-all text-slate-900 dark:text-white"
+                      placeholder="Court résumé de l'article pour les cartes d'aperçu..."
                       value={translations[l.code].excerpt}
                       onChange={(e) => setTranslations({...translations, [l.code]: {...translations[l.code], excerpt: e.target.value}})}
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label className="text-[10px] font-black uppercase text-slate-400">Corps de l'article (Markdown)</Label>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Corps de l'article (Markdown)</Label>
+                       <span className="text-[9px] font-bold text-blue-600/50 uppercase tracking-tighter">Supporte le formatage enrichi</span>
+                    </div>
                     <Textarea 
-                      className="min-h-[400px] rounded-none border-slate-200 font-mono text-sm leading-relaxed"
-                      placeholder="Rédigez votre contenu ici..."
+                      className="min-h-[500px] rounded-2xl border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02] font-mono text-sm leading-relaxed p-6 focus:border-blue-600 transition-all text-slate-900 dark:text-white"
+                      placeholder="# Votre contenu scientifique ici..."
                       value={translations[l.code].content}
                       onChange={(e) => setTranslations({...translations, [l.code]: {...translations[l.code], content: e.target.value}})}
                     />
@@ -175,23 +181,23 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
 
         {/* Barre Latérale : Métadonnées */}
         <div className="space-y-6">
-          <Card className="p-6 space-y-6 rounded-none border-slate-200">
-            <h3 className="font-bold uppercase text-[10px] tracking-[0.2em] text-blue-600 border-b pb-4">Paramètres de publication</h3>
+          <Card className="p-8 space-y-8 rounded-[2.5rem] border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 shadow-sm">
+            <h3 className="font-black uppercase text-[10px] tracking-[0.3em] text-blue-600 dark:text-blue-400 border-b border-slate-100 dark:border-white/5 pb-6">Paramètres</h3>
             
-            <div className="space-y-2">
-              <Label className="text-[10px] font-bold uppercase">Slug de l'URL</Label>
+            <div className="space-y-3">
+              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Slug de l'URL</Label>
               <Input 
                 value={baseData.slug}
                 onChange={(e) => setBaseData({...baseData, slug: e.target.value})}
                 placeholder="titre-de-l-article" 
-                className="rounded-none"
+                className="rounded-xl bg-slate-50 dark:bg-white/[0.02] border-slate-100 dark:border-white/5 font-bold text-xs"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label className="text-[10px] font-bold uppercase">Domaine</Label>
+            <div className="space-y-3">
+              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Domaine de Recherche</Label>
               <select 
-                className="w-full h-10 border border-slate-200 px-3 text-sm rounded-none"
+                className="w-full h-12 bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 px-4 text-xs font-bold rounded-xl outline-none focus:border-blue-600 transition-all dark:text-white"
                 value={baseData.domain}
                 onChange={(e) => setBaseData({...baseData, domain: e.target.value})}
               >
@@ -200,10 +206,10 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
               </select>
             </div>
 
-            <div className="space-y-2">
-              <Label className="text-[10px] font-bold uppercase">Catégorie</Label>
+            <div className="space-y-3">
+              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Classification</Label>
               <select 
-                className="w-full h-10 border border-slate-200 px-3 text-sm rounded-none"
+                className="w-full h-12 bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 px-4 text-xs font-bold rounded-xl outline-none focus:border-blue-600 transition-all dark:text-white"
                 value={baseData.categoryId}
                 onChange={(e) => setBaseData({...baseData, categoryId: e.target.value})}
               >
@@ -215,8 +221,8 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
               </select>
             </div>
 
-            <div className="flex items-center justify-between p-4 bg-slate-50 border border-slate-100">
-              <Label className="text-[10px] font-bold uppercase cursor-pointer" htmlFor="pub-switch">Statut : Publié</Label>
+            <div className="flex items-center justify-between p-5 bg-blue-600/5 dark:bg-blue-600/10 rounded-2xl border border-blue-600/10">
+              <Label className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 cursor-pointer" htmlFor="pub-switch">Publier immédiatement</Label>
               <Switch 
                 id="pub-switch"
                 checked={baseData.published}
@@ -225,49 +231,50 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
             </div>
           </Card>
 
-          <Card className="p-6 space-y-4 rounded-none border-slate-200 bg-slate-50/50">
-             <h3 className="font-bold uppercase text-[10px] tracking-[0.2em] text-slate-400 border-b pb-4">Médias</h3>
+          <Card className="p-8 space-y-8 rounded-[2.5rem] border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02] shadow-sm">
+             <h3 className="font-black uppercase text-[10px] tracking-[0.3em] text-slate-400 border-b border-slate-100 dark:border-white/5 pb-6">Ressources Médias</h3>
              
              <div className="space-y-4">
-               <Label className="text-[10px] font-bold flex items-center gap-2 uppercase">
-                 <ImageIcon size={14} /> Image principale
+               <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-3">
+                 <ImageIcon size={14} className="text-blue-600" /> Couverture Principale
                </Label>
                
-               <div className="relative aspect-video bg-white border border-slate-200 flex flex-col items-center justify-center overflow-hidden group">
+               <div className="relative aspect-video bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 flex flex-col items-center justify-center overflow-hidden group rounded-2xl shadow-inner">
                  {baseData.mainImage ? (
                    <>
                      <Image src={baseData.mainImage} alt="Preview" fill className="object-cover" />
                      <button
                        type="button"
                        onClick={() => setBaseData({ ...baseData, mainImage: "" })}
-                       className="absolute top-2 right-2 p-1.5 bg-red-600 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                       className="absolute top-3 right-3 p-2 bg-red-600 text-white rounded-xl opacity-0 group-hover:opacity-100 transition-all shadow-lg active:scale-90"
                      >
-                       <X size={14} />
+                       <X size={16} />
                      </button>
                    </>
                  ) : (
-                   <div className="text-center p-4 w-full">
+                   <div className="text-center p-6 w-full">
                      {uploading ? (
-                       <div className="space-y-3 px-4">
-                         <Loader2 className="animate-spin text-blue-600 mx-auto" size={24} />
-                         <div className="w-full bg-slate-200 h-1 rounded-full overflow-hidden">
+                       <div className="space-y-4 px-6">
+                         <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-full animate-spin mx-auto" />
+                         <div className="w-full bg-slate-200 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
                            <div 
                              className="bg-blue-600 h-full transition-all duration-300" 
                              style={{ width: `${uploadProgress}%` }}
                            />
                          </div>
-                         <p className="text-[10px] font-bold text-blue-600 uppercase">Upload: {uploadProgress}%</p>
+                         <p className="text-[9px] font-black text-blue-600 uppercase tracking-widest">Calcul: {uploadProgress}%</p>
                        </div>
                      ) : (
-                       <Button
-                         type="button"
-                         variant="outline"
-                         size="sm"
-                         className="text-xs bg-white"
-                         onClick={() => fileInputRef.current?.click()}
-                       >
-                         <Upload size={14} className="mr-2" /> Uploader une image
-                       </Button>
+                       <div className="space-y-4">
+                          <button
+                            type="button"
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all shadow-lg shadow-blue-600/20 active:scale-95 flex items-center gap-2 mx-auto"
+                            onClick={() => fileInputRef.current?.click()}
+                          >
+                            <Upload size={14} /> Sélectionner un fichier
+                          </button>
+                          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">JPG, PNG ou WEBP • Max 5MB</p>
+                       </div>
                      )}
                    </div>
                  )}
@@ -279,28 +286,18 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
                     onChange={handleImageUpload}
                   />
                </div>
-               
-               <div className="space-y-2">
-                 <Label className="text-[10px] font-bold uppercase text-slate-400">Ou URL directe</Label>
-                 <Input 
-                  value={baseData.mainImage}
-                  onChange={(e) => setBaseData({...baseData, mainImage: e.target.value})}
-                  placeholder="https://..." 
-                  className="rounded-none bg-white text-xs h-8"
-                 />
-               </div>
              </div>
 
-             <div className="space-y-2">
-               <Label className="text-[10px] font-bold flex items-center gap-2 uppercase">
-                 <Video size={14} /> Vidéo YouTube/Vimeo (URL)
-               </Label>
-               <Input 
-                value={baseData.videoUrl}
-                onChange={(e) => setBaseData({...baseData, videoUrl: e.target.value})}
-                placeholder="https://youtube.com/watch?v=..." 
-                className="rounded-none bg-white"
-               />
+             <div className="space-y-3 pt-6 border-t border-slate-100 dark:border-white/5">
+                <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-3">
+                  <Video size={14} className="text-blue-600" /> Lien Vidéo Immergeant
+                </Label>
+                <Input 
+                 value={baseData.videoUrl}
+                 onChange={(e) => setBaseData({...baseData, videoUrl: e.target.value})}
+                 placeholder="Lien YouTube ou Vimeo" 
+                 className="rounded-xl bg-white dark:bg-white/5 border-slate-100 dark:border-white/5 text-xs font-bold h-12"
+                />
              </div>
           </Card>
         </div>
