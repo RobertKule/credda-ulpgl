@@ -70,6 +70,7 @@ export default function Navbar() {
           key={l}
           href={pathname}
           locale={l}
+          aria-label={`Switch language to ${l.toUpperCase()}`}
           className={`text-[9px] font-bold w-8 h-8 flex items-center justify-center transition-all rounded-full ${
             locale === l ? "bg-[#C9A84C] text-[#0C0C0A] shadow-md" : "text-foreground/60 hover:text-foreground"
           }`}
@@ -236,6 +237,7 @@ export default function Navbar() {
                       href={pathname}
                       locale={l}
                       onClick={() => setIsOpen(false)}
+                      aria-label={`Switch language to ${l.toUpperCase()}`}
                       className={`text-[9px] font-black w-9 h-9 flex items-center justify-center rounded-lg transition-all ${
                         locale === l ? "bg-[#C9A84C] text-[#0C0C0A] shadow-md" : "text-foreground/50 hover:text-foreground"
                       }`}

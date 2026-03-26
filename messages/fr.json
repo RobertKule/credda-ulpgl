@@ -169,7 +169,15 @@
       }
     },
     "intro_subtitle": "Recherche & Excellence",
-    "about_caption": "Penser l'État de Droit."
+    "about_caption": "Penser l'État de Droit.",
+    "video": {
+      "badge": "Présentation Vidéo",
+      "title": "Découvrez <primary>l'Impact</primary> du CREDDA",
+      "description": "Plongez au cœur de nos initiatives à travers cette présentation. Nous œuvrons pour l'excellence académique et l'innovation sociale en République Démocratique du Congo.",
+      "since": "Depuis",
+      "institution": "Institution",
+      "watch": "Regarder l'introduction"
+    }
   },
   "metadata": {
     "home": {

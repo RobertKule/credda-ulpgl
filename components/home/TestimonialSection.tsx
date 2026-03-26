@@ -113,7 +113,7 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <h4 className="font-bold text-sm md:text-base uppercase tracking-[0.2em] text-primary mb-0.5">{testi.name}</h4>
+                                                    <h3 className="font-bold text-sm md:text-base uppercase tracking-[0.2em] text-primary mb-0.5">{testi.name}</h3>
                                                     <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-[0.1em] font-medium opacity-70">{testi.role}</p>
                                                 </div>
                                             </div>

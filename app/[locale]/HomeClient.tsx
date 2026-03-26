@@ -66,7 +66,7 @@ export default function HomeClient({
         {/* INTRO TYPEWRITER */}
         <section className="relative h-[100vh] w-full flex items-center justify-center bg-transparent">
           <motion.div style={{ opacity: introOpacity, scale: introScale, y: introY }} className="text-center">
-            <motion.h1 
+            <motion.h2 
               animate={{ 
                 opacity: [1, 0.9, 1],
                 textShadow: [
@@ -86,7 +86,7 @@ export default function HomeClient({
             >
               <DecodeText text="CREDDA" />
               <span className="animate-pulse text-primary">_</span>
-            </motion.h1>
+            </motion.h2>
             <p className="mt-10 text-[10px] sm:text-xs uppercase tracking-[1.2em] text-primary font-bold">
               {t('intro_subtitle')}
             </p>
@@ -268,7 +268,13 @@ export default function HomeClient({
             <div className="flex gap-16 md:gap-24 animate-infinite-scroll py-10 lg:py-16 border-y border-border/20 items-center">
               {[...(partners ?? []), ...(partners ?? [])].map((p, i) => (
                 <div key={i} className="relative w-40 h-16 md:w-56 md:h-24 opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-500 shrink-0 cursor-pointer">
-                  <Image src={`/images/partenaires/${p}`} alt="Partner" fill sizes="(max-width: 768px) 160px, 224px" className="object-contain" />
+                  <Image 
+                    src={`/images/partenaires/${p}`} 
+                    alt={`Partner: ${p.split('.')[0]}`} 
+                    fill 
+                    sizes="(max-width: 768px) 160px, 224px" 
+                    className="object-contain" 
+                  />
                 </div>
               ))}
             </div>

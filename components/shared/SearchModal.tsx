@@ -67,6 +67,9 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: -20 }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Search"
             className="relative w-full max-w-2xl bg-[#111110] border border-white/5 shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden rounded-sm"
           >
             <form onSubmit={handleSearchSubmit} className="flex items-center p-8 border-b border-white/5 bg-[#161614]">
@@ -76,11 +79,17 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={t('placeholder') || "Search for research, publications..."}
+                aria-label="Search query"
                 className="flex-1 bg-transparent border-none outline-none text-2xl font-serif text-[#F5F2EC] placeholder:text-[#F5F2EC]/20"
               />
               <div className="flex items-center gap-4">
                 {loading && <Loader2 className="animate-spin text-[#C9A84C]" size={20} />}
-                <button type="button" onClick={onClose} className="p-2 hover:bg-white/5 text-[#F5F2EC]/40 transition-colors">
+                <button 
+                  type="button" 
+                  onClick={onClose} 
+                  className="p-2 hover:bg-white/5 text-[#F5F2EC]/40 transition-colors"
+                  aria-label="Close search"
+                >
                   <X size={24} />
                 </button>
               </div>

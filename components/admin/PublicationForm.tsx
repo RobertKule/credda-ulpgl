@@ -12,6 +12,8 @@ import axios from "axios";
 import { showLoading, hideLoading } from "@/components/admin/LoadingModal";
 import { toast } from "react-hot-toast";
 
+import { ModernMarkdownEditor } from "./shared/ModernMarkdownEditor"
+
 const LANGUAGES = [
   { code: "fr", label: "Français" },
   { code: "en", label: "English" },
@@ -31,15 +33,18 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
     domain: initialData?.domain || "RESEARCH",
   });
 
-  const [translations, setTranslations] = useState(
-    LANGUAGES.reduce((acc, lang) => {
-      const existing = initialData?.translations?.find((t: any) => t.language === lang.code);
-      return {
-        ...acc,
-        [lang.code]: { title: existing?.title || "", authors: existing?.authors || "", description: existing?.description || "" }
+  const [translations, setTranslations] = useState<any>(() => {
+    const t: any = {};
+    LANGUAGES.forEach(lang => {
+      const existing = initialData?.translations?.find((ex: any) => ex.language === lang.code);
+      t[lang.code] = { 
+        title: existing?.title || "", 
+        authors: existing?.authors || "", 
+        description: existing?.description || "" 
       };
-    }, {})
-  );
+    });
+    return t;
+  });
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -72,12 +77,17 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
   };
 
   const handleSubmit = async () => {
+    if (!baseData.pdfUrl) {
+      toast.error("Veuillez uploader le document PDF");
+      return;
+    }
+
     showLoading(initialData ? "Mise à jour de la publication..." : "Publication du document scientifique...");
     const payload = {
       ...baseData,
       translations: LANGUAGES.map(lang => ({
         language: lang.code,
-        ...(translations as any)[lang.code]
+        ...translations[lang.code]
       }))
     };
 
@@ -104,7 +114,7 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       
       {/* SECTION DOCUMENT PDF - LUXE DARK STYLE */}
-      <div className="bg-slate-950 dark:bg-slate-900/50 p-10 rounded-[2.5rem] border border-white/5 relative overflow-hidden shadow-2xl group transition-colors">
+      <div className="bg-slate-950 dark:bg-slate-900/50 p-10 rounded-[2.5rem] border border-white/5 relative overflow-hidden shadow-2xl group transition-all">
         <div className="absolute -right-20 -top-20 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-full group-hover:bg-blue-600/20 transition-all duration-700 pointer-events-none" />
         
         <div className="relative z-10 space-y-8">
@@ -143,7 +153,7 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
                           style={{ width: `${uploadProgress}%` }}
                         />
                       </div>
-                      <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest">Calcul: {uploadProgress}%</p>
+                      <p className="text-[10px] font-black text-blue-500 uppercase tracking-widest">Envoi: {uploadProgress}%</p>
                     </div>
                   ) : (
                     <>
@@ -173,8 +183,8 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
                 <div className="space-y-3 group">
                   <label className="text-[10px] font-black text-white/30 uppercase tracking-widest group-focus-within:text-blue-500 transition-colors">Domaine</label>
                   <select className="w-full h-14 bg-white/5 border border-white/5 px-4 text-xs font-black uppercase tracking-widest rounded-xl text-white outline-none focus:border-blue-600 transition-all" value={baseData.domain} onChange={(e) => setBaseData({ ...baseData, domain: e.target.value })}>
-                    <option value="RESEARCH" className="bg-slate-950">RECHERCHE</option>
-                    <option value="CLINICAL" className="bg-slate-950">CLINIQUE</option>
+                    <option value="RESEARCH" className="bg-slate-950 text-white">RECHERCHE</option>
+                    <option value="CLINICAL" className="bg-slate-950 text-white">CLINIQUE</option>
                   </select>
                 </div>
               </div>
@@ -192,23 +202,23 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
 
       {/* TABS DE CONTENU */}
       <Tabs defaultValue="fr" className="w-full">
-        <TabsList className="bg-slate-100 dark:bg-white/5 p-1 rounded-2xl w-full grid grid-cols-3 h-14 transition-colors">
+        <TabsList className="bg-slate-100 dark:bg-white/5 p-1 rounded-2xl w-full grid grid-cols-3 h-14 transition-all">
           {LANGUAGES.map(l => (
-            <TabsTrigger key={l.code} value={l.code} className="rounded-xl font-black uppercase text-[9px] tracking-[0.2em] data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:shadow-sm transition-all">
+            <TabsTrigger key={l.code} value={l.code} className="rounded-xl font-black uppercase text-[9px] tracking-[0.2em] data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 data-[state=active]:shadow-sm transition-all shadow-none">
               {l.label}
             </TabsTrigger>
           ))}
         </TabsList>
 
         {LANGUAGES.map(lang => (
-          <TabsContent key={lang.code} value={lang.code} className="p-10 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-[2.5rem] mt-6 space-y-10 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <TabsContent key={lang.code} value={lang.code} className="p-10 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-[2.5rem] mt-6 space-y-10 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500 outline-none">
             <div className="space-y-4">
                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Titre de la Publication ({lang.code})</label>
                <Input 
                  placeholder="Titre scientifique complet..." 
                  className="text-2xl font-serif font-black bg-transparent border-0 border-b border-slate-100 dark:border-white/5 focus-visible:ring-0 focus-visible:border-blue-600 transition-all text-slate-900 dark:text-white px-0" 
-                 value={(translations as any)[lang.code].title} 
-                 onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], title: e.target.value } })} 
+                 value={translations[lang.code].title} 
+                 onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...translations[lang.code], title: e.target.value } })} 
                />
             </div>
 
@@ -217,20 +227,16 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
                <Input 
                  placeholder="Ex: Pr. John Doe, Dr. Mary Smith" 
                  className="rounded-xl h-14 bg-slate-50 dark:bg-white/[0.02] border-slate-100 dark:border-white/5 font-bold text-sm text-slate-900 dark:text-white transition-all shadow-inner" 
-                 value={(translations as any)[lang.code].authors} 
-                 onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], authors: e.target.value } })} 
+                 value={translations[lang.code].authors} 
+                 onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...translations[lang.code], authors: e.target.value } })} 
                />
             </div>
 
-            <div className="space-y-4">
-               <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Résumé Analytique (Abstract)</label>
-               <Textarea 
-                 placeholder="Décrivez l'objectif de la publication, la méthodologie et les conclusions..." 
-                 className="h-48 rounded-3xl border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02] italic font-medium p-8 focus:border-blue-600 transition-all text-slate-900 dark:text-white leading-relaxed" 
-                 value={(translations as any)[lang.code].description} 
-                 onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], description: e.target.value } })} 
-               />
-            </div>
+            <ModernMarkdownEditor 
+              label="Résumé Analytique (Markdown Abstract)"
+              value={translations[lang.code].description}
+              onChange={(val) => setTranslations({ ...translations, [lang.code]: { ...translations[lang.code], description: val } })}
+            />
           </TabsContent>
         ))}
       </Tabs>

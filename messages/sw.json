@@ -169,7 +169,15 @@
       }
     },
     "intro_subtitle": "Utafiti na Ubora",
-    "about_caption": "Kufikiria Utawala wa Sheria."
+    "about_caption": "Kufikiria Utawala wa Sheria.",
+    "video": {
+      "badge": "Uwakilishi wa Video",
+      "title": "Gundua <primary>Athari</primary> ya CREDDA",
+      "description": "Zama ndani ya mipango yetu kupitia uwakilishi huu. Tunafanya kazi kwa ustadi wa kitaaluma na uvumbuzi wa kijamii katika Jamhuri ya Kidemokrasia ya Kongo.",
+      "since": "Tangu",
+      "institution": "Taasisi",
+      "watch": "Tazama utangulizi"
+    }
   },
   "metadata": {
     "home": {

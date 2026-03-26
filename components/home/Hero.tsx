@@ -25,10 +25,10 @@ export default function Hero() {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     setReduceMotion(prefersReducedMotion);
 
-    // Force hide loading screen after 1.5s
+    // Force hide loading screen after 0.8s
     const timer = setTimeout(() => {
       setIsLoaded(true);
-    }, 1500);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, []);
@@ -45,18 +45,6 @@ export default function Hero() {
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setMounted(true);
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setReduceMotion(prefersReducedMotion);
-
-    // Force hide loading screen after 1.5s
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current || reduceMotion) return;
@@ -117,14 +105,14 @@ export default function Hero() {
                 )}
               >
                 <span className={cn("block italic mb-4", isLight ? "opacity-80 text-foreground/80" : "opacity-70 text-primary/70")}>
-                  <DecodeText text={t('hero.title_part1')} delay={1.7} duration={1.2} />
+                  <DecodeText text={t('hero.title_part1')} delay={1.0} duration={1.2} />
                 </span>
                 <span className="block text-primary relative filter drop-shadow-[0_0_20px_rgba(201,168,76,0.3)]">
                   {t('hero.title_part2')}
                   <motion.span 
                     initial={{ scaleX: 0 }}
                     whileInView={{ scaleX: 1 }}
-                    transition={{ delay: 2.2, duration: 1.5 }}
+                    transition={{ delay: 1.5, duration: 1.5 }}
                     className="absolute -bottom-6 left-1/4 w-1/2 h-[2px] bg-primary shadow-[0_0_15px_rgba(201,168,76,0.6)]" 
                   />
                 </span>
@@ -140,7 +128,7 @@ export default function Hero() {
                     : "[text-shadow:0_2px_12px_rgba(0,0,0,0.5)]"
                 )}
               >
-                <DecodeText text={t('hero.subtitle')} delay={2.5} duration={2} />
+                <DecodeText text={t('hero.subtitle')} delay={1.8} duration={2} />
               </motion.p>
 
               {/* ACTIONS - CENTERED */}
