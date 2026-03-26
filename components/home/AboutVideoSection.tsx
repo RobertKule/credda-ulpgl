@@ -26,27 +26,33 @@ export default function AboutVideoSection() {
             <div className="flex items-center gap-4">
               <div className="h-[1px] w-12 bg-primary" />
               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">
-                Présentation Vidéo
+                {t('video.badge')}
               </span>
             </div>
             
             <h2 className="font-fraunces text-4xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tighter">
-              Découvrez <span className="text-primary italic font-light">l'Impact</span> du CREDDA
+              {t.rich('video.title', {
+                primary: (chunks) => <span className="text-primary italic font-light">{chunks}</span>
+              })}
             </h2>
             
             <p className="text-muted-foreground text-lg font-light leading-relaxed max-w-xl border-l border-primary/20 pl-6">
-              Plongez au cœur de nos initiatives à travers cette présentation. Nous œuvrons pour l'excellence académique et l'innovation sociale en République Démocratique du Congo.
+              {t('video.description')}
             </p>
             
             <div className="flex items-center gap-8 pt-4">
               <div className="flex flex-col">
                 <span className="text-2xl font-bold font-fraunces text-primary">2008</span>
-                <span className="text-[10px] uppercase tracking-widest text-muted-foreground opacity-60">Depuis</span>
+                <span className="text-[10px] uppercase tracking-widest text-muted-foreground opacity-60">
+                  {t('video.since')}
+                </span>
               </div>
               <div className="w-px h-10 bg-border/50" />
               <div className="flex flex-col">
                 <span className="text-2xl font-bold font-fraunces text-primary">ULPGL</span>
-                <span className="text-[10px] uppercase tracking-widest text-muted-foreground opacity-60">Institution</span>
+                <span className="text-[10px] uppercase tracking-widest text-muted-foreground opacity-60">
+                  {t('video.institution')}
+                </span>
               </div>
             </div>
           </motion.div>
@@ -69,9 +75,10 @@ export default function AboutVideoSection() {
               <div className="relative aspect-video rounded-xl overflow-hidden shadow-inner bg-black flex items-center justify-center">
                 {/* Lazy Load Video on Click */}
                 {!showVideo ? (
-                  <div 
-                    className="absolute inset-0 w-full h-full cursor-pointer group/vid"
+                  <button 
+                    className="absolute inset-0 w-full h-full cursor-pointer group/vid border-none bg-transparent p-0"
                     onClick={() => setShowVideo(true)}
+                    aria-label={t('video.watch')}
                   >
                     <img 
                       src="https://img.youtube.com/vi/V-MVLqjQMIc/maxresdefault.jpg" 
@@ -83,7 +90,7 @@ export default function AboutVideoSection() {
                         <Play size={32} fill="currentColor" className="ml-1" />
                       </div>
                     </div>
-                  </div>
+                  </button>
                 ) : (
                   <iframe 
                     className="absolute inset-0 w-full h-full"
@@ -101,7 +108,9 @@ export default function AboutVideoSection() {
               <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                 <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/5">
                   <Play size={12} className="text-primary fill-primary" />
-                  <span className="text-[8px] uppercase font-bold tracking-widest text-white/80">Regarder l'introduction</span>
+                  <span className="text-[8px] uppercase font-bold tracking-widest text-white/80">
+                    {t('video.watch')}
+                  </span>
                 </div>
                 <Info size={16} className="text-white/40" />
               </div>

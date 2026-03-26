@@ -52,7 +52,7 @@ export default function ClinicalSection() {
                   <div className="w-14 h-14 bg-card/50 backdrop-blur-md border border-border/40 flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700 rounded-2xl">
                     <TreePine size={24} />
                   </div>
-                  <h4 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.land.title')}</h4>
+                  <h3 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.land.title')}</h3>
                   <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border/20 pt-6">{t('clinical.actions.land.desc')}</p>
                 </div>
               </GSAPReveal>
@@ -61,7 +61,7 @@ export default function ClinicalSection() {
                   <div className="w-14 h-14 bg-card/50 backdrop-blur-md border border-border/40 flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700 rounded-2xl">
                     <Scale size={24} />
                   </div>
-                  <h4 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.mobile.title')}</h4>
+                  <h3 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.mobile.title')}</h3>
                   <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border/20 pt-6">{t('clinical.actions.mobile.desc')}</p>
                 </div>
               </GSAPReveal>

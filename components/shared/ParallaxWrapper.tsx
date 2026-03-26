@@ -1,10 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 interface ParallaxWrapperProps {
   children: React.ReactNode;
@@ -19,42 +16,52 @@ export default function ParallaxWrapper({
   direction = 'vertical',
   className = "" 
 }: ParallaxWrapperProps) {
-  const elementRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const element = elementRef.current;
-    if (!element) return;
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
 
-    const yValue = direction === 'vertical' ? (speed * 100) : 0;
-    const xValue = direction === 'horizontal' ? (speed * 100) : 0;
+  // Calculate the range of movement
+  const range = speed * 100;
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(element, 
-        { 
-          y: yValue,
-          x: xValue 
-        }, 
-        {
-          y: -yValue,
-          x: -xValue,
-          ease: "none",
-          scrollTrigger: {
-            trigger: element,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-            invalidateOnRefresh: true,
-          }
-        }
-      );
-    });
+  // Vertical parallax
+  const yTranslate = useTransform(
+    scrollYProgress, 
+    [0, 1], 
+    [range, -range]
+  );
+  
+  const y = useSpring(yTranslate, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
-    return () => ctx.revert();
-  }, [speed, direction]);
+  // Horizontal parallax
+  const xTranslate = useTransform(
+    scrollYProgress, 
+    [0, 1], 
+    [range, -range]
+  );
+
+  const x = useSpring(xTranslate, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   return (
-    <div ref={elementRef} className={`will-change-transform ${className}`}>
+    <motion.div 
+      ref={containerRef} 
+      style={{ 
+        y: direction === 'vertical' ? y : 0, 
+        x: direction === 'horizontal' ? x : 0 
+      }}
+      className={className}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

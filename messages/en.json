@@ -170,7 +170,15 @@
       }
     },
     "intro_subtitle": "Research & Excellence",
-    "about_caption": "Thinking the Rule of Law."
+    "about_caption": "Thinking the Rule of Law.",
+    "video": {
+      "badge": "Video Presentation",
+      "title": "Discover the <primary>Impact</primary> of CREDDA",
+      "description": "Dive into the heart of our initiatives through this presentation. We work for academic excellence and social innovation in the Democratic Republic of Congo.",
+      "since": "Since",
+      "institution": "Institution",
+      "watch": "Watch the introduction"
+    }
   },
   "metadata": {
     "home": {

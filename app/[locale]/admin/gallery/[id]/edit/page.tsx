@@ -1,6 +1,9 @@
 // app/[locale]/admin/gallery/[id]/edit/page.tsx
 import { db } from "@/lib/db";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
+import { GalleryForm } from "@/components/admin/gallery/GalleryForm";
+import { ChevronLeft } from "lucide-react";
+import { Link } from "@/navigation";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -18,91 +21,27 @@ export default async function EditGalleryImagePage({ params }: Props) {
     notFound();
   }
 
-  async function updateImage(formData: FormData) {
-    'use server';
-    
-    const src = formData.get('src') as string;
-    const title = formData.get('title') as string;
-    const category = formData.get('category') as string;
-    const description = formData.get('description') as string;
-    
-    await db.galleryImage.update({
-      where: { id },
-      data: { 
-        src, 
-        category,
-        translations: {
-          upsert: [
-            {
-              where: { galleryImageId_language: { galleryImageId: id, language: 'fr' } },
-              update: { title, description: description || null },
-              create: { language: 'fr', title, description: description || null }
-            },
-            {
-              where: { galleryImageId_language: { galleryImageId: id, language: 'en' } },
-              update: { title, description: description || null },
-              create: { language: 'en', title, description: description || null }
-            },
-            {
-              where: { galleryImageId_language: { galleryImageId: id, language: 'sw' } },
-              update: { title, description: description || null },
-              create: { language: 'sw', title, description: description || null }
-            }
-          ]
-        }
-      }
-    });
-    
-    redirect('/admin/gallery');
-  }
-
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Modifier l'image</h1>
-      <form action={updateImage} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">URL de l'image</label>
-          <input 
-            name="src" 
-            type="text" 
-            defaultValue={image.src}
-            required 
-            className="w-full border p-2" 
-          />
+    <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <Link 
+        href="/admin/gallery" 
+        className="inline-flex items-center text-xs font-bold text-slate-400 hover:text-blue-600 uppercase tracking-widest transition-colors"
+      >
+        <ChevronLeft size={14} className="mr-1" /> Retour à la Galerie
+      </Link>
+
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 p-10 shadow-sm relative overflow-hidden rounded-[3rem]">
+        <div className="absolute top-0 left-0 w-full h-1 bg-blue-600" />
+        
+        <div className="mb-10">
+          <h1 className="text-3xl font-serif font-bold text-slate-900 dark:text-white">Modifier l'image</h1>
+          <p className="text-slate-500 dark:text-slate-400 font-light mt-2 italic">
+            Mettez à jour les informations et le contenu multilingue de cette ressource.
+          </p>
         </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Titre</label>
-          <input 
-            name="title" 
-            type="text" 
-            defaultValue={(image as any).translations?.[0]?.title || ''}
-            required 
-            className="w-full border p-2" 
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Catégorie</label>
-          <input 
-            name="category" 
-            type="text" 
-            defaultValue={image.category}
-            required 
-            className="w-full border p-2" 
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium mb-1">Description</label>
-          <textarea 
-            name="description" 
-            rows={3} 
-            defaultValue={(image as any).translations?.[0]?.description || ''}
-            className="w-full border p-2" 
-          />
-        </div>
-        <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">
-          Mettre à jour
-        </button>
-      </form>
+        
+        <GalleryForm initialData={image} isEditing={true} />
+      </div>
     </div>
   );
 }

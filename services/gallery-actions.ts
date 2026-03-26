@@ -1,71 +1,59 @@
-// services/gallery-actions.ts
-"use server";
+"use server"
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { withSafeAction, ActionResponse } from "@/lib/safe-action";
 
-/** Titles live on GalleryImageTranslation only — never rely on a non-existent GalleryImage.title. */
-export async function getFeaturedGalleryImages(limit = 20, locale = "fr") {
-  try {
-    const images = await db.galleryImage.findMany({
-      where: { featured: true },
-      orderBy: { order: "asc" },
-      take: limit,
-      include: {
-        translations: { where: { language: locale } }
+export async function createGalleryImage(data: any): Promise<ActionResponse<any>> {
+  return withSafeAction("createGalleryImage", async () => {
+    const { src, category, featured, translations } = data;
+
+    const image = await db.galleryImage.create({
+      data: {
+        src,
+        category,
+        featured: featured ?? false,
+        order: 0,
+        translations: {
+          create: translations
+        }
       }
     });
-    return images;
-  } catch (error) {
-    console.error("Erreur chargement galerie:", error);
-    return [];
-  }
-}
 
-export async function getAllGalleryImages() {
-  try {
-    const images = await db.galleryImage.findMany({
-      orderBy: [
-        { featured: "desc" },
-        { order: "asc" },
-        { createdAt: "desc" }
-      ],
-      include: {
-        translations: true
-      }
-    });
-    return images;
-  } catch (error) {
-    console.error("Erreur chargement galerie:", error);
-    return [];
-  }
-}
-
-export async function getGalleryImageById(id: string, locale?: string) {
-  try {
-    const image = await db.galleryImage.findUnique({
-      where: { id },
-      include: {
-        translations: locale ? { where: { language: locale } } : true
-      }
-    });
+    revalidatePath("/[locale]/admin/gallery", "layout");
+    revalidatePath("/[locale]/gallery", "layout");
     return image;
-  } catch (error) {
-    console.error("Erreur chargement image:", error);
-    return null;
-  }
+  }, "Erreur lors de l'ajout de l'image à la galerie");
 }
 
-export async function incrementImageView(id: string) {
-  try {
-    // Logique pour incrémenter les vues si vous avez ce champ
-    // await db.galleryImage.update({
-    //   where: { id },
-    //   data: { views: { increment: 1 } }
-    // });
-    return true;
-  } catch (error) {
-    console.error("Erreur incrémentation vues:", error);
-    return false;
-  }
+export async function updateGalleryImage(data: any): Promise<ActionResponse<any>> {
+  return withSafeAction("updateGalleryImage", async () => {
+    const { id, src, category, featured, translations } = data;
+
+    const image = await db.galleryImage.update({
+      where: { id },
+      data: {
+        src,
+        category,
+        featured: featured ?? false,
+        translations: {
+          deleteMany: {},
+          create: translations
+        }
+      }
+    });
+
+    revalidatePath("/[locale]/admin/gallery", "layout");
+    revalidatePath("/[locale]/gallery", "layout");
+    return image;
+  }, "Erreur lors de la mise à jour de l'image");
+}
+
+export async function deleteGalleryImage(id: string): Promise<ActionResponse<any>> {
+  return withSafeAction("deleteGalleryImage", async () => {
+    await db.galleryImage.delete({ where: { id } });
+    revalidatePath("/[locale]/admin/gallery", "layout");
+    revalidatePath("/[locale]/gallery", "layout");
+    return { id };
+  }, "Impossible de supprimer l'image");
 }

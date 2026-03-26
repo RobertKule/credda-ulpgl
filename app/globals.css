@@ -9,7 +9,7 @@
   --font-bricolage: var(--font-bricolage);
 
   /* Couleurs de marque (Directes) */
-  --color-primary: #C9A84C;
+  --color-primary: var(--primary);
   --color-secondary: #111110;
   --color-accent: #E8C97A;
   --color-gold: #C9A84C;
