@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://credda-ulpgl.org/sitemap.xml

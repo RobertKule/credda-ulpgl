@@ -1,10 +1,13 @@
 'use client'
+
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { Play, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function AboutVideoSection() {
+  const [showVideo, setShowVideo] = useState(false);
   const t = useTranslations('HomePage');
 
   return (
@@ -63,16 +66,35 @@ export default function AboutVideoSection() {
             
             {/* Video Container with Glassmorphism Border */}
             <div className="relative z-10 p-2 sm:p-4 rounded-[2rem] bg-background/40 backdrop-blur-xl border border-white/10 shadow-3xl overflow-hidden shadow-primary/5 group-hover:shadow-primary/10 transition-all duration-700">
-              <div className="relative aspect-video rounded-xl overflow-hidden shadow-inner bg-black">
-                <iframe 
-                  className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/V-MVLqjQMIc?si=JqKvqg3gxTAFmRsw&start=4&autoplay=1&mute=1" 
-                  title="YouTube video player" 
-                  frameBorder="0" 
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                  referrerPolicy="strict-origin-when-cross-origin" 
-                  allowFullScreen
-                ></iframe>
+              <div className="relative aspect-video rounded-xl overflow-hidden shadow-inner bg-black flex items-center justify-center">
+                {/* Lazy Load Video on Click */}
+                {!showVideo ? (
+                  <div 
+                    className="absolute inset-0 w-full h-full cursor-pointer group/vid"
+                    onClick={() => setShowVideo(true)}
+                  >
+                    <img 
+                      src="https://img.youtube.com/vi/V-MVLqjQMIc/maxresdefault.jpg" 
+                      alt="Video Thumbnail"
+                      className="w-full h-full object-cover opacity-60 group-hover/vid:opacity-80 transition-opacity duration-500"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary/90 flex items-center justify-center text-primary-foreground shadow-2xl group-hover/vid:scale-110 transition-transform duration-500">
+                        <Play size={32} fill="currentColor" className="ml-1" />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <iframe 
+                    className="absolute inset-0 w-full h-full"
+                    src="https://www.youtube.com/embed/V-MVLqjQMIc?si=JqKvqg3gxTAFmRsw&start=4&autoplay=1" 
+                    title="YouTube video player" 
+                    frameBorder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerPolicy="strict-origin-when-cross-origin" 
+                    allowFullScreen
+                  ></iframe>
+                )}
               </div>
               
               {/* Subtle Overlay Label */}

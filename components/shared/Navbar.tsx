@@ -110,7 +110,7 @@ export default function Navbar() {
           }`}
         >
           {/* LOGO */}
-          <Link href="/" className="flex flex-col group py-1">
+          <Link href="/" className="flex flex-col group py-1" aria-label="CREDDA CDE Home">
             <span className="font-bricolage font-black text-xl lg:text-2xl tracking-tighter text-foreground leading-none">
               CREDDA<span className="text-[#C9A84C] animate-pulse">·</span>CDE
             </span>
@@ -128,13 +128,21 @@ export default function Navbar() {
 
           {/* ACTIONS & TOOLS */}
           <div className="hidden lg:flex items-center gap-5">
-            <button onClick={() => setIsSearchOpen(true)} className="p-2 text-foreground/40 hover:text-[#C9A84C] transition-all hover:scale-110">
+            <button 
+              onClick={() => setIsSearchOpen(true)} 
+              className="p-2 text-foreground/40 hover:text-[#C9A84C] transition-all hover:scale-110"
+              aria-label="Open search"
+            >
               <Search size={18} strokeWidth={1.5} />
             </button>
             
             <LanguageSwitcher />
 
-            <button onClick={toggleTheme} className="w-9 h-9 flex items-center justify-center rounded-full border border-border bg-background/50 text-foreground/60 hover:text-[#C9A84C] transition-all">
+            <button 
+              onClick={toggleTheme} 
+              className="w-9 h-9 flex items-center justify-center rounded-full border border-border bg-background/50 text-foreground/60 hover:text-[#C9A84C] transition-all"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            >
               {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
             </button>
 
@@ -168,7 +176,11 @@ export default function Navbar() {
           </div>
 
           {/* MOBILE TOGGLE */}
-          <button className="lg:hidden p-2 text-foreground" onClick={() => setIsOpen(true)}>
+          <button 
+            className="lg:hidden p-2 text-foreground" 
+            onClick={() => setIsOpen(true)}
+            aria-label="Open mobile menu"
+          >
             <Menu size={28} />
           </button>
         </div>
@@ -187,7 +199,13 @@ export default function Navbar() {
             {/* Header Mobile */}
             <div className="shrink-0 flex items-center justify-between border-b border-border bg-card/40 p-6 backdrop-blur-md">
               <span className="font-bricolage text-xl font-black tracking-tighter">CREDDA<span className="text-[#C9A84C]">·</span>CDE</span>
-              <button onClick={() => setIsOpen(false)} className="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 rounded-full"><X size={24} /></button>
+              <button 
+                onClick={() => setIsOpen(false)} 
+                className="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 rounded-full"
+                aria-label="Close mobile menu"
+              >
+                <X size={24} />
+              </button>
             </div>
 
             {/* Scrollable Nav Area */}
@@ -204,6 +222,7 @@ export default function Navbar() {
                 <button
                   onClick={toggleTheme}
                   className="flex items-center gap-3 flex-1 p-3 rounded-xl border border-border bg-background/60 text-foreground/70 hover:text-primary hover:border-primary/40 transition-all"
+                  aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
                 >
                   {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
                   <span className="text-[10px] font-black uppercase tracking-[0.2em]">

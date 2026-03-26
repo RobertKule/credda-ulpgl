@@ -65,6 +65,7 @@
   --card-foreground: #1A1814;
   --popover: #FFFFFF;
   --popover-foreground: #1A1814;
+  --primary: #8E7022; /* High contrast for accessibility (Gold-Brown) */
   --muted: #F0EDE6;
   --muted-foreground: rgba(26, 24, 20, 0.62);
   --border: rgba(26, 24, 20, 0.08);

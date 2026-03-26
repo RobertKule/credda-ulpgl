@@ -1,6 +1,33 @@
 import { getMessages } from "next-intl/server";
+import { Fraunces, Bricolage_Grotesque, Outfit } from 'next/font/google'
 import Providers from "@/components/shared/Providers";
 import MainLayoutWrapper from "@/components/shared/MainLayoutWrapper";
+import "../globals.css";
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-fraunces',
+  display: 'swap',
+  preload: true,
+})
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-bricolage',
+  display: 'swap',
+  preload: true,
+})
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-outfit',
+  display: 'swap',
+  preload: true,
+})
 
 export default async function RootLayout({
   children,
@@ -15,7 +42,7 @@ export default async function RootLayout({
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning className={`${fraunces.variable} ${bricolage.variable} ${outfit.variable} scroll-smooth`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -31,7 +58,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body>
+      <body className="font-outfit antialiased bg-background text-foreground">
         <Providers locale={locale} messages={messages}>
           <MainLayoutWrapper>
             {children}

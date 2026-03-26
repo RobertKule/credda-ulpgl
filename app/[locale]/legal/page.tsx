@@ -38,7 +38,7 @@ export default function LegalPage() {
       <section className="py-24">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            {t.raw("sections").map((section: any, index: number) => {
+            {Array.isArray(t.raw("sections")) && t.raw("sections").map((section: any, index: number) => {
               const Icon = icons[index % icons.length];
               return (
                 <motion.div 
