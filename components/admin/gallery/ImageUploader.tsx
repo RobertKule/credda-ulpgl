@@ -5,6 +5,8 @@ import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import { UploadCloud, X, Loader2 } from "lucide-react";
 
+import axios from "axios";
+
 export interface ImageUploaderProps {
     onUploadSuccess: (url: string) => void;
     defaultImage?: string;
@@ -13,6 +15,7 @@ export interface ImageUploaderProps {
 export function ImageUploader({ onUploadSuccess, defaultImage }: ImageUploaderProps) {
     const [imagePreview, setImagePreview] = useState<string | null>(defaultImage || null);
     const [isUploading, setIsUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
     const [error, setError] = useState<string | null>(null);
 
     const onDrop = useCallback(async (acceptedFiles: File[]) => {
@@ -22,6 +25,7 @@ export function ImageUploader({ onUploadSuccess, defaultImage }: ImageUploaderPr
         // Create a local preview immediately
         setImagePreview(URL.createObjectURL(file));
         setIsUploading(true);
+        setUploadProgress(0);
         setError(null);
 
         try {
@@ -29,24 +33,24 @@ export function ImageUploader({ onUploadSuccess, defaultImage }: ImageUploaderPr
             formData.append("file", file);
             formData.append("category", "gallery");
 
-            const response = await fetch("/api/admin/gallery/upload", {
-                method: "POST",
-                body: formData,
+            const res = await axios.post("/api/admin/gallery/upload", formData, {
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 100));
+                    setUploadProgress(percentCompleted);
+                }
             });
 
-            if (!response.ok) {
-                throw new Error("Erreur lors de l'upload");
+            if (res.data.url) {
+                onUploadSuccess(res.data.url);
+                setImagePreview(res.data.url);
             }
-
-            const data = await response.json();
-            onUploadSuccess(data.url);
-            setImagePreview(data.url);
         } catch (err: any) {
             console.error(err);
             setError("Le téléversement a échoué. Veuillez réessayer.");
             setImagePreview(defaultImage || null);
         } finally {
             setIsUploading(false);
+            setUploadProgress(0);
         }
     }, [defaultImage, onUploadSuccess]);
 
@@ -99,10 +103,16 @@ export function ImageUploader({ onUploadSuccess, defaultImage }: ImageUploaderPr
                         )}
 
                         {isUploading && (
-                            <div className="absolute inset-0 bg-white/60 flex items-center justify-center backdrop-blur-sm rounded-md">
-                                <div className="flex flex-col items-center text-blue-600 gap-2">
+                            <div className="absolute inset-0 bg-white/70 flex items-center justify-center backdrop-blur-md rounded-md">
+                                <div className="flex flex-col items-center text-blue-600 gap-3 w-full px-8">
                                     <Loader2 className="animate-spin" size={32} />
-                                    <span className="text-sm font-semibold">Téléversement...</span>
+                                    <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                        <div 
+                                            className="bg-blue-600 h-full transition-all duration-300" 
+                                            style={{ width: `${uploadProgress}%` }}
+                                        />
+                                    </div>
+                                    <span className="text-xs font-bold uppercase tracking-widest text-blue-700">Téléchargement : {uploadProgress}%</span>
                                 </div>
                             </div>
                         )}
