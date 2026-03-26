@@ -73,44 +73,48 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
                 </div>
 
                 {/* Carousel */}
-                <div className="relative">
+                <div className="relative ">
                     <div className="overflow-hidden py-10" ref={emblaRef}>
                                 <div className="flex -ml-4 sm:-ml-6 lg:-ml-8 touch-pan-y">
                             {testimonials.map((testi, idx) => {
                                 const isActive = selectedIndex === idx;
                                 return (
-                                    <div key={idx} className="pl-4 pr-4 sm:pr-0 sm:pl-6 lg:pl-8 flex-[0_0_100%] sm:flex-[0_0_70%] lg:flex-[0_0_55%] min-w-0">
+                                    <div key={idx} className="pl-4 pr-4 sm:pr-0 sm:pl-6 lg:pl-8 flex-[0_0_100%] sm:flex-[0_0_70%] lg:flex-[0_0_55%] min-w-0 ">
                                         <motion.div 
                                             animate={{ 
                                                 opacity: isActive ? 1 : 0.4,
-                                                scale: isActive ? 1 : 0.9,
-                                                y: isActive ? 0 : 20
+                                                scale: isActive ? 1 : 0.95,
+                                                y: isActive ? 0 : 15
                                             }}
                                             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                                             className={`
-                                                relative h-full aspect-square md:aspect-auto min-h-[380px] md:min-h-[450px] flex flex-col p-6 sm:p-8 md:p-12 lg:p-16 rounded-[2rem] md:rounded-[2.5rem] overflow-hidden border transition-colors duration-700
-                                                ${isActive ? 'bg-card border-primary/30 shadow-[0_20px_50px_rgba(201,168,76,0.1)]' : 'bg-muted/30 border-border/50'}
+                                                relative h-full aspect-square md:aspect-auto min-h-[340px] md:min-h-[420px] flex flex-col p-6 sm:p-10 md:p-12 rounded-[2.5rem] overflow-hidden border transition-all duration-700
+                                                ${isActive 
+                                                    ? 'bg-card/90 border-primary/40 shadow-[0_30px_60px_-12px_rgba(201,168,76,0.15)] backdrop-blur-2xl ring-1 ring-primary/10' 
+                                                    : 'bg-muted/10 border-border/30 backdrop-blur-sm'}
                                             `}
                                         >
-                                            <Quote className="absolute top-6 right-6 md:top-10 md:right-10 text-primary/10 rotate-12 w-16 h-16 md:w-24 md:h-24" />
+                                            <div className={`absolute inset-0 bg-gradient-to-br from-primary/[0.03] to-transparent pointer-events-none transition-opacity duration-700 ${isActive ? 'opacity-100' : 'opacity-0'}`} />
+                                            
+                                            <Quote className="absolute top-8 right-8 text-primary/10 rotate-12 w-16 h-16 md:w-20 md:h-20" />
                                             
                                             {/* Testimonial Text */}
-                                            <div className="relative z-10 flex-1 flex flex-col justify-center mb-8 md:mb-12">
-                                                <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-outfit font-light leading-relaxed italic text-foreground tracking-wide">
+                                            <div className="relative z-10 flex-1 flex flex-col justify-center mb-10">
+                                                <p className="text-lg md:text-xl lg:text-2xl font-outfit font-light leading-relaxed italic text-foreground/90 tracking-wide">
                                                     &ldquo;{testi.text}&rdquo;
                                                 </p>
                                             </div>
 
                                             {/* Author Info */}
-                                            <div className="mt-auto flex items-center gap-4 md:gap-6">
-                                                <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-primary/30 p-1 bg-background shrink-0">
-                                                    <div className="relative w-full h-full rounded-full overflow-hidden bg-muted">
-                                                        <Image src={testi.image} alt={testi.name} fill className="object-cover" />
+                                            <div className="relative z-10 mt-auto flex items-center gap-5">
+                                                <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border border-primary/20 p-1 bg-background shrink-0">
+                                                    <div className="relative w-full h-full rounded-full overflow-hidden bg-muted shadow-inner">
+                                                        <Image src={testi.image} alt={testi.name} fill sizes="80px" className="object-cover" />
                                                     </div>
                                                 </div>
                                                 <div className="flex flex-col">
-                                                    <h4 className="font-bold text-sm md:text-base uppercase tracking-widest text-primary mb-1">{testi.name}</h4>
-                                                    <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-widest opacity-80">{testi.role}</p>
+                                                    <h4 className="font-bold text-sm md:text-base uppercase tracking-[0.2em] text-primary mb-0.5">{testi.name}</h4>
+                                                    <p className="text-[10px] md:text-xs text-muted-foreground uppercase tracking-[0.1em] font-medium opacity-70">{testi.role}</p>
                                                 </div>
                                             </div>
                                         </motion.div>
