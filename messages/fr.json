@@ -1034,7 +1034,7 @@
         "sub": "Messages non lus"
       }
     },
-    "recent": {
+    "recentContent": {
       "title": "Travaux Récents",
       "manage": "Gérer tout",
       "untitled": "Sans titre",
@@ -1042,11 +1042,13 @@
       "modified": "Modifié le {date}",
       "published": "En Ligne",
       "draft": "Brouillon",
-      "empty": "Aucun contenu disponible."
+      "empty": "Aucun contenu disponible.",
+      "viewAll": "Voir tout"
     },
-    "inbox": {
+    "recentMessages": {
       "title": "<italic>Bureau</italic> Central",
-      "unread": "{count} Nouveaux messages en attente"
+      "unread": "{count} Nouveaux messages en attente",
+      "viewAll": "Tout voir"
     },
     "health": {
       "title": "Intégrité Système",
