@@ -44,7 +44,7 @@ export default async function CDEPage({ params }: { params: Promise<{ locale: st
         
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-4xl space-y-8">
-            <Badge className="bg-secondary text-primary rounded-none px-6 py-2 text-[10px] font-black uppercase tracking-[0.4em]">
+            <Badge className="bg-secondary text-primary rounded-md px-6 py-2 text-[10px] font-black uppercase tracking-[0.4em]">
               {t('header.badge')}
             </Badge>
             <h1 className="text-6xl md:text-8xl font-serif font-black leading-[0.95] tracking-tighter">
@@ -54,7 +54,7 @@ export default async function CDEPage({ params }: { params: Promise<{ locale: st
               {t('header.description')}
             </p>
             <div className="pt-8 flex gap-6">
-               <Button asChild className="bg-secondary text-primary rounded-none px-12 py-8 font-black uppercase tracking-widest text-[11px] hover:bg-white transition-all">
+               <Button asChild className="bg-secondary text-primary rounded-md px-12 py-8 font-black uppercase tracking-widest text-[11px] hover:bg-white transition-all">
                   <Link href="#registry">Consulter le Registre</Link>
                </Button>
             </div>
@@ -150,7 +150,7 @@ export default async function CDEPage({ params }: { params: Promise<{ locale: st
               Le CREDDA collabore avec les communautés locales pour bâtir un rempart juridique face aux exploitations abusives.
             </p>
             <div className="flex flex-wrap justify-center gap-8 pt-8">
-               <Button size="lg" className="bg-secondary text-primary rounded-none h-20 px-16 font-black uppercase tracking-[0.2em] text-[11px] group" asChild>
+               <Button size="lg" className="bg-secondary text-primary rounded-md h-20 px-16 font-black uppercase tracking-[0.2em] text-[11px] group" asChild>
                   <Link href="/contact">
                      Engage a Case
                      <ArrowRight size={16} className="ml-4 group-hover:translate-x-2 transition-transform" />

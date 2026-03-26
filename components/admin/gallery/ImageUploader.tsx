@@ -76,7 +76,7 @@ export function ImageUploader({ onUploadSuccess, defaultImage }: ImageUploaderPr
         <div className="w-full">
             <div
                 {...getRootProps()}
-                className={`relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${isDragActive ? "border-blue-500 bg-blue-50/50" : "border-slate-300 bg-slate-50 hover:bg-slate-100"
+                className={`relative flex flex-col items-center justify-center w-full h-64 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${isDragActive ? "border-blue-500 bg-primary/5/50" : "border-slate-300 bg-slate-50 hover:bg-slate-100"
                     } ${isUploading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
                 <input {...getInputProps()} />
@@ -104,11 +104,11 @@ export function ImageUploader({ onUploadSuccess, defaultImage }: ImageUploaderPr
 
                         {isUploading && (
                             <div className="absolute inset-0 bg-white/70 flex items-center justify-center backdrop-blur-md rounded-md">
-                                <div className="flex flex-col items-center text-blue-600 gap-3 w-full px-8">
+                                <div className="flex flex-col items-center text-primary gap-3 w-full px-8">
                                     <Loader2 className="animate-spin" size={32} />
                                     <div className="w-full bg-slate-200 h-1.5 rounded-md overflow-hidden">
                                         <div 
-                                            className="bg-blue-600 h-full transition-all duration-300" 
+                                            className="bg-primary h-full transition-all duration-300" 
                                             style={{ width: `${uploadProgress}%` }}
                                         />
                                     </div>

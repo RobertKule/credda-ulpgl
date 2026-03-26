@@ -17,6 +17,8 @@ const badgeVariants = cva(
         outline:
           "border-border text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         ghost: "[a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
+        success: "border-emerald bg-emerald text-white shadow-[0_0_10px_var(--color-emerald-glow)]",
+        emerald: "border-emerald/20 bg-emerald/10 text-emerald hover:bg-emerald/20 hover:border-emerald/40 transition-all duration-300 emerald-glow",
         link: "text-primary underline-offset-4 [a&]:hover:underline",
       },
     },

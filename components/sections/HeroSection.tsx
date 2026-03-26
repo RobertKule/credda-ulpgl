@@ -102,7 +102,7 @@ export default function HeroSection() {
                     className="max-w-4xl"
                 >
                     <motion.div variants={itemVariants} className="mb-6 flex items-center gap-3">
-                        <span className="w-12 h-[2px] bg-blue-500 rounded-md" />
+                        <span className="w-12 h-[2px] bg-primary/50 rounded-md" />
                         <span className="text-blue-400 font-semibold tracking-wider uppercase text-sm">
                             CREDDA-ULPGL
                         </span>
@@ -131,7 +131,7 @@ export default function HeroSection() {
                     <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
                         <Link
                             href="/research"
-                            className="group relative inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-md font-medium transition-all duration-300 overflow-hidden"
+                            className="group relative inline-flex items-center gap-2 bg-primary hover:bg-blue-700 text-white px-8 py-4 rounded-md font-medium transition-all duration-300 overflow-hidden"
                         >
                             <span className="relative z-10">Explorer nos recherches</span>
                             <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />

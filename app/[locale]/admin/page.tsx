@@ -75,7 +75,7 @@ export default async function AdminPage({ params }: Props) {
       sub: t('stats.articles.sub', { count: dbPublishedArticles }),
       icon: <FileText size={22} />, 
       href: "/admin/articles",
-      textColor: "text-blue-600"
+      textColor: "text-primary"
     },
     { 
       label: t('stats.publications.label'), 
@@ -110,14 +110,14 @@ export default async function AdminPage({ params }: Props) {
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 border-b border-slate-200 dark:border-white/5 pb-8">
         <div className="space-y-1">
           <div className="flex items-center gap-2 mb-2">
-            <div className="h-[1px] w-8 bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.4)]" />
-            <span className="text-[10px] text-blue-600 dark:text-blue-400 font-black uppercase tracking-[0.3em]">
+            <div className="h-[1px] w-8 bg-primary shadow-[0_0_8px_rgba(37,99,235,0.4)]" />
+            <span className="text-[10px] text-primary dark:text-blue-400 font-black uppercase tracking-[0.3em]">
               {t('overview.badge')}
             </span>
           </div>
           <h1 className="text-5xl font-serif font-black text-slate-900 dark:text-white tracking-tighter uppercase leading-none">
             {t.rich('overview.title', {
-              italic: (chunks) => <span className="text-blue-600 dark:text-blue-500 italic font-light">{chunks}</span>
+              italic: (chunks) => <span className="text-primary dark:text-blue-500 italic font-light">{chunks}</span>
             })}
           </h1>
           <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">
@@ -127,12 +127,12 @@ export default async function AdminPage({ params }: Props) {
         
         <div className="flex gap-3">
           <Link href="/">
-            <button className="inline-flex items-center gap-2 px-6 py-4 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-900 dark:text-white text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-white/10 transition-all shadow-sm rounded-none">
+            <button className="inline-flex items-center gap-2 px-6 py-4 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 text-slate-900 dark:text-white text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-white/10 transition-all shadow-sm rounded-md">
               <Globe size={16} /> {t('overview.viewSite')}
             </button>
           </Link>
           <Link href="/admin/articles/new">
-            <button className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-blue-600/20 rounded-none">
+            <button className="inline-flex items-center gap-2 px-8 py-4 bg-primary text-white text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-blue-600/20 rounded-md">
               <Plus size={18} /> {t('overview.newContent')}
             </button>
           </Link>
@@ -147,10 +147,10 @@ export default async function AdminPage({ params }: Props) {
             href={stat.href}
             className="group relative bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 p-8 aspect-square rounded-[2rem] hover:border-blue-600/50 dark:hover:border-blue-500/50 hover:-translate-y-1 transition-all shadow-sm hover:shadow-2xl overflow-hidden flex flex-col justify-between"
           >
-            <div className={`absolute -right-4 -top-4 w-32 h-32 bg-blue-600 opacity-[0.03] dark:opacity-[0.05] rounded-md group-hover:scale-150 transition-transform duration-700 pointer-events-none`} />
+            <div className={`absolute -right-4 -top-4 w-32 h-32 bg-primary opacity-[0.03] dark:opacity-[0.05] rounded-md group-hover:scale-150 transition-transform duration-700 pointer-events-none`} />
             
             <div className="relative z-10 flex flex-col h-full justify-between">
-              <div className={`p-4 w-fit mb-4 rounded-2xl group-hover:bg-blue-600 group-hover:text-white border border-blue-100 dark:border-blue-900/10 transition-all duration-500 ${stat.textColor} bg-blue-50 dark:bg-blue-600/5`}>
+              <div className={`p-4 w-fit mb-4 rounded-2xl group-hover:bg-primary group-hover:text-white border border-blue-100 dark:border-blue-900/10 transition-all duration-500 ${stat.textColor} bg-primary/5 dark:bg-primary/5`}>
                 {stat.icon}
               </div>
               <div>
@@ -159,7 +159,7 @@ export default async function AdminPage({ params }: Props) {
               </div>
               <div className="pt-6 mt-auto border-t border-slate-100 dark:border-white/5 flex items-center justify-between">
                 <span className="text-[10px] font-bold text-slate-400">{stat.sub}</span>
-                <ArrowUpRight size={14} className="text-slate-300 group-hover:text-blue-600 dark:group-hover:text-blue-500 transition-colors" />
+                <ArrowUpRight size={14} className="text-slate-300 group-hover:text-primary dark:group-hover:text-blue-500 transition-colors" />
               </div>
             </div>
           </Link>
@@ -176,10 +176,10 @@ export default async function AdminPage({ params }: Props) {
         <div className="lg:col-span-2 space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Newspaper size={20} className="text-blue-600" />
+              <Newspaper size={20} className="text-primary" />
               <h2 className="text-xl font-serif font-black uppercase tracking-tight text-slate-900 dark:text-white">{t('recentContent.title')}</h2>
             </div>
-            <Link href="/admin/articles" className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 hover:tracking-[0.2em] transition-all">
+            <Link href="/admin/articles" className="text-[10px] font-black uppercase tracking-widest text-primary dark:text-blue-400 hover:tracking-[0.2em] transition-all">
               {t('recentContent.viewAll')} →
             </Link>
           </div>
@@ -199,7 +199,7 @@ export default async function AdminPage({ params }: Props) {
                         <div className="h-1.5 w-1.5 rounded-md bg-amber-500" />
                       )}
                     </div>
-                    <h3 className="font-serif font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-500 transition-colors line-clamp-2 leading-tight mb-2">
+                    <h3 className="font-serif font-bold text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-blue-500 transition-colors line-clamp-2 leading-tight mb-2">
                        {article.translations?.[0]?.title || 'Sans titre'}
                     </h3>
                   </div>
@@ -208,7 +208,7 @@ export default async function AdminPage({ params }: Props) {
                       {new Date(article.updatedAt).toLocaleDateString(locale)}
                     </span>
                     <Link href={`/admin/articles/${article.id}/edit`}>
-                      <button className="p-2 bg-slate-50 dark:bg-white/5 rounded-xl hover:bg-blue-600 hover:text-white transition-all">
+                      <button className="p-2 bg-slate-50 dark:bg-white/5 rounded-xl hover:bg-primary hover:text-white transition-all">
                         <ArrowUpRight size={14} />
                       </button>
                     </Link>
@@ -228,10 +228,10 @@ export default async function AdminPage({ params }: Props) {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <MessageSquare size={20} className="text-blue-600" />
+              <MessageSquare size={20} className="text-primary" />
               <h2 className="text-xl font-serif font-black uppercase tracking-tight text-slate-900 dark:text-white">{t('recentMessages.title')}</h2>
             </div>
-            <Link href="/admin/messages" className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 hover:tracking-[0.2em] transition-all">
+            <Link href="/admin/messages" className="text-[10px] font-black uppercase tracking-widest text-primary dark:text-blue-400 hover:tracking-[0.2em] transition-all">
               {t('recentMessages.viewAll')}
             </Link>
           </div>
@@ -241,7 +241,7 @@ export default async function AdminPage({ params }: Props) {
               dbLatestMessages.map((msg: any) => (
                 <div key={msg.id} className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 p-5 rounded-3xl hover:shadow-md transition-all group">
                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-600/10 flex items-center justify-center text-blue-600 dark:text-blue-500 font-bold text-xs uppercase">
+                      <div className="w-8 h-8 rounded-xl bg-blue-100 dark:bg-primary/10 flex items-center justify-center text-primary dark:text-blue-500 font-bold text-xs uppercase">
                         {msg.name[0]}
                       </div>
                       <div className="min-w-0 flex-1">
@@ -249,14 +249,14 @@ export default async function AdminPage({ params }: Props) {
                         <p className="text-[8px] font-bold text-slate-400 mt-1 uppercase tracking-widest">{new Date(msg.createdAt).toLocaleDateString(locale)}</p>
                       </div>
                       {msg.status === 'UNREAD' && (
-                        <div className="h-1.5 w-1.5 rounded-md bg-blue-600 animate-pulse" />
+                        <div className="h-1.5 w-1.5 rounded-md bg-primary animate-pulse" />
                       )}
                    </div>
                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed italic mb-4">
                      "{msg.message}"
                    </p>
                    <Link href="/admin/messages">
-                     <button className="w-full py-2 bg-slate-50 dark:bg-white/5 group-hover:bg-blue-600 group-hover:text-white text-[9px] font-black uppercase tracking-widest rounded-xl transition-all">
+                     <button className="w-full py-2 bg-slate-50 dark:bg-white/5 group-hover:bg-primary group-hover:text-white text-[9px] font-black uppercase tracking-widest rounded-xl transition-all">
                         Consulter
                      </button>
                    </Link>

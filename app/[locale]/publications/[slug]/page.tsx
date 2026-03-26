@@ -141,10 +141,10 @@ export default async function PublicationDetailPage({
                 <div className="bg-[#111110] border border-white/5 p-8">
                    <h4 className="text-[11px] font-black uppercase tracking-widest text-[#C9A84C] mb-8">Actions</h4>
                    <div className="space-y-4">
-                      <Button className="w-full bg-[#C9A84C] text-[#0C0C0A] rounded-none py-6 font-black uppercase tracking-widest text-[10px] flex gap-3">
+                      <Button className="w-full bg-[#C9A84C] text-[#0C0C0A] rounded-md py-6 font-black uppercase tracking-widest text-[10px] flex gap-3">
                          <Download size={16} /> PDF Open Archive
                       </Button>
-                      <Button variant="outline" className="w-full border-white/10 text-white rounded-none py-6 font-black uppercase tracking-widest text-[10px] flex gap-3 hover:bg-white hover:text-black">
+                      <Button variant="outline" className="w-full border-white/10 text-white rounded-md py-6 font-black uppercase tracking-widest text-[10px] flex gap-3 hover:bg-white hover:text-black">
                          <Share2 size={16} /> Share Research
                       </Button>
                    </div>

@@ -115,31 +115,31 @@ export default function ArticlesClient({
           
           return (
             <div key={a.id} className="bg-white border border-slate-200 p-6 flex flex-col md:flex-row gap-6 hover:shadow-xl hover:shadow-blue-900/5 transition-all group relative overflow-hidden">
-              <div className="w-20 h-24 bg-slate-50 flex flex-col items-center justify-center border border-slate-100 shrink-0 group-hover:bg-blue-50 transition-colors relative overflow-hidden">
+              <div className="w-20 h-24 bg-slate-50 flex flex-col items-center justify-center border border-slate-100 shrink-0 group-hover:bg-primary/5 transition-colors relative overflow-hidden">
                 {a.mainImage ? (
                   <img src={a.mainImage} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity" />
                 ) : (
                   <Newspaper size={32} className="text-slate-200 group-hover:text-blue-200 transition-colors" />
                 )}
                 <div className="relative z-10 flex flex-col items-center">
-                  {a.domain === 'RESEARCH' ? <Microscope size={24} className="text-blue-600" /> : <Scale size={24} className="text-emerald-600" />}
+                  {a.domain === 'RESEARCH' ? <Microscope size={24} className="text-primary" /> : <Scale size={24} className="text-emerald-600" />}
                 </div>
               </div>
 
               <div className="flex-1 space-y-3">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge className={`rounded-none text-[8px] font-black tracking-widest uppercase px-2 py-0.5 ${
-                      a.domain === 'RESEARCH' ? 'bg-blue-600' : 'bg-emerald-600'
+                    <Badge className={`rounded-md text-[8px] font-black tracking-widest uppercase px-2 py-0.5 ${
+                      a.domain === 'RESEARCH' ? 'bg-primary' : 'bg-emerald-600'
                     }`}>
                       {a.domain}
                     </Badge>
-                    <Badge variant="outline" className="rounded-none text-[8px] font-black tracking-widest uppercase px-2 py-0.5 border-slate-200 text-slate-500">
+                    <Badge variant="outline" className="rounded-md text-[8px] font-black tracking-widest uppercase px-2 py-0.5 border-slate-200 text-slate-500">
                       {category}
                     </Badge>
                     <div className={`w-2 h-2 rounded-md ${a.published ? 'bg-emerald-500' : 'bg-amber-500'} animate-pulse`} />
                   </div>
-                  <h3 className="font-serif font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2">
+                  <h3 className="font-serif font-bold text-slate-900 leading-tight group-hover:text-primary transition-colors line-clamp-2">
                     {content.title}
                   </h3>
                   <p className="text-[10px] font-mono text-slate-400">
@@ -165,7 +165,7 @@ export default function ArticlesClient({
                 >
                   {a.published ? <EyeOff size={18} /> : <Eye size={18} />}
                 </Button>
-                <Button size="icon" variant="ghost" asChild className="h-10 w-10 text-slate-400 hover:text-blue-600">
+                <Button size="icon" variant="ghost" asChild className="h-10 w-10 text-slate-400 hover:text-primary">
                   <Link href={`/admin/articles/edit/${a.id}`}>
                     <Edit size={18} />
                   </Link>

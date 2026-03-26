@@ -13,14 +13,14 @@ export default async function NewArticlePage() {
       {/* Fil d'ariane / Retour */}
       <Link 
         href="/admin/articles" 
-        className="inline-flex items-center text-xs font-bold text-slate-400 hover:text-blue-600 uppercase tracking-widest transition-colors"
+        className="inline-flex items-center text-xs font-bold text-slate-400 hover:text-primary uppercase tracking-widest transition-colors"
       >
         <ChevronLeft size={14} className="mr-1" /> Retour à la liste
       </Link>
 
       <div className="bg-white border border-slate-200 p-10 shadow-sm relative overflow-hidden">
         {/* Barre décorative discrète */}
-        <div className="absolute top-0 left-0 w-full h-1 bg-blue-600" />
+        <div className="absolute top-0 left-0 w-full h-1 bg-primary" />
         
         <div className="mb-10">
           <h1 className="text-3xl font-serif font-bold text-slate-900">Nouvelle Publication</h1>

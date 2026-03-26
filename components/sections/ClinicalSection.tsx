@@ -97,7 +97,7 @@ export default function ClinicalSection() {
 
                             <motion.div
                                 variants={itemVariants}
-                                className="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-blue-200 transition-colors group"
+                                className="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-primary/20 transition-colors group"
                             >
                                 <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center mb-4 group-hover:bg-[#1e3a8a] transition-colors">
                                     <TreePine className="w-6 h-6 text-[#1e3a8a] group-hover:text-white transition-colors" />

@@ -10,7 +10,7 @@ export default function CTASection() {
         <section className="relative py-24 lg:py-32 bg-[#1e3a8a] overflow-hidden">
             {/* Background patterns */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-500/20 rounded-md blur-3xl -translate-y-1/2" />
+                <div className="absolute top-0 right-1/4 w-96 h-96 bg-primary/50/20 rounded-md blur-3xl -translate-y-1/2" />
                 <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-emerald-500/20 rounded-md blur-3xl translate-y-1/2" />
                 <div className="absolute inset-0 bg-[url('/images/noise.png')] opacity-10 mix-blend-overlay" />
             </div>
@@ -23,7 +23,7 @@ export default function CTASection() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
-                        className="w-20 h-20 rounded-md bg-blue-500/20 border border-blue-400/30 flex items-center justify-center mb-10 text-blue-200"
+                        className="w-20 h-20 rounded-md bg-primary/50/20 border border-blue-400/30 flex items-center justify-center mb-10 text-blue-200"
                     >
                         <Globe className="w-10 h-10" />
                     </motion.div>

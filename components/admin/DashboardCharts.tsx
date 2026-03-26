@@ -38,7 +38,7 @@ export default function DashboardCharts() {
             <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Données consolidées • 7 derniers mois</p>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-blue-600 rounded-md" />
+            <div className="w-3 h-3 bg-primary rounded-md" />
             <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Croissance</span>
           </div>
         </div>

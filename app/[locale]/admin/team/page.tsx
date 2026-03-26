@@ -128,7 +128,7 @@ export default function AdminTeamPage() {
              Annuaire des <span className="text-[#C9A84C] italic">Chercheurs</span>
           </h1>
         </div>
-        <Button className="bg-[#C9A84C] text-[#0C0C0A] rounded-none uppercase font-black text-[10px] tracking-widest h-14 px-10 hover:bg-[#E8C97A]" onClick={openAdd}>
+        <Button className="bg-[#C9A84C] text-[#0C0C0A] rounded-md uppercase font-black text-[10px] tracking-widest h-14 px-10 hover:bg-[#E8C97A]" onClick={openAdd}>
            <Plus size={14} className="mr-3" /> Nouveau Profil
         </Button>
       </div>
@@ -147,10 +147,10 @@ export default function AdminTeamPage() {
                         </div>
                      )}
                      <div className="absolute top-4 right-4 flex gap-2">
-                        <Button size="icon" variant="outline" className="w-10 h-10 rounded-none bg-black/60 border-white/10 text-white hover:bg-[#C9A84C] hover:text-black transition-all" onClick={() => openEdit(m)}>
+                        <Button size="icon" variant="outline" className="w-10 h-10 rounded-md bg-black/60 border-white/10 text-white hover:bg-[#C9A84C] hover:text-black transition-all" onClick={() => openEdit(m)}>
                            <Pencil size={14} />
                         </Button>
-                        <Button size="icon" variant="outline" className="w-10 h-10 rounded-none bg-black/60 border-white/10 text-white hover:bg-red-500 hover:border-red-500 transition-all" onClick={() => handleDelete(m.id)}>
+                        <Button size="icon" variant="outline" className="w-10 h-10 rounded-md bg-black/60 border-white/10 text-white hover:bg-red-500 hover:border-red-500 transition-all" onClick={() => handleDelete(m.id)}>
                            <Trash2 size={14} />
                         </Button>
                      </div>
@@ -166,7 +166,7 @@ export default function AdminTeamPage() {
 
       {/* EDIT DIALOG */}
        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="bg-[#111110] border-white/10 text-white max-w-4xl rounded-none">
+          <DialogContent className="bg-[#111110] border-white/10 text-white max-w-4xl rounded-md">
              <DialogHeader>
                 <DialogTitle className="font-serif font-black text-2xl">{editingId ? "Éditer le Profil" : "Nouveau Profil"}</DialogTitle>
              </DialogHeader>
@@ -176,11 +176,11 @@ export default function AdminTeamPage() {
                 <div className="space-y-6">
                    <div className="space-y-2">
                        <label className="text-[10px] uppercase font-black tracking-widest text-white/20">Email de contact</label>
-                       <Input value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="bg-black/40 border-white/5 rounded-none" />
+                       <Input value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="bg-black/40 border-white/5 rounded-md" />
                    </div>
                    <div className="space-y-2">
                        <label className="text-[10px] uppercase font-black tracking-widest text-white/20">Image URL (Supabase)</label>
-                       <Input value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value })} className="bg-black/40 border-white/5 rounded-none" />
+                       <Input value={formData.image} onChange={e => setFormData({ ...formData, image: e.target.value })} className="bg-black/40 border-white/5 rounded-md" />
                    </div>
                 </div>
 
@@ -198,7 +198,7 @@ export default function AdminTeamPage() {
                                const nt = [...formData.translations];
                                nt[i].name = e.target.value;
                                setFormData({ ...formData, translations: nt });
-                            }} className="bg-[#111110] border-white/5 rounded-none h-10 text-sm" />
+                            }} className="bg-[#111110] border-white/5 rounded-md h-10 text-sm" />
                          </div>
                          <div className="space-y-2">
                             <label className="text-[9px] uppercase font-black tracking-widest text-white/10">Rôle Académique</label>
@@ -206,7 +206,7 @@ export default function AdminTeamPage() {
                                const nt = [...formData.translations];
                                nt[i].role = e.target.value;
                                setFormData({ ...formData, translations: nt });
-                            }} className="bg-[#111110] border-white/5 rounded-none h-10 text-sm" />
+                            }} className="bg-[#111110] border-white/5 rounded-md h-10 text-sm" />
                          </div>
                          <div className="space-y-2">
                             <label className="text-[9px] uppercase font-black tracking-widest text-white/10">Biographie Courte</label>
@@ -214,7 +214,7 @@ export default function AdminTeamPage() {
                                const nt = [...formData.translations];
                                nt[i].bio = e.target.value;
                                setFormData({ ...formData, translations: nt });
-                            }} className="bg-[#111110] border-white/5 rounded-none text-sm min-h-[80px]" />
+                            }} className="bg-[#111110] border-white/5 rounded-md text-sm min-h-[80px]" />
                          </div>
                       </div>
                    ))}
@@ -223,7 +223,7 @@ export default function AdminTeamPage() {
 
              <DialogFooter className="border-t border-white/5 pt-8">
                 <Button variant="ghost" className="text-white/40 hover:text-white" onClick={() => setIsDialogOpen(false)}>Annuler</Button>
-                <Button className="bg-[#C9A84C] text-black font-black uppercase text-[10px] tracking-widest rounded-none h-14 px-10" onClick={handleSubmit} disabled={isSubmitting}>
+                <Button className="bg-[#C9A84C] text-black font-black uppercase text-[10px] tracking-widest rounded-md h-14 px-10" onClick={handleSubmit} disabled={isSubmitting}>
                    {isSubmitting ? <Loader2 className="animate-spin" /> : "Générer Profil"}
                 </Button>
              </DialogFooter>

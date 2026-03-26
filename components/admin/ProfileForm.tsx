@@ -96,7 +96,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
       {/* Colonne Gauche : Infos & Status */}
       <div className="space-y-6">
         <div className="bg-slate-900 dark:bg-slate-900/50 text-white p-10 rounded-3xl border border-white/5 relative overflow-hidden group shadow-2xl">
-           <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-600/20 blur-[80px] rounded-md group-hover:bg-blue-600/30 transition-all duration-700" />
+           <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-primary/20 blur-[80px] rounded-md group-hover:bg-primary/30 transition-all duration-700" />
            <div className="relative z-10 space-y-8">
               <div className="w-20 h-20 bg-white/10 rounded-2xl flex items-center justify-center text-4xl font-serif font-black text-blue-400 border border-white/10 shadow-xl group-hover:scale-105 transition-transform">
                 {user.name?.[0] || 'A'}
@@ -141,19 +141,19 @@ export default function ProfileForm({ user }: ProfileFormProps) {
            <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="p-8 space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2 group">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-blue-600 transition-colors">Nom complet</label>
+                  <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-primary transition-colors">Nom complet</label>
                   <Input {...profileForm.register("name")} className="rounded-xl h-12 bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 focus-visible:ring-blue-500/10 focus:border-blue-600 transition-all font-bold text-slate-900 dark:text-white" />
                   {profileForm.formState.errors.name && <p className="text-[10px] text-red-500 font-bold uppercase">{profileForm.formState.errors.name.message}</p>}
                 </div>
                 <div className="space-y-2 group">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-blue-600 transition-colors">Email professionnel</label>
+                  <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-primary transition-colors">Email professionnel</label>
                   <Input {...profileForm.register("email")} className="rounded-xl h-12 bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 focus-visible:ring-blue-500/10 focus:border-blue-600 transition-all font-bold text-slate-900 dark:text-white" />
                   {profileForm.formState.errors.email && <p className="text-[10px] text-red-500 font-bold uppercase">{profileForm.formState.errors.email.message}</p>}
                 </div>
               </div>
 
               <div className="space-y-2 group">
-                <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-blue-600 transition-colors">Téléphone de liaison</label>
+                <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-primary transition-colors">Téléphone de liaison</label>
                 <div className="relative">
                   <Phone size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
                   <Input {...profileForm.register("phone")} className="pl-12 rounded-xl h-12 bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 focus-visible:ring-blue-500/10 focus:border-blue-600 transition-all font-bold text-slate-900 dark:text-white" />
@@ -161,12 +161,12 @@ export default function ProfileForm({ user }: ProfileFormProps) {
               </div>
 
               <div className="space-y-2 group">
-                <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-blue-600 transition-colors">Biographie Courte</label>
+                <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-primary transition-colors">Biographie Courte</label>
                 <Textarea {...profileForm.register("bio")} className="rounded-xl min-h-[120px] bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 focus-visible:ring-blue-500/10 focus:border-blue-600 transition-all font-medium italic text-slate-900 dark:text-white" placeholder="Expertise, titres académiques..." />
               </div>
 
               <div className="pt-4 border-t border-slate-100 dark:border-white/5 flex justify-end">
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-10 h-14 font-black uppercase text-[10px] tracking-[0.3em] shadow-xl shadow-blue-600/20 active:scale-95 transition-all">
+                <Button className="bg-primary hover:bg-blue-700 text-white rounded-xl px-10 h-14 font-black uppercase text-[10px] tracking-[0.3em] shadow-xl shadow-blue-600/20 active:scale-95 transition-all">
                    <Save size={16} className="mr-3" /> Enregistrer les modifications
                 </Button>
               </div>
@@ -182,19 +182,19 @@ export default function ProfileForm({ user }: ProfileFormProps) {
            
            <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="p-8 space-y-6">
               <div className="space-y-2 group">
-                <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-blue-600 transition-colors">Mot de passe actuel</label>
+                <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-primary transition-colors">Mot de passe actuel</label>
                 <Input type="password" {...passwordForm.register("currentPassword")} className="rounded-xl h-12 bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 focus-visible:ring-blue-500/10 focus:border-blue-600 transition-all text-slate-900 dark:text-white" />
                 {passwordForm.formState.errors.currentPassword && <p className="text-[10px] text-red-500 font-bold uppercase">{passwordForm.formState.errors.currentPassword.message}</p>}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2 group">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-blue-600 transition-colors">Nouveau mot de passe</label>
+                  <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-primary transition-colors">Nouveau mot de passe</label>
                   <Input type="password" {...passwordForm.register("newPassword")} className="rounded-xl h-12 bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 focus-visible:ring-blue-500/10 focus:border-blue-600 transition-all text-slate-900 dark:text-white" />
                   {passwordForm.formState.errors.newPassword && <p className="text-[10px] text-red-500 font-bold uppercase">{passwordForm.formState.errors.newPassword.message}</p>}
                 </div>
                 <div className="space-y-2 group">
-                  <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-blue-600 transition-colors">Confirmer le nouveau</label>
+                  <label className="text-[10px] uppercase font-black tracking-widest text-slate-400 group-focus-within:text-primary transition-colors">Confirmer le nouveau</label>
                   <Input type="password" {...passwordForm.register("confirmPassword")} className="rounded-xl h-12 bg-slate-50 dark:bg-white/5 border-slate-200 dark:border-white/5 focus-visible:ring-blue-500/10 focus:border-blue-600 transition-all text-slate-900 dark:text-white" />
                   {passwordForm.formState.errors.confirmPassword && <p className="text-[10px] text-red-500 font-bold uppercase">{passwordForm.formState.errors.confirmPassword.message}</p>}
                 </div>

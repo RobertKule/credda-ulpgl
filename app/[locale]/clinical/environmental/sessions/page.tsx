@@ -82,7 +82,7 @@ export default async function MobileClinicPage({ params }: { params: Promise<{ l
           <div className="lg:col-span-8 space-y-16">
             <div className="flex items-end justify-between border-b border-light-gray pb-8">
                <h2 className="text-4xl font-serif font-black text-primary italic">Upcoming Registry.</h2>
-               <Badge className="bg-primary/5 text-primary border-none rounded-none px-4 py-1.5 text-[9px] font-black uppercase tracking-[0.2em]">
+               <Badge className="bg-primary/5 text-primary border-none rounded-md px-4 py-1.5 text-[9px] font-black uppercase tracking-[0.2em]">
                  Total: {sessions.length} Deployments
                </Badge>
             </div>
@@ -94,7 +94,7 @@ export default async function MobileClinicPage({ params }: { params: Promise<{ l
                   <h3 className="text-2xl font-serif font-black text-primary">Mission Planning in Progress</h3>
                   <p className="text-anthracite/40 font-light max-w-sm mx-auto">We are finalizing logistics for the next quarter. Stay tuned for deployment updates.</p>
                 </div>
-                <Button className="bg-primary text-secondary rounded-none px-10 py-6 font-black uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-primary transition-all">
+                <Button className="bg-primary text-secondary rounded-md px-10 py-6 font-black uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-primary transition-all">
                   <Bell size={16} className="mr-3" /> Get Deployment Alerts
                 </Button>
               </div>
@@ -116,7 +116,7 @@ export default async function MobileClinicPage({ params }: { params: Promise<{ l
                     <div className="p-12 flex-1 space-y-8">
                       <div className="space-y-4">
                         <div className="flex items-center gap-3">
-                           <Badge className="bg-secondary/10 text-secondary border-none rounded-none px-3 py-1 text-[9px] font-black uppercase tracking-widest">
+                           <Badge className="bg-secondary/10 text-secondary border-none rounded-md px-3 py-1 text-[9px] font-black uppercase tracking-widest">
                              Tactical Deployment
                            </Badge>
                         </div>

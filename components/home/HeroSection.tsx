@@ -98,7 +98,7 @@ export default function HeroSection() {
                             transition={{ duration: 0.6 }}
                             className="max-w-2xl lg:max-w-3xl xl:max-w-4xl space-y-4 sm:space-y-6 lg:space-y-8"
                         >
-                            <Badge className="bg-primary text-primary-foreground rounded-none px-4 py-2 uppercase tracking-[0.3em] font-black border-none shadow-lg text-[9px] sm:text-[10px] lg:text-[11px]">
+                            <Badge className="bg-[#C9A84C] text-[#0C0C0A] rounded-md px-4 py-2 uppercase tracking-[0.3em] font-black border-none shadow-lg text-[9px] sm:text-[10px] lg:text-[11px]">
                                 {t('hero.badge')}
                             </Badge>
                             <FormattedHTML
@@ -110,10 +110,10 @@ export default function HeroSection() {
                                 {slides[currentSlide]?.desc}
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 lg:gap-6 pt-4 lg:pt-8 w-full sm:w-auto">
-                                <Link href="/publications" className="px-8 lg:px-12 py-4 lg:py-5 bg-primary text-primary-foreground font-bold hover:bg-primary/90 transition-all text-[10px] sm:text-[11px] lg:text-[12px] uppercase tracking-widest shadow-2xl shadow-primary/20 text-center w-full sm:w-auto hover:-translate-y-1">
+                                <Link href="/publications" className="px-8 lg:px-12 py-4 lg:py-5 bg-[#C9A84C] text-[#0C0C0A] font-bold hover:bg-[#C9A84C]/90 transition-all text-[10px] sm:text-[11px] lg:text-[12px] uppercase tracking-widest shadow-2xl shadow-primary/20 text-center w-full sm:w-auto hover:-translate-y-1 rounded-md">
                                     {t('hero.cta_publications')}
                                 </Link>
-                                <Link href="/contact" className="px-8 lg:px-12 py-4 lg:py-5 border border-white/30 text-white font-bold hover:bg-white/10 transition-all text-[10px] sm:text-[11px] lg:text-[12px] uppercase tracking-widest text-center w-full sm:w-auto hover:-translate-y-1">
+                                <Link href="/contact" className="px-8 lg:px-12 py-4 lg:py-5 border border-white/30 text-white font-bold hover:bg-white/10 transition-all text-[10px] sm:text-[11px] lg:text-[12px] uppercase tracking-widest text-center w-full sm:w-auto hover:-translate-y-1 rounded-md">
                                     {t('hero.cta_contact')}
                                 </Link>
                             </div>

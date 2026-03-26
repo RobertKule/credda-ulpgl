@@ -142,7 +142,7 @@ export default function RegisterWizard() {
           </div>
           <Button 
             onClick={() => router.push(`/${locale}`)}
-            className="w-full h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold uppercase tracking-[0.1em] text-xs transition-all shadow-lg shadow-blue-600/20"
+            className="w-full h-14 bg-primary hover:bg-blue-700 text-white rounded-2xl font-bold uppercase tracking-[0.1em] text-xs transition-all shadow-lg shadow-blue-600/20"
           >
             {t('right.success.button')}
           </Button>
@@ -156,7 +156,7 @@ export default function RegisterWizard() {
       {/* LEFT SIDE - VISUAL */}
       <div className="hidden md:flex md:w-1/2 bg-[#050a15] relative overflow-hidden items-center justify-center p-12 lg:p-24">
         <div className="absolute inset-0 z-0">
-          <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-md bg-blue-600/10 blur-[100px]" />
+          <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-md bg-primary/10 blur-[100px]" />
           <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] rounded-md bg-emerald-600/5 blur-[80px]" />
           <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.03]" />
         </div>
@@ -167,7 +167,7 @@ export default function RegisterWizard() {
             animate={{ opacity: 1, y: 0 }} 
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <Badge className="bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-md mb-8 px-5 py-2 uppercase tracking-[0.3em] text-[10px] shadow-lg backdrop-blur-md">
+            <Badge className="bg-primary/20 text-blue-400 border border-blue-500/30 rounded-md mb-8 px-5 py-2 uppercase tracking-[0.3em] text-[10px] shadow-lg backdrop-blur-md">
               {t('left.badge')}
             </Badge>
             <h2 className="text-4xl lg:text-5xl xl:text-6xl font-serif font-bold text-white leading-[1.1]">
@@ -201,7 +201,7 @@ export default function RegisterWizard() {
 
       {/* RIGHT SIDE - WIZARD FORM */}
       <div className="flex-1 flex items-center justify-center p-6 md:p-12 lg:p-24 relative overflow-y-auto custom-scrollbar bg-white">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-50/50 rounded-md blur-3xl -mr-64 -mt-64 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5/50 rounded-md blur-3xl -mr-64 -mt-64 pointer-events-none" />
 
         <motion.div 
           initial={{ opacity: 0, x: 20 }} 
@@ -212,7 +212,7 @@ export default function RegisterWizard() {
           {/* Header & Steps Indicator */}
           <div className="space-y-12 mb-12">
             <div className="flex items-center justify-between">
-              <Link href="/" className="inline-flex items-center text-[10px] font-black text-slate-400 hover:text-blue-600 transition-colors uppercase tracking-[0.2em] group bg-slate-50 hover:bg-blue-50 px-4 py-2 rounded-md">
+              <Link href="/" className="inline-flex items-center text-[10px] font-black text-slate-400 hover:text-primary transition-colors uppercase tracking-[0.2em] group bg-slate-50 hover:bg-primary/5 px-4 py-2 rounded-md">
                 <ChevronLeft size={14} className="mr-2 group-hover:-translate-x-1 transition-transform" /> 
                 {t('right.back')}
               </Link>
@@ -220,7 +220,7 @@ export default function RegisterWizard() {
                 {[1, 2, 3].map((s) => (
                   <div 
                     key={s}
-                    className={`h-1.5 rounded-md transition-all duration-500 ${step >= s ? 'w-8 bg-blue-600' : 'w-4 bg-slate-100'}`}
+                    className={`h-1.5 rounded-md transition-all duration-500 ${step >= s ? 'w-8 bg-primary' : 'w-4 bg-slate-100'}`}
                   />
                 ))}
               </div>
@@ -231,7 +231,7 @@ export default function RegisterWizard() {
                 {t('right.title')}
               </h1>
               <div className="flex items-center gap-3">
-                <span className="text-blue-600 font-bold text-sm uppercase tracking-widest">{`0${step}`}</span>
+                <span className="text-primary font-bold text-sm uppercase tracking-widest">{`0${step}`}</span>
                 <span className="h-px w-8 bg-slate-200" />
                 <span className="text-slate-400 text-sm font-medium uppercase tracking-widest">
                   {step === 1 ? t('right.steps.account') : step === 2 ? t('right.steps.profile') : t('right.steps.details')}
@@ -267,7 +267,7 @@ export default function RegisterWizard() {
                 {step === 1 && (
                   <>
                     <div className="space-y-2 group relative">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors z-10">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors z-10">
                         <Mail size={18} />
                       </div>
                       <Input
@@ -281,7 +281,7 @@ export default function RegisterWizard() {
                       />
                     </div>
                     <div className="space-y-2 group relative">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors z-10">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors z-10">
                         <Lock size={18} />
                       </div>
                       <Input
@@ -298,7 +298,7 @@ export default function RegisterWizard() {
                       </button>
                     </div>
                     <div className="space-y-2 group relative">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors z-10">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors z-10">
                         <Lock size={18} />
                       </div>
                       <Input
@@ -317,7 +317,7 @@ export default function RegisterWizard() {
                 {step === 2 && (
                   <>
                     <div className="space-y-2 group relative">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors z-10">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors z-10">
                         <User size={18} />
                       </div>
                       <Input
@@ -330,7 +330,7 @@ export default function RegisterWizard() {
                       />
                     </div>
                     <div className="space-y-2 group relative">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors z-10">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors z-10">
                         <Phone size={18} />
                       </div>
                       <Input
@@ -343,7 +343,7 @@ export default function RegisterWizard() {
                       />
                     </div>
                     <div className="space-y-2 group relative">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors z-10">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors z-10">
                         <Building size={18} />
                       </div>
                       <Input
@@ -360,7 +360,7 @@ export default function RegisterWizard() {
                 {step === 3 && (
                   <>
                     <div className="space-y-2 group relative">
-                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors z-10">
+                      <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors z-10">
                         <ShieldCheck size={18} />
                       </div>
                       <Input
@@ -372,7 +372,7 @@ export default function RegisterWizard() {
                       />
                     </div>
                     <div className="space-y-2 group relative">
-                      <div className="absolute left-4 top-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 transition-colors z-10">
+                      <div className="absolute left-4 top-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors z-10">
                         <FileText size={18} />
                       </div>
                       <Textarea
@@ -403,7 +403,7 @@ export default function RegisterWizard() {
               <Button 
                 type="submit" 
                 disabled={isSubmitting} 
-                className="flex-[2] h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold uppercase tracking-[0.1em] text-[10px] transition-all shadow-lg shadow-blue-600/20 group/btn"
+                className="flex-[2] h-14 bg-primary hover:bg-blue-700 text-white rounded-2xl font-bold uppercase tracking-[0.1em] text-[10px] transition-all shadow-lg shadow-blue-600/20 group/btn"
               >
                 {isSubmitting ? (
                   <Loader2 className="animate-spin" size={18} />

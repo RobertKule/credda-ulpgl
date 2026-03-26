@@ -131,7 +131,7 @@ export default function AdminTestimonialsPage() {
              Gestion des <span className="text-[#C9A84C] italic">Témoignages</span>
           </h1>
         </div>
-        <Button className="bg-[#C9A84C] text-[#0C0C0A] rounded-none uppercase font-black text-[10px] tracking-widest h-14 px-10 hover:bg-[#E8C97A]" onClick={openAdd}>
+        <Button className="bg-[#C9A84C] text-[#0C0C0A] rounded-md uppercase font-black text-[10px] tracking-widest h-14 px-10 hover:bg-[#E8C97A]" onClick={openAdd}>
            <Plus size={14} className="mr-3" /> Nouveau Témoignage
         </Button>
       </div>
@@ -162,7 +162,7 @@ export default function AdminTestimonialsPage() {
                      <p className="text-sm font-black uppercase text-[#F5F2EC]">{t.authorName}</p>
                      <p className="text-[10px] uppercase tracking-widest text-[#C9A84C] pt-1">{t.authorRole}</p>
                   </div>
-                  <Badge variant={t.isPublished ? "default" : "outline"} className={t.isPublished ? "bg-[#C9A84C] text-black rounded-none h-6 uppercase text-[8px] font-black tracking-widest" : "border-white/10 text-white/20 rounded-none h-6 uppercase text-[8px] tracking-widest"}>
+                  <Badge variant={t.isPublished ? "default" : "outline"} className={t.isPublished ? "bg-[#C9A84C] text-black rounded-md h-6 uppercase text-[8px] font-black tracking-widest" : "border-white/10 text-white/20 rounded-md h-6 uppercase text-[8px] tracking-widest"}>
                      {t.isPublished ? "Publié" : "Brouillon"}
                   </Badge>
                </div>
@@ -172,7 +172,7 @@ export default function AdminTestimonialsPage() {
 
       {/* EDIT/ADD DIALOG */}
        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent className="bg-[#111110] border-white/10 text-white max-w-2xl rounded-none">
+          <DialogContent className="bg-[#111110] border-white/10 text-white max-w-2xl rounded-md">
              <DialogHeader>
                 <DialogTitle className="font-serif font-black text-2xl">{editingId ? "Éditer le Témoignage" : "Nouveau Témoignage"}</DialogTitle>
              </DialogHeader>
@@ -184,7 +184,7 @@ export default function AdminTestimonialsPage() {
                       <Input 
                         value={formData.authorName} 
                         onChange={e => setFormData({ ...formData, authorName: e.target.value })}
-                        className="bg-black/40 border-white/5 rounded-none text-white h-12"
+                        className="bg-black/40 border-white/5 rounded-md text-white h-12"
                       />
                    </div>
                    <div className="space-y-2">
@@ -192,7 +192,7 @@ export default function AdminTestimonialsPage() {
                       <Input 
                         value={formData.authorRole} 
                         onChange={e => setFormData({ ...formData, authorRole: e.target.value })}
-                        className="bg-black/40 border-white/5 rounded-none text-white h-12"
+                        className="bg-black/40 border-white/5 rounded-md text-white h-12"
                       />
                    </div>
                 </div>
@@ -210,7 +210,7 @@ export default function AdminTestimonialsPage() {
                            newTrans[i].quote = e.target.value;
                            setFormData({ ...formData, translations: newTrans });
                         }}
-                        className="bg-black/40 border-white/5 rounded-none text-white min-h-[100px]"
+                        className="bg-black/40 border-white/5 rounded-md text-white min-h-[100px]"
                       />
                    </div>
                 ))}
@@ -218,7 +218,7 @@ export default function AdminTestimonialsPage() {
 
              <DialogFooter className="border-t border-white/5 pt-8">
                 <Button variant="ghost" className="text-white/20 hover:text-white" onClick={() => setIsDialogOpen(false)}>Annuler</Button>
-                <Button className="bg-[#C9A84C] text-black font-black uppercase text-[10px] tracking-widest rounded-none h-14 px-10" onClick={handleSubmit} disabled={isSubmitting}>
+                <Button className="bg-[#C9A84C] text-black font-black uppercase text-[10px] tracking-widest rounded-md h-14 px-10" onClick={handleSubmit} disabled={isSubmitting}>
                    {isSubmitting ? <Loader2 className="animate-spin" /> : "Sauvegarder"}
                 </Button>
              </DialogFooter>

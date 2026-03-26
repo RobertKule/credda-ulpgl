@@ -73,7 +73,7 @@ export default async function ClinicalArticlePage({ params }: { params: Promise<
             
             {/* Header de l'Expertise */}
             <header className="space-y-6 text-center">
-              <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 rounded-none px-4 py-1 uppercase text-[10px] font-black border-none">
+              <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 rounded-md px-4 py-1 uppercase text-[10px] font-black border-none">
                 {article.category.translations[0]?.name}
               </Badge>
               <h1 className="text-4xl md:text-6xl font-serif font-bold text-slate-900 leading-tight tracking-tight">

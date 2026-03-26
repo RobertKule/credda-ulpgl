@@ -258,7 +258,7 @@ export default function Navbar() {
                 href={session ? "/admin" : "/login"} 
                 onClick={() => setIsOpen(false)} 
                 className={`flex items-center justify-between w-full p-4 rounded-xl border transition-all ${
-                  session ? "border-blue-500/30 bg-blue-500/5 text-foreground" : "border-[#C9A84C]/20 bg-[#C9A84C]/5 text-foreground"
+                  session ? "border-blue-500/30 bg-primary/50/5 text-foreground" : "border-[#C9A84C]/20 bg-[#C9A84C]/5 text-foreground"
                 }`}
               >
                  <div className="flex flex-col">
@@ -270,7 +270,7 @@ export default function Navbar() {
                     </span>
                  </div>
                  {session ? (
-                   <div className="w-10 h-10 rounded-md bg-blue-600 flex items-center justify-center text-white font-black text-xs">
+                   <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center text-white font-black text-xs">
                      {session.user?.name?.[0] || 'A'}
                    </div>
                  ) : (

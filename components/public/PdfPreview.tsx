@@ -71,7 +71,7 @@ export default function PdfPreview({ url }: PdfPreviewProps) {
       </div>
 
       {/* PDF icon */}
-      <div className="relative z-10 w-16 h-16 bg-blue-600/20 border border-blue-500/30 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform">
+      <div className="relative z-10 w-16 h-16 bg-primary/20 border border-blue-500/30 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform">
         <FileText size={32} className="text-blue-400" />
       </div>
 
@@ -92,7 +92,7 @@ export default function PdfPreview({ url }: PdfPreviewProps) {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white py-2.5 px-4 text-[10px] font-black uppercase tracking-widest transition-all"
+          className="flex items-center justify-center gap-2 w-full bg-primary hover:bg-primary/50 text-white py-2.5 px-4 text-[10px] font-black uppercase tracking-widest transition-all"
         >
           <ExternalLink size={12} />
           Ouvrir

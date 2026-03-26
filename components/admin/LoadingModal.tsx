@@ -41,7 +41,7 @@ export default function LoadingModal() {
           >
             <div className="relative">
               <div className="w-20 h-20 border-4 border-blue-600/20 rounded-md" />
-              <Loader2 className="w-20 h-20 text-blue-600 animate-spin absolute top-0 left-0" />
+              <Loader2 className="w-20 h-20 text-primary animate-spin absolute top-0 left-0" />
             </div>
             
             <div className="space-y-2">
@@ -58,7 +58,7 @@ export default function LoadingModal() {
                  initial={{ x: "-100%" }}
                  animate={{ x: "100%" }}
                  transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                 className="w-1/2 h-full bg-blue-600"
+                 className="w-1/2 h-full bg-primary"
                />
             </div>
           </motion.div>

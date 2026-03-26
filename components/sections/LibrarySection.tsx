@@ -38,8 +38,8 @@ export default function LibrarySection({ reports = [], stats }: LibrarySectionPr
                         className="max-w-2xl"
                     >
                         <div className="inline-flex items-center gap-2 mb-4">
-                            <span className="w-12 h-[2px] bg-blue-600 rounded-md" />
-                            <span className="text-blue-600 font-bold tracking-wider uppercase text-sm">
+                            <span className="w-12 h-[2px] bg-primary rounded-md" />
+                            <span className="text-primary font-bold tracking-wider uppercase text-sm">
                                 Ressources
                             </span>
                         </div>
@@ -56,7 +56,7 @@ export default function LibrarySection({ reports = [], stats }: LibrarySectionPr
                     >
                         <Link
                             href="/publications"
-                            className="inline-flex items-center gap-2 px-6 py-3 rounded-md border-2 border-slate-200 text-slate-700 font-semibold hover:border-blue-600 hover:text-blue-600 transition-colors group"
+                            className="inline-flex items-center gap-2 px-6 py-3 rounded-md border-2 border-slate-200 text-slate-700 font-semibold hover:border-blue-600 hover:text-primary transition-colors group"
                         >
                             Toutes les publications
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -88,7 +88,7 @@ export default function LibrarySection({ reports = [], stats }: LibrarySectionPr
                     >
                         {/* Background patterns */}
                         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-800 rounded-md blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2" />
-                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500 rounded-md blur-3xl opacity-20 translate-y-1/2 -translate-x-1/2" />
+                        <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/50 rounded-md blur-3xl opacity-20 translate-y-1/2 -translate-x-1/2" />
 
                         <div className="relative z-10 flex flex-col h-full">
                             <BookMarked className="w-12 h-12 text-blue-400 mb-6" />

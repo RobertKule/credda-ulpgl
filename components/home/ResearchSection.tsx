@@ -34,7 +34,7 @@ export default function ResearchSection({ articles = [] }: { articles: any[] }) 
                     <GSAPReveal direction="left" className="max-w-3xl space-y-6">
                         <div className="flex items-center gap-4">
                             <span className="h-[1px] w-12 bg-primary" />
-                            <Badge className="bg-primary/10 text-primary border-none rounded-none uppercase text-[10px] font-bold tracking-[0.4em] px-4 py-1.5">
+                            <Badge className="bg-primary/10 text-primary border-none rounded-md uppercase text-[10px] font-bold tracking-[0.4em] px-4 py-1.5">
                                 {t('research.badge')}
                             </Badge>
                         </div>
@@ -90,9 +90,9 @@ export default function ResearchSection({ articles = [] }: { articles: any[] }) 
 
                                 {/* Category Badge Floating */}
                                 <div className="absolute top-4 left-4">
-                                    <div className="bg-background/90 backdrop-blur-md px-3 py-1 text-[8px] font-black uppercase tracking-widest text-foreground border border-border/50">
+                                    <Badge variant="emerald" className="px-3 py-1 text-[8px] font-black uppercase tracking-widest border border-emerald/20 bg-emerald/5 backdrop-blur-md">
                                         {article?.category?.translations?.[0]?.name || "Général"}
-                                    </div>
+                                    </Badge>
                                 </div>
                             </div>
 

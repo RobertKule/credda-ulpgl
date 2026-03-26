@@ -56,12 +56,12 @@ export default async function ActivityReportsPage({ params }: { params: Promise<
               <BarChart3 size={200} strokeWidth={1} />
            </div>
            <div className="space-y-6 relative z-10">
-              <Badge className="bg-emerald-500 text-white border-none rounded-none text-[8px] uppercase font-bold tracking-widest">Dernière Étude</Badge>
+              <Badge className="bg-emerald-500 text-white border-none rounded-md text-[8px] uppercase font-bold tracking-widest">Dernière Étude</Badge>
               <h2 className="text-3xl font-serif font-bold leading-tight">Étude d'Impact 2025 : Justice Climatique en Territoire de Masisi</h2>
               <p className="text-emerald-100 font-light leading-relaxed">
                 Ce rapport analyse les retombées de nos cliniques mobiles et le renforcement des capacités juridiques des populations autochtones face aux spoliations foncières.
               </p>
-              <Button className="bg-white text-emerald-900 hover:bg-emerald-50 rounded-none px-8 font-bold uppercase tracking-widest text-xs h-12">
+              <Button className="bg-white text-emerald-900 hover:bg-emerald-50 rounded-md px-8 font-bold uppercase tracking-widest text-xs h-12">
                 Lire le rapport complet
               </Button>
            </div>
@@ -112,7 +112,7 @@ export default async function ActivityReportsPage({ params }: { params: Promise<
                        </p>
                        <div className="mt-auto flex justify-between items-center">
                           <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">PDF - Clinical</span>
-                          <Button size="icon" variant="ghost" className="rounded-none hover:bg-emerald-50 text-emerald-700">
+                          <Button size="icon" variant="ghost" className="rounded-md hover:bg-emerald-50 text-emerald-700">
                              <Download size={20} />
                           </Button>
                        </div>

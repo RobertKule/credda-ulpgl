@@ -111,7 +111,7 @@ export default function SecurityPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Security Visual Info */}
           <div className="md:col-span-1 space-y-6">
-            <div className="w-20 h-20 bg-blue-50 rounded-3xl flex items-center justify-center text-blue-600">
+            <div className="w-20 h-20 bg-primary/5 rounded-3xl flex items-center justify-center text-primary">
               <ShieldCheck size={40} />
             </div>
             
@@ -163,7 +163,7 @@ export default function SecurityPage() {
               <div className="space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">{t('fields.current')}</label>
                 <div className="relative group">
-                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" />
                   <Input 
                     name="currentPassword"
                     type={showCurrent ? "text" : "password"}
@@ -183,7 +183,7 @@ export default function SecurityPage() {
               <div className="space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">{t('fields.new')}</label>
                 <div className="relative group">
-                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" />
                   <Input 
                     name="newPassword"
                     type={showNew ? "text" : "password"}
@@ -201,7 +201,7 @@ export default function SecurityPage() {
               <div className="space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">{t('fields.confirm')}</label>
                 <div className="relative group">
-                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                  <Lock size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" />
                   <Input 
                     name="confirmPassword"
                     type={showNew ? "text" : "password"}
@@ -216,7 +216,7 @@ export default function SecurityPage() {
               <Button 
                 type="submit" 
                 disabled={isUpdating}
-                className="w-full sm:w-auto px-12 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold uppercase tracking-[0.1em] text-xs transition-all shadow-lg shadow-blue-600/20"
+                className="w-full sm:w-auto px-12 h-14 bg-primary hover:bg-blue-700 text-white rounded-2xl font-bold uppercase tracking-[0.1em] text-xs transition-all shadow-lg shadow-blue-600/20"
               >
                 {isUpdating ? (
                   <Loader2 className="animate-spin mr-2" size={18} />

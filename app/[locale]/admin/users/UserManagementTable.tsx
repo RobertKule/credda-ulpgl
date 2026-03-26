@@ -141,7 +141,7 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
                 </td>
                 <td className="p-4">
                   <Badge className={`
-                    rounded-none text-[8px] font-black tracking-widest uppercase px-2 py-1
+                    rounded-md text-[8px] font-black tracking-widest uppercase px-2 py-1
                     ${u.status === 'PENDING' ? 'bg-amber-100 text-amber-700 border-amber-200' : 
                       u.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 
                       'bg-red-100 text-red-700 border-red-200'}
@@ -168,7 +168,7 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
                       <>
                         <Button 
                           size="sm" 
-                          className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-none h-8 text-[10px] font-black uppercase"
+                          className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-md h-8 text-[10px] font-black uppercase"
                           onClick={() => handleStatusUpdate(u.id, 'APPROVED')}
                           disabled={isPending}
                         >
@@ -177,7 +177,7 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
                         <Button 
                           size="sm" 
                           variant="outline" 
-                          className="text-red-600 border-red-200 hover:bg-red-50 rounded-none h-8 text-[10px] font-black uppercase"
+                          className="text-red-600 border-red-200 hover:bg-red-50 rounded-md h-8 text-[10px] font-black uppercase"
                           onClick={() => handleStatusUpdate(u.id, 'REJECTED')}
                           disabled={isPending}
                         >

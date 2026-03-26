@@ -27,7 +27,7 @@ export default function ResearchSection({ articles = [] }: ResearchSectionProps)
                         <h2 className="text-4xl font-serif font-bold text-slate-900 mb-4">
                             Recherches récentes
                         </h2>
-                        <div className="w-20 h-1.5 bg-blue-600 rounded-md" />
+                        <div className="w-20 h-1.5 bg-primary rounded-md" />
                     </motion.div>
 
                     <motion.div
@@ -38,7 +38,7 @@ export default function ResearchSection({ articles = [] }: ResearchSectionProps)
                     >
                         <Link
                             href="/research"
-                            className="inline-flex items-center gap-2 text-slate-600 hover:text-blue-600 font-medium transition-colors group"
+                            className="inline-flex items-center gap-2 text-slate-600 hover:text-primary font-medium transition-colors group"
                         >
                             Voir toutes les recherches
                             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

@@ -115,11 +115,11 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
       
       {/* SECTION DOCUMENT PDF - LUXE DARK STYLE */}
       <div className="bg-slate-950 dark:bg-slate-900/50 p-10 rounded-[2.5rem] border border-white/5 relative overflow-hidden shadow-2xl group transition-all">
-        <div className="absolute -right-20 -top-20 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-md group-hover:bg-blue-600/20 transition-all duration-700 pointer-events-none" />
+        <div className="absolute -right-20 -top-20 w-64 h-64 bg-primary/10 blur-[100px] rounded-md group-hover:bg-primary/20 transition-all duration-700 pointer-events-none" />
         
         <div className="relative z-10 space-y-8">
           <div className="flex items-center gap-3">
-             <div className="w-1.5 h-1.5 bg-blue-600 rounded-md shadow-[0_0_8px_rgba(37,99,235,1)]" />
+             <div className="w-1.5 h-1.5 bg-primary rounded-md shadow-[0_0_8px_rgba(37,99,235,1)]" />
              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-500">Archive de Publication</h3>
           </div>
 
@@ -149,7 +149,7 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
                       <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-md animate-spin mx-auto" />
                       <div className="w-full bg-white/5 h-1.5 rounded-md overflow-hidden">
                         <div 
-                          className="bg-blue-600 h-full transition-all duration-300" 
+                          className="bg-primary h-full transition-all duration-300" 
                           style={{ width: `${uploadProgress}%` }}
                         />
                       </div>
@@ -157,7 +157,7 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
                     </div>
                   ) : (
                     <>
-                      <FileText size={48} className="text-white/5 group-hover:text-blue-600 transition-colors" strokeWidth={1} />
+                      <FileText size={48} className="text-white/5 group-hover:text-primary transition-colors" strokeWidth={1} />
                       <Button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
@@ -245,7 +245,7 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
         <Button 
           onClick={handleSubmit} 
           disabled={uploading} 
-          className="px-16 h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-[2rem] font-black uppercase text-[10px] tracking-[0.3em] shadow-2xl shadow-blue-600/30 transition-all active:scale-95"
+          className="px-16 h-16 bg-primary hover:bg-blue-700 text-white rounded-[2rem] font-black uppercase text-[10px] tracking-[0.3em] shadow-2xl shadow-blue-600/30 transition-all active:scale-95"
         >
           Finaliser & Certifier la Publication
         </Button>

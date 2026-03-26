@@ -18,10 +18,10 @@ export default function CtaSection() {
                     className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl font-serif font-bold max-w-4xl lg:max-w-5xl mx-auto tracking-tighter uppercase leading-none"
                 />
                 <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 lg:gap-5 xl:gap-8 pt-4 sm:pt-5 lg:pt-6 xl:pt-8">
-                    <Link href="/contact" className="px-6 sm:px-8 lg:px-10 xl:px-12 py-3 sm:py-4 lg:py-5 xl:py-6 bg-slate-950 text-white font-black uppercase text-[9px] sm:text-[10px] lg:text-[11px] tracking-widest hover:bg-white hover:text-slate-950 transition-all shadow-2xl rounded-none">
+                    <Link href="/contact" className="px-6 sm:px-8 lg:px-10 xl:px-12 py-3 sm:py-4 lg:py-5 xl:py-6 bg-slate-950 text-white font-black uppercase text-[9px] sm:text-[10px] lg:text-[11px] tracking-widest hover:bg-white hover:text-slate-950 transition-all shadow-2xl rounded-md">
                         {t('cta.partner')}
                     </Link>
-                    <Link href="/about" className="px-6 sm:px-8 lg:px-10 xl:px-12 py-3 sm:py-4 lg:py-5 xl:py-6 border-2 border-white/40 text-white font-black uppercase text-[9px] sm:text-[10px] lg:text-[11px] tracking-widest hover:bg-white/10 transition-all rounded-none text-center">
+                    <Link href="/about" className="px-6 sm:px-8 lg:px-10 xl:px-12 py-3 sm:py-4 lg:py-5 xl:py-6 border-2 border-white/40 text-white font-black uppercase text-[9px] sm:text-[10px] lg:text-[11px] tracking-widest hover:bg-white/10 transition-all rounded-md text-center">
                         {t('cta.about')}
                     </Link>
                 </div>

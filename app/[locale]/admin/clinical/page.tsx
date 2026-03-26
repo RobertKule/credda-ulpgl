@@ -27,19 +27,19 @@ export default async function ClinicianAdminPage() {
 
   const getUrgencyBadge = (urgency: string) => {
     switch (urgency) {
-      case "HIGH": return <Badge className="bg-red-500 rounded-none">Critique</Badge>;
-      case "MEDIUM": return <Badge className="bg-amber-500 rounded-none">Moyen</Badge>;
-      case "LOW": return <Badge className="bg-blue-500 rounded-none">Mineur</Badge>;
+      case "HIGH": return <Badge className="bg-red-500 rounded-md">Critique</Badge>;
+      case "MEDIUM": return <Badge className="bg-amber-500 rounded-md">Moyen</Badge>;
+      case "LOW": return <Badge className="bg-primary/50 rounded-md">Mineur</Badge>;
       default: return <Badge variant="outline">{urgency}</Badge>;
     }
   };
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "NEW": return <Badge variant="outline" className="text-blue-600 border-blue-600 rounded-none">Nouveau</Badge>;
-      case "OPEN": return <Badge variant="outline" className="text-emerald-600 border-emerald-600 rounded-none">En cours</Badge>;
-      case "CLOSED": return <Badge variant="outline" className="text-slate-600 border-slate-600 rounded-none">Traité</Badge>;
-      default: return <Badge variant="outline" className="rounded-none">{status}</Badge>;
+      case "NEW": return <Badge variant="outline" className="text-primary border-blue-600 rounded-md">Nouveau</Badge>;
+      case "OPEN": return <Badge variant="outline" className="text-emerald-600 border-emerald-600 rounded-md">En cours</Badge>;
+      case "CLOSED": return <Badge variant="outline" className="text-slate-600 border-slate-600 rounded-md">Traité</Badge>;
+      default: return <Badge variant="outline" className="rounded-md">{status}</Badge>;
     }
   };
 
@@ -54,8 +54,8 @@ export default async function ClinicianAdminPage() {
           <p className="text-slate-500 text-sm">Suivi des demandes d'assistance juridique environnementale.</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" className="rounded-none">Exporter CSV</Button>
-          <Button asChild className="bg-emerald-800 hover:bg-emerald-900 rounded-none">
+          <Button variant="outline" className="rounded-md">Exporter CSV</Button>
+          <Button asChild className="bg-emerald-800 hover:bg-emerald-900 rounded-md">
             <Link href="/admin/clinical/new">Nouveau Cas</Link>
           </Button>
         </div>
@@ -118,13 +118,13 @@ export default async function ClinicianAdminPage() {
                     {getStatusBadge(c.status)}
                   </TableCell>
                   <TableCell className="text-right px-6">
-                    <Button variant="ghost" size="sm" asChild className="rounded-none hover:bg-emerald-50 text-emerald-700">
+                    <Button variant="ghost" size="sm" asChild className="rounded-md hover:bg-emerald-50 text-emerald-700">
                       <Link href={`/admin/clinical/${c.id}`} className="flex items-center gap-2">
                         <Eye size={14} />
                         Voir
                       </Link>
                     </Button>
-                    <Button variant="ghost" size="sm" asChild className="rounded-none hover:bg-slate-100 text-slate-600">
+                    <Button variant="ghost" size="sm" asChild className="rounded-md hover:bg-slate-100 text-slate-600">
                       <Link href={`/admin/clinical/${c.id}/edit`} className="flex items-center gap-2">
                         <Edit3 size={14} />
                         Éditer

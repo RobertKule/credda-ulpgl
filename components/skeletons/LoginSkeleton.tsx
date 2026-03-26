@@ -22,27 +22,27 @@ export default function LoginSkeleton() {
             className="space-y-6"
           >
             {/* Badge Skeleton */}
-            <Skeleton className="h-6 w-32 bg-white/10 rounded-none mx-auto md:mx-0" />
+            <Skeleton className="h-6 w-32 bg-white/10 rounded-md mx-auto md:mx-0" />
             
             {/* Titre Skeleton */}
-            <Skeleton className="h-16 w-full bg-white/10 rounded-none" />
-            <Skeleton className="h-16 w-3/4 bg-white/10 rounded-none" />
+            <Skeleton className="h-16 w-full bg-white/10 rounded-md" />
+            <Skeleton className="h-16 w-3/4 bg-white/10 rounded-md" />
             
             {/* Ligne décorative Skeleton */}
-            <Skeleton className="h-1 w-20 bg-white/10 rounded-none hidden md:block" />
+            <Skeleton className="h-1 w-20 bg-white/10 rounded-md hidden md:block" />
           </motion.div>
 
           {/* Description Skeleton */}
           <div className="space-y-3">
-            <Skeleton className="h-4 w-full bg-white/10 rounded-none" />
-            <Skeleton className="h-4 w-5/6 bg-white/10 rounded-none" />
-            <Skeleton className="h-4 w-4/6 bg-white/10 rounded-none" />
+            <Skeleton className="h-4 w-full bg-white/10 rounded-md" />
+            <Skeleton className="h-4 w-5/6 bg-white/10 rounded-md" />
+            <Skeleton className="h-4 w-4/6 bg-white/10 rounded-md" />
           </div>
 
           {/* Footer Skeleton */}
           <div className="pt-8 flex items-center gap-4">
-            <Skeleton className="h-8 w-8 bg-white/10 rounded-none" />
-            <Skeleton className="h-4 w-48 bg-white/10 rounded-none" />
+            <Skeleton className="h-8 w-8 bg-white/10 rounded-md" />
+            <Skeleton className="h-4 w-48 bg-white/10 rounded-md" />
           </div>
         </div>
       </div>
@@ -52,30 +52,30 @@ export default function LoginSkeleton() {
         <div className="w-full max-w-sm space-y-10">
           {/* Header Skeleton */}
           <div className="space-y-4">
-            <Skeleton className="h-4 w-24 bg-slate-200 rounded-none" />
-            <Skeleton className="h-8 w-40 bg-slate-200 rounded-none" />
+            <Skeleton className="h-4 w-24 bg-slate-200 rounded-md" />
+            <Skeleton className="h-8 w-40 bg-slate-200 rounded-md" />
           </div>
 
           {/* Titre Skeleton */}
           <div className="space-y-2">
-            <Skeleton className="h-8 w-48 bg-slate-200 rounded-none" />
-            <Skeleton className="h-4 w-64 bg-slate-200 rounded-none" />
+            <Skeleton className="h-8 w-48 bg-slate-200 rounded-md" />
+            <Skeleton className="h-4 w-64 bg-slate-200 rounded-md" />
           </div>
 
           {/* Formulaire Skeleton */}
           <div className="space-y-5">
             {/* Champ Email Skeleton */}
             <div className="space-y-2">
-              <Skeleton className="h-12 w-full bg-slate-200 rounded-none" />
+              <Skeleton className="h-12 w-full bg-slate-200 rounded-md" />
             </div>
 
             {/* Champ Password Skeleton */}
             <div className="space-y-2">
-              <Skeleton className="h-12 w-full bg-slate-200 rounded-none" />
+              <Skeleton className="h-12 w-full bg-slate-200 rounded-md" />
             </div>
 
             {/* Bouton Skeleton */}
-            <Skeleton className="h-14 w-full bg-slate-200 rounded-none" />
+            <Skeleton className="h-14 w-full bg-slate-200 rounded-md" />
           </div>
         </div>
       </div>

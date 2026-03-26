@@ -36,14 +36,14 @@ export default function TeamCarousel({ team = [] }: { team: TeamMember[] }) {
             <div className="flex gap-2 mb-6 md:absolute md:-top-24 md:right-0 md:mb-0 justify-end z-10">
                 <button
                     onClick={() => scroll("left")}
-                    className="w-12 h-12 rounded-md border border-slate-200 flex items-center justify-center hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-colors bg-white shadow-sm"
+                    className="w-12 h-12 rounded-md border border-slate-200 flex items-center justify-center hover:bg-primary hover:text-white hover:border-blue-600 transition-colors bg-white shadow-sm"
                     aria-label="Previous member"
                 >
                     <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
                     onClick={() => scroll("right")}
-                    className="w-12 h-12 rounded-md border border-slate-200 flex items-center justify-center hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-colors bg-white shadow-sm"
+                    className="w-12 h-12 rounded-md border border-slate-200 flex items-center justify-center hover:bg-primary hover:text-white hover:border-blue-600 transition-colors bg-white shadow-sm"
                     aria-label="Next member"
                 >
                     <ChevronRight className="w-5 h-5" />
@@ -82,7 +82,7 @@ export default function TeamCarousel({ team = [] }: { team: TeamMember[] }) {
                                 </div>
                                 <div className="text-center px-2 pb-2">
                                     <h3 className="text-xl font-bold text-slate-900 mb-1">{name}</h3>
-                                    <p className="text-blue-600 font-semibold text-sm uppercase tracking-wider">{role}</p>
+                                    <p className="text-primary font-semibold text-sm uppercase tracking-wider">{role}</p>
                                 </div>
                             </div>
                         </motion.div>

@@ -101,7 +101,7 @@ export default async function ResearchDetailPage({
 
       {/* 2. INSTITUTIONAL HEADER */}
       <header className="bg-primary text-white pt-32 pb-48 relative overflow-hidden">
-        <div className="absolute inset-0 bg-blue-600/5 -skew-y-3 translate-y-20 pointer-events-none" />
+        <div className="absolute inset-0 bg-primary/5 -skew-y-3 translate-y-20 pointer-events-none" />
         <div className="container mx-auto px-6 max-w-5xl relative z-10 text-center">
           <Link 
             href="/research" 
@@ -112,7 +112,7 @@ export default async function ResearchDetailPage({
           </Link>
           
           <div className="flex flex-col items-center gap-8">
-            <Badge className="bg-white/5 border border-white/20 text-accent rounded-none text-[10px] uppercase tracking-[0.4em] font-black px-6 py-2">
+            <Badge className="bg-white/5 border border-white/20 text-accent rounded-md text-[10px] uppercase tracking-[0.4em] font-black px-6 py-2">
               {categoryName}
             </Badge>
             

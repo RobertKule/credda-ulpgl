@@ -27,8 +27,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
       <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 border-b border-slate-200 pb-8">
         <div className="space-y-1">
           <div className="flex items-center gap-2 mb-2">
-            <div className="bg-blue-600/10 p-1.5 rounded-lg">
-              <UserCircle size={18} className="text-blue-600" />
+            <div className="bg-primary/10 p-1.5 rounded-lg">
+              <UserCircle size={18} className="text-primary" />
             </div>
             <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
               Gestion de Compte

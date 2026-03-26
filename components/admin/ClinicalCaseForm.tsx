@@ -75,7 +75,7 @@ export function ClinicalCaseForm({ initialData, isEditing = false }: any) {
           >
             <ArrowLeft size={16} /> Annuler
           </Button>
-          <Button className="flex-1 sm:flex-none h-12 px-10 bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-emerald-500/10 dark:shadow-emerald-900/20 active:scale-95 transition-all rounded-none">
+          <Button className="flex-1 sm:flex-none h-12 px-10 bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-emerald-500/10 dark:shadow-emerald-900/20 active:scale-95 transition-all rounded-md">
             <Save size={18} className="mr-3" />
             {isEditing ? "Mettre à jour" : "Sauvegarder le cas"}
           </Button>

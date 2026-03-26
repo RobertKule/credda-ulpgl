@@ -77,7 +77,7 @@ export default function PremiumAboutPage() {
         <motion.div
           animate={{ x: mousePos.x * 2.5, y: mousePos.y * 2.5 }}
           transition={{ type: "spring", stiffness: 35, damping: 25 }}
-          className="absolute bottom-[10%] right-[5%] w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-blue-600/15 rounded-md blur-[100px] md:blur-[150px] pointer-events-none z-10"
+          className="absolute bottom-[10%] right-[5%] w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-primary/15 rounded-md blur-[100px] md:blur-[150px] pointer-events-none z-10"
         />
 
         {/* DYNAMIC CONTROLS — fade on idle */}

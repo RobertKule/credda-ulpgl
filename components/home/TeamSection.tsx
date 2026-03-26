@@ -27,7 +27,7 @@ export default function TeamSection({ team }: { team: any[] }) {
             <div className="relative z-10 w-full">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 sm:mb-12 lg:mb-16 gap-6">
                     <div className="max-w-xl lg:max-w-2xl">
-                        <Badge className="bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20 rounded-none uppercase text-[10px] tracking-[0.4em] font-outfit font-bold px-4 py-1.5 mb-6">
+                        <Badge className="bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20 rounded-md uppercase text-[10px] tracking-[0.4em] font-outfit font-bold px-4 py-1.5 mb-6">
                             {t('team.badge')}
                         </Badge>
                         <h2 className="text-3xl md:text-4xl font-fraunces font-extrabold text-foreground leading-[1] tracking-tighter">

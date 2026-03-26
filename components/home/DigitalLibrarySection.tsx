@@ -16,7 +16,7 @@ export default function DigitalLibrarySection() {
             <div className="container mx-auto px-4 sm:px-6 relative z-10">
                 <div className="bg-slate-50 border border-slate-100 p-8 sm:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-10">
                     <div className="max-w-2xl space-y-6">
-                        <div className="w-16 h-16 bg-blue-100 rounded-md flex items-center justify-center text-blue-600 mb-6">
+                        <div className="w-16 h-16 bg-[#C9A84C]/10 rounded-md flex items-center justify-center text-[#C9A84C] mb-6 shadow-sm border border-[#C9A84C]/20">
                             <BookOpen size={28} />
                         </div>
                         <FormattedHTML
@@ -28,20 +28,20 @@ export default function DigitalLibrarySection() {
                             {t('library.description')}
                         </p>
                         <div className="pt-4">
-                            <Link href="/publications" className="group inline-flex items-center justify-center px-8 py-4 bg-slate-950 text-white font-black uppercase tracking-widest text-[10px] hover:bg-blue-600 transition-all rounded-none shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                            <Link href="/publications" className="group inline-flex items-center justify-center px-8 py-4 bg-[#C9A84C] text-[#0C0C0A] font-black uppercase tracking-widest text-[10px] hover:bg-[#C9A84C]/90 transition-all rounded-md shadow-xl hover:shadow-2xl hover:-translate-y-1">
                                 {t('library.cta')}
                             </Link>
                         </div>
                     </div>
                     <div className="relative w-full md:w-1/2 aspect-square max-w-md">
-                        <div className="absolute inset-0 bg-gradient-to-tr from-blue-100 to-emerald-50 rounded-[40px] rotate-6 transform group-hover:rotate-12 transition-all duration-700" />
+                        <div className="absolute inset-0 bg-gradient-to-tr from-[#C9A84C]/20 to-emerald/5 rounded-[40px] rotate-6 transform group-hover:rotate-12 transition-all duration-700" />
                         <div className="absolute inset-0 bg-white rounded-[40px] shadow-2xl p-6 transform -rotate-3 transition-all duration-700 hover:rotate-0 flex flex-col items-center justify-center border border-slate-100 overflow-hidden">
                             <Image src="/images/gallery/ppppppppp.png" alt="Bibliothèque CREDDA" width={300} height={300} className="object-cover opacity-80" />
                             <div className="absolute inset-0 bg-blue-900/10 mix-blend-multiply" />
                         </div>
                         {/* Decors flottants */}
-                        <div className="absolute -top-6 -right-6 w-24 h-24 bg-blue-500/10 rounded-md blur-xl animate-pulse" />
-                        <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-emerald-500/10 rounded-md blur-xl animate-pulse delay-1000" />
+                        <div className="absolute -top-6 -right-6 w-24 h-24 bg-[#C9A84C]/10 rounded-md blur-xl animate-pulse" />
+                        <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-emerald/10 rounded-md blur-xl animate-pulse delay-1000" />
                     </div>
                 </div>
             </div>

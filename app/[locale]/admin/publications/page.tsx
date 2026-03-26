@@ -39,7 +39,7 @@ export default async function AdminPublicationsPage({ params }: Props) {
         </div>
         
         <div className="flex gap-3">
-          <Button asChild className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-widest h-12 px-6 rounded-none shadow-xl transition-all">
+          <Button asChild className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-widest h-12 px-6 rounded-md shadow-xl transition-all">
             <Link href="/admin/publications/new" className="flex items-center gap-2">
               <Plus size={18} /> New Publication
             </Link>

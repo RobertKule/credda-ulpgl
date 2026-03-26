@@ -156,13 +156,13 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
           <div 
             key={m.id} 
             className={`group bg-white dark:bg-white/5 border transition-all duration-500 overflow-hidden rounded-[2.5rem] ${
-              m.status === 'UNREAD' ? 'border-blue-200 dark:border-blue-600/30 shadow-xl shadow-blue-600/5' : 'border-slate-100 dark:border-white/5'
+              m.status === 'UNREAD' ? 'border-primary/20 dark:border-blue-600/30 shadow-xl shadow-blue-600/5' : 'border-slate-100 dark:border-white/5'
             } ${expandedId === m.id ? 'shadow-2xl border-blue-600 ring-4 ring-blue-600/5' : 'hover:border-slate-300 dark:hover:border-white/20'}`}
           >
             <div className={`flex items-center p-6 md:p-10 gap-8 cursor-pointer relative`} onClick={() => setExpandedId(expandedId === m.id ? null : m.id)}>
               
               <div className={`w-14 h-14 rounded-3xl hidden md:flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 duration-500 shadow-lg ${
-                m.status === 'UNREAD' ? 'bg-blue-600 text-white shadow-blue-600/30' : 'bg-slate-50 dark:bg-white/5 text-slate-400'
+                m.status === 'UNREAD' ? 'bg-primary text-white shadow-blue-600/30' : 'bg-slate-50 dark:bg-white/5 text-slate-400'
               }`}>
                 {m.status === 'UNREAD' ? <Mail size={22} strokeWidth={2.5} /> : <MailOpen size={22} strokeWidth={2.5} />}
               </div>
@@ -175,7 +175,7 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
                     </h3>
                     <div className="flex gap-2">
                        <Badge className={`rounded-xl px-3 py-1 text-[8px] font-black tracking-widest uppercase border-0 ${
-                         m.status === 'UNREAD' ? 'bg-blue-600 text-white' : m.status === 'READ' ? 'bg-emerald-600/20 text-emerald-600' : 'bg-slate-400/20 text-slate-400'
+                         m.status === 'UNREAD' ? 'bg-primary text-white' : m.status === 'READ' ? 'bg-emerald-600/20 text-emerald-600' : 'bg-slate-400/20 text-slate-400'
                        }`}>
                          {m.status}
                        </Badge>
@@ -187,7 +187,7 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
                     </div>
                   </div>
                   <span className="text-[10px] font-black text-slate-400 dark:text-white/20 uppercase tracking-[0.2em] flex items-center gap-2">
-                    <Clock size={14} className="text-blue-600" /> {formatDate(m.createdAt)}
+                    <Clock size={14} className="text-primary" /> {formatDate(m.createdAt)}
                   </span>
                 </div>
                 <p className={`text-sm font-bold tracking-tight ${m.status === 'UNREAD' ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-white/40'} truncate uppercase tracking-widest`}>
@@ -200,7 +200,7 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
 
               <div className="flex items-center gap-4 shrink-0 pr-4">
                   <button 
-                    className="p-3 bg-slate-50 dark:bg-white/5 text-slate-400 hover:text-blue-600 rounded-2xl transition-all active:scale-95"
+                    className="p-3 bg-slate-50 dark:bg-white/5 text-slate-400 hover:text-primary rounded-2xl transition-all active:scale-95"
                     onClick={(e) => {
                       e.stopPropagation();
                       setExpandedId(expandedId === m.id ? null : m.id);
@@ -219,7 +219,7 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
                        <DropdownMenuContent align="end" className="w-56 p-2 rounded-2xl border-slate-200 dark:border-white/5 shadow-2xl">
                          {m.status !== 'READ' && (
                            <DropdownMenuItem onClick={() => handleMarkAsRead(m.id)} className="rounded-xl py-3 font-bold text-xs">
-                             <MailOpen size={16} className="mr-3 text-blue-600" /> Marquer comme lu
+                             <MailOpen size={16} className="mr-3 text-primary" /> Marquer comme lu
                            </DropdownMenuItem>
                          )}
                          {m.status !== 'ARCHIVED' && (
@@ -248,7 +248,7 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
                      <div className="space-y-2">
                         <span className="text-[10px] font-black uppercase text-slate-400 dark:text-white/20 tracking-widest ml-1">Expéditeur</span>
                         <p className="text-xl font-serif font-black text-slate-900 dark:text-white leading-tight">{m.name}</p>
-                        <p className="text-xs font-bold text-blue-600 dark:text-blue-400/60 uppercase tracking-widest">{m.email}</p>
+                        <p className="text-xs font-bold text-primary dark:text-blue-400/60 uppercase tracking-widest">{m.email}</p>
                      </div>
                      <div className="space-y-2 lg:text-right">
                         <span className="text-[10px] font-black uppercase text-slate-400 dark:text-white/20 tracking-widest mr-1">Date et Heure</span>
@@ -289,7 +289,7 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
                      <Archive size={18} className="mr-3" /> Archiver
                    </Button>
                    <Button 
-                     className="bg-slate-900 dark:bg-blue-600 hover:scale-105 active:scale-95 text-white h-14 px-12 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-2xl transition-all"
+                     className="bg-slate-900 dark:bg-primary hover:scale-105 active:scale-95 text-white h-14 px-12 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-2xl transition-all"
                      onClick={() => setReplyingTo(m)}
                      disabled={isPending}
                    >
@@ -315,7 +315,7 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
       {/* Reply Dialog LUXE */}
       <Dialog open={!!replyingTo} onOpenChange={(open) => !open && setReplyingTo(null)}>
         <DialogContent className="sm:max-w-[700px] rounded-[3rem] border-none shadow-3xl p-0 bg-white dark:bg-slate-950 overflow-hidden">
-          <div className="bg-slate-900 dark:bg-blue-600 p-12 text-white space-y-2 relative overflow-hidden">
+          <div className="bg-slate-900 dark:bg-primary p-12 text-white space-y-2 relative overflow-hidden">
             <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-md" />
             <h2 className="text-3xl font-serif font-black italic tracking-tighter leading-none relative z-10">Rédaction de Réponse</h2>
             <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.3em] relative z-10">{replyingTo?.name} • {replyingTo?.email}</p>
@@ -348,7 +348,7 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
               <X size={16} /> Annuler
             </Button>
             <Button 
-              className="w-full sm:w-auto bg-slate-900 dark:bg-blue-600 hover:scale-105 active:scale-95 text-white px-12 h-14 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-2xl transition-all"
+              className="w-full sm:w-auto bg-slate-900 dark:bg-primary hover:scale-105 active:scale-95 text-white px-12 h-14 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-2xl transition-all"
               onClick={handleSendReply}
               disabled={isPending || !replyText.trim()}
             >
