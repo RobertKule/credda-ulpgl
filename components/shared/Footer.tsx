@@ -20,7 +20,7 @@ export default function Footer() {
           {/* Column 1: Identity */}
           <div className="space-y-10">
             <div className="space-y-6">
-              <Link href="/" className="flex flex-col group">
+              <Link href="/" className="flex flex-col group" aria-label="CREDDA CDE Home">
                 <span className="font-bricolage font-extrabold text-3xl tracking-tighter text-foreground">
                   CREDDA<span className="text-primary">·</span>CDE
                 </span>
@@ -33,11 +33,16 @@ export default function Footer() {
               </p>
             </div>
             <div className="flex gap-4">
-              {[Facebook, Twitter, Linkedin].map((Icon, i) => (
+              {[
+                { Icon: Facebook, label: "Facebook" },
+                { Icon: Twitter, label: "Twitter" },
+                { Icon: Linkedin, label: "LinkedIn" }
+              ].map(({ Icon, label }, i) => (
                 <a 
                   key={i}
                   href="#" 
                   className="w-12 h-12 border border-border flex items-center justify-center hover:bg-primary hover:border-primary hover:text-primary-foreground transition-all duration-500 group"
+                  aria-label={`Follow us on ${label}`}
                 >
                   <Icon size={18} className="transition-transform group-hover:scale-110" />
                 </a>
@@ -50,35 +55,35 @@ export default function Footer() {
             <h4 className="text-[11px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
               {t('expertise.title')}
             </h4>
-            <ul className="space-y-5">
-              {expertiseItems.map((item: string) => (
-                <li key={item} className="group">
-                  <Link href="/research" className="text-sm text-muted-foreground hover:text-primary transition-all flex items-center gap-3">
-                    <span className="w-1.5 h-1.5 bg-primary rounded-full scale-0 group-hover:scale-100 transition-transform duration-300" />
-                    {item}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+    <ul className="space-y-5">
+      {Array.isArray(expertiseItems) && expertiseItems.map((item: string) => (
+        <li key={item} className="group">
+          <Link href="/research" className="text-sm text-muted-foreground hover:text-primary transition-all flex items-center gap-3">
+            <span className="w-1.5 h-1.5 bg-primary rounded-full scale-0 group-hover:scale-100 transition-transform duration-300" />
+            {item}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </div>
 
-          {/* Column 3: Resources */}
-          <div className="space-y-10">
-            <h4 className="text-[11px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
-              {t('resources.title')}
-            </h4>
-            <ul className="space-y-5 text-sm text-muted-foreground">
-              {resourceItems.map((item: { label: string; href: string }, index: number) => (
-                <li key={index}>
-                  <Link 
-                    href={item.href} 
-                    className="hover:text-primary flex items-center justify-between group transition-all"
-                  >
-                    <span className="font-light">{item.label}</span>
-                    <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                  </Link>
-                </li>
-              ))}
+  {/* Column 3: Resources */}
+  <div className="space-y-10">
+    <h4 className="text-[11px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
+      {t('resources.title')}
+    </h4>
+    <ul className="space-y-5 text-sm text-muted-foreground">
+      {Array.isArray(resourceItems) && resourceItems.map((item: { label: string; href: string }, index: number) => (
+        <li key={index}>
+          <Link 
+            href={item.href} 
+            className="hover:text-primary flex items-center justify-between group transition-all"
+          >
+            <span className="font-light">{item.label}</span>
+            <ArrowUpRight size={14} className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+          </Link>
+        </li>
+      ))}
               <li className="pt-4">
                 <Link href="/login" className="inline-flex items-center gap-2 px-6 py-3 border border-primary/20 text-[10px] font-outfit font-bold uppercase tracking-widest text-primary hover:bg-primary hover:text-primary-foreground transition-all">
                   {t('resources.admin')}

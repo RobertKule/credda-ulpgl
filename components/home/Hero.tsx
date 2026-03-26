@@ -1,6 +1,6 @@
 'use client'
 import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { Link } from "@/navigation";
 import { ArrowRight, Play } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -33,21 +33,48 @@ export default function Hero() {
     return () => clearTimeout(timer);
   }, []);
 
-  // 3D TILT EFFECT
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  // OPTIMIZED 3D TILT EFFECT using MotionValues
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  
+  const springX = useSpring(mouseX, { stiffness: 100, damping: 30 });
+  const springY = useSpring(mouseY, { stiffness: 100, damping: 30 });
+
+  const rotateX = useTransform(springY, [-0.5, 0.5], [15, -15]);
+  const rotateY = useTransform(springX, [-0.5, 0.5], [-15, 15]);
+
   const containerRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    setMounted(true);
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setReduceMotion(prefersReducedMotion);
+
+    // Force hide loading screen after 1.5s
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || reduceMotion) return;
     const { left, top, width, height } = containerRef.current.getBoundingClientRect();
-    setMousePos({ x: (e.clientX - left) / width - 0.5, y: (e.clientY - top) / height - 0.5 });
+    mouseX.set((e.clientX - left) / width - 0.5);
+    mouseY.set((e.clientY - top) / height - 0.5);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
   };
 
   return (
     <section 
       ref={containerRef}
       onMouseMove={handleMouseMove}
-      onMouseLeave={() => setMousePos({ x: 0, y: 0 })}
+      onMouseLeave={handleMouseLeave}
       className="relative min-h-[110vh] w-full overflow-hidden bg-background flex items-center justify-center perspective-[2000px] [clip-path:url(#heroWavyClip)]"
     >
       {/* ... (Loading and Background sections remain the same) */}
@@ -57,11 +84,10 @@ export default function Hero() {
         <div className="flex w-full flex-col items-center justify-center py-24 lg:py-32 text-center">
           <motion.div
             style={{ 
-              rotateX: reduceMotion ? 0 : mousePos.y * -15,
-              rotateY: reduceMotion ? 0 : mousePos.x * 15,
+              rotateX: reduceMotion ? 0 : rotateX,
+              rotateY: reduceMotion ? 0 : rotateY,
               transformStyle: "preserve-3d"
             }}
-            transition={{ type: "spring", stiffness: 100, damping: 30 }}
             className="w-full max-w-4xl xl:max-w-5xl z-10 flex flex-col items-center"
           >
             <motion.div

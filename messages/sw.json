@@ -285,7 +285,7 @@
     "cta_title": "Uko tayari kushirikiana kwa ajili ya mabadiliko?",
     "become_partner": "Kuwa Mshirika",
     "meet_team": "Timu Yetu",
-    "quote": "Sheria haipaswi tu kusemwa, lazima iishi kwa huduma ya haki ya hali ya hewa na kijamii.",
+    "quote": "Sheria haipaswi tu kusemwa, lazima iishi kwa huduma ya haki ya hali ya hewa and kijamii.",
     "pillars": {
       "title": "Nguzo za Kisheria",
       "desc": "Hatua zetu ziko katika kufuata madhubuti mifumo ya kisheria ya kitaifa na kimataifa.",
@@ -737,5 +737,223 @@
     "portal": "Portal",
     "consult": "Wasiliana na Idara",
     "search": "Tafuta"
+  },
+  "Footer": {
+    "identity": {
+      "badge": "Utafiti na Kituo cha Athari",
+      "description": "Taasisi ya ubora ya Chuo Kikuu Huria cha Nchi za Maziwa Makuu iliyojitolea kwa utafiti wa kisayansi na mazoezi ya kisheria ya kliniki."
+    },
+    "expertise": {
+      "title": "Nyanja za Utaalamu",
+      "items": [
+        "Demokrasia na Uchaguzi",
+        "Utawala wa Ardhi",
+        "Haki ya Mazingira",
+        "Amani na Utatuzi wa Migogoro"
+      ]
+    },
+    "resources": {
+      "title": "Rasilimali za Kiakademia",
+      "items": [
+        {
+          "label": "Historia Yetu",
+          "href": "/about"
+        },
+        {
+          "label": "Maktaba ya Ripoti",
+          "href": "/publications"
+        },
+        {
+          "label": "Timu ya Utafiti",
+          "href": "/team"
+        },
+        {
+          "label": "Ushirikiano wa Kisayansi",
+          "href": "/contact"
+        }
+      ],
+      "admin": "Eneo la Utawala"
+    },
+    "contact": {
+      "title": "Sekretarieti ya Goma",
+      "address": {
+        "line1": "Kampasi ya ULPGL, Quartier Himbi,",
+        "line2": "Goma, Kivu Kaskazini, RDC."
+      },
+      "phone": "+243 812 345 678",
+      "email": "contact@credda-ulpgl.org"
+    },
+    "bottom": {
+      "copyright": "© {year} CREDDA-ULPGL. Haki zote zimehifadhiwa.",
+      "legal": "Taarifa za Kisheria",
+      "privacy": "Sera ya Faragha",
+      "system": "Mfumo wa Kitaasisi Mtandaoni",
+      "affiliation": "INASHIRIKIANA NA CHUO KIKUU CHA ULPGL"
+    }
+  },
+  "GalleryPage": {
+    "back": "Rudi Nyumbani",
+    "badge": "Photothèque",
+    "title": "Nyumba ya Sanaa ya <span>Kitaasisi</span>",
+    "description": "Ingia ndani ya shughuli za CREDDA kupitia uteuzi wa picha zinazonasa utafiti wetu, kazi ya kliniki na ushirikiano.",
+    "stats": {
+      "total": "Picha",
+      "categories": "Jamii",
+      "featured": "Zilizochaguliwa"
+    },
+    "filters": {
+      "all": "Zote"
+    },
+    "results": "Picha {count} kati ya {total}",
+    "featured": "Iliyoangaziwa",
+    "download": "Pakua",
+    "share": "Shiriki",
+    "like": "Penda",
+    "liked": "Imependwa",
+    "empty": {
+      "title": "Uboreshaji wa nyumba ya sanaa",
+      "description": "Timu zetu zinaandaa uteuzi wa picha. Rudi hivi karibuni kugundua shughuli zetu katika picha."
+    }
+  },
+  "CDEPage": {
+    "header": {
+      "badge": "Mpango Maalum wa CDE",
+      "title": "Kliniki ya <span>Sheria ya Mazingira</span>",
+      "description": "Taasisi ya ubora ndani ya CREDDA-ULPGL iliyojitolea kwa ulinzi wa mazingira na haki za jamii za mitaa."
+    },
+    "intro": {
+      "title": "Muktadha na Uhalali",
+      "text": "Uzinduzi wa Kliniki ya Sheria ya Mazingira (CDE) unajibu hitaji la haraka la kutoa suluhisho la vitendo kwa haki ya kijamii na upatikanaji wa haki, haki ya kikatiba inayotambuliwa kwa watu wa asili wa pygmy na jamii za mitaa nchini RDC."
+    },
+    "mission": {
+      "title": "Mission Yetu",
+      "items": [
+        "Ushauri wa kisheria na mwongozo kwa wadau",
+        "Kuandaa nyaraka rahisi za kisheria (malalamiko, maombi)",
+        "Upatanishi wa jamii na upatanisho",
+        "Msaada wa kisheria chini ya usimamizi",
+        "Kliniki zinazotembea na kampeni za uhamasishaji wa kisheria"
+      ]
+    },
+    "strategic_axes": {
+      "title": "Mhimili wa Kimkakati",
+      "axes": [
+        {
+          "title": "Kuimarisha Uwezo",
+          "desc": "Kufundisha wanafunzi, majaji na viongozi wa jamii."
+        },
+        {
+          "title": "Madai ya Maslahi ya Umma",
+          "desc": "Kukatisha tamaa maendeleo yenye madhara na uchafuzi."
+        },
+        {
+          "title": "Utetezi",
+          "desc": "Kushawishi sheria za mazingira na sera za umma."
+        },
+        {
+          "title": "Msaada wa Bure wa Kisheria",
+          "desc": "Huduma za bure kwa idadi ya watu walio hatarini."
+        }
+      ]
+    },
+    "cta": {
+      "title": "Ripoti dhuluma ya mazingira",
+      "description": "Je, wewe ni mwathirika wa uchafuzi wa mazingira, mgogoro wa ardhi au ukataji miti? Tunaweza kukusaidia.",
+      "button": "Wasilisha kesi yangu"
+    }
+  },
+  "Track": {
+    "badge": "Portal ya Kufuatilia kwa Usalama",
+    "title": "Fuatilia Kesi Yako.",
+    "description": "Ingiza namba yako ya simu iliyosajiliwa ili kupata hali yako na kufuata maendeleo ya usajili wako wa kisheria.",
+    "placeholder": "Ingiza namba ya simu (+243...)",
+    "submit": "Pata Usajili",
+    "results_title": "Rekodi za Usajili",
+    "last_update": "Sasisho la Mwisho",
+    "no_records": "Hakuna Rekodi Zilizopatikana",
+    "no_records_desc": "Hatukuweza kupata kesi zozote za kliniki zinazohusiana na namba hii ya simu. Tafadhali kagua namba au wasiliana na ofisi yetu.",
+    "confidentiality_title": "Siri",
+    "confidentiality_desc": "Data yako inalindwa na siri ya mahakama. Ufikiaji umezuiwa kwa wanufaika waliosajiliwa pekee.",
+    "authority_title": "Mamlaka ya Kisheria",
+    "authority_desc": "Hali zinasasishwa kwa wakati halisi na wataalam wetu wa kisheria baada ya kila hatua ya utaratibu."
+  },
+  "Search": {
+    "placeholder": "Tafuta ripoti, mtafiti au makala...",
+    "min_chars": "Ingiza angalau herufi 2",
+    "sections": {
+      "articles": "Utafiti na Uchambuzi",
+      "publications": "Maktaba ya PDF"
+    },
+    "footer_hint": "Bonyeza Enter kuona matokeo yote",
+    "esc_hint": "kufunga"
+  },
+  "PublicationsHero": {
+    "latest": "Chapisho la Hivi Karibuni",
+    "readingTime": "DKK {time} ZA KUSOMA",
+    "access": "Pata Jarida Kamili",
+    "preview": "Onyesho la PDF"
+  },
+  "ClinicalMap": {
+    "badge": "Ufikiaji wa Kijiografia",
+    "title": "Uwepo Nyanjani",
+    "description": "CREDDA inapeleka wataalam wake karibu iwezekanavyo na jamii. Kliniki zetu za kudumu na zinazotembea zinawafunika pointi za kimkakati katika eneo la Maziwa Makuu.",
+    "loading": "Inapakia Data ya Kijiografia...",
+    "mobile": "Kliniki Inayotembea",
+    "fixed": "Kituo cha Kudumu"
+  },
+  "PrivacyPage": {
+    "header": {
+      "badge": "Ulinzi wa Data",
+      "title": "Sera ya <span>Faragha</span>",
+      "description": "CREDDA-ULPGL imejitolea kulinda habari yako ya kibinafsi kulingana na viwango vya maadili na kiakademia."
+    },
+    "sections": [
+      {
+        "title": "Data Inayokusanywa",
+        "content": "Tunakusanya data iliyotolewa kupitia fomu zetu (mawasiliano, usajili, ufuatiliaji wa kliniki): jina, email, simu, na uhusiano wa kitaasisi."
+      },
+      {
+        "title": "Madhumuni ya Uchakataji",
+        "content": "Data yako inatumiwa kwa kufuatilia kesi za kliniki ya kisheria, kusambaza machapisho yetu, na kusimamia mtandao wetu wa watafiti."
+      },
+      {
+        "title": "Usalama na Uhifadhi",
+        "content": "Data imesimbwa na kuhifadhiwa kwenye seva salama. Ufikiaji umezuiwa madhubuti kwa sekretarieti ya kisayansi."
+      },
+      {
+        "title": "Haki Zako",
+        "content": "Una haki ya kupata, kurekebisha na kufuta data yako kwa ombi rahisi kwa privacy@credda-ulpgl.org."
+      }
+    ],
+    "footer": {
+      "title": "Unahitaji habari zaidi?",
+      "description": "Kwa maswali yoyote kuhusu sera yetu ya faragha au kutumia haki zako, tafadhali usisite kuwasiliana nasi.",
+      "cta": "Andika kwa sekretarieti"
+    }
+  },
+  "LegalPage": {
+    "header": {
+      "badge": "Habari Rasmi",
+      "title": "Taarifa za <span>Kisheria</span>",
+      "description": "Habari za kisheria zinazohusiana na taasisi na masharti ya matumizi ya tovuti."
+    },
+    "sections": [
+      {
+        "title": "Mchapishaji wa Tovuti",
+        "content": "Kituo cha Utafiti juu ya Demokrasia na Maendeleo barani Afrika (CREDDA-ULPGL), taasisi ya kiakademia ya Chuo Kikuu Huria cha Nchi za Maziwa Makuu (ULPGL-Goma)."
+      },
+      {
+        "title": "Usimamizi",
+        "content": "Mkurugenzi wa Machapisho: Prof. Dr. Kennedy Kihangi Bindu, Mkurugenzi wa CREDDA."
+      },
+      {
+        "title": "Makao Makuu",
+        "content": "Kampasi ya Salomon, Avenue de la Corniche, Q. Himbi, Goma, Kivu Kaskazini, Jamhuri ya Kidemokrasia ya Kongo."
+      },
+      {
+        "title": "Mali ya Kiakili",
+        "content": "Ripoti zote, makala na maudhui ya multimedia ni mali ya kipekee ya CREDDA-ULPGL, isipokuwa ikiwa imeelezwa vinginevyo. Utoaji wowote unategemea idhini ya awali."
+      }
+    ]
   }
 }

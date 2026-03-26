@@ -1,13 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-// Only register on client side
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import { motion, useReducedMotion, Variants } from "framer-motion";
 
 interface RevealProps {
   children: React.ReactNode;
@@ -22,55 +15,39 @@ export default function GSAPReveal({
   children,
   direction = "up",
   delay = 0,
-  duration = 1.2,
+  duration = 0.8, // Slightly faster than the GSAP original for better feel
   triggerOnce = true,
   className = ""
 }: RevealProps) {
-  const elementRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    const el = elementRef.current;
-    if (!el) return;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) {
-      gsap.set(el, { opacity: 1, x: 0, y: 0 });
-      return;
-    }
-
-    const vars = {
+  const variants: Variants = {
+    hidden: {
       opacity: 0,
-      y: direction === "up" ? 60 : direction === "down" ? -60 : 0,
-      x: direction === "left" ? 60 : direction === "right" ? -60 : 0,
-    };
-
-    const anim = gsap.fromTo(
-      el,
-      vars,
-      {
-        opacity: 1,
-        y: 0,
-        x: 0,
+      y: shouldReduceMotion ? 0 : direction === "up" ? 40 : direction === "down" ? -40 : 0,
+      x: shouldReduceMotion ? 0 : direction === "left" ? 40 : direction === "right" ? -40 : 0,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      x: 0,
+      transition: {
         duration: duration,
         delay: delay,
-        ease: "expo.out",
-        scrollTrigger: {
-          trigger: el,
-          start: "top 90%",
-          toggleActions: triggerOnce ? "play none none none" : "play none none reverse",
-          // markers: false, // For debugging animations
-        }
-      }
-    );
-
-    return () => {
-      anim.kill();
-      if (anim.scrollTrigger) anim.scrollTrigger.kill();
-    };
-  }, [direction, delay, duration, triggerOnce]);
+        ease: [0.22, 1, 0.36, 1] as const, // Expo-like ease
+      },
+    },
+  };
 
   return (
-    <div ref={elementRef} className={`will-change-transform opacity-0 ${className}`}>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: triggerOnce, margin: "-10% 0px" }}
+      variants={variants}
+      className={className}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

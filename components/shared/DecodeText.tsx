@@ -30,7 +30,7 @@ export default function DecodeText({
         text
           .split("")
           .map((char, index) => {
-            if (index < Math.floor(iteration)) {
+            if (index < iteration) {
               return text[index];
             }
             if (char === " ") return " ";
@@ -43,8 +43,8 @@ export default function DecodeText({
         clearInterval(interval);
       }
 
-      iteration += text.length / (duration * 25); // Dynamics based on length and duration
-    }, 40);
+      iteration += 1; // Reveal one char at a time for predictability and performance
+    }, 60);
 
     return () => clearInterval(interval);
   }, [isVisible, text, duration]);
