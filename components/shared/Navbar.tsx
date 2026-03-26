@@ -138,18 +138,29 @@ export default function Navbar() {
               {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
             </button>
 
-            <Link
-              href={loginHref}
-              className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all ${
-                isScrolled ? "text-foreground/50 hover:text-primary" : "text-foreground/40 hover:text-primary"
-              }`}
-            >
-              {loginLabel}
-            </Link>
+            {session ? (
+              <Link href="/admin" className="flex items-center gap-3 group border border-border/50 bg-muted/20 px-4 py-1.5 rounded-full hover:bg-[#C9A84C]/10 transition-all">
+                 <div className="w-6 h-6 rounded-full bg-[#C9A84C] text-[10px] font-black flex items-center justify-center text-[#0C0C0A]">
+                   {session.user?.name?.[0] || 'A'}
+                 </div>
+                 <span className="text-[9px] font-black uppercase tracking-widest text-foreground/70 group-hover:text-foreground">
+                   Dashboard
+                 </span>
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all hover:text-[#C9A84C] ${
+                  isScrolled ? "text-foreground/50" : "text-foreground/40"
+                }`}
+              >
+                {t("login")}
+              </Link>
+            )}
 
             <Link
               href="/contact"
-              className={`px-6 py-2.5 bg-[#C9A84C] text-[#0C0C0A] text-[9px] font-black uppercase tracking-[0.2em] rounded-full hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-lg`}
+              className={`px-6 py-2.5 bg-[#C9A84C] text-[#0C0C0A] text-[9px] font-black uppercase tracking-[0.2em] rounded-full hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-lg hover:shadow-[#C9A84C]/20`}
             >
               {t("contact")}
               <ArrowRight size={12} strokeWidth={3} />
@@ -216,12 +227,28 @@ export default function Navbar() {
                 </div>
               </div>
 
-              <Link href={loginHref} onClick={() => setIsOpen(false)} className="flex items-center justify-between w-full p-4 rounded-xl border border-[#C9A84C]/20 bg-[#C9A84C]/5 text-foreground">
+              <Link 
+                href={session ? "/admin" : "/login"} 
+                onClick={() => setIsOpen(false)} 
+                className={`flex items-center justify-between w-full p-4 rounded-xl border transition-all ${
+                  session ? "border-blue-500/30 bg-blue-500/5 text-foreground" : "border-[#C9A84C]/20 bg-[#C9A84C]/5 text-foreground"
+                }`}
+              >
                  <div className="flex flex-col">
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C9A84C]/60">Accès Membre</span>
-                    <span className="text-sm font-bold uppercase tracking-widest">{loginLabel}</span>
+                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${session ? "text-blue-500/60" : "text-[#C9A84C]/60"}`}>
+                      {session ? "Session Active" : "Accès Membre"}
+                    </span>
+                    <span className="text-sm font-bold uppercase tracking-widest">
+                      {session ? "Accéder au Dashboard" : t("login")}
+                    </span>
                  </div>
-                 <ArrowRight size={18} className="text-[#C9A84C]" />
+                 {session ? (
+                   <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-xs">
+                     {session.user?.name?.[0] || 'A'}
+                   </div>
+                 ) : (
+                   <ArrowRight size={18} className="text-[#C9A84C]" />
+                 )}
               </Link>
 
               <Link href="/contact" onClick={() => setIsOpen(false)} className="group relative block w-full py-5 bg-[#C9A84C] text-[#0C0C0A] text-center font-bold uppercase tracking-[0.4em] text-[10px] rounded-xl overflow-hidden active:scale-95 transition-all">

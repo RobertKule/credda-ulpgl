@@ -68,7 +68,7 @@ export default async function AdminLayout({
           <AdminHeader locale={locale} />
 
           {/* ✅ Contenu principal */}
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 xl:p-10 overflow-x-hidden mt-32">
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 xl:p-10 overflow-x-hidden pt-20 lg:pt-24">
             <div className="max-w-7xl mx-auto">
               <div className="mb-6 lg:hidden">
                 <p className="text-xs font-black uppercase tracking-widest text-slate-400">

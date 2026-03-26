@@ -80,3 +80,36 @@ export async function updateUserRole(id: string, role: "SUPER_ADMIN" | "ADMIN" |
     return { success: false, error: "Failed to update role" };
   }
 }
+
+export async function updateUserProfile(id: string, data: { name?: string; email?: string; phone?: string; bio?: string }) {
+  try {
+    const updatedUser = await db.user.update({
+      where: { id },
+      data
+    });
+    revalidatePath("/admin/profile");
+    return { success: true, data: updatedUser };
+  } catch (error) {
+    return { success: false, error: "Failed to update profile" };
+  }
+}
+
+export async function updateUserPassword(id: string, currentPassword: string, newPassword: string) {
+  try {
+    const user = await db.user.findUnique({ where: { id } });
+    if (!user) return { success: false, error: "User not found" };
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) return { success: false, error: "Mot de passe actuel incorrect" };
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await db.user.update({
+      where: { id },
+      data: { password: hashedPassword }
+    });
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: "Erreur lors de la mise à jour du mot de passe" };
+  }
+}

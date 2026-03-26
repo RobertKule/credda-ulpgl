@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "@/navigation";
 import { usePathname } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 import { 
   LayoutDashboard, 
   FileText, 
@@ -45,6 +46,7 @@ interface AdminSidebarProps {
 }
 
 export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
+  const { data: session } = useSession();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -99,6 +101,11 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMobile, isOpen]);
 
+  const fullMenuItems = [
+    ...menuItems,
+    { href: "/admin/profile", label: "Mon Profil", icon: "UserCircle" },
+  ];
+
   return (
     <>
       {/* Overlay mobile */}
@@ -113,8 +120,8 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
       <aside
         id="admin-sidebar"
         className={`
-          fixed lg:sticky top-0 left-0 z-50 mt-32
-          h-screen bg-[#000000] border-r border-white/5
+          fixed lg:sticky top-0 left-0 z-50
+          h-screen bg-[#06080a] border-r border-white/5
           transition-all duration-300 ease-in-out
           flex flex-col text-white
           ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
@@ -129,13 +136,13 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
         `}>
           {isOpen ? (
             <>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-[#C9A84C] rounded-xl flex items-center justify-center shadow-lg">
-                  <span className="text-black font-bold text-lg">C</span>
+              <div className="flex items-center gap-3 group/logo cursor-pointer">
+                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform">
+                  <span className="text-white font-black text-lg">C</span>
                 </div>
                 <div>
                   <p className="font-serif font-bold text-white leading-tight">CREDDA</p>
-                  <p className="text-[8px] font-black uppercase tracking-widest text-[#C9A84C]">Admin Portal</p>
+                  <p className="text-[8px] font-black uppercase tracking-widest text-blue-500">Admin Portal v2</p>
                 </div>
               </div>
               <button
@@ -147,16 +154,16 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
               </button>
             </>
           ) : (
-            <div className="w-10 h-10 bg-[#C9A84C] rounded-xl flex items-center justify-center mx-auto shadow-lg">
-              <span className="text-black font-bold text-lg">C</span>
+            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center mx-auto shadow-lg hover:scale-110 transition-transform cursor-pointer">
+              <span className="text-white font-bold text-lg">C</span>
             </div>
           )}
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-6 overflow-y-auto">
-          <ul className="space-y-1">
-            {menuItems.map((item) => {
+        <nav className="flex-1 py-8 overflow-y-auto custom-scrollbar">
+          <ul className="space-y-1.5 px-3">
+            {fullMenuItems.map((item) => {
               const isActive = pathname === item.href || 
                 (item.href !== '/admin' && pathname?.startsWith(item.href));
               const Icon = iconMap[item.icon];
@@ -168,27 +175,31 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
                   <Link
                     href={item.href}
                     className={`
-                      flex items-center mx-3 px-4 py-3 rounded-md
-                      transition-all duration-300 group
+                      flex items-center px-4 py-3.5 rounded-xl
+                      transition-all duration-300 group relative
                       ${isActive 
-                        ? 'bg-white/5 border-l-2 border-[#C9A84C] text-white shadow-sm' 
-                        : 'text-white/70 hover:bg-white/5 hover:backdrop-blur-md hover:text-white border-l-2 border-transparent'
+                        ? 'bg-blue-600/10 text-blue-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]' 
+                        : 'text-white/50 hover:bg-white/5 hover:text-white'
                       }
                     `}
                   >
-                    <Icon size={20} className={`
-                      shrink-0 transition-transform
-                      ${isActive ? 'text-[#C9A84C]' : 'text-white/50 group-hover:text-white'}
+                    <Icon size={18} className={`
+                      shrink-0 transition-all duration-300
+                      ${isActive ? 'text-blue-500 scale-110' : 'text-white/30 group-hover:text-blue-400'}
                       ${isOpen ? 'mr-4' : 'mx-auto'}
                     `} />
                     
                     {isOpen && (
                       <span className={`
-                        text-sm font-medium whitespace-nowrap
-                        ${isActive ? 'text-white' : 'text-white/70'}
+                        text-xs font-bold uppercase tracking-widest whitespace-nowrap
+                        ${isActive ? 'text-blue-400' : ''}
                       `}>
                         {item.label}
                       </span>
+                    )}
+
+                    {isActive && (
+                       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-600 rounded-r-full shadow-[0_0_15px_rgba(37,99,235,0.5)]" />
                     )}
                   </Link>
                 </li>
@@ -198,30 +209,30 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
         </nav>
 
         {/* Footer Sidebar */}
-        <div className="border-t border-white/5 p-4">
+        <div className="border-t border-white/5 p-4 bg-[#0a0c0e]/50 backdrop-blur-md">
           <div className={`
-            flex items-center gap-3 px-3 py-3 rounded-xl bg-transparent hover:bg-white/5 transition-colors
+            flex items-center gap-3 px-3 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-all group
             ${!isOpen && 'justify-center'}
           `}>
-            <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center">
-              <UserCircle size={18} className="text-white/70" />
+            <div className="w-9 h-9 bg-blue-600/20 rounded-xl flex items-center justify-center text-blue-500 border border-blue-600/20 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
+              <UserCircle size={20} />
             </div>
             
             {isOpen && (
               <>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-white truncate">Admin</p>
-                  <p className="text-[8px] font-black uppercase tracking-wider text-[#C9A84C]">Super Admin</p>
+                  <p className="text-xs font-black uppercase tracking-tight text-white truncate">{session?.user?.name || 'Admin'}</p>
+                  <div className="flex items-center gap-1.5">
+                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                     <p className="text-[8px] font-black uppercase tracking-widest text-emerald-500">En ligne</p>
+                  </div>
                 </div>
                 <button 
-                  className="p-2 hover:bg-white/10 rounded-lg transition-colors group-hover:block"
+                  className="p-2.5 hover:bg-red-500/10 rounded-xl transition-all group/logout"
                   aria-label="Déconnexion"
-                  onClick={() => {
-                    document.cookie = "token=; path=/; max-age=0";
-                    window.location.href = `/${locale}/login`;
-                  }}
+                  onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
                 >
-                  <LogOut size={16} className="text-white/50 hover:text-red-400 transition-colors" />
+                  <LogOut size={16} className="text-white/30 group-hover/logout:text-red-500 transition-colors" />
                 </button>
               </>
             )}
@@ -230,7 +241,7 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
           {/* Bouton de bascule pour desktop */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="hidden lg:flex items-center justify-center w-full mt-4 p-2 bg-white/5 rounded-xl hover:bg-white/10 text-white/50 hover:text-white transition-colors"
+            className="hidden lg:flex items-center justify-center w-full mt-4 p-2 bg-white/5 rounded-xl hover:bg-white/10 text-white/30 hover:text-white transition-all border border-transparent hover:border-white/5"
             aria-label={isOpen ? "Réduire" : "Développer"}
           >
             {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
