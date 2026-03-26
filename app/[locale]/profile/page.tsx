@@ -145,8 +145,8 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-blue-50/50 border border-blue-100/50 space-y-4">
-              <div className="flex items-center gap-3 text-blue-600">
+            <div className="p-6 rounded-3xl bg-primary/5/50 border border-blue-100/50 space-y-4">
+              <div className="flex items-center gap-3 text-primary">
                 <Mail size={18} />
                 <span className="text-sm font-bold truncate">{session.user.email}</span>
               </div>
@@ -178,7 +178,7 @@ export default function ProfilePage() {
               <div className="space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">{t('fields.name')}</label>
                 <div className="relative group">
-                  <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                  <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" />
                   <Input 
                     name="name"
                     value={formData.name}
@@ -191,7 +191,7 @@ export default function ProfilePage() {
               <div className="space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">{t('fields.phone')}</label>
                 <div className="relative group">
-                  <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                  <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" />
                   <Input 
                     name="phone"
                     value={formData.phone}
@@ -204,7 +204,7 @@ export default function ProfilePage() {
               <div className="sm:col-span-2 space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">{t('fields.organization')}</label>
                 <div className="relative group">
-                  <Building size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                  <Building size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" />
                   <Input 
                     name="organization"
                     value={formData.organization}
@@ -217,7 +217,7 @@ export default function ProfilePage() {
               <div className="sm:col-span-2 space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">{t('fields.image')}</label>
                 <div className="relative group">
-                  <ImageIcon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                  <ImageIcon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors" />
                   <Input 
                     name="image"
                     value={formData.image}
@@ -230,7 +230,7 @@ export default function ProfilePage() {
               <div className="sm:col-span-2 space-y-2">
                 <label className="text-xs font-black uppercase tracking-widest text-slate-400 ml-1">{t('fields.bio')}</label>
                 <div className="relative group">
-                  <FileText size={18} className="absolute left-4 top-4 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
+                  <FileText size={18} className="absolute left-4 top-4 text-slate-400 group-focus-within:text-primary transition-colors" />
                   <Textarea 
                     name="bio"
                     value={formData.bio}
@@ -244,7 +244,7 @@ export default function ProfilePage() {
             <Button 
               type="submit" 
               disabled={isSaving}
-              className="w-full sm:w-auto px-12 h-14 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-bold uppercase tracking-[0.1em] text-xs transition-all shadow-lg shadow-blue-600/20"
+              className="w-full sm:w-auto px-12 h-14 bg-primary hover:bg-blue-700 text-white rounded-2xl font-bold uppercase tracking-[0.1em] text-xs transition-all shadow-lg shadow-blue-600/20"
             >
               {isSaving ? (
                 <Loader2 className="animate-spin mr-2" size={18} />

@@ -127,19 +127,19 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
               <div className="text-center p-6 w-full h-full flex flex-col items-center justify-center">
                 {uploading ? (
                   <div className="space-y-4 w-full px-6">
-                    <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-full animate-spin mx-auto" />
-                    <div className="w-full bg-slate-200 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                    <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-md animate-spin mx-auto" />
+                    <div className="w-full bg-slate-200 dark:bg-white/10 h-1.5 rounded-md overflow-hidden">
                       <div 
-                        className="bg-blue-600 h-full transition-all duration-300" 
+                        className="bg-primary h-full transition-all duration-300" 
                         style={{ width: `${uploadProgress}%` }}
                       />
                     </div>
-                    <p className="text-[9px] font-black text-blue-600 uppercase tracking-widest">Calcul: {uploadProgress}%</p>
+                    <p className="text-[9px] font-black text-primary uppercase tracking-widest">Calcul: {uploadProgress}%</p>
                   </div>
                 ) : (
                   <div className="space-y-6">
-                    <div className="w-20 h-20 bg-slate-200 dark:bg-white/5 rounded-3xl flex items-center justify-center mx-auto transition-colors group-hover:bg-blue-600/10">
-                      <User size={32} className="text-slate-400 group-hover:text-blue-600 transition-colors" />
+                    <div className="w-20 h-20 bg-slate-200 dark:bg-white/5 rounded-3xl flex items-center justify-center mx-auto transition-colors group-hover:bg-primary/10">
+                      <User size={32} className="text-slate-400 group-hover:text-primary transition-colors" />
                     </div>
                     <Button
                       type="button"
@@ -168,11 +168,11 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
         <div className="lg:col-span-3 space-y-6">
            <div className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 p-8 rounded-[2.5rem] shadow-sm grid md:grid-cols-2 gap-8 transition-colors">
               <div className="space-y-3 group">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors">Email de Liaison</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-primary transition-colors">Email de Liaison</label>
                 <Input value={baseData.email} onChange={(e) => setBaseData({ ...baseData, email: e.target.value })} placeholder="email@credda-ulpgl.org" className="rounded-xl h-14 bg-slate-50 dark:bg-white/[0.02] border-slate-100 dark:border-white/5 font-bold text-xs" />
               </div>
               <div className="space-y-3 group">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-blue-600 transition-colors">Priorité d'affichage</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-focus-within:text-primary transition-colors">Priorité d'affichage</label>
                 <div className="flex items-center gap-4">
                   <Input type="number" value={baseData.order} onChange={(e) => setBaseData({ ...baseData, order: parseInt(e.target.value) })} className="rounded-xl h-14 bg-slate-50 dark:bg-white/[0.02] border-slate-100 dark:border-white/5 font-bold text-xs max-w-[120px]" />
                   <p className="text-[9px] text-slate-400 dark:text-slate-500 font-bold uppercase tracking-tight italic leading-tight">
@@ -237,7 +237,7 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
         <Button
           onClick={handleSubmit}
           disabled={uploading}
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-12 h-14 uppercase text-[10px] font-black tracking-widest shadow-xl shadow-blue-600/20 active:scale-95 transition-all flex items-center gap-3"
+          className="bg-primary hover:bg-blue-700 text-white rounded-xl px-12 h-14 uppercase text-[10px] font-black tracking-widest shadow-xl shadow-blue-600/20 active:scale-95 transition-all flex items-center gap-3"
         >
           <Save size={16} /> 
           {initialData ? "Sauvegarder les modifications" : "Intégrer le membre"}

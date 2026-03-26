@@ -7,8 +7,6 @@ import { useTranslations } from "next-intl";
 import { useTheme } from "@/components/shared/ThemeProvider";
 import { cn } from "@/lib/utils";
 
-import DecodeText from "@/components/shared/DecodeText";
-
 export default function Hero() {
   const t = useTranslations('HomePage');
   const { theme } = useTheme();
@@ -94,54 +92,79 @@ export default function Hero() {
                 <div className="h-[1px] w-12 bg-primary/50" />
               </div>
 
-              {/* MAIN TITLE - CENTERED WITH DECODE */}
+              {/* MAIN TITLE - DIRECT & IMPACTFUL */}
               <motion.h1 
                 style={{ y: titleY, z: 100 }}
                 className={cn(
-                  "mb-10 font-fraunces text-[clamp(2.5rem,8vw,9rem)] xl:text-8xl font-black leading-[1.05] tracking-tighter text-foreground sm:mb-14 md:mb-16",
+                  "mb-10 font-fraunces text-[clamp(2.2rem,7vw,8rem)] xl:text-7xl font-black leading-[1.1] tracking-tighter text-foreground sm:mb-14 md:mb-16 uppercase",
                   isLight
-                    ? "[text-shadow:0_2px_4px_rgba(0,0,0,0.1)]"
-                    : "[text-shadow:0_4px_32px_rgba(0,0,0,0.8)]"
+                    ? "[text-shadow:0_2px_4px_rgba(0,0,0,0.05)]"
+                    : "[text-shadow:0_4px_32px_rgba(201,168,76,0.15)]"
                 )}
               >
-                <span className={cn("block italic mb-4", isLight ? "opacity-80 text-foreground/80" : "opacity-70 text-primary/70")}>
-                  <DecodeText text={t('hero.title_part1')} delay={1.0} duration={1.2} />
-                </span>
-                <span className="block text-primary relative filter drop-shadow-[0_0_20px_rgba(201,168,76,0.3)]">
+                <motion.span 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, delay: 0.2, ease: [0.215, 0.61, 0.355, 1] }}
+                  className={cn("block italic mb-2 tracking-normal lowercase first-letter:uppercase", isLight ? "opacity-60 text-foreground" : "opacity-70 text-primary/70")}
+                >
+                  {t('hero.title_part1')}
+                </motion.span>
+                <motion.span 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2, delay: 0.4, ease: [0.215, 0.61, 0.355, 1] }}
+                  className="block text-primary relative filter drop-shadow-[0_0_30px_rgba(201,168,76,0.2)]"
+                >
                   {t('hero.title_part2')}
                   <motion.span 
                     initial={{ scaleX: 0 }}
                     whileInView={{ scaleX: 1 }}
-                    transition={{ delay: 1.5, duration: 1.5 }}
-                    className="absolute -bottom-6 left-1/4 w-1/2 h-[2px] bg-primary shadow-[0_0_15px_rgba(201,168,76,0.6)]" 
+                    viewport={{ once: true }}
+                    transition={{ delay: 1.2, duration: 1.5, ease: "circOut" }}
+                    className="absolute -bottom-4 left-1/4 w-1/2 h-[2px] bg-primary/40 shadow-[0_0_15px_rgba(201,168,76,0.4)]" 
                   />
-                </span>
+                </motion.span>
               </motion.h1>
 
-              {/* DESCRIPTION - CENTERED WITH DECODE */}
+              {/* DESCRIPTION - PREMIUM SCROLL REVEAL */}
               <motion.p 
                 style={{ y: descY, z: 60 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 1, delay: 0.8 }}
                 className={cn(
-                  "mb-14 max-w-4xl font-outfit text-base font-medium leading-relaxed text-foreground sm:mb-16 sm:text-lg md:mb-20 md:text-xl lg:text-2xl glass-card py-8 px-12 border border-primary/20 bg-background/60 backdrop-blur-xl shadow-2xl",
+                  "mb-14 max-w-4xl font-outfit text-sm font-medium leading-relaxed text-foreground/80 sm:mb-16 sm:text-base md:mb-20 md:text-lg lg:text-xl glass-card py-10 px-12 border border-primary/10 bg-background/40 backdrop-blur-2xl shadow-2xl relative overflow-hidden group",
                   isLight
-                    ? "[text-shadow:0_1px_2px_rgba(255,255,255,0.8)]"
-                    : "[text-shadow:0_2px_12px_rgba(0,0,0,0.5)]"
+                    ? "border-slate-200"
+                    : "border-white/5"
                 )}
               >
-                <DecodeText text={t('hero.subtitle')} delay={1.8} duration={2} />
+                <span className="relative z-10">{t('hero.subtitle')}</span>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               </motion.p>
 
-              {/* ACTIONS - CENTERED */}
-              <div className="flex flex-col flex-wrap items-center justify-center gap-6 sm:flex-row sm:gap-10" style={{ transform: "translateZ(80px)" }}>
-                <Link 
-                  href="/publications" 
-                  className="group relative inline-flex justify-center px-10 py-6 font-outfit text-[10px] font-black uppercase tracking-[0.3em] text-primary-foreground shadow-2xl transition-all hover:scale-[1.03] active:scale-95 sm:px-14 sm:py-7 md:px-16 md:py-8 bg-primary overflow-hidden rounded-md"
+               {/* ACTIONS - CENTERED */}
+              <motion.div 
+                style={{ y: descY, z: 40 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 1 }}
+                className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8"
+              >
+                <Link
+                  href="/contact"
+                  className="group relative px-12 py-5 bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-[0.4em] overflow-hidden rounded-md transition-all hover:scale-105 active:scale-95 shadow-2xl hover:shadow-primary/20 border border-transparent hover:border-emerald/40"
                 >
-                  <span className="relative z-10 flex items-center gap-4">
-                    {t('hero.cta_publications')} 
-                    <ArrowRight size={18} className="group-hover:translate-x-3 transition-transform duration-700" />
+                  <span className="relative z-10 flex items-center gap-3">
+                    {t('cta.partner')}
+                    <ArrowRight size={14} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
                   </span>
-                  <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-700 opacity-20" />
+                  <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                 </Link>
                 
                 <Link 
@@ -157,7 +180,7 @@ export default function Hero() {
                     <span className="text-[12px] font-outfit font-bold uppercase tracking-[0.1em] opacity-40 group-hover:opacity-100 transition-opacity">Découvrir le CREDDA</span>
                   </div>
                 </Link>
-              </div>
+              </motion.div>
             </motion.div>
           </motion.div>
         </div>

@@ -79,11 +79,11 @@ export function ProgramForm({ initialData, isEditing = false }: any) {
       <div className="sticky top-0 z-30 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white/70 dark:bg-slate-950/70 backdrop-blur-2xl py-6 border-b border-slate-200 dark:border-white/5 -mx-4 sm:-mx-6 lg:-mx-10 px-4 sm:px-6 lg:px-10 transition-all">
         <div className="flex flex-col gap-1 mb-4 sm:mb-0">
           <div className="flex items-center gap-2 mb-1">
-             <div className="w-2 h-2 rounded-full bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.5)]" />
+             <div className="w-2 h-2 rounded-md bg-primary shadow-[0_0_8px_rgba(37,99,235,0.5)]" />
              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-white/30">Gestion des Programmes</span>
           </div>
           <h1 className="text-3xl font-serif font-black text-slate-900 dark:text-white flex items-center gap-3">
-             {isEditing ? "Édition" : "Nouveau"} Programme <span className="text-blue-600 italic">CREDDA</span>
+             {isEditing ? "Édition" : "Nouveau"} Programme <span className="text-primary italic">CREDDA</span>
           </h1>
         </div>
         <div className="flex items-center gap-4 w-full sm:w-auto">
@@ -95,7 +95,7 @@ export function ProgramForm({ initialData, isEditing = false }: any) {
           >
             <ArrowLeft size={16} /> Annuler
           </Button>
-          <Button className="flex-1 sm:flex-none h-12 px-10 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black uppercase tracking-[0.2em] shadow-xl hover:scale-[1.02] active:scale-95 transition-all rounded-none">
+          <Button className="flex-1 sm:flex-none h-12 px-10 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black uppercase tracking-[0.2em] shadow-xl hover:scale-[1.02] active:scale-95 transition-all rounded-md">
             <Save size={18} className="mr-3" />
             {isEditing ? "Mettre à jour" : "Sauvegarder"}
           </Button>
@@ -105,12 +105,12 @@ export function ProgramForm({ initialData, isEditing = false }: any) {
       <div className="grid lg:grid-cols-4 gap-10">
         <div className="lg:col-span-3 space-y-10">
           <Tabs defaultValue="fr" className="w-full">
-            <TabsList className="inline-flex h-12 items-center justify-start rounded-none bg-transparent p-0 border-b border-slate-200 dark:border-white/5 w-full gap-8">
+            <TabsList className="inline-flex h-12 items-center justify-start rounded-md bg-transparent p-0 border-b border-slate-200 dark:border-white/5 w-full gap-8">
               {LANGUAGES.map(l => (
                 <TabsTrigger 
                   key={l.code} 
                   value={l.code} 
-                  className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-none h-full px-0 font-black uppercase text-[10px] tracking-widest text-slate-400 data-[state=active]:text-blue-600"
+                  className="data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-blue-600 rounded-md h-full px-0 font-black uppercase text-[10px] tracking-widest text-slate-400 data-[state=active]:text-primary"
                 >
                   <Globe size={14} className="mr-2" /> {l.label}
                 </TabsTrigger>
@@ -122,7 +122,7 @@ export function ProgramForm({ initialData, isEditing = false }: any) {
                 <div className="space-y-4">
                   <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-white/40 ml-1">Titre du Programme ({l.code.toUpperCase()})</Label>
                   <Input 
-                    className="h-20 text-4xl font-serif font-black bg-transparent border-0 border-b border-slate-200 dark:border-white/10 rounded-none px-0 focus-visible:ring-0 focus-visible:border-blue-600 transition-all placeholder:text-slate-200 dark:placeholder:text-white/10 text-slate-900 dark:text-white"
+                    className="h-20 text-4xl font-serif font-black bg-transparent border-0 border-b border-slate-200 dark:border-white/10 rounded-md px-0 focus-visible:ring-0 focus-visible:border-blue-600 transition-all placeholder:text-slate-200 dark:placeholder:text-white/10 text-slate-900 dark:text-white"
                     placeholder="Titre stratégique..."
                     value={translations[l.code].title}
                     onChange={(e) => setTranslations({...translations, [l.code]: {...translations[l.code], title: e.target.value}})}
@@ -142,7 +142,7 @@ export function ProgramForm({ initialData, isEditing = false }: any) {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <Label className="text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-white/40 ml-1">Contenu Détaillé du Programme</Label>
-                    <span className="text-[9px] font-bold text-blue-600/50 uppercase tracking-tighter">Supporte le Markdown</span>
+                    <span className="text-[9px] font-bold text-primary/50 uppercase tracking-tighter">Supporte le Markdown</span>
                   </div>
                   <Textarea 
                     className="min-h-[400px] bg-white dark:bg-white/5 border-slate-200 dark:border-white/5 rounded-[3rem] p-10 focus:ring-blue-600/10 focus:border-blue-600 font-mono text-sm leading-relaxed text-slate-800 dark:text-slate-200"
@@ -160,7 +160,7 @@ export function ProgramForm({ initialData, isEditing = false }: any) {
         <aside className="space-y-8">
           <div className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 rounded-[2.5rem] p-8 shadow-sm space-y-8 transition-all">
             <h3 className="font-serif font-black uppercase tracking-tight text-slate-900 dark:text-white flex items-center gap-3">
-              <Settings2 size={18} className="text-blue-600" />
+              <Settings2 size={18} className="text-primary" />
               Réglages
             </h3>
             
@@ -195,14 +195,14 @@ export function ProgramForm({ initialData, isEditing = false }: any) {
                 <Switch 
                   checked={baseData.featured}
                   onCheckedChange={(val) => setBaseData({...baseData, featured: val})}
-                  className="data-[state=checked]:bg-blue-600"
+                  className="data-[state=checked]:bg-primary"
                 />
               </div>
             </div>
           </div>
 
-          <div className="bg-slate-900 dark:bg-blue-600 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group transition-all">
-             <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-700" />
+          <div className="bg-slate-900 dark:bg-primary rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group transition-all">
+             <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-md group-hover:scale-150 transition-transform duration-700" />
              <div className="relative z-10 space-y-6">
                 <h3 className="font-serif font-black uppercase tracking-tight flex items-center gap-3">
                   <ImageIcon size={18} />

@@ -24,14 +24,14 @@ export default function AdminHeader({ locale }: AdminHeaderProps) {
             </svg>
           </button>
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">C</span>
+            <div className="w-8 h-8 bg-[#C9A84C] rounded-md flex items-center justify-center">
+              <span className="text-[#0C0C0A] font-bold text-sm">C</span>
             </div>
             <span className="font-serif font-bold text-slate-900">CREDDA Admin</span>
           </div>
         </div>
         
-        <div className="bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider border border-emerald-200">
+        <div className="bg-emerald/5 text-emerald px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-wider border border-emerald/20">
           🔒 Sécurisé
         </div>
       </div>

@@ -102,7 +102,7 @@ export default function HeroSection() {
                     className="max-w-4xl"
                 >
                     <motion.div variants={itemVariants} className="mb-6 flex items-center gap-3">
-                        <span className="w-12 h-[2px] bg-blue-500 rounded-full" />
+                        <span className="w-12 h-[2px] bg-primary/50 rounded-md" />
                         <span className="text-blue-400 font-semibold tracking-wider uppercase text-sm">
                             CREDDA-ULPGL
                         </span>
@@ -131,16 +131,16 @@ export default function HeroSection() {
                     <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
                         <Link
                             href="/research"
-                            className="group relative inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-medium transition-all duration-300 overflow-hidden"
+                            className="group relative inline-flex items-center gap-2 bg-primary hover:bg-blue-700 text-white px-8 py-4 rounded-md font-medium transition-all duration-300 overflow-hidden"
                         >
                             <span className="relative z-10">Explorer nos recherches</span>
                             <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
-                            <div className="absolute inset-0 h-full w-full scale-0 rounded-full bg-white/20 transition-all duration-300 group-hover:scale-100 group-hover:bg-white/10" />
+                            <div className="absolute inset-0 h-full w-full scale-0 rounded-md bg-white/20 transition-all duration-300 group-hover:scale-100 group-hover:bg-white/10" />
                         </Link>
 
                         <Link
                             href="/contact"
-                            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 px-8 py-4 rounded-full font-medium transition-all duration-300"
+                            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 px-8 py-4 rounded-md font-medium transition-all duration-300"
                         >
                             Nous contacter
                         </Link>
@@ -157,14 +157,14 @@ export default function HeroSection() {
             >
                 <button
                     onClick={togglePlay}
-                    className="w-12 h-12 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 transition-colors"
+                    className="w-12 h-12 flex items-center justify-center rounded-md bg-black/30 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 transition-colors"
                     aria-label={isPlaying ? "Pause video" : "Play video"}
                 >
                     {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-1" />}
                 </button>
                 <button
                     onClick={toggleMute}
-                    className="w-12 h-12 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 transition-colors"
+                    className="w-12 h-12 flex items-center justify-center rounded-md bg-black/30 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 transition-colors"
                     aria-label={isMuted ? "Unmute video" : "Mute video"}
                 >
                     {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
@@ -185,9 +185,9 @@ export default function HeroSection() {
                 <motion.div
                     animate={{ y: [0, 8, 0] }}
                     transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                    className="w-8 h-12 rounded-full border border-white/30 flex items-start justify-center p-2 group-hover:border-white/60 transition-colors"
+                    className="w-8 h-12 rounded-md border border-white/30 flex items-start justify-center p-2 group-hover:border-white/60 transition-colors"
                 >
-                    <span className="w-1 h-2 bg-blue-400 rounded-full" />
+                    <span className="w-1 h-2 bg-blue-400 rounded-md" />
                 </motion.div>
             </motion.div>
         </section>

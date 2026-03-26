@@ -118,10 +118,10 @@ export default function AdminGalleryPage() {
           </h1>
         </div>
         <div className="flex gap-4">
-           <Button variant="outline" className="border-white/10 text-white rounded-none uppercase font-black text-[10px] tracking-widest h-14 px-8 hover:bg-white hover:text-black" onClick={() => setUploadDialog(true)}>
+           <Button variant="outline" className="border-white/10 text-white rounded-md uppercase font-black text-[10px] tracking-widest h-14 px-8 hover:bg-white hover:text-black" onClick={() => setUploadDialog(true)}>
               <Upload size={14} className="mr-3" /> Upload Automatique
            </Button>
-           <Button className="bg-[#C9A84C] text-[#0C0C0A] rounded-none uppercase font-black text-[10px] tracking-widest h-14 px-8 hover:bg-[#E8C97A]" asChild>
+           <Button className="bg-[#C9A84C] text-[#0C0C0A] rounded-md uppercase font-black text-[10px] tracking-widest h-14 px-8 hover:bg-[#E8C97A]" asChild>
               <Link href="/admin/gallery/new">
                 <Plus size={14} className="mr-3" /> Ajouter Manuellement
               </Link>
@@ -137,15 +137,15 @@ export default function AdminGalleryPage() {
                placeholder="Rechercher dans les archives..." 
                value={search}
                onChange={(e) => setSearch(e.target.value)}
-               className="bg-[#111110] border-white/5 rounded-none h-16 pl-16 focus:border-[#C9A84C]/50 transition-all font-light"
+               className="bg-[#111110] border-white/5 rounded-md h-16 pl-16 focus:border-[#C9A84C]/50 transition-all font-light"
             />
          </div>
          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-full lg:w-[300px] bg-[#111110] border-white/5 h-16 rounded-none text-white/50 font-black uppercase tracking-widest text-[10px]">
+            <SelectTrigger className="w-full lg:w-[300px] bg-[#111110] border-white/5 h-16 rounded-md text-white/50 font-black uppercase tracking-widest text-[10px]">
                <Filter size={14} className="mr-3 text-[#C9A84C]" />
                <SelectValue placeholder="Catégorie" />
             </SelectTrigger>
-            <SelectContent className="bg-[#111110] border-white/10 rounded-none text-white">
+            <SelectContent className="bg-[#111110] border-white/10 rounded-md text-white">
                {categories.map(cat => (
                  <SelectItem key={cat} value={cat} className="uppercase text-[9px] tracking-widest py-3">
                    {cat === "all" ? "Toute la photothèque" : cat}
@@ -168,12 +168,12 @@ export default function AdminGalleryPage() {
                <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
                   <h3 className="text-sm font-serif font-black text-white truncate mb-4">{img.title || "Sans titre"}</h3>
                   <div className="flex gap-2">
-                     <Button size="icon" variant="outline" className="w-10 h-10 rounded-none border-white/20 bg-black/40 text-white hover:bg-[#C9A84C] hover:text-black transition-all" asChild>
+                     <Button size="icon" variant="outline" className="w-10 h-10 rounded-md border-white/20 bg-black/40 text-white hover:bg-[#C9A84C] hover:text-black transition-all" asChild>
                         <Link href={`/admin/gallery/${img.id}/edit`}>
                            <Pencil size={14} />
                         </Link>
                      </Button>
-                     <Button size="icon" variant="outline" className="w-10 h-10 rounded-none border-white/20 bg-black/40 text-white hover:bg-red-500 hover:border-red-500 transition-all" onClick={() => setDeleteDialog({ open: true, id: img.id })}>
+                     <Button size="icon" variant="outline" className="w-10 h-10 rounded-md border-white/20 bg-black/40 text-white hover:bg-red-500 hover:border-red-500 transition-all" onClick={() => setDeleteDialog({ open: true, id: img.id })}>
                         <Trash2 size={14} />
                      </Button>
                   </div>
@@ -190,14 +190,14 @@ export default function AdminGalleryPage() {
 
       {/* DIALOGS */}
       <Dialog open={deleteDialog.open} onOpenChange={(open) => setDeleteDialog({ open, id: null })}>
-         <DialogContent className="bg-[#111110] border-white/10 text-white rounded-none">
+         <DialogContent className="bg-[#111110] border-white/10 text-white rounded-md">
             <DialogHeader>
                <DialogTitle className="font-serif font-black text-2xl tracking-tight">Confirmer la suppression</DialogTitle>
                <DialogDescription className="text-white/40 pt-4">Cette action est irréversible. L'image sera définitivement retirée de la base de données.</DialogDescription>
             </DialogHeader>
             <DialogFooter className="mt-10">
                <Button variant="ghost" className="text-white/40 hover:text-white" onClick={() => setDeleteDialog({ open: false, id: null })}>Annuler</Button>
-               <Button className="bg-red-600 hover:bg-red-700 text-white rounded-none" onClick={() => deleteDialog.id && handleDelete(deleteDialog.id)}>Confirmer Suppression</Button>
+               <Button className="bg-red-600 hover:bg-red-700 text-white rounded-md" onClick={() => deleteDialog.id && handleDelete(deleteDialog.id)}>Confirmer Suppression</Button>
             </DialogFooter>
          </DialogContent>
       </Dialog>

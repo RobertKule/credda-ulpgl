@@ -38,7 +38,7 @@ export default async function ResourceAdminPage({ params }: { params: Promise<{ 
           </h1>
           <p className="text-slate-500 text-sm">Gérez les textes de lois et ressources disponibles pour le public.</p>
         </div>
-        <Button className="bg-blue-700 hover:bg-blue-800 rounded-none shadow-lg">
+        <Button className="bg-blue-700 hover:bg-blue-800 rounded-md shadow-lg">
           <Plus size={18} className="mr-2" />
           Nouvelle Ressource
         </Button>
@@ -84,16 +84,16 @@ export default async function ResourceAdminPage({ params }: { params: Promise<{ 
                   </TableCell>
                   <TableCell className="text-center">
                     <div className="flex justify-center gap-1">
-                      <Badge variant="outline" className="text-[8px] h-4 px-1 rounded-none border-blue-100">FR</Badge>
-                      <Badge variant="outline" className="text-[8px] h-4 px-1 rounded-none opacity-20">EN</Badge>
-                      <Badge variant="outline" className="text-[8px] h-4 px-1 rounded-none opacity-20">SW</Badge>
+                      <Badge variant="outline" className="text-[8px] h-4 px-1 rounded-md border-blue-100">FR</Badge>
+                      <Badge variant="outline" className="text-[8px] h-4 px-1 rounded-md opacity-20">EN</Badge>
+                      <Badge variant="outline" className="text-[8px] h-4 px-1 rounded-md opacity-20">SW</Badge>
                     </div>
                   </TableCell>
                   <TableCell>
                     {res.published ? (
-                      <Badge className="bg-emerald-100 text-emerald-800 border-none rounded-none text-[8px] uppercase font-bold">Publié</Badge>
+                      <Badge className="bg-emerald-100 text-emerald-800 border-none rounded-md text-[8px] uppercase font-bold">Publié</Badge>
                     ) : (
-                      <Badge className="bg-slate-100 text-slate-400 border-none rounded-none text-[8px] uppercase font-bold">Brouillon</Badge>
+                      <Badge className="bg-slate-100 text-slate-400 border-none rounded-md text-[8px] uppercase font-bold">Brouillon</Badge>
                     )}
                   </TableCell>
                   <TableCell className="text-xs text-slate-500">
@@ -101,10 +101,10 @@ export default async function ResourceAdminPage({ params }: { params: Promise<{ 
                   </TableCell>
                   <TableCell className="text-right px-6">
                     <div className="flex justify-end gap-2">
-                      <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-blue-50 text-blue-600 rounded-none">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/5 text-primary rounded-md">
                         <Edit size={16} />
                       </Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-red-50 text-red-500 rounded-none">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-red-50 text-red-500 rounded-md">
                         <Trash2 size={16} />
                       </Button>
                     </div>

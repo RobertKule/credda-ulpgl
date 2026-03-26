@@ -64,7 +64,7 @@ export default function Error({
 
             <div className="mt-16 pt-8 border-t border-border/50 flex items-center justify-between text-[10px] uppercase font-bold tracking-[0.2em] text-muted-foreground/40">
               <div className="flex items-center gap-2">
-                <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+                <div className="w-1.5 h-1.5 bg-primary rounded-md animate-pulse" />
                 Error Reported
               </div>
               <div className="font-mono">

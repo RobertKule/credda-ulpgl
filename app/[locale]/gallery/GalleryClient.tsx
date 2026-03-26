@@ -99,7 +99,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
         <div className="container mx-auto px-6 text-center">
           <div className="max-w-md mx-auto">
             <div className="relative mb-8">
-              <div className="absolute inset-0 bg-blue-600/5 blur-3xl rounded-full" />
+              <div className="absolute inset-0 bg-primary/5 blur-3xl rounded-md" />
               <Camera size={80} className="mx-auto text-slate-300 relative z-10" strokeWidth={1} />
             </div>
             <h3 className="text-3xl font-serif font-bold text-foreground mb-4">
@@ -130,7 +130,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setFilter(cat)}
-                    className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all whitespace-nowrap rounded-full ${
+                    className={`px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest border transition-all whitespace-nowrap rounded-md ${
                       filter === cat
                         ? 'bg-primary text-primary-foreground border-primary shadow-lg'
                         : 'text-muted-foreground border-border hover:border-primary hover:text-primary'
@@ -143,12 +143,12 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
             </div>
 
             {/* Vue mode */}
-            <div className="flex items-center gap-2 bg-muted p-1 rounded-full">
+            <div className="flex items-center gap-2 bg-muted p-1 rounded-md">
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setViewMode("grid")}
-                className={`p-2 rounded-full transition-colors ${
+                className={`p-2 rounded-md transition-colors ${
                   viewMode === "grid"
                     ? 'bg-background text-primary shadow-md'
                     : 'text-muted-foreground hover:text-primary'
@@ -160,7 +160,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setViewMode("masonry")}
-                className={`p-2 rounded-full transition-colors ${
+                className={`p-2 rounded-md transition-colors ${
                   viewMode === "masonry"
                     ? 'bg-background text-primary shadow-md'
                     : 'text-muted-foreground hover:text-primary'
@@ -251,7 +251,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
 
                   {/* Badge catégorie (visible sans survol) */}
                   <div className="absolute top-4 left-4 z-10">
-                    <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[8px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">
+                    <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[8px] font-black uppercase tracking-widest px-3 py-1.5 rounded-md">
                       {image.category}
                     </Badge>
                   </div>
@@ -264,7 +264,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                       e.stopPropagation();
                       toggleLike(image.id);
                     }}
-                    className="absolute top-4 right-4 z-20 p-2 bg-black/50 backdrop-blur-sm rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="absolute top-4 right-4 z-20 p-2 bg-black/50 backdrop-blur-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   >
                     <Heart 
                       size={16} 
@@ -279,7 +279,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                       animate={{ scale: 1 }}
                       className="absolute top-4 right-16 z-20"
                     >
-                      <Badge className="bg-amber-500 text-white border-none text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full flex items-center gap-1">
+                      <Badge className="bg-amber-500 text-white border-none text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-md flex items-center gap-1">
                         <Star size={10} className="fill-white" />
                         {t('featured')}
                       </Badge>
@@ -333,7 +333,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                       transition={{ duration: 0.3 }}
                       className="absolute inset-x-0 bottom-0 p-6"
                     >
-                      <Badge className="bg-blue-600 text-white border-0 mb-2 text-[10px] px-2 py-1">
+                      <Badge className="bg-primary text-white border-0 mb-2 text-[10px] px-2 py-1">
                         {image.category}
                       </Badge>
                       <h3 className="text-lg font-serif font-bold text-white">
@@ -343,7 +343,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
 
                     {/* Badge catégorie */}
                     <div className="absolute top-4 left-4 z-10">
-                      <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[8px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">
+                      <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[8px] font-black uppercase tracking-widest px-3 py-1.5 rounded-md">
                         {image.category}
                       </Badge>
                     </div>
@@ -351,7 +351,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                     {/* Badge featured */}
                     {image.featured && (
                       <div className="absolute top-4 right-4 z-10">
-                        <Badge className="bg-amber-500 text-white border-none text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full flex items-center gap-1">
+                        <Badge className="bg-amber-500 text-white border-none text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-md flex items-center gap-1">
                           <Star size={10} className="fill-white" />
                         </Badge>
                       </div>
@@ -380,7 +380,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsFullscreen(!isFullscreen)}
-                className="p-3 bg-white/10 backdrop-blur-md text-white hover:bg-blue-600 transition-all rounded-full"
+                className="p-3 bg-white/10 backdrop-blur-md text-white hover:bg-primary transition-all rounded-md"
               >
                 {isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
               </motion.button>
@@ -388,7 +388,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={closeLightbox}
-                className="p-3 bg-white/10 backdrop-blur-md text-white hover:bg-red-600 transition-all rounded-full"
+                className="p-3 bg-white/10 backdrop-blur-md text-white hover:bg-red-600 transition-all rounded-md"
               >
                 <X size={20} />
               </motion.button>
@@ -402,7 +402,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                 e.stopPropagation();
                 navigateLightbox("prev");
               }}
-              className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 backdrop-blur-md text-white hover:bg-blue-600 transition-all rounded-full z-30"
+              className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 backdrop-blur-md text-white hover:bg-primary transition-all rounded-md z-30"
             >
               <ChevronLeft size={24} />
             </motion.button>
@@ -414,7 +414,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                 e.stopPropagation();
                 navigateLightbox("next");
               }}
-              className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 backdrop-blur-md text-white hover:bg-blue-600 transition-all rounded-full z-30"
+              className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 backdrop-blur-md text-white hover:bg-primary transition-all rounded-md z-30"
             >
               <ChevronRight size={24} />
             </motion.button>
@@ -456,11 +456,11 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
             >
               <div className="container mx-auto">
                 <div className="flex items-center gap-3 mb-2">
-                  <Badge className="bg-blue-600 text-white border-none text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+                  <Badge className="bg-primary text-white border-none text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-md">
                     {selectedImage.category}
                   </Badge>
                   {selectedImage.featured && (
-                    <Badge className="bg-amber-500 text-white border-none text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full flex items-center gap-1">
+                    <Badge className="bg-amber-500 text-white border-none text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-md flex items-center gap-1">
                       <Star size={12} className="fill-white" />
                       {t('featured')}
                     </Badge>
@@ -476,14 +476,14 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 text-sm bg-white/10 hover:bg-blue-600 px-6 py-3 rounded-full transition-all"
+                    className="flex items-center gap-2 text-sm bg-white/10 hover:bg-primary px-6 py-3 rounded-md transition-all"
                   >
                     <Download size={16} /> {t('download')}
                   </motion.button>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 text-sm bg-white/10 hover:bg-blue-600 px-6 py-3 rounded-full transition-all"
+                    className="flex items-center gap-2 text-sm bg-white/10 hover:bg-primary px-6 py-3 rounded-md transition-all"
                   >
                     <Share2 size={16} /> {t('share')}
                   </motion.button>
@@ -491,7 +491,7 @@ export default function GalleryClient({ images, locale }: GalleryClientProps) {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => toggleLike(selectedImage.id)}
-                    className="flex items-center gap-2 text-sm bg-white/10 hover:bg-blue-600 px-6 py-3 rounded-full transition-all"
+                    className="flex items-center gap-2 text-sm bg-white/10 hover:bg-primary px-6 py-3 rounded-md transition-all"
                   >
                     <Heart 
                       size={16} 

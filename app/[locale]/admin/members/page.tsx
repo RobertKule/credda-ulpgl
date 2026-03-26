@@ -39,7 +39,7 @@ export default async function AdminMembersPage({ params }: Props) {
         </div>
         
         <div className="flex gap-3">
-          <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold uppercase tracking-widest h-12 px-6 rounded-none shadow-xl transition-all">
+          <Button asChild className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold uppercase tracking-widest h-12 px-6 rounded-md shadow-xl transition-all">
             <Link href="/admin/members/new" className="flex items-center gap-2">
               <UserPlus size={18} /> New Member
             </Link>

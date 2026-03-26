@@ -12,7 +12,7 @@ export default function MapInner() {
       center={position} 
       zoom={15} 
       scrollWheelZoom={false}
-      className="w-full h-full min-h-[500px] lg:min-h-screen rounded-b-3xl lg:rounded-none lg:rounded-r-3xl z-0"
+      className="w-full h-full min-h-[500px] lg:min-h-screen rounded-b-3xl lg:rounded-md lg:rounded-r-3xl z-0"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'

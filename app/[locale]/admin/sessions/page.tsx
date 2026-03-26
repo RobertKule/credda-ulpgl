@@ -34,7 +34,7 @@ export default async function SessionAdminPage() {
           </h1>
           <p className="text-slate-500 text-sm">Organisez les sorties terrain et les sessions de sensibilisation.</p>
         </div>
-        <Button className="bg-emerald-800 hover:bg-emerald-900 rounded-none shadow-lg">
+        <Button className="bg-emerald-800 hover:bg-emerald-900 rounded-md shadow-lg">
           <Plus size={18} className="mr-2" />
           Nouvelle Session
         </Button>
@@ -86,24 +86,24 @@ export default async function SessionAdminPage() {
                   </TableCell>
                   <TableCell>
                     {s.isMobile ? (
-                      <Badge variant="outline" className="text-[8px] rounded-none border-blue-100 text-blue-800">Mobile</Badge>
+                      <Badge variant="outline" className="text-[8px] rounded-md border-blue-100 text-blue-800">Mobile</Badge>
                     ) : (
-                      <Badge variant="outline" className="text-[8px] rounded-none border-slate-100 text-slate-800">Fixe</Badge>
+                      <Badge variant="outline" className="text-[8px] rounded-md border-slate-100 text-slate-800">Fixe</Badge>
                     )}
                   </TableCell>
                   <TableCell>
                     {new Date(s.date) > new Date() ? (
-                      <Badge className="bg-emerald-100 text-emerald-800 border-none rounded-none text-[8px] uppercase font-bold">À venir</Badge>
+                      <Badge className="bg-emerald-100 text-emerald-800 border-none rounded-md text-[8px] uppercase font-bold">À venir</Badge>
                     ) : (
-                      <Badge className="bg-slate-100 text-slate-400 border-none rounded-none text-[8px] uppercase font-bold">Passé</Badge>
+                      <Badge className="bg-slate-100 text-slate-400 border-none rounded-md text-[8px] uppercase font-bold">Passé</Badge>
                     )}
                   </TableCell>
                   <TableCell className="text-right px-6">
                     <div className="flex justify-end gap-2">
-                       <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-emerald-50 text-emerald-700 rounded-none">
+                       <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-emerald-50 text-emerald-700 rounded-md">
                          <Edit size={16} />
                        </Button>
-                       <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-red-50 text-red-500 rounded-none">
+                       <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-red-50 text-red-500 rounded-md">
                          <Trash2 size={16} />
                        </Button>
                     </div>

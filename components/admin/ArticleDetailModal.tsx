@@ -38,12 +38,12 @@ export function ArticleDetailModal({ isOpen, onClose, article, locale }: Article
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl p-0 overflow-hidden border-none rounded-none shadow-2xl bg-white">
+      <DialogContent className="max-w-4xl p-0 overflow-hidden border-none rounded-md shadow-2xl bg-white">
         <div className="flex flex-col h-[90vh]">
           {/* Header style Manuscrit/Archive */}
           <div className="bg-[#050a15] text-white p-8 space-y-4">
             <div className="flex justify-between items-start">
-              <Badge className="bg-blue-600 rounded-none uppercase text-[9px] tracking-widest px-3">
+              <Badge className="bg-primary rounded-md uppercase text-[9px] tracking-widest px-3">
                 {article.domain} DOCUMENT
               </Badge>
               <button onClick={onClose} className="text-white/50 hover:text-white transition-colors">
@@ -74,11 +74,11 @@ export function ArticleDetailModal({ isOpen, onClose, article, locale }: Article
                      {trans ? (
                        <div className="bg-white p-8 border border-slate-200 shadow-sm space-y-8">
                          <div className="space-y-2">
-                           <span className="text-[10px] font-black uppercase text-blue-600">Titre Officiel</span>
+                           <span className="text-[10px] font-black uppercase text-primary">Titre Officiel</span>
                            <p className="text-2xl font-serif font-bold text-slate-900">{trans.title}</p>
                          </div>
                          <div className="space-y-2">
-                           <span className="text-[10px] font-black uppercase text-blue-600">Abstract / Résumé</span>
+                           <span className="text-[10px] font-black uppercase text-primary">Abstract / Résumé</span>
                            <p className="text-slate-600 italic leading-relaxed bg-slate-50 p-4 border-l-4 border-blue-600">{trans.excerpt}</p>
                          </div>
                          <div className="prose prose-slate max-w-none prose-p:text-sm">
@@ -96,8 +96,8 @@ export function ArticleDetailModal({ isOpen, onClose, article, locale }: Article
 
           {/* Footer Actions Sticky */}
           <div className="p-6 bg-white border-t flex justify-end gap-4 shadow-[0_-10px_30px_rgba(0,0,0,0.03)]">
-            <Button variant="outline" onClick={onClose} className="rounded-none">Fermer</Button>
-            <Button asChild className="bg-slate-900 hover:bg-blue-600 rounded-none px-8">
+            <Button variant="outline" onClick={onClose} className="rounded-md">Fermer</Button>
+            <Button asChild className="bg-slate-900 hover:bg-primary rounded-md px-8">
               <Link href={`/admin/articles/edit/${article.id}`}>
                 <Edit size={16} className="mr-2" /> Modifier l'archive
               </Link>

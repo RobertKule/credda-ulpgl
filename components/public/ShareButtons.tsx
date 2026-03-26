@@ -33,7 +33,7 @@ export default function ShareButtons({ title, url, description }: ShareButtonsPr
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="p-2 bg-slate-100 hover:bg-black hover:text-white rounded-full transition-all duration-300"
+        className="p-2 bg-slate-100 hover:bg-black hover:text-white rounded-md transition-all duration-300"
         aria-label="Partager sur Twitter"
       >
         <Twitter size={13} />
@@ -43,7 +43,7 @@ export default function ShareButtons({ title, url, description }: ShareButtonsPr
         href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="p-2 bg-slate-100 hover:bg-[#0A66C2] hover:text-white rounded-full transition-all duration-300"
+        className="p-2 bg-slate-100 hover:bg-[#0A66C2] hover:text-white rounded-md transition-all duration-300"
         aria-label="Partager sur LinkedIn"
       >
         <Linkedin size={13} />
@@ -53,7 +53,7 @@ export default function ShareButtons({ title, url, description }: ShareButtonsPr
         href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
         target="_blank"
         rel="noopener noreferrer"
-        className="p-2 bg-slate-100 hover:bg-[#1877F2] hover:text-white rounded-full transition-all duration-300"
+        className="p-2 bg-slate-100 hover:bg-[#1877F2] hover:text-white rounded-md transition-all duration-300"
         aria-label="Partager sur Facebook"
       >
         <Facebook size={13} />
@@ -61,7 +61,7 @@ export default function ShareButtons({ title, url, description }: ShareButtonsPr
       
       <a
         href={`mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}`}
-        className="p-2 bg-slate-100 hover:bg-[#EA4335] hover:text-white rounded-full transition-all duration-300"
+        className="p-2 bg-slate-100 hover:bg-[#EA4335] hover:text-white rounded-md transition-all duration-300"
         aria-label="Partager par email"
       >
         <Mail size={13} />
@@ -69,7 +69,7 @@ export default function ShareButtons({ title, url, description }: ShareButtonsPr
       
       <button
         onClick={handleCopy}
-        className={`p-2 transition-all duration-300 rounded-full ${
+        className={`p-2 transition-all duration-300 rounded-md ${
           copied 
             ? 'bg-emerald-600 text-white' 
             : 'bg-slate-100 hover:bg-slate-800 hover:text-white'

@@ -41,7 +41,7 @@ export function MessageItem({ msg, isSelected, onSelect }: MessageItemProps) {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "UNREAD": return "bg-blue-500";
+      case "UNREAD": return "bg-primary/50";
       case "READ": return "bg-emerald-500";
       case "ARCHIVED": return "bg-slate-400";
       default: return "bg-slate-300";
@@ -50,7 +50,7 @@ export function MessageItem({ msg, isSelected, onSelect }: MessageItemProps) {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "UNREAD": return <Mail size={14} className="text-blue-600" />;
+      case "UNREAD": return <Mail size={14} className="text-primary" />;
       case "READ": return <MailOpen size={14} className="text-emerald-600" />;
       case "ARCHIVED": return <Archive size={14} className="text-slate-500" />;
       default: return null;
@@ -133,7 +133,7 @@ export function MessageItem({ msg, isSelected, onSelect }: MessageItemProps) {
   return (
     <>
       <div className={`group relative bg-white border rounded-xl transition-all duration-200 hover:shadow-md ${
-        msg.status === "UNREAD" ? "border-blue-200 bg-blue-50/30" : "border-slate-200"
+        msg.status === "UNREAD" ? "border-primary/20 bg-primary/5/30" : "border-slate-200"
       } ${isSelected ? 'ring-2 ring-blue-500 ring-offset-2' : ''}`}>
         
         <div className={`absolute left-0 top-0 bottom-0 w-1 rounded-l-xl ${getStatusColor(msg.status)}`} />
@@ -146,11 +146,11 @@ export function MessageItem({ msg, isSelected, onSelect }: MessageItemProps) {
                   type="checkbox"
                   checked={isSelected}
                   onChange={() => onSelect?.(msg.id)}
-                  className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  className="w-4 h-4 rounded border-slate-300 text-primary focus:ring-blue-500"
                 />
               </div>
 
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+              <div className={`w-10 h-10 rounded-md flex items-center justify-center flex-shrink-0 ${
                 msg.status === "UNREAD" ? "bg-blue-100" : "bg-slate-100"
               }`}>
                 <span className="text-sm font-bold text-slate-700">

@@ -47,7 +47,7 @@ export default function SystemBanner() {
         >
           <div className="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="hidden sm:flex w-8 h-8 items-center justify-center bg-[#0C0C0A]/10 rounded-lg">
+              <div className="hidden sm:flex w-8 h-8 items-center justify-center bg-[#0C0C0A]/10 rounded-md">
                 <BellRing size={16} className="animate-bounce" />
               </div>
               <p className="text-[11px] sm:text-xs font-black uppercase tracking-widest truncate">
@@ -57,7 +57,7 @@ export default function SystemBanner() {
             </div>
             <button
               onClick={handleDismiss}
-              className="p-2 hover:bg-[#0C0C0A]/10 rounded-full transition-colors active:scale-90 flex-shrink-0"
+              className="p-2 hover:bg-[#0C0C0A]/10 rounded-md transition-colors active:scale-90 flex-shrink-0"
               aria-label="Fermer l'annonce"
             >
               <X size={16} />

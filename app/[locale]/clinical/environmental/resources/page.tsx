@@ -49,7 +49,7 @@ export default async function LegalResourceLibrary({ params }: { params: Promise
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
               <input 
                 placeholder="Rechercher une loi..." 
-                className="w-full pl-10 h-12 rounded-none border-slate-200 focus:ring-1 focus:ring-emerald-500 outline-none text-sm"
+                className="w-full pl-10 h-12 rounded-md border-slate-200 focus:ring-1 focus:ring-emerald-500 outline-none text-sm"
               />
             </div>
           </div>
@@ -57,17 +57,17 @@ export default async function LegalResourceLibrary({ params }: { params: Promise
 
         {/* Categories / Filter placeholder */}
         <div className="flex flex-wrap gap-2 mb-10">
-          <Button variant="outline" className="rounded-none bg-emerald-900 text-white border-none text-[10px] font-bold uppercase tracking-widest">Tous</Button>
-          <Button variant="outline" className="rounded-none border-slate-200 text-[10px] font-bold uppercase tracking-widest hover:border-emerald-500 hover:text-emerald-700">Code Forestier</Button>
-          <Button variant="outline" className="rounded-none border-slate-200 text-[10px] font-bold uppercase tracking-widest hover:border-emerald-500 hover:text-emerald-700">Droit Foncier</Button>
-          <Button variant="outline" className="rounded-none border-slate-200 text-[10px] font-bold uppercase tracking-widest hover:border-emerald-500 hover:text-emerald-700">Loi sur la Nature</Button>
-          <Button variant="outline" className="rounded-none border-slate-200 text-[10px] font-bold uppercase tracking-widest hover:border-emerald-500 hover:text-emerald-700">Guides Pratiques</Button>
+          <Button variant="outline" className="rounded-md bg-emerald-900 text-white border-none text-[10px] font-bold uppercase tracking-widest">Tous</Button>
+          <Button variant="outline" className="rounded-md border-slate-200 text-[10px] font-bold uppercase tracking-widest hover:border-emerald-500 hover:text-emerald-700">Code Forestier</Button>
+          <Button variant="outline" className="rounded-md border-slate-200 text-[10px] font-bold uppercase tracking-widest hover:border-emerald-500 hover:text-emerald-700">Droit Foncier</Button>
+          <Button variant="outline" className="rounded-md border-slate-200 text-[10px] font-bold uppercase tracking-widest hover:border-emerald-500 hover:text-emerald-700">Loi sur la Nature</Button>
+          <Button variant="outline" className="rounded-md border-slate-200 text-[10px] font-bold uppercase tracking-widest hover:border-emerald-500 hover:text-emerald-700">Guides Pratiques</Button>
         </div>
 
         {/* Resource Grid */}
         {resources.length === 0 ? (
           <div className="bg-white border border-slate-200 p-20 text-center space-y-4">
-            <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto text-slate-300">
+            <div className="w-16 h-16 bg-slate-50 rounded-md flex items-center justify-center mx-auto text-slate-300">
               <BookOpen size={32} />
             </div>
             <div className="space-y-1">
@@ -82,11 +82,11 @@ export default async function LegalResourceLibrary({ params }: { params: Promise
               if (!trans) return null;
 
               return (
-                <Card key={res.id} className="rounded-none border-slate-200 hover:shadow-xl transition-all group overflow-hidden flex flex-col">
+                <Card key={res.id} className="rounded-md border-slate-200 hover:shadow-xl transition-all group overflow-hidden flex flex-col">
                   <div className="h-2 bg-emerald-800" />
                   <CardHeader className="p-6">
                     <div className="flex justify-between items-start mb-4">
-                      <Badge variant="outline" className="rounded-none border-emerald-100 text-emerald-800 text-[8px] font-bold uppercase tracking-widest">
+                      <Badge variant="outline" className="rounded-md border-emerald-100 text-emerald-800 text-[8px] font-bold uppercase tracking-widest">
                         {res.category || "Général"}
                       </Badge>
                       <FileText className="text-slate-200 group-hover:text-emerald-100 transition-colors" size={24} />
@@ -103,7 +103,7 @@ export default async function LegalResourceLibrary({ params }: { params: Promise
                       Lire en ligne <ExternalLink size={14} />
                     </Button>
                     {trans.fileLink && (
-                      <Button size="icon" className="bg-emerald-800 hover:bg-emerald-900 rounded-none w-10 h-10 shadow-lg">
+                      <Button size="icon" className="bg-emerald-800 hover:bg-emerald-900 rounded-md w-10 h-10 shadow-lg">
                         <Download size={18} className="text-white" />
                       </Button>
                     )}
@@ -124,7 +124,7 @@ export default async function LegalResourceLibrary({ params }: { params: Promise
             <p className="text-emerald-100 font-light leading-relaxed">
               Les textes juridiques peuvent être complexes. Nos cliniciens sont là pour vous aider à comprendre vos droits et obligations environnementales.
             </p>
-            <Button asChild className="bg-white text-emerald-900 hover:bg-emerald-50 rounded-none px-8 h-12 font-bold uppercase tracking-widest text-xs">
+            <Button asChild className="bg-white text-emerald-900 hover:bg-emerald-50 rounded-md px-8 h-12 font-bold uppercase tracking-widest text-xs">
               <Link href="/clinical/environmental">Demander une orientation</Link>
             </Button>
           </div>

@@ -59,7 +59,7 @@ export function ClinicalCaseForm({ initialData, isEditing = false }: any) {
       <div className="sticky top-0 z-30 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white/70 dark:bg-slate-950/70 backdrop-blur-2xl py-6 border-b border-slate-200 dark:border-white/5 -mx-4 sm:-mx-6 lg:-mx-10 px-4 sm:px-6 lg:px-10 transition-all">
         <div className="flex flex-col gap-1 mb-4 sm:mb-0">
           <div className="flex items-center gap-2 mb-1">
-             <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+             <div className="w-2 h-2 rounded-md bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-white/30">Module Justice Environnementale</span>
           </div>
           <h1 className="text-3xl font-serif font-black text-slate-900 dark:text-white flex items-center gap-3">
@@ -75,7 +75,7 @@ export function ClinicalCaseForm({ initialData, isEditing = false }: any) {
           >
             <ArrowLeft size={16} /> Annuler
           </Button>
-          <Button className="flex-1 sm:flex-none h-12 px-10 bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-emerald-500/10 dark:shadow-emerald-900/20 active:scale-95 transition-all rounded-none">
+          <Button className="flex-1 sm:flex-none h-12 px-10 bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-emerald-500/10 dark:shadow-emerald-900/20 active:scale-95 transition-all rounded-md">
             <Save size={18} className="mr-3" />
             {isEditing ? "Mettre à jour" : "Sauvegarder le cas"}
           </Button>
@@ -195,7 +195,7 @@ export function ClinicalCaseForm({ initialData, isEditing = false }: any) {
         {/* SIDEBAR: Bénéficiaire */}
         <aside className="space-y-8">
           <div className="sticky top-40 bg-slate-900 dark:bg-white/[0.03] text-white dark:text-white rounded-[2.5rem] p-8 border border-white/5 shadow-2xl overflow-hidden relative group">
-            <div className="absolute -right-10 -top-10 w-40 h-40 bg-emerald-500 opacity-[0.05] rounded-full group-hover:scale-150 transition-transform duration-700" />
+            <div className="absolute -right-10 -top-10 w-40 h-40 bg-emerald-500 opacity-[0.05] rounded-md group-hover:scale-150 transition-transform duration-700" />
             
             <div className="relative z-10 space-y-8">
               <div className="flex items-center gap-4">
@@ -252,7 +252,7 @@ export function ClinicalCaseForm({ initialData, isEditing = false }: any) {
 
               <div className="pt-6 border-t border-white/5">
                 <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-emerald-500">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <div className="w-1.5 h-1.5 rounded-md bg-emerald-500 animate-pulse" />
                   Protection des données activée
                 </div>
               </div>

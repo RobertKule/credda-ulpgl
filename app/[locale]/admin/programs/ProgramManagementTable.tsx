@@ -111,7 +111,7 @@ export default function ProgramManagementTable({
                 <div className="absolute top-3 right-3 flex gap-2">
                   <button 
                     onClick={() => handleToggleFeatured(p.id, p.featured)}
-                    className={`p-1.5 rounded-full transition-all ${p.featured ? 'bg-amber-500 text-white' : 'bg-white/80 text-slate-400 hover:text-amber-500'}`}
+                    className={`p-1.5 rounded-md transition-all ${p.featured ? 'bg-amber-500 text-white' : 'bg-white/80 text-slate-400 hover:text-amber-500'}`}
                   >
                     <Star size={16} fill={p.featured ? "currentColor" : "none"} />
                   </button>
@@ -121,13 +121,13 @@ export default function ProgramManagementTable({
               <div className="p-6 flex-1 space-y-4">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge className={`rounded-none text-[8px] font-black tracking-widest uppercase px-2 py-0.5 ${
+                    <Badge className={`rounded-md text-[8px] font-black tracking-widest uppercase px-2 py-0.5 ${
                       p.published ? 'bg-emerald-600' : 'bg-slate-400'
                     }`}>
                       {p.published ? 'Published' : 'Draft'}
                     </Badge>
                   </div>
-                  <h3 className="font-serif font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                  <h3 className="font-serif font-bold text-slate-900 group-hover:text-primary transition-colors">
                     {content.title}
                   </h3>
                   <p className="text-xs text-slate-500 line-clamp-2">
@@ -146,7 +146,7 @@ export default function ProgramManagementTable({
                     >
                       {p.published ? <Eye size={16} /> : <EyeOff size={16} />}
                     </Button>
-                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-slate-400 hover:text-blue-600" asChild>
+                    <Button size="sm" variant="ghost" className="h-8 w-8 p-0 text-slate-400 hover:text-primary" asChild>
                       <Link href={`/admin/programs/${p.id}/edit`}>
                         <Edit size={16} />
                       </Link>

@@ -110,7 +110,7 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
               <h2 className="text-4xl font-serif font-black text-primary">Dossiers & Interventions</h2>
               <p className="text-anthracite/40 font-light text-lg">Suivez l'impact de nos cliniques juridiques sur le terrain.</p>
            </div>
-           <Button asChild className="bg-primary text-white rounded-none px-10 py-6 font-black uppercase tracking-widest text-[10px] hover:bg-secondary transition-all">
+           <Button asChild className="bg-primary text-white rounded-md px-10 py-6 font-black uppercase tracking-widest text-[10px] hover:bg-secondary transition-all">
              <Link href="/clinical/environmental" className="flex items-center gap-3">
                Voir la CDE <ArrowRight size={14} />
              </Link>
@@ -133,7 +133,7 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
                         <Gavel size={48} strokeWidth={1} />
                       </div>
                     )}
-                    <Badge className="absolute top-4 left-4 bg-primary text-white rounded-none px-4 py-1.5 text-[9px] font-black uppercase tracking-widest">
+                    <Badge className="absolute top-4 left-4 bg-primary text-white rounded-md px-4 py-1.5 text-[9px] font-black uppercase tracking-widest">
                       {category}
                     </Badge>
                   </div>
@@ -186,12 +186,12 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
         <div className="container mx-auto px-6 py-32">
           <div className="grid lg:grid-cols-12 gap-16 items-start">
             <div className="lg:col-span-4 space-y-8">
-               <div className="inline-flex items-center gap-3 px-4 py-2 bg-blue-50 text-blue-600 text-[9px] font-black uppercase tracking-widest border border-blue-100">
+               <div className="inline-flex items-center gap-3 px-4 py-2 bg-primary/5 text-primary text-[9px] font-black uppercase tracking-widest border border-blue-100">
                   <MapPin size={14} />
                   <span>Geographic Access</span>
                </div>
                <h2 className="text-4xl font-serif font-black text-foreground leading-tight">
-                 Présence sur le <span className="text-blue-600 italic">Terrain</span>.
+                 Présence sur le <span className="text-primary italic">Terrain</span>.
                </h2>
                <p className="text-muted-foreground font-light text-lg leading-relaxed">
                  Le CREDDA déploie ses experts au plus près des communautés. Nos cliniques fixes et mobiles couvrent les points stratégiques de la région des Grands Lacs.
@@ -246,13 +246,13 @@ export default async function ClinicalPage({ params }: { params: Promise<{ local
                 </p>
              </div>
              <div className="flex flex-col sm:flex-row gap-6 relative z-10 w-full lg:w-auto">
-                <Button size="lg" className="bg-secondary text-primary rounded-none px-12 h-16 font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all transform hover:-translate-y-1">
+                <Button size="lg" className="bg-secondary text-primary rounded-md px-12 h-16 font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all transform hover:-translate-y-1">
                   <Link href="/contact">Soumettre un cas</Link>
                 </Button>
-                <Button variant="outline" size="lg" className="border-secondary/50 text-secondary rounded-none px-12 h-16 font-black uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-primary transition-all">
+                <Button variant="outline" size="lg" className="border-secondary/50 text-secondary rounded-md px-12 h-16 font-black uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-primary transition-all">
                   <Link href="/clinical/track">Suivre mon cas</Link>
                 </Button>
-                <Button variant="outline" size="lg" className="border-white/20 text-white rounded-none px-12 h-16 font-black uppercase tracking-widest text-[10px] hover:bg-white hover:text-primary transition-all">
+                <Button variant="outline" size="lg" className="border-white/20 text-white rounded-md px-12 h-16 font-black uppercase tracking-widest text-[10px] hover:bg-white hover:text-primary transition-all">
                   <Link href="/contact">Nous contacter</Link>
                 </Button>
              </div>

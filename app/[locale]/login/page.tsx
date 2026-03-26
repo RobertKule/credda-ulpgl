@@ -117,8 +117,8 @@ export default function AdminLogin() {
               >
                 {/* LUXURY ACCENTS */}
                 <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-                <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl" />
-                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl" />
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-md blur-3xl" />
+                <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-emerald-500/10 rounded-md blur-3xl" />
 
                 <div className="relative z-10 w-full">
                   {/* HEADER */}
@@ -213,7 +213,7 @@ export default function AdminLogin() {
                   {/* FOOTER */}
                   <div className="mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4 text-[8px] uppercase tracking-[0.3em] font-medium text-muted-foreground/30">
                     <div className="flex items-center gap-3">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/40" />
+                      <span className="w-1.5 h-1.5 rounded-md bg-emerald-500/40" />
                       <span>{t('footer.university')}</span>
                     </div>
                     <span>{t('footer.copyright', { year: new Date().getFullYear() })}</span>
@@ -230,7 +230,7 @@ export default function AdminLogin() {
               >
                 {/* LUXURY ACCENTS */}
                 <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-                <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl" />
+                <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-md blur-3xl" />
 
                 <div className="relative z-10 w-full">
                   {/* HEADER */}
@@ -303,7 +303,7 @@ export default function AdminLogin() {
                 initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }}
                 className={`relative w-full max-w-sm p-8 rounded-2xl shadow-2xl border ${modalType === 'success' ? 'border-primary' : 'border-destructive'} bg-card text-center space-y-6`}
               >
-                <div className={`mx-auto p-4 rounded-full w-fit ${modalType === 'success' ? 'bg-primary/10 text-primary' : 'bg-destructive/10 text-destructive'}`}>
+                <div className={`mx-auto p-4 rounded-md w-fit ${modalType === 'success' ? 'bg-primary/10 text-primary' : 'bg-destructive/10 text-destructive'}`}>
                   {modalType === 'success' ? <CheckCircle2 size={32} /> : <AlertTriangle size={32} />}
                 </div>
                 <div className="space-y-2">

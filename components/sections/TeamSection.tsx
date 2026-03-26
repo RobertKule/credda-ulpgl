@@ -28,8 +28,8 @@ export default function TeamSection({ team = [] }: TeamSectionProps) {
                     className="mb-12 max-w-2xl relative z-10"
                 >
                     <div className="inline-flex items-center gap-2 mb-4">
-                        <span className="w-12 h-[2px] bg-blue-600 rounded-full" />
-                        <span className="text-blue-600 font-bold tracking-wider uppercase text-sm">
+                        <span className="w-12 h-[2px] bg-primary rounded-md" />
+                        <span className="text-primary font-bold tracking-wider uppercase text-sm">
                             L'Équipe
                         </span>
                     </div>

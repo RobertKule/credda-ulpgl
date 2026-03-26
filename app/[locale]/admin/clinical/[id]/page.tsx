@@ -71,8 +71,8 @@ export default async function CaseDetailPage({ params }: Props) {
             Détails du Dossier <span>#{cc.id.substring(0, 8)}</span>
           </h1>
           <div className="flex items-center gap-3">
-             <Badge className="rounded-none bg-emerald-100 text-emerald-800 border-none px-3">{cc.status}</Badge>
-             <Badge variant="outline" className="rounded-none uppercase text-[8px] tracking-widest">{cc.problemType}</Badge>
+             <Badge className="rounded-md bg-emerald-100 text-emerald-800 border-none px-3">{cc.status}</Badge>
+             <Badge variant="outline" className="rounded-md uppercase text-[8px] tracking-widest">{cc.problemType}</Badge>
           </div>
         </div>
 
@@ -83,7 +83,7 @@ export default async function CaseDetailPage({ params }: Props) {
             <option value="ON_HOLD">En attente</option>
             <option value="CLOSED">Clôturé</option>
           </select>
-          <Button type="submit" size="sm" className="bg-emerald-800 hover:bg-emerald-900 rounded-none uppercase text-[10px] h-10 px-4">
+          <Button type="submit" size="sm" className="bg-emerald-800 hover:bg-emerald-900 rounded-md uppercase text-[10px] h-10 px-4">
             Mettre à jour
           </Button>
         </form>
@@ -92,7 +92,7 @@ export default async function CaseDetailPage({ params }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Colonne Principale */}
         <div className="lg:col-span-2 space-y-8">
-          <Card className="rounded-none border-slate-200 shadow-sm">
+          <Card className="rounded-md border-slate-200 shadow-sm">
             <CardHeader className="border-b border-slate-100">
               <CardTitle className="font-serif">Description du Problème</CardTitle>
             </CardHeader>
@@ -132,7 +132,7 @@ export default async function CaseDetailPage({ params }: Props) {
               Historique des interventions
             </h3>
 
-            <Card className="rounded-none border-slate-200">
+            <Card className="rounded-md border-slate-200">
               <CardContent className="p-0">
                 <div className="divide-y divide-slate-100">
                   {cc.notes?.length === 0 ? (
@@ -161,9 +161,9 @@ export default async function CaseDetailPage({ params }: Props) {
                       name="content"
                       required
                       placeholder="Ajouter une note de suivi ou une recommandation juridique..." 
-                      className="w-full min-h-[100px] p-4 text-sm border border-slate-200 rounded-none focus:ring-1 focus:ring-emerald-500 outline-none"
+                      className="w-full min-h-[100px] p-4 text-sm border border-slate-200 rounded-md focus:ring-1 focus:ring-emerald-500 outline-none"
                     />
-                    <Button type="submit" className="bg-emerald-800 hover:bg-emerald-900 rounded-none uppercase text-[10px] font-bold tracking-widest px-6">
+                    <Button type="submit" className="bg-emerald-800 hover:bg-emerald-900 rounded-md uppercase text-[10px] font-bold tracking-widest px-6">
                       <Send size={14} className="mr-2" />
                       Ajouter la Note
                     </Button>
@@ -176,13 +176,13 @@ export default async function CaseDetailPage({ params }: Props) {
 
         {/* Sidebar : Bénéficiaire Info */}
         <div className="space-y-8">
-          <Card className="rounded-none border-none bg-emerald-900 text-white shadow-xl">
+          <Card className="rounded-md border-none bg-emerald-900 text-white shadow-xl">
             <CardHeader>
               <CardTitle className="text-lg font-serif">Bénéficiaire</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-white/10 flex items-center justify-center rounded-full text-emerald-300">
+                <div className="w-12 h-12 bg-white/10 flex items-center justify-center rounded-md text-emerald-300">
                   <User size={24} />
                 </div>
                 <div>
@@ -208,7 +208,7 @@ export default async function CaseDetailPage({ params }: Props) {
             </CardContent>
           </Card>
 
-          <Card className="rounded-none border-slate-200 shadow-sm">
+          <Card className="rounded-md border-slate-200 shadow-sm">
             <CardContent className="p-6 space-y-4">
               <div className="flex items-center gap-2 text-red-600 text-xs font-bold uppercase">
                 <AlertTriangle size={16} />

@@ -21,7 +21,7 @@ export default function StatCard({ icon: Icon, number, label, delay = 0 }: StatC
             whileHover={{ y: -10, scale: 1.02 }}
             className="bg-white rounded-2xl p-6 md:p-8 shadow-sm hover:shadow-xl transition-all border border-slate-100 flex flex-col items-center justify-center text-center group"
         >
-            <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+            <div className="w-16 h-16 bg-primary/5 text-primary rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
                 <Icon className="w-8 h-8" />
             </div>
             <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">

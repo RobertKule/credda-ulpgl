@@ -24,7 +24,7 @@ export default function ResearchHero({ featuredArticle, locale }: ResearchHeroPr
   return (
     <section className="relative w-full bg-[#050a15] overflow-hidden">
       {/* Background Decorative Element */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-600/5 -skew-x-12 translate-x-1/4 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-1/2 h-full bg-primary/5 -skew-x-12 translate-x-1/4 pointer-events-none" />
       
       <div className="container mx-auto px-6 py-24 lg:py-32 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">

@@ -53,11 +53,11 @@ export default function BeneficiaryDashboard() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case "NEW": return <Badge className="bg-blue-500 rounded-none uppercase text-[10px]">Nouveau</Badge>;
-      case "OPEN": return <Badge className="bg-emerald-500 rounded-none uppercase text-[10px]">En cours</Badge>;
-      case "CLOSED": return <Badge className="bg-slate-500 rounded-none uppercase text-[10px]">Clôturé</Badge>;
-      case "ON_HOLD": return <Badge className="bg-amber-500 rounded-none uppercase text-[10px]">En attente</Badge>;
-      default: return <Badge variant="outline" className="rounded-none uppercase text-[10px]">{status}</Badge>;
+      case "NEW": return <Badge className="bg-primary/50 rounded-md uppercase text-[10px]">Nouveau</Badge>;
+      case "OPEN": return <Badge className="bg-emerald-500 rounded-md uppercase text-[10px]">En cours</Badge>;
+      case "CLOSED": return <Badge className="bg-slate-500 rounded-md uppercase text-[10px]">Clôturé</Badge>;
+      case "ON_HOLD": return <Badge className="bg-amber-500 rounded-md uppercase text-[10px]">En attente</Badge>;
+      default: return <Badge variant="outline" className="rounded-md uppercase text-[10px]">{status}</Badge>;
     }
   };
 
@@ -78,7 +78,7 @@ export default function BeneficiaryDashboard() {
           </div>
         </div>
 
-        <Card className="rounded-none border-none shadow-xl mb-12">
+        <Card className="rounded-md border-none shadow-xl mb-12">
           <CardHeader className="bg-emerald-900 text-white p-6 sm:p-8">
             <CardTitle className="text-xl font-serif">Rechercher mes dossiers</CardTitle>
             <CardDescription className="text-emerald-100/70">Utilisez le numéro de téléphone fourni lors de la soumission.</CardDescription>
@@ -91,10 +91,10 @@ export default function BeneficiaryDashboard() {
                   placeholder="Ex: +243 812..." 
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="pl-10 h-12 rounded-none border-slate-200"
+                  className="pl-10 h-12 rounded-md border-slate-200"
                 />
               </div>
-              <Button type="submit" disabled={loading} className="bg-emerald-800 hover:bg-emerald-900 h-12 rounded-none px-8 font-bold uppercase tracking-widest text-xs">
+              <Button type="submit" disabled={loading} className="bg-emerald-800 hover:bg-emerald-900 h-12 rounded-md px-8 font-bold uppercase tracking-widest text-xs">
                 {loading ? <Loader2 className="animate-spin mr-2" size={16} /> : "Vérifier l'état"}
               </Button>
             </form>
@@ -116,13 +116,13 @@ export default function BeneficiaryDashboard() {
             ) : (
               <div className="grid grid-cols-1 gap-4">
                 {cases.map((cc) => (
-                  <Card key={cc.id} className="rounded-none border-slate-200 hover:border-emerald-300 transition-colors">
+                  <Card key={cc.id} className="rounded-md border-slate-200 hover:border-emerald-300 transition-colors">
                     <CardContent className="p-6">
                       <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
                         <div className="space-y-3">
                           <div className="flex items-center gap-2">
                             {getStatusBadge(cc.status)}
-                            <Badge variant="outline" className="rounded-none text-[8px] uppercase">{cc.problemType}</Badge>
+                            <Badge variant="outline" className="rounded-md text-[8px] uppercase">{cc.problemType}</Badge>
                           </div>
                           <h3 className="text-lg font-bold text-slate-900">{cc.title}</h3>
                           <p className="text-sm text-slate-500 line-clamp-2">{cc.description}</p>
@@ -131,7 +131,7 @@ export default function BeneficiaryDashboard() {
                             <span className="flex items-center gap-1 uppercase tracking-tighter">REF: {cc.id.substring(0, 8)}</span>
                           </div>
                         </div>
-                        <Button variant="ghost" className="text-emerald-700 hover:text-emerald-900 hover:bg-emerald-50 rounded-none h-auto py-2 font-bold uppercase text-[10px]">
+                        <Button variant="ghost" className="text-emerald-700 hover:text-emerald-900 hover:bg-emerald-50 rounded-md h-auto py-2 font-bold uppercase text-[10px]">
                           Plus de détails
                         </Button>
                       </div>

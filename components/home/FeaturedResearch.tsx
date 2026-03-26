@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import GSAPReveal from "@/components/shared/GSAPReveal";
 import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
+import { Badge } from "@/components/ui/badge";
 
 interface FeaturedResearchProps {
   research: any[];
@@ -47,7 +48,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                 {t('research.cta')}
                 <div className="absolute -bottom-2 left-0 w-full h-[1px] bg-[#C9A84C]/30 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
               </span>
-              <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] group-hover:text-[#0C0C0A] transition-all duration-500">
+              <div className="w-10 h-10 rounded-md border border-border flex items-center justify-center group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] group-hover:text-[#0C0C0A] transition-all duration-500">
                 <ArrowRight size={16} />
               </div>
             </Link>
@@ -68,7 +69,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                 transition: { duration: 0.4 }
               }}
               viewport={{ once: true }}
-              className="group flex flex-col h-full bg-card/40 backdrop-blur-md border border-border/50 overflow-hidden transition-all duration-700 hover:border-primary/40 rounded-[2.5rem] shadow-sm hover:shadow-[0_30px_60px_-12px_rgba(201,168,76,0.12)]"
+              className="group flex flex-col h-full bg-card/40 backdrop-blur-md border border-border/50 overflow-hidden transition-all duration-700 hover:border-primary/40 rounded-md shadow-sm hover:shadow-[0_30px_60px_-12px_rgba(201,168,76,0.12)]"
               style={{ transformStyle: "preserve-3d" }}
             >
               <div className="relative aspect-[16/10] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-1000">
@@ -81,9 +82,9 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-80" />
                 <div className="absolute top-6 left-6">
-                  <span className="bg-primary/90 backdrop-blur-md text-primary-foreground text-[9px] font-black uppercase tracking-widest px-5 py-2.5 shadow-2xl rounded-full">
+                  <Badge variant="emerald" className="bg-emerald/90 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-widest px-5 py-2.5 shadow-2xl rounded-md border-none">
                     {item.category?.translations?.[0]?.name || t('research.journal')}
-                  </span>
+                  </Badge>
                 </div>
               </div>
 
@@ -113,7 +114,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                     className="flex items-center justify-between group/link"
                   >
                     <span className="text-[11px] font-outfit font-bold uppercase tracking-[0.2em] text-muted-foreground group-hover/link:text-primary transition-colors">{t('research.read_more')}</span>
-                    <div className="w-10 h-10 rounded-full border border-border flex items-center justify-center group-hover/link:bg-primary group-hover/link:border-primary group-hover/link:text-primary-foreground transition-all duration-700">
+                    <div className="w-10 h-10 rounded-md border border-border flex items-center justify-center group-hover/link:bg-primary group-hover/link:border-primary group-hover/link:text-primary-foreground transition-all duration-700">
                       <ArrowRight size={16} />
                     </div>
                   </Link>

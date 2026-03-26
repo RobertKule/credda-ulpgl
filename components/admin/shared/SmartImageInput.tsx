@@ -59,7 +59,7 @@ export function SmartImageInput({ value, onChange, folder = "gallery", label = "
   return (
     <div className="space-y-4">
       <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-3">
-        <ImageIcon size={14} className="text-blue-600" /> {label}
+        <ImageIcon size={14} className="text-primary" /> {label}
       </Label>
 
       <Tabs 
@@ -97,14 +97,14 @@ export function SmartImageInput({ value, onChange, folder = "gallery", label = "
               <div className="text-center p-6 w-full">
                 {uploading ? (
                   <div className="space-y-4 px-6">
-                    <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto" />
-                    <div className="w-full bg-slate-200 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                    <Loader2 className="w-8 h-8 text-primary animate-spin mx-auto" />
+                    <div className="w-full bg-slate-200 dark:bg-white/10 h-1.5 rounded-md overflow-hidden">
                       <div 
-                        className="bg-blue-600 h-full transition-all duration-300" 
+                        className="bg-primary h-full transition-all duration-300" 
                         style={{ width: `${progress}%` }}
                       />
                     </div>
-                    <p className="text-[9px] font-black text-blue-600 uppercase tracking-widest">Envoi: {progress}%</p>
+                    <p className="text-[9px] font-black text-primary uppercase tracking-widest">Envoi: {progress}%</p>
                   </div>
                 ) : (
                   <div className="space-y-4">

@@ -33,7 +33,7 @@ export default function ConnectedGallerySection({ images }: { images: any[] }) {
         <section className="py-16 sm:py-20 lg:py-24 bg-slate-50 overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6">
                 <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-                    <Badge className="bg-blue-600/10 text-blue-700 rounded-none mb-3 sm:mb-4 uppercase text-[8px] sm:text-[9px] lg:text-[10px] font-black px-3 py-1 border-none">
+                    <Badge className="bg-primary/10 text-blue-700 rounded-md mb-3 sm:mb-4 uppercase text-[8px] sm:text-[9px] lg:text-[10px] font-black px-3 py-1 border-none">
                         {t('Gallery.badge')}
                     </Badge>
                     <FormattedHTML
@@ -76,7 +76,7 @@ export default function ConnectedGallerySection({ images }: { images: any[] }) {
                                         </div>
                                     </div>
                                     <div className="absolute top-3 left-3 z-10">
-                                        <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[6px] sm:text-[7px] lg:text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full">
+                                        <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[6px] sm:text-[7px] lg:text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-md">
                                             {img.category}
                                         </Badge>
                                     </div>
@@ -85,14 +85,14 @@ export default function ConnectedGallerySection({ images }: { images: any[] }) {
                         ))}
                     </CarouselContent>
                     <div className="absolute top-1/2 -translate-y-1/2 left-4 right-4 flex justify-between pointer-events-none z-20">
-                        <CarouselPrevious className="static translate-y-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full bg-white/80 backdrop-blur-sm hover:bg-blue-600 hover:text-white border-0 shadow-xl pointer-events-auto" />
-                        <CarouselNext className="static translate-y-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full bg-white/80 backdrop-blur-sm hover:bg-blue-600 hover:text-white border-0 shadow-xl pointer-events-auto" />
+                        <CarouselPrevious className="static translate-y-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-md bg-white/80 backdrop-blur-sm hover:bg-primary hover:text-white border-0 shadow-xl pointer-events-auto" />
+                        <CarouselNext className="static translate-y-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-md bg-white/80 backdrop-blur-sm hover:bg-primary hover:text-white border-0 shadow-xl pointer-events-auto" />
                     </div>
                     <div className="flex justify-center gap-2 mt-6">
                         {images.map((_: any, idx: number) => (
                             <button
                                 key={idx}
-                                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${idx === currentGalleryIndex ? 'bg-blue-600 w-4 sm:w-6' : 'bg-slate-300 hover:bg-slate-400'}`}
+                                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-md transition-all duration-300 ${idx === currentGalleryIndex ? 'bg-primary w-4 sm:w-6' : 'bg-slate-300 hover:bg-slate-400'}`}
                                 onClick={() => setCurrentGalleryIndex(idx)}
                             />
                         ))}
@@ -102,7 +102,7 @@ export default function ConnectedGallerySection({ images }: { images: any[] }) {
 
             <div className="container mx-auto px-4 sm:px-6 mt-8 sm:mt-10 lg:mt-12">
                 <div className="flex justify-center">
-                    <Link href="/gallery" className="group inline-flex items-center gap-2 text-[8px] sm:text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-blue-600 border-b-2 border-blue-600/30 pb-1 hover:border-blue-600 transition-all">
+                    <Link href="/gallery" className="group inline-flex items-center gap-2 text-[8px] sm:text-[9px] lg:text-[10px] font-black uppercase tracking-widest text-primary border-b-2 border-blue-600/30 pb-1 hover:border-blue-600 transition-all">
                         <span>{t('Gallery.cta')}</span>
                         <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
                     </Link>

@@ -91,11 +91,11 @@ export default function MembersList({
                 </div>
                 
                 {m.image ? (
-                  <div className="relative w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden z-10 translate-y-8 group-hover:scale-110 transition-transform duration-500">
+                  <div className="relative w-24 h-24 rounded-md border-4 border-white shadow-lg overflow-hidden z-10 translate-y-8 group-hover:scale-110 transition-transform duration-500">
                     <img src={m.image} alt={content.name} className="w-full h-full object-cover" />
                   </div>
                 ) : (
-                  <div className="relative w-24 h-24 rounded-full border-4 border-white shadow-lg bg-slate-100 flex items-center justify-center z-10 translate-y-8 group-hover:scale-110 transition-transform duration-500 text-slate-400 text-xl font-black">
+                  <div className="relative w-24 h-24 rounded-md border-4 border-white shadow-lg bg-slate-100 flex items-center justify-center z-10 translate-y-8 group-hover:scale-110 transition-transform duration-500 text-slate-400 text-xl font-black">
                     {getInitials(content.name)}
                   </div>
                 )}
@@ -103,10 +103,10 @@ export default function MembersList({
 
               <div className="p-6 pt-12 flex-1 flex flex-col items-center text-center space-y-4">
                 <div className="space-y-1">
-                  <h3 className="font-serif font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                  <h3 className="font-serif font-bold text-slate-900 group-hover:text-primary transition-colors">
                     {content.name}
                   </h3>
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">
+                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">
                     {content.role}
                   </p>
                 </div>
@@ -123,7 +123,7 @@ export default function MembersList({
                 </div>
 
                 <div className="flex items-center justify-center gap-2 pt-4 mt-auto w-full">
-                  <Button size="sm" variant="ghost" className="h-9 w-9 p-0 text-slate-400 hover:text-blue-600" asChild>
+                  <Button size="sm" variant="ghost" className="h-9 w-9 p-0 text-slate-400 hover:text-primary" asChild>
                     <Link href={`/admin/members/${m.id}/edit`}>
                       <Edit size={16} />
                     </Link>

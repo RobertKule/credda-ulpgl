@@ -113,7 +113,7 @@ function EventCard({ event, locale, isPast = false }: { event: any; locale: stri
                 <div className="text-[10px] font-outfit font-bold uppercase tracking-widest text-muted-foreground">{month}</div>
              </div>
              {!isPast && (
-               <div className="w-3 h-3 rounded-full bg-[#C9A84C] animate-pulse" />
+               <div className="w-3 h-3 rounded-md bg-[#C9A84C] animate-pulse" />
              )}
           </div>
 

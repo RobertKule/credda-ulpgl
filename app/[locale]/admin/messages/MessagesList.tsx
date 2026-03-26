@@ -225,7 +225,7 @@ export function MessagesList({ messages }: MessagesListProps) {
           </div>
         ) : (
           <div className="py-16 text-center bg-white border border-slate-200 rounded-xl">
-            <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-20 h-20 bg-slate-100 rounded-md flex items-center justify-center mx-auto mb-4">
               <Inbox size={32} className="text-slate-400" />
             </div>
             <h3 className="text-lg font-serif font-bold text-slate-900 mb-2">

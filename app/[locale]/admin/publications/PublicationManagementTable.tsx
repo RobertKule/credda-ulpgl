@@ -97,18 +97,18 @@ export default function PublicationManagementTable({
           return (
             <div key={p.id} className="bg-white border border-slate-200 p-6 flex flex-col md:flex-row gap-6 hover:shadow-xl hover:shadow-blue-900/5 transition-all group relative overflow-hidden">
               {/* Background accent */}
-              <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 opacity-[0.03] group-hover:scale-150 transition-transform duration-700 rounded-full ${p.domain === 'RESEARCH' ? 'bg-blue-600' : 'bg-emerald-600'}`} />
+              <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 opacity-[0.03] group-hover:scale-150 transition-transform duration-700 rounded-md ${p.domain === 'RESEARCH' ? 'bg-primary' : 'bg-emerald-600'}`} />
               
-              <div className="w-16 h-20 bg-slate-50 flex flex-col items-center justify-center border border-slate-100 shrink-0 group-hover:bg-blue-50 transition-colors">
-                <FileText size={32} className="text-slate-300 group-hover:text-blue-600" />
+              <div className="w-16 h-20 bg-slate-50 flex flex-col items-center justify-center border border-slate-100 shrink-0 group-hover:bg-primary/5 transition-colors">
+                <FileText size={32} className="text-slate-300 group-hover:text-primary" />
                 <span className="text-[10px] font-black uppercase text-slate-400 mt-1">{p.year}</span>
               </div>
 
               <div className="flex-1 space-y-4">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <Badge className={`rounded-none text-[8px] font-black tracking-widest uppercase px-2 py-0.5 ${
-                      p.domain === 'RESEARCH' ? 'bg-blue-600' : 'bg-emerald-600'
+                    <Badge className={`rounded-md text-[8px] font-black tracking-widest uppercase px-2 py-0.5 ${
+                      p.domain === 'RESEARCH' ? 'bg-primary' : 'bg-emerald-600'
                     }`}>
                       {p.domain}
                     </Badge>
@@ -118,7 +118,7 @@ export default function PublicationManagementTable({
                       </span>
                     )}
                   </div>
-                  <h3 className="font-serif font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2">
+                  <h3 className="font-serif font-bold text-slate-900 leading-tight group-hover:text-primary transition-colors line-clamp-2">
                     {content.title}
                   </h3>
                   <p className="text-xs text-slate-500 italic font-medium">
@@ -137,12 +137,12 @@ export default function PublicationManagementTable({
               </div>
 
               <div className="flex md:flex-col justify-end gap-2 shrink-0 border-t md:border-t-0 md:border-l border-slate-100 pt-4 md:pt-0 md:pl-6">
-                <Button size="icon" variant="ghost" asChild className="h-10 w-10 text-slate-400 hover:text-blue-600">
+                <Button size="icon" variant="ghost" asChild className="h-10 w-10 text-slate-400 hover:text-primary">
                   <Link href={`/admin/publications/${p.id}/edit`}>
                     <Edit size={18} />
                   </Link>
                 </Button>
-                <Button size="icon" variant="ghost" asChild className="h-10 w-10 text-slate-400 hover:text-blue-600" title="View PDF">
+                <Button size="icon" variant="ghost" asChild className="h-10 w-10 text-slate-400 hover:text-primary" title="View PDF">
                   <a href={p.pdfUrl} target="_blank" rel="noopener noreferrer">
                     <ExternalLink size={18} />
                   </a>

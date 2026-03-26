@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Link, usePathname } from "./../../navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Menu, X, ArrowRight, Search, Sun, Moon, ChevronDown } from "lucide-react";
@@ -16,15 +17,14 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isFooterExpanded, setIsFooterExpanded] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const { data: session } = useSession();
   const { theme, toggleTheme } = useTheme();
   const [activeSection, setActiveSection] = useState("");
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50); // Seuil un peu plus haut pour l'élégance
+      setIsScrolled(window.scrollY > 50);
       
       const sections = ["about", "research", "clinical", "publications", "team"];
       let currentSection = "";
@@ -60,18 +60,15 @@ export default function Navbar() {
     { href: "/gallery", label: t("gallery"), id: "gallery" }
   ];
 
-  const loginHref = session ? "/admin" : "/login";
-  const loginLabel = session ? t("dashboard") : t("login");
-
   const LanguageSwitcher = () => (
-    <div className="flex items-center gap-1 rounded-full border border-border bg-muted/30 p-1 shadow-inner">
+    <div className="flex items-center gap-1 rounded-md border border-border bg-muted/30 p-1 shadow-inner">
       {["fr", "en", "sw"].map((l) => (
         <Link
           key={l}
           href={pathname}
           locale={l}
           aria-label={`Switch language to ${l.toUpperCase()}`}
-          className={`text-[9px] font-bold w-8 h-8 flex items-center justify-center transition-all rounded-full ${
+          className={`text-[9px] font-bold w-8 h-8 flex items-center justify-center transition-all rounded-md ${
             locale === l ? "bg-[#C9A84C] text-[#0C0C0A] shadow-md" : "text-foreground/60 hover:text-foreground"
           }`}
         >
@@ -88,7 +85,7 @@ export default function Navbar() {
         <div className="flex whitespace-nowrap animate-ticker">
           {[...tickerItems, ...tickerItems].map((item: any, i) => (
             <span key={i} className="mx-12 text-[10px] font-outfit font-medium uppercase tracking-[0.4em] text-[#F5F2EC]/60 flex items-center gap-4">
-              <span className="w-1.5 h-1.5 bg-[#C9A84C] rounded-full shadow-[0_0_10px_rgba(201,168,76,0.8)]" />
+              <span className="w-1.5 h-1.5 bg-[#C9A84C] rounded-md shadow-[0_0_10px_rgba(201,168,76,0.8)]" />
               {item}
             </span>
           ))}
@@ -106,18 +103,29 @@ export default function Navbar() {
         <div
           className={`container mx-auto transition-all duration-500 ease-in-out relative flex items-center justify-between ${
             isScrolled 
-            ? "max-w-6xl h-16 bg-background/80 backdrop-blur-xl border border-border/50 rounded-full px-8 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)]" 
+            ? "max-w-6xl h-16 bg-background/80 backdrop-blur-xl border border-border/50 rounded-md px-8 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)]" 
             : "max-w-full h-20 bg-transparent px-6"
           }`}
         >
           {/* LOGO */}
-          <Link href="/" className="flex flex-col group py-1" aria-label="CREDDA CDE Home">
-            <span className="font-bricolage font-black text-xl lg:text-2xl tracking-tighter text-foreground leading-none">
-              CREDDA<span className="text-[#C9A84C] animate-pulse">·</span>CDE
-            </span>
-            {!isScrolled && (
-              <span className="text-[7px] uppercase tracking-[0.6em] font-bold text-[#C9A84C]/60 mt-0.5">Legal Excellence</span>
-            )}
+          <Link href="/" className="flex items-center gap-3 group py-1" aria-label="CREDDA CDE Home">
+            <div className="relative w-8 h-8 lg:w-10 lg:h-10 transition-transform duration-500 group-hover:scale-110">
+              <Image 
+                src="/logocredda.png" 
+                alt="CREDDA Logo" 
+                fill 
+                className="object-contain"
+                priority
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bricolage font-black text-lg lg:text-xl tracking-tighter text-foreground leading-none">
+                CREDDA<span className="text-[#C9A84C] animate-pulse">·</span>CDE
+              </span>
+              {!isScrolled && (
+                <span className="text-[7px] uppercase tracking-[0.6em] font-bold text-[#C9A84C]/60 mt-0.5">Legal Excellence</span>
+              )}
+            </div>
           </Link>
 
           {/* DESKTOP MENU */}
@@ -148,7 +156,7 @@ export default function Navbar() {
             </button>
 
             {session ? (
-              <Link href="/admin" className="flex items-center gap-3 group border border-border/50 bg-muted/20 px-4 py-1.5 rounded-full hover:bg-[#C9A84C]/10 transition-all">
+              <Link href="/admin" className="flex items-center gap-3 group border border-border/50 bg-muted/20 px-4 py-1.5 rounded-md hover:bg-[#C9A84C]/10 transition-all">
                  <div className="w-6 h-6 rounded-full bg-[#C9A84C] text-[10px] font-black flex items-center justify-center text-[#0C0C0A]">
                    {session.user?.name?.[0] || 'A'}
                  </div>
@@ -169,7 +177,7 @@ export default function Navbar() {
 
             <Link
               href="/contact"
-              className={`px-6 py-2.5 bg-[#C9A84C] text-[#0C0C0A] text-[9px] font-black uppercase tracking-[0.2em] rounded-full hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-lg hover:shadow-[#C9A84C]/20`}
+              className={`px-6 py-2.5 bg-[#C9A84C] text-[#0C0C0A] text-[9px] font-black uppercase tracking-[0.2em] rounded-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-lg hover:shadow-[#C9A84C]/20`}
             >
               {t("contact")}
               <ArrowRight size={12} strokeWidth={3} />
@@ -187,7 +195,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* 3. MOBILE MENU OVERLAY - (Inchangé par rapport à la version précédente avec scrollable nav) */}
+      {/* 3. MOBILE MENU OVERLAY */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -197,28 +205,26 @@ export default function Navbar() {
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed inset-0 z-[200] flex h-[100dvh] flex-col bg-background text-foreground overflow-hidden"
           >
-            {/* Header Mobile */}
             <div className="shrink-0 flex items-center justify-between border-b border-border bg-card/40 p-6 backdrop-blur-md">
-              <span className="font-bricolage text-xl font-black tracking-tighter">CREDDA<span className="text-[#C9A84C]">·</span>CDE</span>
+              <span className="font-bricolage text-xl font-black tracking-tighter flex items-center gap-2">
+                <Image src="/logocredda.png" alt="Logo" width={24} height={24} className="object-contain" />
+                CREDDA<span className="text-[#C9A84C]">·</span>CDE
+              </span>
               <button 
                 onClick={() => setIsOpen(false)} 
-                className="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 rounded-full"
+                className="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 rounded-md"
                 aria-label="Close mobile menu"
               >
                 <X size={24} />
               </button>
             </div>
 
-            {/* Scrollable Nav Area */}
             <nav className="flex-1 overflow-y-auto px-6 py-8 space-y-12 overscroll-contain scrollbar-hide">
               <MobileGroup label="Expertise" links={expertiseLinks} pathname={pathname} activeSection={activeSection} setIsOpen={setIsOpen} />
               <MobileGroup label="L'Institution" links={institutionLinks} pathname={pathname} activeSection={activeSection} setIsOpen={setIsOpen} />
             </nav>
 
-            {/* Footer Mobile Fixe */}
             <div className="shrink-0 border-t border-border bg-card/95 p-6 pb-[env(safe-area-inset-bottom,24px)] space-y-4">
-
-              {/* THEME TOGGLE + LANGUAGE SWITCHER */}
               <div className="flex items-center justify-between gap-4">
                 <button
                   onClick={toggleTheme}
@@ -252,7 +258,7 @@ export default function Navbar() {
                 href={session ? "/admin" : "/login"} 
                 onClick={() => setIsOpen(false)} 
                 className={`flex items-center justify-between w-full p-4 rounded-xl border transition-all ${
-                  session ? "border-blue-500/30 bg-blue-500/5 text-foreground" : "border-[#C9A84C]/20 bg-[#C9A84C]/5 text-foreground"
+                  session ? "border-blue-500/30 bg-primary/50/5 text-foreground" : "border-[#C9A84C]/20 bg-[#C9A84C]/5 text-foreground"
                 }`}
               >
                  <div className="flex flex-col">
@@ -264,7 +270,7 @@ export default function Navbar() {
                     </span>
                  </div>
                  {session ? (
-                   <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-xs">
+                   <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center text-white font-black text-xs">
                      {session.user?.name?.[0] || 'A'}
                    </div>
                  ) : (
@@ -285,8 +291,6 @@ export default function Navbar() {
     </>
   );
 }
-
-// --- SOUS-COMPOSANTS ---
 
 function NavDropdown({ label, links, activeDropdown, setActiveDropdown, pathname, activeSection, isScrolled }: any) {
   const isOpen = activeDropdown === label;

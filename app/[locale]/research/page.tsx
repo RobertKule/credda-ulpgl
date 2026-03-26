@@ -59,7 +59,7 @@ async function ResearchContent({ locale }: { locale: string }) {
       <section style={{ padding: '80px 40px 64px', borderBottom: '1px solid rgba(245,242,236,0.07)', marginBottom: '80px' }}>
         <ScrollReveal>
           <header className="max-w-7xl mx-auto text-center relative overflow-hidden py-20 px-10 border border-border bg-card shadow-sm">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9A84C]/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9A84C]/5 rounded-md blur-[100px] -translate-y-1/2 translate-x-1/2" />
             
             <p style={{ fontFamily: 'var(--font-outfit)', fontSize: '9px', letterSpacing: '0.2em', color: '#C9A84C', textTransform: 'uppercase', fontWeight: 600, marginBottom: 16 }}>
               CREDDA · Intelligence & Analyse
@@ -126,7 +126,7 @@ function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
        <div className="p-10">
           <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground/40 mb-6">
              <span>{new Date(doc.createdAt).getFullYear()} Edition</span>
-             <span className="w-1 h-1 bg-[#C9A84C] rounded-full" />
+             <span className="w-1 h-1 bg-[#C9A84C] rounded-md" />
              <span className="flex items-center gap-2"><Clock size={12} /> 12 Min Read</span>
           </div>
           <h3 className="text-2xl font-serif font-black text-foreground mb-6 line-clamp-2 leading-tight group-hover:text-primary transition-colors">

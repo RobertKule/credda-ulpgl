@@ -15,7 +15,7 @@ export default function ClinicalSection() {
   return (
     <section className="relative overflow-hidden bg-transparent py-12 lg:py-20 text-foreground">
       <SectionDecorNumber value="03" className="-left-2 top-4 sm:left-0 md:top-12" />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#C9A84C]/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#C9A84C]/5 rounded-md blur-[150px] pointer-events-none" />
       
       <div className="relative z-10 w-full">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -49,8 +49,8 @@ export default function ClinicalSection() {
             <div className="grid sm:grid-cols-2 gap-12 mb-16">
               <GSAPReveal direction="up" delay={0.6}>
                 <div className="space-y-6 group">
-                  <div className="w-14 h-14 bg-card/50 backdrop-blur-md border border-border/40 flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700 rounded-2xl">
-                    <TreePine size={24} />
+                  <div className="w-14 h-14 bg-card/50 backdrop-blur-md border border-border/40 flex items-center justify-center hover-emerald-glow transition-all duration-700 rounded-md">
+                    <TreePine size={24} className="text-emerald" />
                   </div>
                   <h3 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.land.title')}</h3>
                   <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border/20 pt-6">{t('clinical.actions.land.desc')}</p>
@@ -58,8 +58,8 @@ export default function ClinicalSection() {
               </GSAPReveal>
               <GSAPReveal direction="up" delay={0.8}>
                 <div className="space-y-6 group">
-                  <div className="w-14 h-14 bg-card/50 backdrop-blur-md border border-border/40 flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700 rounded-2xl">
-                    <Scale size={24} />
+                  <div className="w-14 h-14 bg-card/50 backdrop-blur-md border border-border/40 flex items-center justify-center hover-emerald-glow transition-all duration-700 rounded-md">
+                    <Scale size={24} className="text-emerald" />
                   </div>
                   <h3 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.mobile.title')}</h3>
                   <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border/20 pt-6">{t('clinical.actions.mobile.desc')}</p>

@@ -59,11 +59,11 @@ export default function StatsSection({ stats }: { stats: any }) {
                             transition={{ delay: i * 0.1 }}
                             className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4 lg:gap-6 text-center sm:text-left group"
                         >
-                            <div className="text-blue-600 transition-transform duration-500 group-hover:scale-110 shrink-0 mb-2 sm:mb-0">
+                            <div className="text-primary transition-transform duration-500 group-hover:scale-110 shrink-0 mb-2 sm:mb-0">
                                 <StatIcon icon={s.icon} />
                             </div>
                             <div className="flex flex-col">
-                                <div className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-blue-600 leading-none mb-1 sm:mb-2">
+                                <div className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-primary leading-none mb-1 sm:mb-2">
                                     <Counter value={s.v} />
                                 </div>
                                 <div className="text-[10px] sm:text-[11px] lg:text-xs font-medium text-slate-500 leading-snug max-w-[120px] sm:max-w-[140px] lg:max-w-[150px]">

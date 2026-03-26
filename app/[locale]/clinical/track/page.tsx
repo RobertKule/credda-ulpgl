@@ -73,10 +73,10 @@ export default async function TrackCasePage({
                    name="phone" 
                    defaultValue={phone}
                    placeholder={t('placeholder')}
-                   className="h-16 pl-16 rounded-none border-none focus-visible:ring-0 text-lg font-serif"
+                   className="h-16 pl-16 rounded-md border-none focus-visible:ring-0 text-lg font-serif"
                  />
               </div>
-              <Button type="submit" className="bg-primary text-secondary h-16 rounded-none px-12 font-black uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-primary transition-all">
+              <Button type="submit" className="bg-primary text-secondary h-16 rounded-md px-12 font-black uppercase tracking-widest text-[10px] hover:bg-secondary hover:text-primary transition-all">
                 {t('submit')}
               </Button>
            </form>
@@ -97,7 +97,7 @@ export default async function TrackCasePage({
                      <div className="flex flex-col md:flex-row justify-between items-start gap-8">
                         <div className="space-y-4 flex-1">
                            <div className="flex items-center gap-4">
-                              <Badge className={`rounded-none border-none px-4 py-1.5 text-[9px] font-black uppercase tracking-widest ${statusColors[c.status] || "bg-slate-100 text-slate-500"}`}>
+                              <Badge className={`rounded-md border-none px-4 py-1.5 text-[9px] font-black uppercase tracking-widest ${statusColors[c.status] || "bg-slate-100 text-slate-500"}`}>
                                 {c.status.replace('_', ' ')}
                               </Badge>
                               <span className="text-[10px] font-black uppercase tracking-widest text-anthracite/30">ID: {c.id.substring(0, 8)}</span>

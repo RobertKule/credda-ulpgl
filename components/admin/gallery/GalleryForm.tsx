@@ -84,7 +84,7 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
         </div>
         <div className="flex gap-3">
           <Button type="button" variant="ghost" onClick={() => router.back()} className="text-[10px] font-black uppercase tracking-widest rounded-xl">Annuler</Button>
-          <Button disabled={loading} className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20 px-8 rounded-xl font-black text-[10px] uppercase tracking-widest active:scale-95 transition-all">
+          <Button disabled={loading} className="bg-primary hover:bg-blue-700 shadow-lg shadow-blue-600/20 px-8 rounded-xl font-black text-[10px] uppercase tracking-widest active:scale-95 transition-all">
             <Save className="mr-2" size={16} />
             {isEditing ? "Enregistrer" : "Créer"}
           </Button>
@@ -108,7 +108,7 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
                   <div className="space-y-4">
                     <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Titre de l'image ({l.code})</Label>
                     <Input 
-                      className="text-2xl font-serif font-black border-0 border-b border-slate-100 dark:border-white/5 rounded-none px-0 focus-visible:ring-0 focus-visible:border-blue-600 bg-transparent text-slate-900 dark:text-white"
+                      className="text-2xl font-serif font-black border-0 border-b border-slate-100 dark:border-white/5 rounded-md px-0 focus-visible:ring-0 focus-visible:border-blue-600 bg-transparent text-slate-900 dark:text-white"
                       placeholder="Légende de l'image..."
                       value={translations[l.code].title}
                       onChange={(e) => setTranslations({...translations, [l.code]: {...translations[l.code], title: e.target.value}})}
@@ -128,7 +128,7 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
 
         <div className="space-y-6">
           <Card className="p-8 space-y-8 rounded-[2.5rem] border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 shadow-sm">
-            <h3 className="font-black uppercase text-[10px] tracking-[0.3em] text-blue-600 dark:text-blue-400 border-b border-slate-100 dark:border-white/5 pb-6">Source & Organisation</h3>
+            <h3 className="font-black uppercase text-[10px] tracking-[0.3em] text-primary dark:text-blue-400 border-b border-slate-100 dark:border-white/5 pb-6">Source & Organisation</h3>
             
             <SmartImageInput 
               label="Sélection de l'image"
@@ -147,8 +147,8 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
               />
             </div>
 
-            <div className="flex items-center justify-between p-5 bg-blue-600/5 dark:bg-blue-600/10 rounded-2xl border border-blue-600/10 transition-colors">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400 cursor-pointer" htmlFor="featured-switch">Mettre en vedette</Label>
+            <div className="flex items-center justify-between p-5 bg-primary/5 dark:bg-primary/10 rounded-2xl border border-blue-600/10 transition-colors">
+              <Label className="text-[10px] font-black uppercase tracking-widest text-primary dark:text-blue-400 cursor-pointer" htmlFor="featured-switch">Mettre en vedette</Label>
               <Switch 
                 id="featured-switch"
                 checked={baseData.featured}

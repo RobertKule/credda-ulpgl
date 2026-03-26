@@ -48,8 +48,8 @@ export default function ClinicalSection() {
                             sizes="(max-width: 768px) 100vw, 50vw"
                         />
                         {/* Decorative Elements */}
-                        <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-blue-100 rounded-full blur-3xl opacity-50 z-0" />
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-50 group-hover:scale-100">
+                        <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-blue-100 rounded-md blur-3xl opacity-50 z-0" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-white/10 backdrop-blur-sm rounded-md flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-50 group-hover:scale-100">
                             <Scale className="w-16 h-16 text-white" />
                         </div>
                     </motion.div>
@@ -63,7 +63,7 @@ export default function ClinicalSection() {
                         className="max-w-xl"
                     >
                         <motion.div variants={itemVariants} className="inline-flex items-center gap-2 mb-6">
-                            <span className="px-4 py-2 rounded-full bg-emerald-50 text-[#059669] text-sm font-semibold tracking-wide uppercase border border-emerald-100">
+                            <span className="px-4 py-2 rounded-md bg-emerald-50 text-[#059669] text-sm font-semibold tracking-wide uppercase border border-emerald-100">
                                 Impact de Terrain
                             </span>
                         </motion.div>
@@ -97,7 +97,7 @@ export default function ClinicalSection() {
 
                             <motion.div
                                 variants={itemVariants}
-                                className="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-blue-200 transition-colors group"
+                                className="p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-primary/20 transition-colors group"
                             >
                                 <div className="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center mb-4 group-hover:bg-[#1e3a8a] transition-colors">
                                     <TreePine className="w-6 h-6 text-[#1e3a8a] group-hover:text-white transition-colors" />

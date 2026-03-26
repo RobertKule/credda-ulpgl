@@ -24,7 +24,7 @@ export default function ResearchSection({ articles = [] }: { articles: any[] }) 
                         x: [-20, 20, -20] 
                     }}
                     transition={{ duration: 15, repeat: Infinity }}
-                    className="absolute -top-24 -left-24 w-[600px] h-[400px] bg-primary/20 rounded-full blur-[120px]"
+                    className="absolute -top-24 -left-24 w-[600px] h-[400px] bg-primary/20 rounded-md blur-[120px]"
                 />
             </div>
 
@@ -34,7 +34,7 @@ export default function ResearchSection({ articles = [] }: { articles: any[] }) 
                     <GSAPReveal direction="left" className="max-w-3xl space-y-6">
                         <div className="flex items-center gap-4">
                             <span className="h-[1px] w-12 bg-primary" />
-                            <Badge className="bg-primary/10 text-primary border-none rounded-none uppercase text-[10px] font-bold tracking-[0.4em] px-4 py-1.5">
+                            <Badge className="bg-primary/10 text-primary border-none rounded-md uppercase text-[10px] font-bold tracking-[0.4em] px-4 py-1.5">
                                 {t('research.badge')}
                             </Badge>
                         </div>
@@ -58,7 +58,7 @@ export default function ResearchSection({ articles = [] }: { articles: any[] }) 
                             <span className="border-b border-border group-hover:border-primary pb-3 transition-all">
                                 {t('research.cta')}
                             </span>
-                            <div className="w-16 h-16 rounded-full border border-border flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-500 group-hover:scale-110">
+                            <div className="w-16 h-16 rounded-md border border-border flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-500 group-hover:scale-110">
                                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                             </div>
                         </Link>
@@ -90,9 +90,9 @@ export default function ResearchSection({ articles = [] }: { articles: any[] }) 
 
                                 {/* Category Badge Floating */}
                                 <div className="absolute top-4 left-4">
-                                    <div className="bg-background/90 backdrop-blur-md px-3 py-1 text-[8px] font-black uppercase tracking-widest text-foreground border border-border/50">
+                                    <Badge variant="emerald" className="px-3 py-1 text-[8px] font-black uppercase tracking-widest border border-emerald/20 bg-emerald/5 backdrop-blur-md">
                                         {article?.category?.translations?.[0]?.name || "Général"}
-                                    </div>
+                                    </Badge>
                                 </div>
                             </div>
 

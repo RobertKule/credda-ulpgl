@@ -91,7 +91,7 @@ export default function AdminTopBar({ locale }: { locale: string }) {
            <button className="w-12 h-12 flex items-center justify-center bg-slate-50 dark:bg-white/5 rounded-2xl text-slate-400 hover:text-[#C9A84C] transition-all relative active:scale-95 group">
               <Bell size={20} className="group-hover:rotate-12 transition-transform" />
               {stats.newCasesCount > 0 && (
-                <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 bg-[#C9A84C] text-[#0C0C0A] text-[10px] font-black rounded-full flex items-center justify-center ring-4 ring-white dark:ring-[#0C0C0A] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)]">
+                <span className="absolute -top-1 -right-1 min-w-[20px] h-5 px-1 bg-[#C9A84C] text-[#0C0C0A] text-[10px] font-black rounded-md flex items-center justify-center ring-4 ring-white dark:ring-[#0C0C0A] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)]">
                   {stats.newCasesCount > 9 ? '9+' : stats.newCasesCount}
                 </span>
               )}

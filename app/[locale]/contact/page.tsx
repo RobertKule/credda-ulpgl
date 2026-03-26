@@ -107,7 +107,7 @@ export default function ContactPage() {
                     exit={{ opacity: 0, y: -20 }}
                     className="flex flex-col items-center text-center space-y-8"
                   >
-                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center text-primary border border-primary/20">
+                    <div className="w-20 h-20 bg-primary/10 rounded-md flex items-center justify-center text-primary border border-primary/20">
                       <CheckCircle2 size={40} />
                     </div>
                     <div className="space-y-2">
@@ -118,7 +118,7 @@ export default function ContactPage() {
                     </div>
                     <Button 
                       onClick={() => setStatus("idle")}
-                      className="bg-foreground text-background rounded-none uppercase font-black text-[10px] tracking-widest px-10 py-6 hover:bg-primary hover:text-primary-foreground transition-all"
+                      className="bg-foreground text-background rounded-md uppercase font-black text-[10px] tracking-widest px-10 py-6 hover:bg-primary hover:text-primary-foreground transition-all"
                     >
                       Nouveau Message
                     </Button>
@@ -145,14 +145,14 @@ export default function ContactPage() {
                         <Textarea 
                           name="message"
                           placeholder="Explicitez votre requête ici..." 
-                          className="bg-muted/30 border-border rounded-none min-h-[120px] focus-visible:ring-1 focus-visible:ring-primary/40 focus:border-primary/50 transition-all text-sm font-medium placeholder:opacity-10"
+                          className="bg-muted/30 border-border rounded-md min-h-[120px] focus-visible:ring-1 focus-visible:ring-primary/40 focus:border-primary/50 transition-all text-sm font-medium placeholder:opacity-10"
                           required
                         />
                       </div>
 
                       <Button 
                         disabled={status === "loading"}
-                        className="w-full bg-primary text-primary-foreground rounded-none h-16 font-black uppercase tracking-[0.4em] text-[10px] hover:scale-[1.01] active:scale-95 transition-all shadow-xl shadow-primary/10"
+                        className="w-full bg-primary text-primary-foreground rounded-md h-16 font-black uppercase tracking-[0.4em] text-[10px] hover:scale-[1.01] active:scale-95 transition-all shadow-xl shadow-primary/10"
                       >
                         {status === "loading" ? (
                           <Loader2 className="animate-spin" size={18} />
@@ -196,7 +196,7 @@ function Field({ label, ...props }: any) {
       <label className="text-[9px] uppercase font-black tracking-widest text-muted-foreground group-focus-within/input:text-primary transition-colors">{label}</label>
       <Input 
         {...props}
-        className="bg-muted/30 border-border rounded-none h-12 focus-visible:ring-1 focus-visible:ring-primary/40 transition-all text-xs font-bold placeholder:opacity-10"
+        className="bg-muted/30 border-border rounded-md h-12 focus-visible:ring-1 focus-visible:ring-primary/40 transition-all text-xs font-bold placeholder:opacity-10"
       />
     </div>
   );
