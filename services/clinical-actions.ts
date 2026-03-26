@@ -1,18 +1,11 @@
-import { sql, db } from "@/lib/db";
-import { safeQuery } from "@/lib/db-safe";
+import { db } from "@/lib/db";
+import { withSafeAction, ActionResponse } from "@/lib/safe-action";
 
 /** Pas de revalidatePath ici : ce module est importé par des Client Components.
  *  Utiliser router.refresh() côté client après mutation (voir ClinicalCaseForm). */
 
-export interface ClinicalCaseResult {
-  success: boolean;
-  error?: string;
-  data?: any;
-}
-
-export async function submitClinicalCase(formData: any): Promise<ClinicalCaseResult> {
-  // ... (keeping Prisma for writes for now)
-  try {
+export async function submitClinicalCase(formData: any): Promise<ActionResponse<any>> {
+  return withSafeAction("submitClinicalCase", async () => {
     // 1. Gérer le bénéficiaire (recherche par téléphone pour éviter les doublons simples)
     let beneficiary = await db.beneficiary.findFirst({
       where: { phone: formData.phone }
@@ -45,87 +38,51 @@ export async function submitClinicalCase(formData: any): Promise<ClinicalCaseRes
       }
     });
 
-    // Optionnel : Notification (pourrait être ajouté ici via Resend)
-
-    return { success: true, data: newCase };
-  } catch (error) {
-    console.error("❌ Erreur soumission cas clinique:", error);
-    return { success: false, error: "Erreur lors de la soumission du cas" };
-  }
+    return newCase;
+  }, "Erreur lors de la soumission du cas clinique");
 }
 
-export async function getCasesByPhone(phone: string): Promise<ClinicalCaseResult> {
-  try {
-    const cases = await sql`
-      SELECT cc.* 
-      FROM "ClinicalCase" cc
-      JOIN "Beneficiary" b ON cc."beneficiaryId" = b.id
-      WHERE b.phone = ${phone}
-      ORDER BY cc."createdAt" DESC
-    `;
-    return { success: true, data: cases };
-  } catch (error) {
-    console.error("❌ Error fetching cases by phone:", error);
-    return { success: false, error: "Erreur lors de la récupération des cas" };
-  }
+export async function getAllClinicalCases(): Promise<ActionResponse<any>> {
+  return withSafeAction("getAllClinicalCases", async () => {
+    return await db.clinicalCase.findMany({
+      include: { beneficiary: true },
+      orderBy: { createdAt: 'desc' }
+    });
+  }, "Erreur de récupération des cas cliniques");
 }
 
-export async function getAllClinicalCases(): Promise<ClinicalCaseResult> {
-  return safeQuery<ClinicalCaseResult>(
-    async () => {
-      const cases = await db.clinicalCase.findMany({
-        include: { beneficiary: true },
-        orderBy: { createdAt: 'desc' }
-      });
-      return { success: true, data: cases };
-    },
-    { success: false, error: "Erreur de récupération globale" },
-    "services/clinical:getAll"
-  );
-}
-
-export async function getClinicalCaseById(id: string): Promise<ClinicalCaseResult> {
-  return safeQuery<ClinicalCaseResult>(
-    async () => {
-      const caseItem = await db.clinicalCase.findUnique({
-        where: { id },
-        include: { 
-          beneficiary: true,
-          notes: {
-            orderBy: { createdAt: 'desc' }
-          }
+export async function getClinicalCaseById(id: string): Promise<ActionResponse<any>> {
+  return withSafeAction("getClinicalCaseById", async () => {
+    return await db.clinicalCase.findUnique({
+      where: { id },
+      include: { 
+        beneficiary: true,
+        notes: {
+          orderBy: { createdAt: 'desc' }
         }
-      });
-      return { success: true, data: caseItem };
-    },
-    { success: false, error: "Cas non trouvé" },
-    "services/clinical:getCaseById"
-  );
+      }
+    });
+  }, "Cas clinique non trouvé");
 }
 
-export async function updateClinicalCaseStatus(id: string, status: string): Promise<ClinicalCaseResult> {
-  try {
-    const updated = await db.clinicalCase.update({
+export async function updateClinicalCaseStatus(id: string, status: string): Promise<ActionResponse<any>> {
+  return withSafeAction("updateClinicalCaseStatus", async () => {
+    return await db.clinicalCase.update({
       where: { id },
       data: { status: status as any }
     });
-    return { success: true, data: updated };
-  } catch (error) {
-    return { success: false, error: "Erreur de mise à jour" };
-  }
+  }, "Erreur de mise à jour du statut");
 }
 
-export async function deleteClinicalCase(id: string): Promise<ClinicalCaseResult> {
-  try {
+export async function deleteClinicalCase(id: string): Promise<ActionResponse<any>> {
+  return withSafeAction("deleteClinicalCase", async () => {
     await db.clinicalCase.delete({ where: { id } });
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: "Erreur de suppression" };
-  }
+    return { id };
+  }, "Erreur lors de la suppression du cas clinique");
 }
 
-export async function updateClinicalCase(id: string, formData: any): Promise<ClinicalCaseResult> {
-  try {
+export async function updateClinicalCase(id: string, formData: any): Promise<ActionResponse<any>> {
+  return withSafeAction("updateClinicalCase", async () => {
     const updated = await db.clinicalCase.update({
       where: { id },
       data: {
@@ -139,7 +96,6 @@ export async function updateClinicalCase(id: string, formData: any): Promise<Cli
       }
     });
 
-    // Optionnel: Mettre à jour les infos du bénéficiaire si nécessaire
     if (formData.beneficiaryId) {
       await db.beneficiary.update({
         where: { id: formData.beneficiaryId },
@@ -147,30 +103,43 @@ export async function updateClinicalCase(id: string, formData: any): Promise<Cli
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
-          location: formData.location, // On synchronise souvent la localisation
+          location: formData.location,
           type: formData.beneficiaryType
         }
       });
     }
 
-    return { success: true, data: updated };
-  } catch (error) {
-    console.error("❌ Erreur mise à jour cas clinique:", error);
-    return { success: false, error: "Erreur de mise à jour" };
-  }
+    return updated;
+  }, "Erreur lors de la mise à jour du cas clinique");
 }
 
-export async function addCaseNote(id: string, content: string, clinicianId: string): Promise<ClinicalCaseResult> {
-  try {
-    const note = await db.caseNote.create({
+export async function addCaseNote(id: string, content: string, clinicianId: string): Promise<ActionResponse<any>> {
+  return withSafeAction("addCaseNote", async () => {
+    return await db.caseNote.create({
       data: {
         content,
         caseId: id,
         authorId: clinicianId
       }
     });
-    return { success: true, data: note };
-  } catch (error) {
-    return { success: false, error: "Erreur d'ajout de note" };
-  }
+  }, "Erreur lors de l'ajout de la note");
+}
+
+export async function getCasesByPhone(phone: string): Promise<ActionResponse<any>> {
+  return withSafeAction("getCasesByPhone", async () => {
+    return await db.clinicalCase.findMany({
+      where: {
+        beneficiary: {
+          phone: phone
+        }
+      },
+      include: {
+        beneficiary: true,
+        notes: {
+          orderBy: { createdAt: 'desc' }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+  }, "Erreur lors de la récupération de vos dossiers");
 }

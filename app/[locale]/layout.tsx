@@ -15,11 +15,29 @@ export default async function RootLayout({
   const messages = await getMessages({ locale });
 
   return (
-    <Providers locale={locale} messages={messages}>
-       {/* MainLayoutWrapper gère l'inclusion de Navbar/Footer et les marges conditionnelles */}
-       <MainLayoutWrapper>
-         {children}
-       </MainLayoutWrapper>
-    </Providers>
+    <html lang={locale} suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                let theme = localStorage.getItem('credda-theme');
+                if (!theme) {
+                  theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+                }
+                document.documentElement.classList.add(theme);
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
+      <body>
+        <Providers locale={locale} messages={messages}>
+          <MainLayoutWrapper>
+            {children}
+          </MainLayoutWrapper>
+        </Providers>
+      </body>
+    </html>
   );
 }

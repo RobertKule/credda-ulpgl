@@ -14,14 +14,13 @@ import {
   Users,
   LogOut,
   ChevronLeft,
-  ChevronRight,
   X,
   Scale,
   Calendar,
-  Layout
+  Layout,
+  Menu
 } from "lucide-react";
 
-// ✅ Map des icônes
 const iconMap: Record<string, any> = {
   LayoutDashboard,
   FileText,
@@ -51,7 +50,6 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // ✅ Écouter l'événement du bouton menu
   useEffect(() => {
     const handleToggleSidebar = () => {
       setIsOpen(prev => !prev);
@@ -61,7 +59,6 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
     return () => window.removeEventListener('toggle-sidebar', handleToggleSidebar);
   }, []);
 
-  // ✅ Détecter la taille d'écran
   useEffect(() => {
     const checkScreen = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -77,29 +74,11 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
     return () => window.removeEventListener('resize', checkScreen);
   }, []);
 
-  // ✅ Fermer la sidebar après navigation sur mobile
   useEffect(() => {
     if (isMobile) {
       setIsOpen(false);
     }
   }, [pathname, isMobile]);
-
-  // ✅ Fermeture au clic en dehors (mobile)
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (isMobile && isOpen) {
-        const sidebar = document.getElementById('admin-sidebar');
-        const menuButton = document.getElementById('menu-button');
-        if (sidebar && !sidebar.contains(e.target as Node) && 
-            menuButton && !menuButton.contains(e.target as Node)) {
-          setIsOpen(false);
-        }
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isMobile, isOpen]);
 
   const fullMenuItems = [
     ...menuItems,
@@ -111,7 +90,7 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
       {/* Overlay mobile */}
       {isMobile && isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity"
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] transition-opacity"
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -120,49 +99,57 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
       <aside
         id="admin-sidebar"
         className={`
-          fixed lg:sticky top-0 left-0 z-50
-          h-screen bg-[#06080a] border-r border-white/5
-          transition-all duration-300 ease-in-out
-          flex flex-col text-white
+          fixed lg:sticky top-0 left-0 z-[110]
+          h-screen bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-white/5
+          transition-all duration-500 ease-in-out
+          flex flex-col text-slate-900 dark:text-white
           ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-          ${isOpen ? 'w-72' : 'w-0 lg:w-20'}
-          overflow-hidden
+          ${isOpen ? 'w-80' : 'w-0 lg:w-24'}
+          overflow-hidden shadow-2xl
         `}
       >
-        {/* Header Sidebar */}
+        {/* BOUTON RÉDUCTEUR STICKY TOP */}
         <div className={`
-          h-20 border-b border-white/5 flex items-center
+          sticky top-0 z-20 h-20 border-b border-slate-200 dark:border-white/5 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md flex items-center
           ${isOpen ? 'px-6 justify-between' : 'px-0 justify-center'}
         `}>
           {isOpen ? (
             <>
-              <div className="flex items-center gap-3 group/logo cursor-pointer">
-                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:rotate-12 transition-transform">
-                  <span className="text-white font-black text-lg">C</span>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-600/20">
+                  <span className="text-white font-black text-xl">C</span>
                 </div>
-                <div>
-                  <p className="font-serif font-bold text-white leading-tight">CREDDA</p>
-                  <p className="text-[8px] font-black uppercase tracking-widest text-blue-500">Admin Portal v2</p>
+                <div className="min-w-0">
+                  <p className="font-serif font-black text-slate-900 dark:text-white leading-none tracking-tight transition-colors">CREDDA</p>
+                  <p className="text-[8px] font-black uppercase tracking-[0.3em] text-blue-600 dark:text-blue-500 mt-1">Admin v2.5</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
-                aria-label="Fermer"
+                className="p-2.5 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-all hover:text-blue-600 active:scale-90"
               >
-                <X size={20} className="text-white/50" />
+                <ChevronLeft size={20} />
               </button>
             </>
           ) : (
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center mx-auto shadow-lg hover:scale-110 transition-transform cursor-pointer">
-              <span className="text-white font-bold text-lg">C</span>
-            </div>
+            <button
+              onClick={() => setIsOpen(true)}
+              className="w-12 h-12 flex items-center justify-center bg-slate-100 dark:bg-white/5 hover:bg-blue-600 hover:text-white hover:scale-110 active:scale-90 rounded-2xl transition-all shadow-xl"
+            >
+              <Menu size={20} />
+            </button>
           )}
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 py-8 overflow-y-auto custom-scrollbar">
-          <ul className="space-y-1.5 px-3">
+        <nav className="flex-1 py-10 overflow-y-auto custom-scrollbar px-3 space-y-1">
+          <div className={`mb-6 flex items-center gap-4 ${isOpen ? 'px-4' : 'justify-center'}`}>
+             <div className="h-[1px] flex-1 bg-slate-200 dark:bg-white/5" />
+             {isOpen && <span className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-400 dark:text-white/30 whitespace-nowrap transition-colors">Principal</span>}
+             <div className="h-[1px] flex-1 bg-slate-200 dark:bg-white/5" />
+          </div>
+
+          <ul className="space-y-2">
             {fullMenuItems.map((item) => {
               const isActive = pathname === item.href || 
                 (item.href !== '/admin' && pathname?.startsWith(item.href));
@@ -175,31 +162,31 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
                   <Link
                     href={item.href}
                     className={`
-                      flex items-center px-4 py-3.5 rounded-xl
+                      flex items-center px-4 py-4 rounded-2xl
                       transition-all duration-300 group relative
                       ${isActive 
-                        ? 'bg-blue-600/10 text-blue-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]' 
-                        : 'text-white/50 hover:bg-white/5 hover:text-white'
+                        ? 'bg-blue-600/5 dark:bg-blue-600/10 text-blue-600 dark:text-blue-400 shadow-[inset_0_1px_1px_rgba(37,99,235,0.05)]' 
+                        : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white'
                       }
                     `}
                   >
-                    <Icon size={18} className={`
-                      shrink-0 transition-all duration-300
-                      ${isActive ? 'text-blue-500 scale-110' : 'text-white/30 group-hover:text-blue-400'}
-                      ${isOpen ? 'mr-4' : 'mx-auto'}
-                    `} />
+                    <Icon size={20} className={`
+                      shrink-0 transition-all duration-500
+                      ${isActive ? 'text-blue-600 dark:text-blue-500 scale-125' : 'text-slate-300 dark:text-white/20 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:scale-110'}
+                      ${isOpen ? 'mr-5' : 'mx-auto'}
+                    `} strokeWidth={2.5} />
                     
                     {isOpen && (
                       <span className={`
-                        text-xs font-bold uppercase tracking-widest whitespace-nowrap
-                        ${isActive ? 'text-blue-400' : ''}
+                        text-[11px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition-colors
+                        ${isActive ? 'text-blue-600 dark:text-blue-400' : ''}
                       `}>
                         {item.label}
                       </span>
                     )}
 
                     {isActive && (
-                       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-blue-600 rounded-r-full shadow-[0_0_15px_rgba(37,99,235,0.5)]" />
+                       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-blue-600 rounded-r-full shadow-[0_0_20px_rgba(37,99,235,0.8)]" />
                     )}
                   </Link>
                 </li>
@@ -208,44 +195,41 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
           </ul>
         </nav>
 
-        {/* Footer Sidebar */}
-        <div className="border-t border-white/5 p-4 bg-[#0a0c0e]/50 backdrop-blur-md">
-          <div className={`
-            flex items-center gap-3 px-3 py-3 rounded-2xl bg-white/5 border border-white/5 hover:border-white/10 transition-all group
-            ${!isOpen && 'justify-center'}
-          `}>
-            <div className="w-9 h-9 bg-blue-600/20 rounded-xl flex items-center justify-center text-blue-500 border border-blue-600/20 group-hover:bg-blue-600 group-hover:text-white transition-all duration-500">
-              <UserCircle size={20} />
+        {/* Footer Sidebar Apparence Bento */}
+        <div className="p-4 bg-slate-50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-white/5 pb-8 transition-colors">
+          {isOpen ? (
+            <div className={`flex items-center gap-4 p-4 rounded-3xl bg-white dark:bg-blue-600/5 border border-slate-200 dark:border-white/5 group hover:border-blue-600/20 transition-all duration-500 shadow-sm`}>
+              <div className="w-11 h-11 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-sm font-black shadow-lg shadow-blue-600/30 group-hover:rotate-12 transition-transform">
+                {session?.user?.name?.[0] || 'A'}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-black uppercase tracking-tight text-slate-900 dark:text-white truncate transition-colors">{session?.user?.name || 'Administrateur'}</p>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                   <p className="text-[8px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-500/80 transition-colors">Actif</p>
+                </div>
+              </div>
+              <button 
+                className="p-2.5 hover:bg-red-50 dark:hover:bg-red-500 rounded-xl transition-all group/logout shadow-sm hover:shadow-red-500/20 active:scale-90"
+                aria-label="Déconnexion"
+                onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
+              >
+                <LogOut size={16} className="text-slate-300 dark:text-white/30 group-hover/logout:text-red-600 dark:group-hover/logout:text-white transition-colors" />
+              </button>
             </div>
-            
-            {isOpen && (
-              <>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-black uppercase tracking-tight text-white truncate">{session?.user?.name || 'Admin'}</p>
-                  <div className="flex items-center gap-1.5">
-                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                     <p className="text-[8px] font-black uppercase tracking-widest text-emerald-500">En ligne</p>
-                  </div>
+          ) : (
+             <div className="flex flex-col items-center gap-4">
+                <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black shadow-xl">
+                  {session?.user?.name?.[0] || 'A'}
                 </div>
                 <button 
-                  className="p-2.5 hover:bg-red-500/10 rounded-xl transition-all group/logout"
-                  aria-label="Déconnexion"
+                  className="w-12 h-12 flex items-center justify-center bg-slate-200 dark:bg-white/5 hover:bg-red-500 text-slate-500 hover:text-white rounded-2xl transition-all group/logout active:scale-90 shadow-sm"
                   onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
                 >
-                  <LogOut size={16} className="text-white/30 group-hover/logout:text-red-500 transition-colors" />
+                   <LogOut size={20} className="transition-colors" />
                 </button>
-              </>
-            )}
-          </div>
-
-          {/* Bouton de bascule pour desktop */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="hidden lg:flex items-center justify-center w-full mt-4 p-2 bg-white/5 rounded-xl hover:bg-white/10 text-white/30 hover:text-white transition-all border border-transparent hover:border-white/5"
-            aria-label={isOpen ? "Réduire" : "Développer"}
-          >
-            {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
-          </button>
+             </div>
+          )}
         </div>
       </aside>
     </>

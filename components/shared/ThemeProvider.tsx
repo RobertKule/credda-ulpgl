@@ -23,7 +23,8 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 function applyTheme(mode: ThemeMode) {
   if (typeof document === "undefined") return;
-  document.documentElement.classList.toggle("light", mode === "light");
+  document.documentElement.classList.remove("light", "dark");
+  document.documentElement.classList.add(mode);
 }
 
 export function ThemeProvider({ children, forcedTheme }: { children: ReactNode, forcedTheme?: ThemeMode }) {

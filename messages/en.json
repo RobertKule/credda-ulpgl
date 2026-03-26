@@ -1035,7 +1035,7 @@
         "sub": "Unread messages"
       }
     },
-    "recent": {
+    "recentContent": {
       "title": "Recent Works",
       "manage": "Manage all",
       "untitled": "Untitled",
@@ -1043,11 +1043,13 @@
       "modified": "Modified on {date}",
       "published": "Online",
       "draft": "Draft",
-      "empty": "No content available."
+      "empty": "No content available.",
+      "viewAll": "View all"
     },
-    "inbox": {
+    "recentMessages": {
       "title": "<italic>Central</italic> Desk",
-      "unread": "{count} New messages waiting"
+      "unread": "{count} New messages waiting",
+      "viewAll": "View all"
     },
     "health": {
       "title": "System Integrity",
