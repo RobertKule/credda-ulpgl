@@ -632,32 +632,42 @@
     }
   },
   "LoginPage": {
-    "left": {
-      "badge": "Espace Sécurisé",
-      "title": "Portail de Gestion <span>Scientifique</span>.",
-      "description": "Bienvenue sur l'interface d'administration du CREDDA. Cet espace est réservé aux chercheurs et administrateurs autorisés.",
-      "footer": "Protection des données active"
+    "header": {
+      "back": "RETOUR AU SITE",
+      "title": "CREDDA",
+      "subtitle": "SYSTÈME HARMONISÉ D'ADMINISTRATION"
     },
-    "right": {
-      "back": "Retour au site",
-      "logo": "CREDDA<span>.ULPGL</span>",
-      "title": "Login Admin",
-      "subtitle": "Veuillez saisir vos identifiants d'accès.",
-      "fields": {
-        "email": {
-          "placeholder": "Adresse email académique"
-        },
-        "password": {
-          "placeholder": "Mot de passe"
-        }
-      },
-      "submit": "Se connecter",
-      "submitting": "Connexion...",
-      "errors": {
-        "invalid": "Identifiants invalides",
-        "connection": "Erreur de connexion"
-      },
-      "forgotPassword": "Mot de passe oublié ?"
+    "fields": {
+      "email_label": "Identifiant Institutionnel",
+      "email_placeholder": "nom@ulpgl.ac.cd",
+      "password_label": "Clé d'Accès Sécurisée",
+      "password_placeholder": "••••••••",
+      "forgot_link": "Oubliée ?"
+    },
+    "submit": {
+      "label": "Initialiser la session",
+      "sending": "Initialisation..."
+    },
+    "footer": {
+      "university": "ULPGL GOMA",
+      "copyright": "CREDDA © {year}"
+    },
+    "forgot_view": {
+      "back": "RETOUR AU LOGIN",
+      "title": "RÉCUPÉRATION",
+      "description": "Saisissez votre email pour recevoir les instructions de réinitialisation.",
+      "submit": "Envoyer les instructions"
+    },
+    "modal": {
+      "welcome": "Bienvenue",
+      "denied": "Accès Refusé",
+      "retry": "Réessayer",
+      "reset_success": "Si cet email existe, un lien de réinitialisation a été envoyé.",
+      "success_msg": "Authentification réussie. Redirection en cours..."
+    },
+    "errors": {
+      "invalid": "Identifiants invalides",
+      "connection": "Erreur de connexion"
     }
   },
   "RegisterPage": {
