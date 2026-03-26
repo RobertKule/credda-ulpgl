@@ -4,6 +4,7 @@ import { usePathname } from "@/navigation"; // Supposant que /navigation exporte
 import { usePathname as useNextPathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import SystemBanner from "./SystemBanner";
 
 export default function MainLayoutWrapper({
   children,
@@ -19,6 +20,7 @@ export default function MainLayoutWrapper({
 
   return (
     <>
+      <SystemBanner />
       <Navbar />
       <div className="m-0 p-0 pt-24 mt-12 min-h-[calc(100vh-6rem)] bg-background text-foreground overflow-x-hidden transition-all duration-500">
         {children}

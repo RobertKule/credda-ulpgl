@@ -25,6 +25,9 @@ Cette plateforme "Production-Ready" centralise :
 - **Internationalisation** : next-intl (Support multi-locales : FR, EN, SW)
 - **Déploiement** : Vercel
 
+## 👨‍💻 Équipe de Développement
+- **Lead Developer** : [Robert Kule](https://github.com/RobertKule)
+
 ## 🚀 Installation & Développement
 
 ### Pré-requis

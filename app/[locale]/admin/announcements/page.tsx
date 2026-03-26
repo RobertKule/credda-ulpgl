@@ -88,7 +88,7 @@ export default function AdminAnnouncements() {
         </div>
       </div>
 
-      <Card className="p-6 bg-white dark:bg-[#0C0C0A] border-slate-200 dark:border-white/5 rounded-3xl shadow-xl">
+      <Card className="p-6 bg-white dark:bg-[#0C0C0A] border-slate-200 dark:border-white/5 rounded-md shadow-xl">
         <form onSubmit={handleCreate} className="space-y-4">
           <div className="space-y-2">
             <label className="text-[10px] font-black uppercase tracking-widest text-[#C9A84C]">Nouveau Message</label>
@@ -96,12 +96,12 @@ export default function AdminAnnouncements() {
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Ex: Maintenance prévue ce soir à 0h00..."
-              className="bg-slate-50 dark:bg-white/5 border-transparent h-14 rounded-2xl font-bold px-6"
+              className="bg-slate-50 dark:bg-white/5 border-transparent h-14 rounded-md font-bold px-6"
             />
           </div>
           <Button 
             disabled={isLoading}
-            className="w-full h-14 bg-[#C9A84C] hover:bg-[#C9A84C]/90 text-[#0C0C0A] font-black uppercase tracking-[0.2em] rounded-2xl shadow-lg shadow-[#C9A84C]/20 transition-all hover:scale-[1.02] active:scale-95"
+            className="w-full h-14 bg-[#C9A84C] hover:bg-[#C9A84C]/90 text-[#0C0C0A] font-black uppercase tracking-[0.2em] rounded-md shadow-lg shadow-[#C9A84C]/20 transition-all hover:scale-[1.02] active:scale-95"
           >
             <Plus className="mr-2" size={20} />
             Diffuser Maintenant
@@ -121,7 +121,7 @@ export default function AdminAnnouncements() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 className={`
-                  p-6 rounded-3xl border transition-all duration-500 group
+                  p-6 rounded-md border transition-all duration-500 group
                   ${ann.isActive 
                     ? 'bg-[#C9A84C]/5 border-[#C9A84C]/20 shadow-[0_0_50px_rgba(201,168,76,0.05)]' 
                     : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/5 opacity-60'
@@ -141,7 +141,7 @@ export default function AdminAnnouncements() {
                     <button
                       onClick={() => toggleActive(ann.id, ann.isActive)}
                       className={`
-                        p-3 rounded-2xl transition-all active:scale-90
+                        p-3 rounded-md transition-all active:scale-90
                         ${ann.isActive 
                           ? 'bg-[#C9A84C] text-[#0C0C0A]' 
                           : 'bg-slate-100 dark:bg-white/10 text-slate-400 hover:text-[#C9A84C]'
@@ -152,7 +152,7 @@ export default function AdminAnnouncements() {
                     </button>
                     <button
                       onClick={() => handleDelete(ann.id)}
-                      className="p-3 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all active:scale-90"
+                      className="p-3 bg-red-500/10 text-red-500 rounded-md hover:bg-red-500 hover:text-white transition-all active:scale-90"
                     >
                       <Trash2 size={18} />
                     </button>
