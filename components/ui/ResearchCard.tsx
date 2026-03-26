@@ -26,43 +26,49 @@ export default function ResearchCard({ article, delay = 0 }: ResearchCardProps) 
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.5, delay, ease: "easeOut" }}
-            className="group bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col h-full hover:-translate-y-2"
+            className="group bg-card/50 backdrop-blur-md rounded-[2.5rem] overflow-hidden border border-border/40 shadow-sm hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] transition-all duration-500 flex flex-col h-full hover:-translate-y-2"
         >
-            <div className="relative h-56 w-full overflow-hidden">
+            <div className="relative h-64 w-full overflow-hidden">
                 <Image
                     src={imageUrl}
                     alt={title}
                     fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="object-cover transition-transform duration-[1500ms] group-hover:scale-110"
                 />
-                <div className="absolute top-4 left-4 bg-blue-600/90 backdrop-blur-sm text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide">
+                <div className="absolute top-6 left-6 bg-primary/90 backdrop-blur-md text-primary-foreground text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-widest shadow-xl">
                     {category}
                 </div>
             </div>
 
-            <div className="p-6 flex flex-col flex-grow">
+            <div className="p-8 md:p-10 flex flex-col flex-grow relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.02] to-transparent pointer-events-none" />
+                
                 {date && (
-                    <div className="flex items-center gap-2 text-slate-500 text-sm mb-3">
-                        <Calendar className="w-4 h-4" />
+                    <div className="relative z-10 flex items-center gap-2 text-muted-foreground text-[10px] font-bold uppercase tracking-widest mb-4 opacity-60">
+                        <Calendar className="w-3.5 h-3.5 text-primary/60" />
                         <span>{date}</span>
                     </div>
                 )}
 
-                <h3 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2 group-hover:text-blue-600 transition-colors">
+                <h3 className="relative z-10 text-xl md:text-2xl font-fraunces font-bold text-foreground mb-4 line-clamp-2 group-hover:text-primary transition-colors duration-500">
                     {title}
                 </h3>
 
-                <p className="text-slate-600 mb-6 line-clamp-3 text-sm flex-grow">
+                <p className="relative z-10 text-muted-foreground mb-8 line-clamp-3 text-sm md:text-base font-outfit font-light leading-relaxed opacity-80">
                     {excerpt}
                 </p>
 
-                <Link
-                    href={`/research/${slug}`}
-                    className="inline-flex items-center gap-2 text-blue-600 font-semibold group/link mt-auto"
-                >
-                    Lire l'article
-                    <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                </Link>
+                <div className="mt-auto pt-8 border-t border-border/30">
+                    <Link
+                        href={`/research/${slug}`}
+                        className="inline-flex items-center gap-3 text-primary font-bold text-[11px] uppercase tracking-widest group/link"
+                    >
+                        Lire l'article
+                        <div className="w-8 h-8 rounded-full border border-primary/20 flex items-center justify-center group-hover/link:bg-primary group-hover/link:text-primary-foreground transition-all duration-500">
+                            <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                        </div>
+                    </Link>
+                </div>
             </div>
         </motion.div>
     );

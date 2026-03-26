@@ -167,7 +167,9 @@
         "prev": "Iliyopita",
         "next": "Ijayo"
       }
-    }
+    },
+    "intro_subtitle": "Utafiti na Ubora",
+    "about_caption": "Kufikiria Utawala wa Sheria."
   },
   "metadata": {
     "home": {
@@ -230,9 +232,9 @@
     "since": "Tangu",
     "watch_video": "Tazama filamu ya taasisi",
     "hero": {
-      "title1": "Wasomi wa",
-      "title2": "Utafiti",
-      "title3": "Katika Afrika ya Maziwa Makuu."
+      "badge": "Ilianzishwa 2008 • Ubora wa Kiakademia",
+      "title": "Kufikiria <italic>Sheria</italic>, Kujenga Mustakabali.",
+      "desc": "CREDDA ni epicenter ya utafiti wa kisheria nchini DRC, ikiunganisha uhalisi wa kisayansi na dhamira ya kijamii."
     },
     "who_we_are": "Sisi ni nani?",
     "mission_title": "Taasisi ya kitaaluma inayojitolea kwa",
@@ -248,7 +250,12 @@
     "contact_us": "Wasiliana Nasi",
     "compass": "Dira Yetu",
     "mission_vision_title": "Dhamira ya wazi kwa Afrika yenye uthabiti.",
-    "mission": "Dhamira Yetu",
+    "mission": {
+      "badge": "Dhamira Yetu",
+      "title": "Maono <italic>yanayobadilisha</italic> sheria.",
+      "desc": "Zaidi ya maandishi, tunaamini katika sheria hai. Sheria inayowalinda mifumo ya Bonde la Kongo na kuhakikisha heshima ya watu wa asili. CREDDA si tu maabara, ni ngao ya kisheria.",
+      "cta": "Gundua machapisho yetu"
+    },
     "mission_text": "Kutoa utafiti wa hali ya juu ili kuongoza sera za umma na kuimarisha utawala wa sheria nchini DRC.",
     "vision": "Maono Yetu",
     "vision_text": "Kuwa kitovu kikuu cha taaluma mbalimbali cha mageuzi ya migogoro Afrika ya Kati.",
@@ -589,38 +596,48 @@
         "description": "Taarifa zako zimesimbwa kwa njia fiche na hazishirikiwi kamwe."
       },
       "regional": {
-        "title": "Ufikiaji wa Kikanda",
+        "title": "Upeo wa Kikanda",
         "description": "Tunafanya kazi kote katika eneo la Maziwa Makuu."
       }
     }
   },
   "LoginPage": {
-    "left": {
-      "badge": "Eneo Salama",
-      "title": "Portal ya Usimamizi <span>Kisayansi</span>.",
-      "description": "Karibu kwenye kiolesura cha usimamizi cha CREDDA. Eneo hili limehifadhiwa kwa watafiti na wasimamizi walioidhinishwa.",
-      "footer": "Ulinzi wa data unaofaa"
+    "header": {
+      "back": "RUDI KWENYE TOVUTI",
+      "title": "CREDDA",
+      "subtitle": "MFUMO ULIOUNGANISHWA WA UTAWALA"
     },
-    "right": {
-      "back": "Rudi kwenye tovuti",
-      "logo": "CREDDA<span>.ULPGL</span>",
-      "title": "Kuingia kwa Admin",
-      "subtitle": "Tafadhali weka vitambulisho vyako vya ufikiaji.",
-      "fields": {
-        "email": {
-          "placeholder": "Anwani ya barua pepe ya kitaaluma"
-        },
-        "password": {
-          "placeholder": "Nywila"
-        }
-      },
-      "submit": "Ingia",
-      "submitting": "Inaingia...",
-      "errors": {
-        "invalid": "Vitambulisho batili",
-        "connection": "Hitilafu ya muunganisho"
-      },
-      "forgotPassword": "Umesahau nywila?"
+    "fields": {
+      "email_label": "Kitambulisho cha Taasisi",
+      "email_placeholder": "jina@ulpgl.ac.cd",
+      "password_label": "Ufunguo wa Kufikia Salama",
+      "password_placeholder": "••••••••",
+      "forgot_link": "Umesahau?"
+    },
+    "submit": {
+      "label": "Anzisha kikao",
+      "sending": "Inaanzisha..."
+    },
+    "footer": {
+      "university": "ULPGL GOMA",
+      "copyright": "CREDDA © {year}"
+    },
+    "forgot_view": {
+      "back": "RUDI KWENYE LOGIN",
+      "title": "UREJESHAJI",
+      "description": "Ingiza barua pepe yako ili kupokea maelekezo ya kuweka upya.",
+      "submit": "Tuma maelekezo"
+    },
+    "modal": {
+      "welcome": "Karibu",
+      "denied": "Ufikiaji Umekataliwa",
+      "retry": "Jaribu tena",
+      "reset_success": "Ikiwa barua pepe hii ipo, kiungo cha kuweka upya kimetumwa.",
+      "success_msg": "Uthibitishaji umefaulu. Inahamisha..."
+    },
+    "errors": {
+      "invalid": "Itambulisho batili",
+      "connection": "Hitilafu ya muunganisho"
     }
   },
   "RegisterPage": {

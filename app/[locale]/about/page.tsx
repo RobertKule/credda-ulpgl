@@ -1,139 +1,148 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import dynamic from "next/dynamic";
-
-const ReactPlayer: any = dynamic(() => import("react-player"), { ssr: false });
 import { 
-  Play, Pause, Volume2, VolumeX, Maximize, EyeOff, Eye,
-  ArrowRight, Landmark, Target, Globe2, ShieldCheck, MapPin, 
-  ChevronDown, Scale, BookOpen, Quote
+  Play, Pause, Volume2, VolumeX,
+  ArrowRight, Landmark, Globe2, ShieldCheck, Scale, BookOpen, Quote
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
-
 import { useTranslations } from "next-intl";
 
 const ABOUT_PAD = "w-full px-5 sm:px-8 lg:px-12 xl:px-16";
 
 export default function PremiumAboutPage() {
   const t = useTranslations('about');
-  const [isPlaying, setIsPlaying] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
-  const [isCinemaMode, setIsCinemaMode] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [showControls, setShowControls] = useState(true);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const controlsTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const togglePlay = () => {
-    setIsPlaying(!isPlaying);
+    if (videoRef.current) {
+      if (isPaused) videoRef.current.play();
+      else videoRef.current.pause();
+      setIsPaused(!isPaused);
+    }
   };
 
+  // Auto-hide controls on cursor idle
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ 
+        x: (e.clientX / window.innerWidth - 0.5) * 40,
+        y: (e.clientY / window.innerHeight - 0.5) * 40
+      });
+      setShowControls(true);
+      if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
+      controlsTimerRef.current = setTimeout(() => setShowControls(false), 2500);
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
+    };
   }, []);
 
   return (
-    <main className="bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
+    <main className="bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden">
       
-      {/* --- 1. HISTOIRE (HERO IMMERSIF) --- */}
-      <section className="relative flex h-[110vh] w-full items-center justify-center overflow-hidden">
+      {/* --- 1. HERO AVEC VIDÉO LOCALE --- */}
+      <section className="relative min-h-[90vh] lg:min-h-screen w-full overflow-hidden bg-slate-950 flex items-center justify-center">
         
-        {/* BACKGROUND VIDEO LAYER */}
-        <div className="absolute inset-0 z-0 bg-black overflow-hidden pointer-events-none">
-          <div className={`absolute top-1/2 left-1/2 w-[150vw] h-[150vh] -translate-x-1/2 -translate-y-1/2 transition-all duration-1000 
-              ${isCinemaMode ? 'scale-100 opacity-100' : 'scale-[1.15] opacity-100'}`}>
-            <ReactPlayer
-              url="https://www.youtube.com/watch?v=V-MVLqjQMIc"
-              playing={isPlaying}
-              muted={isMuted}
-              volume={isMuted ? 0 : 1}
-              loop
-              playsinline
-              width="100%"
-              height="100%"
-              style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}
-              config={{
-                youtube: {
-                  playerVars: { 
-                    controls: 0, 
-                    disablekb: 1, 
-                    modestbranding: 1, 
-                    rel: 0, 
-                    showinfo: 0, 
-                    iv_load_policy: 3,
-                    autoplay: 1,
-                    playsinline: 1
-                  }
-                }
-              }}
-            />
-          </div>
-          
-          <div className={`absolute inset-0 transition-all duration-1000 z-10 
-            ${isCinemaMode ? 'bg-black/10' : 'bg-background/50 backdrop-blur-[2px]'}`} 
-          />
-          <div className="absolute inset-0 z-20 bg-gradient-to-b from-transparent via-transparent to-background" />
-        </div>
-
-        {/* CUSTOM PLAY/PAUSE OVERLAY */}
-        <div 
-          className="absolute inset-0 z-40 flex items-center justify-center group cursor-pointer"
-          onClick={togglePlay}
+        {/* LOCAL VIDEO BACKGROUND */}
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted={isMuted}
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-40"
         >
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileHover={{ opacity: 1, scale: 1 }}
-            className="w-24 h-24 rounded-full border border-white/20 bg-black/20 backdrop-blur-xl flex items-center justify-center text-white transition-all group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] group-hover:text-black"
-          >
-            {isPlaying ? <Pause size={32} /> : <Play size={32} className="ml-2" />}
-          </motion.div>
-        </div>
+          <source src="/video/hero-bg.mp4" type="video/mp4" />
+        </video>
 
-        {/* CONTENT LAYER */}
+        {/* DARK GRADIENT OVERLAY */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/50 to-slate-950/90 z-10" />
+
+        {/* ANIMATED GLOW ORBS driven by mouse */}
+        <motion.div
+          animate={{ x: mousePos.x * -2, y: mousePos.y * -2 }}
+          transition={{ type: "spring", stiffness: 40, damping: 20 }}
+          className="absolute top-[15%] left-[10%] w-[250px] h-[250px] md:w-[500px] md:h-[500px] bg-primary/20 rounded-full blur-[80px] md:blur-[130px] pointer-events-none z-10"
+        />
+        <motion.div
+          animate={{ x: mousePos.x * 2.5, y: mousePos.y * 2.5 }}
+          transition={{ type: "spring", stiffness: 35, damping: 25 }}
+          className="absolute bottom-[10%] right-[5%] w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-blue-600/15 rounded-full blur-[100px] md:blur-[150px] pointer-events-none z-10"
+        />
+
+        {/* DYNAMIC CONTROLS — fade on idle */}
         <AnimatePresence>
-          {!isCinemaMode && (
-            <motion.div 
-              initial={{ opacity: 0, y: 40 }}
+          {showControls && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
-              className="relative z-30 container mx-auto px-6 text-center pointer-events-none"
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              className="absolute top-8 right-8 md:top-12 md:right-12 z-40 flex items-center gap-1 bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-full shadow-2xl"
             >
-              <Badge className="bg-transparent border border-[#C9A84C]/30 text-[#C9A84C] rounded-md px-8 py-2 text-[10px] tracking-[0.5em] uppercase mb-12">
-                {t('hero.badge')}
-              </Badge>
-              
-              <h1 className="text-7xl md:text-[10rem] font-serif font-light leading-none mb-12 tracking-tighter">
-                {t.rich('hero.title', { 
-                  italic: (chunks) => <span className="italic text-[#C9A84C]">{chunks}</span>,
-                  bold: (chunks) => <span className="font-bold">{chunks}</span>,
-                  br: () => <br />
-                })}
-              </h1>
-              
-              <div className="max-w-2xl mx-auto h-[1px] bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent my-12" />
-              
-              <p className="max-w-xl mx-auto text-lg text-muted-foreground font-light leading-relaxed">
-                {t('hero.desc')}
-              </p>
+              <button onClick={togglePlay} className="p-2 text-white/80 hover:text-white transition hover:scale-110">
+                {isPaused ? <Play size={18} fill="currentColor" /> : <Pause size={18} fill="currentColor" />}
+              </button>
+              <div className="w-px h-5 bg-white/20 mx-1" />
+              <button onClick={() => setIsMuted(!isMuted)} className="p-2 text-white/80 hover:text-white transition hover:scale-110">
+                {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* FLOATING CONTROLS (Glassmorphism) */}
-        <div className="absolute bottom-12 right-12 z-50 flex items-center gap-2 p-2 bg-muted/20 backdrop-blur-2xl border border-border">
-          <ControlButton 
-            active={isCinemaMode}
-            onClick={() => setIsCinemaMode(!isCinemaMode)} 
-            icon={isCinemaMode ? <Eye size={18} /> : <EyeOff size={18} />} 
-            label={isCinemaMode ? "Infos" : "Cinéma"}
-          />
-          <div className="w-[1px] h-4 bg-white/10 mx-1" />
-          <ControlButton onClick={() => setIsMuted(!isMuted)} icon={isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />} />
+        {/* MAIN CONTENT */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: [0.19, 1, 0.22, 1] }}
+          className="relative z-20 container mx-auto px-6 text-center"
+        >
+          <motion.div animate={{ rotateX: mousePos.y * 0.05, rotateY: mousePos.x * -0.05 }} style={{ transformStyle: "preserve-3d" }}>
+            <div className="inline-flex items-center gap-3 border border-primary/40 text-primary bg-black/30 backdrop-blur-md rounded-full px-6 py-2 mb-10 shadow-lg">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-[9px] md:text-[11px] tracking-[0.4em] uppercase font-bold">{t('hero.badge')}</span>
+            </div>
+
+            <h1 className="text-[clamp(3rem,7vw,8rem)] font-fraunces font-black text-white leading-[1.02] tracking-tighter mx-auto max-w-[1400px] mb-8 drop-shadow-2xl">
+              {t.rich('hero.title', {
+                italic: (chunks) => <span className="italic font-light text-primary pr-2">{chunks}</span>,
+                bold: (chunks) => <span className="font-black">{chunks}</span>,
+                br: () => <br />
+              })}
+            </h1>
+
+            <div className="max-w-2xl mx-auto h-px bg-gradient-to-r from-transparent via-white/30 to-transparent my-10" />
+
+            <p className="max-w-2xl mx-auto text-lg md:text-xl text-white/70 font-light leading-relaxed mb-12">
+              {t('hero.desc')}
+            </p>
+
+            <Button
+              variant="default"
+              size="lg"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 px-12 py-6 text-sm font-bold uppercase tracking-widest shadow-xl shadow-primary/30 hover:-translate-y-1 transition-all duration-300"
+            >
+              {t('mission.cta')} <ArrowRight className="ml-3" size={18} />
+            </Button>
+          </motion.div>
+        </motion.div>
+
+        {/* ── BOTTOM WAVY SEPARATOR ── */}
+        <div className="absolute bottom-0 left-0 w-full z-30 pointer-events-none overflow-hidden leading-none">
+          <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[60px] md:h-[100px] block">
+            <path d="M0,40 C240,100 480,0 720,50 C960,100 1200,20 1440,60 L1440,100 L0,100 Z" className="fill-background" />
+          </svg>
         </div>
       </section>
 

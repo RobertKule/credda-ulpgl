@@ -177,7 +177,7 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
                       {m.status}
                     </Badge>
                     {m.repliedAt && (
-                      <Badge className="bg-purple-600 rounded-none text-[8px] font-black tracking-widest uppercase">
+                      <Badge className="bg-emerald-600 rounded-none text-[8px] font-black tracking-widest uppercase">
                         Replied
                       </Badge>
                     )}
@@ -261,12 +261,12 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
                   </div>
 
                   {m.replyContent && (
-                    <div className="bg-purple-50 p-4 border-l-4 border-purple-500 space-y-2">
+                    <div className="bg-emerald-50 p-4 border-l-4 border-emerald-500 space-y-2">
                       <div className="flex items-center justify-between">
-                         <span className="text-[10px] font-black uppercase text-purple-600 tracking-widest">Our Reply</span>
-                         <span className="text-[9px] font-bold text-purple-400">{formatDate(m.repliedAt!)}</span>
+                         <span className="text-[10px] font-black uppercase text-emerald-600 tracking-widest">Our Reply</span>
+                         <span className="text-[9px] font-bold text-emerald-400">{formatDate(m.repliedAt!)}</span>
                       </div>
-                      <p className="text-sm text-purple-900 italic">
+                      <p className="text-sm text-emerald-900 italic">
                         {m.replyContent}
                       </p>
                     </div>

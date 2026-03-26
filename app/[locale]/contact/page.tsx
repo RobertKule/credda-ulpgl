@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
+import { sendContactMessage } from "@/services/contact-actions";
+import { toast } from "react-hot-toast";
+
 export default function ContactPage() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
@@ -15,8 +18,27 @@ export default function ContactPage() {
     e.preventDefault();
     setStatus("loading");
     
-    // Simulation d'envoi (à remplacer par ton fetch réel)
-    setTimeout(() => setStatus("success"), 2000);
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name") as string,
+      email: formData.get("email") as string,
+      subject: formData.get("subject") as string,
+      message: formData.get("message") as string,
+    };
+
+    try {
+      const res = await sendContactMessage(data);
+      if (res.success) {
+        setStatus("success");
+        toast.success("Message envoyé au secrétariat !");
+      } else {
+        setStatus("error");
+        toast.error(res.error || "Une erreur est survenue.");
+      }
+    } catch (error) {
+      setStatus("error");
+      toast.error("Erreur réseau. Veuillez réessayer.");
+    }
   }
 
   return (

@@ -16,11 +16,14 @@ const LANGUAGES = [
   { code: "sw", label: "Kiswahili" }
 ];
 
+import axios from "axios";
+
 export function MemberForm({ initialData, locale }: { initialData?: any, locale: string }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const [baseData, setBaseData] = useState({
     image: initialData?.image || "",
@@ -48,24 +51,30 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
     if (!file) return;
 
     setUploading(true);
+    setUploadProgress(0);
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("uploadType", "image"); // Route will apply image branch (5MB, JPEG/PNG/WebP)
+    formData.append("uploadType", "image");
 
     try {
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (res.ok && data.url) {
-        setBaseData({ ...baseData, image: data.url });
+      const res = await axios.post("/api/upload", formData, {
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 100));
+          setUploadProgress(percentCompleted);
+        }
+      });
+
+      if (res.data.url) {
+        setBaseData({ ...baseData, image: res.data.url });
       } else {
-        const message =
-          data.errors?.file?.[0] ?? data.error ?? "Erreur lors de l'upload de l'image.";
-        alert(message);
+        alert("Erreur lors de l'upload de l'image.");
       }
-    } catch {
-      alert("Erreur réseau lors de l'upload.");
+    } catch (error: any) {
+      const message = error.response?.data?.error ?? "Erreur réseau lors de l'upload.";
+      alert(message);
     } finally {
       setUploading(false);
+      setUploadProgress(0);
     }
   };
 
@@ -104,6 +113,7 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
               <>
                 <Image src={baseData.image} alt="Preview" fill className="object-cover" />
                 <button
+                  type="button"
                   onClick={() => setBaseData({ ...baseData, image: "" })}
                   className="absolute top-2 right-2 p-1 bg-red-600 text-white opacity-0 group-hover:opacity-100 transition-opacity"
                 >
@@ -111,13 +121,23 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
                 </button>
               </>
             ) : (
-              <div className="text-center p-4">
+              <div className="text-center p-4 w-full">
                 {uploading ? (
-                  <Loader2 className="animate-spin text-blue-600 mx-auto" />
+                  <div className="space-y-3 w-full px-4">
+                    <Loader2 className="animate-spin text-blue-600 mx-auto" size={24} />
+                    <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                      <div 
+                        className="bg-blue-600 h-full transition-all duration-300" 
+                        style={{ width: `${uploadProgress}%` }}
+                      />
+                    </div>
+                    <p className="text-[10px] font-bold text-blue-600 uppercase tracking-tighter">Upload: {uploadProgress}%</p>
+                  </div>
                 ) : (
                   <>
                     <User size={40} className="text-slate-300 mx-auto mb-2" />
                     <Button
+                      type="button"
                       variant="ghost"
                       size="sm"
                       className="text-xs text-blue-600"

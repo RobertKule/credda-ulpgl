@@ -44,7 +44,7 @@ export default async function AdminMessagesPage() {
           </div>
           <div className="bg-white border border-slate-200 p-3 flex flex-col items-center justify-center min-w-[80px]">
             <span className="text-lg font-black text-slate-900">{stats.replied}</span>
-            <span className="text-[8px] font-black uppercase tracking-widest text-purple-600">Replied</span>
+            <span className="text-[8px] font-black uppercase tracking-widest text-emerald-600">Replied</span>
           </div>
         </div>
       </div>

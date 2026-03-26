@@ -61,19 +61,27 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ 
+                rotateY: 5, 
+                rotateX: -5, 
+                scale: 1.02,
+                transition: { duration: 0.4 }
+              }}
               viewport={{ once: true }}
-              className="group flex flex-col h-full bg-muted border border-border overflow-hidden transition-all duration-700 hover:border-primary/30 hover:translate-y-[-10px] rounded-2xl"
+              className="group flex flex-col h-full bg-card/40 backdrop-blur-md border border-border/50 overflow-hidden transition-all duration-700 hover:border-primary/40 rounded-[2.5rem] shadow-sm hover:shadow-[0_30px_60px_-12px_rgba(201,168,76,0.12)]"
+              style={{ transformStyle: "preserve-3d" }}
             >
               <div className="relative aspect-[16/10] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-1000">
                 <Image 
                   src={item.mainImage || "/images/hero-poster.webp"} 
                   alt={item.translations?.[0]?.title || "Research"} 
                   fill 
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-80" />
                 <div className="absolute top-6 left-6">
-                  <span className="bg-primary text-primary-foreground text-[9px] font-black uppercase tracking-widest px-4 py-2 shadow-2xl rounded-md">
+                  <span className="bg-primary/90 backdrop-blur-md text-primary-foreground text-[9px] font-black uppercase tracking-widest px-5 py-2.5 shadow-2xl rounded-full">
                     {item.category?.translations?.[0]?.name || t('research.journal')}
                   </span>
                 </div>
@@ -91,15 +99,15 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                   </div>
                 </div>
 
-                <h3 className="text-2xl lg:text-3xl font-bricolage font-bold text-foreground mb-8 leading-tight group-hover:text-primary transition-colors duration-500 line-clamp-2">
+                <h3 className="text-2xl lg:text-3xl font-fraunces font-bold text-foreground mb-6 leading-tight group-hover:text-primary transition-colors duration-500 line-clamp-2">
                   {item.translations?.[0]?.title}
                 </h3>
 
-                <p className="text-muted-foreground text-base font-outfit font-light leading-relaxed mb-12 line-clamp-3">
+                <p className="text-muted-foreground text-sm lg:text-base font-outfit font-light leading-relaxed mb-10 line-clamp-3 opacity-80">
                   {item.translations?.[0]?.excerpt || "Detailed analysis of legal frameworks and environmental challenges in the Great Lakes region..."}
                 </p>
 
-                <div className="mt-auto pt-10 border-t border-border">
+                <div className="mt-auto pt-8 border-t border-border/40">
                   <Link 
                     href={`/research/${item.slug}`} 
                     className="flex items-center justify-between group/link"

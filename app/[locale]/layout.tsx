@@ -1,7 +1,6 @@
 import { getMessages } from "next-intl/server";
-import Navbar from "@/components/shared/Navbar";
-import Footer from "@/components/shared/Footer";
 import Providers from "@/components/shared/Providers";
+import MainLayoutWrapper from "@/components/shared/MainLayoutWrapper";
 
 export default async function RootLayout({
   children,
@@ -17,11 +16,10 @@ export default async function RootLayout({
 
   return (
     <Providers locale={locale} messages={messages}>
-      <Navbar />
-      <div className="m-0 p-0 pt-24 mt-12 min-h-[calc(100vh-6rem)] bg-background text-foreground overflow-x-hidden">
-        {children}
-      </div>
-      <Footer />
+       {/* MainLayoutWrapper gère l'inclusion de Navbar/Footer et les marges conditionnelles */}
+       <MainLayoutWrapper>
+         {children}
+       </MainLayoutWrapper>
     </Providers>
   );
 }

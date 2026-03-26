@@ -49,20 +49,20 @@ export default function ClinicalSection() {
             <div className="grid sm:grid-cols-2 gap-12 mb-16">
               <GSAPReveal direction="up" delay={0.6}>
                 <div className="space-y-6 group">
-                  <div className="w-14 h-14 bg-muted border border-border flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700">
+                  <div className="w-14 h-14 bg-card/50 backdrop-blur-md border border-border/40 flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700 rounded-2xl">
                     <TreePine size={24} />
                   </div>
                   <h4 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.land.title')}</h4>
-                  <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border pt-6">{t('clinical.actions.land.desc')}</p>
+                  <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border/20 pt-6">{t('clinical.actions.land.desc')}</p>
                 </div>
               </GSAPReveal>
               <GSAPReveal direction="up" delay={0.8}>
                 <div className="space-y-6 group">
-                  <div className="w-14 h-14 bg-muted border border-border flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700">
+                  <div className="w-14 h-14 bg-card/50 backdrop-blur-md border border-border/40 flex items-center justify-center group-hover:bg-primary group-hover:border-primary group-hover:text-primary-foreground transition-all duration-700 rounded-2xl">
                     <Scale size={24} />
                   </div>
                   <h4 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.mobile.title')}</h4>
-                  <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border pt-6">{t('clinical.actions.mobile.desc')}</p>
+                  <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border/20 pt-6">{t('clinical.actions.mobile.desc')}</p>
                 </div>
               </GSAPReveal>
             </div>
@@ -79,7 +79,7 @@ export default function ClinicalSection() {
             </GSAPReveal>
           </motion.div>
 
-          <div className="relative w-full max-w-md mx-auto lg:max-w-none aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-3xl ring-1 ring-border group">
+          <div className="relative w-full max-w-md mx-auto lg:max-w-none aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-[2.5rem] ring-1 ring-border group shadow-2xl">
              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 opacity-60" />
              <div className="h-full w-full">
                <Image 
@@ -91,12 +91,12 @@ export default function ClinicalSection() {
              </div>
             
             {/* Impact Badge */}
-            <GSAPReveal direction="left" delay={0.5} className="absolute bottom-12 left-0 bg-primary p-10 z-20 max-w-[280px] shadow-2xl">
+            <GSAPReveal direction="left" delay={0.5} className="absolute bottom-12 left-0 bg-primary/95 backdrop-blur-xl p-10 z-20 max-w-[280px] shadow-2xl rounded-tr-[2rem] rounded-bl-[2.5rem] border-t border-r border-white/20">
               <div className="flex items-center gap-4 mb-6">
                 <MapPin size={24} className="text-primary-foreground" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary-foreground">{t('clinical.impact')}</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary-foreground/80">{t('clinical.impact')}</span>
               </div>
-              <p className="text-3xl font-fraunces font-extrabold text-primary-foreground leading-tight">{t('clinical.families', { count: 2400 })}</p>
+              <p className="text-3xl font-fraunces font-extrabold text-primary-foreground leading-tight tracking-tight">{t('clinical.families', { count: 2400 })}</p>
             </GSAPReveal>
           </div>
         </div>

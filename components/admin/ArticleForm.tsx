@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
@@ -11,7 +11,9 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { createArticle, updateArticle } from "@/services/article-actions"
 import { toast } from "react-hot-toast"
-import { Loader2, Save, Globe, Settings2, Image as ImageIcon, Video } from "lucide-react"
+import { Loader2, Save, Globe, Settings2, Image as ImageIcon, Video, Upload, X } from "lucide-react"
+import axios from "axios";
+import Image from "next/image";
 
 const LANGUAGES = [
   { code: "fr", label: "Français" },
@@ -21,7 +23,10 @@ const LANGUAGES = [
 
 export function ArticleForm({ categories, initialData, isEditing = false }: any) {
   const router = useRouter()
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [loading, setLoading] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
   
   const [baseData, setBaseData] = useState({
     slug: initialData?.slug || "",
@@ -45,6 +50,36 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
     })
     return t
   })
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setUploadProgress(0);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("uploadType", "image");
+
+    try {
+      const res = await axios.post("/api/upload", formData, {
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 100));
+          setUploadProgress(percentCompleted);
+        }
+      });
+
+      if (res.data.url) {
+        setBaseData({ ...baseData, mainImage: res.data.url });
+        toast.success("Image téléchargée !");
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.error ?? "Erreur lors de l'upload.");
+    } finally {
+      setUploading(false);
+      setUploadProgress(0);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -81,7 +116,7 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
         </div>
         <div className="flex gap-3">
           <Button type="button" variant="ghost" onClick={() => router.back()}>Annuler</Button>
-          <Button disabled={loading} className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20 px-8">
+          <Button disabled={loading || uploading} className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20 px-8">
             {loading ? <Loader2 className="animate-spin mr-2" size={18} /> : <Save className="mr-2" size={18} />}
             {isEditing ? "Enregistrer les modifications" : "Publier l'article"}
           </Button>
@@ -193,16 +228,67 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
           <Card className="p-6 space-y-4 rounded-none border-slate-200 bg-slate-50/50">
              <h3 className="font-bold uppercase text-[10px] tracking-[0.2em] text-slate-400 border-b pb-4">Médias</h3>
              
-             <div className="space-y-2">
+             <div className="space-y-4">
                <Label className="text-[10px] font-bold flex items-center gap-2 uppercase">
-                 <ImageIcon size={14} /> Image principale (URL)
+                 <ImageIcon size={14} /> Image principale
                </Label>
-               <Input 
-                value={baseData.mainImage}
-                onChange={(e) => setBaseData({...baseData, mainImage: e.target.value})}
-                placeholder="https://..." 
-                className="rounded-none bg-white"
-               />
+               
+               <div className="relative aspect-video bg-white border border-slate-200 flex flex-col items-center justify-center overflow-hidden group">
+                 {baseData.mainImage ? (
+                   <>
+                     <Image src={baseData.mainImage} alt="Preview" fill className="object-cover" />
+                     <button
+                       type="button"
+                       onClick={() => setBaseData({ ...baseData, mainImage: "" })}
+                       className="absolute top-2 right-2 p-1.5 bg-red-600 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                     >
+                       <X size={14} />
+                     </button>
+                   </>
+                 ) : (
+                   <div className="text-center p-4 w-full">
+                     {uploading ? (
+                       <div className="space-y-3 px-4">
+                         <Loader2 className="animate-spin text-blue-600 mx-auto" size={24} />
+                         <div className="w-full bg-slate-200 h-1 rounded-full overflow-hidden">
+                           <div 
+                             className="bg-blue-600 h-full transition-all duration-300" 
+                             style={{ width: `${uploadProgress}%` }}
+                           />
+                         </div>
+                         <p className="text-[10px] font-bold text-blue-600 uppercase">Upload: {uploadProgress}%</p>
+                       </div>
+                     ) : (
+                       <Button
+                         type="button"
+                         variant="outline"
+                         size="sm"
+                         className="text-xs bg-white"
+                         onClick={() => fileInputRef.current?.click()}
+                       >
+                         <Upload size={14} className="mr-2" /> Uploader une image
+                       </Button>
+                     )}
+                   </div>
+                 )}
+                 <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                  />
+               </div>
+               
+               <div className="space-y-2">
+                 <Label className="text-[10px] font-bold uppercase text-slate-400">Ou URL directe</Label>
+                 <Input 
+                  value={baseData.mainImage}
+                  onChange={(e) => setBaseData({...baseData, mainImage: e.target.value})}
+                  placeholder="https://..." 
+                  className="rounded-none bg-white text-xs h-8"
+                 />
+               </div>
              </div>
 
              <div className="space-y-2">

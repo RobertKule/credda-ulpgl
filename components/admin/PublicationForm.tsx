@@ -15,11 +15,14 @@ const LANGUAGES = [
   { code: "sw", label: "Kiswahili" }
 ];
 
+import axios from "axios";
+
 export function PublicationForm({ initialData, locale }: { initialData?: any, locale: string }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const [baseData, setBaseData] = useState({
     year: initialData?.year || new Date().getFullYear(),
@@ -43,25 +46,30 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
     if (!file) return;
 
     setUploading(true);
+    setUploadProgress(0);
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("uploadType", "pdf"); // Route will apply PDF branch (20MB, application/pdf)
+    formData.append("uploadType", "pdf");
 
     try {
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (res.ok && data.url) {
-        setBaseData({ ...baseData, pdfUrl: data.url });
+      const res = await axios.post("/api/upload", formData, {
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / (progressEvent.total || 100));
+          setUploadProgress(percentCompleted);
+        }
+      });
+
+      if (res.data.url) {
+        setBaseData({ ...baseData, pdfUrl: res.data.url });
       } else {
-        // Show the structured validation message from the route
-        const message =
-          data.errors?.file?.[0] ?? data.error ?? "Erreur lors de l'upload du document.";
-        alert(message);
+        alert("Erreur lors de l'upload du document.");
       }
-    } catch {
-      alert("Erreur réseau lors de l'upload du document.");
+    } catch (error: any) {
+      const message = error.response?.data?.error ?? "Erreur réseau lors de l'upload du document.";
+      alert(message);
     } finally {
       setUploading(false);
+      setUploadProgress(0);
     }
   };
 
@@ -108,14 +116,29 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
             ) : (
               <>
                 <FileText size={40} className="text-white/20 mb-4 group-hover:text-blue-500" />
-                <Button
-                  variant="outline"
-                  disabled={uploading}
-                  onClick={() => fileInputRef.current?.click()}
-                  className="bg-transparent border-white/20 hover:bg-white hover:text-black rounded-none uppercase text-[10px] font-bold"
-                >
-                  {uploading ? <Loader2 className="animate-spin" /> : "Uploader le PDF (Max 20MB)"}
-                </Button>
+                <div className="w-full text-center space-y-4 px-4">
+                  {uploading ? (
+                    <div className="space-y-3">
+                      <Loader2 className="animate-spin text-blue-500 mx-auto" size={24} />
+                      <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                        <div 
+                          className="bg-blue-500 h-full transition-all duration-300" 
+                          style={{ width: `${uploadProgress}%` }}
+                        />
+                      </div>
+                      <p className="text-[10px] font-bold text-blue-400 uppercase tracking-[0.2em]">Upload : {uploadProgress}%</p>
+                    </div>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="bg-transparent border-white/20 hover:bg-white hover:text-black rounded-none uppercase text-[10px] font-bold"
+                    >
+                      Uploader le PDF (Max 20MB)
+                    </Button>
+                  )}
+                </div>
               </>
             )}
             <input type="file" ref={fileInputRef} className="hidden" accept=".pdf" onChange={handleFileUpload} />

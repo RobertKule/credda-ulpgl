@@ -1,7 +1,7 @@
 // components/shared/Footer.tsx
 "use client";
 
-import { Link } from "../../navigation"; 
+import { Link, usePathname } from "../../navigation"; 
 import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, ArrowUpRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
