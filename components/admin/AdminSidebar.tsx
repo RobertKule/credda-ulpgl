@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Link } from "@/navigation";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   LayoutDashboard, 
   FileText, 
@@ -18,7 +19,9 @@ import {
   Scale,
   Calendar,
   Layout,
-  Menu
+  Menu,
+  Megaphone,
+  MessageSquare
 } from "lucide-react";
 
 const iconMap: Record<string, any> = {
@@ -30,7 +33,9 @@ const iconMap: Record<string, any> = {
   Users,
   Scale,
   Calendar,
-  Layout
+  Layout,
+  Megaphone,
+  MessageSquare
 };
 
 interface MenuItem {
@@ -85,6 +90,25 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
     { href: "/admin/profile", label: "Mon Profil", icon: "UserCircle" },
   ];
 
+  const [stats, setStats] = useState({ unreadMessagesCount: 0, newCasesCount: 0 });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await fetch('/api/admin/notifications');
+        if (res.ok) {
+          const data = await res.json();
+          setStats(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch stats:", error);
+      }
+    };
+    fetchStats();
+    const interval = setInterval(fetchStats, 120000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       {/* Overlay mobile */}
@@ -116,17 +140,17 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
           {isOpen ? (
             <>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-600/20">
-                  <span className="text-white font-black text-xl">C</span>
+                <div className="w-10 h-10 bg-[#C9A84C] rounded-2xl flex items-center justify-center shadow-lg shadow-[#C9A84C]/20">
+                  <span className="text-[#0C0C0A] font-black text-xl">C</span>
                 </div>
                 <div className="min-w-0">
                   <p className="font-serif font-black text-slate-900 dark:text-white leading-none tracking-tight transition-colors">CREDDA</p>
-                  <p className="text-[8px] font-black uppercase tracking-[0.3em] text-blue-600 dark:text-blue-500 mt-1">Admin v2.5</p>
+                  <p className="text-[8px] font-black uppercase tracking-[0.3em] text-[#C9A84C] dark:text-[#C9A84C]/80 mt-1">Admin v2.5</p>
                 </div>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-2.5 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-all hover:text-blue-600 active:scale-90"
+                className="p-2.5 hover:bg-slate-100 dark:hover:bg-white/5 rounded-xl transition-all hover:text-[#C9A84C] active:scale-90"
               >
                 <ChevronLeft size={20} />
               </button>
@@ -134,7 +158,7 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
           ) : (
             <button
               onClick={() => setIsOpen(true)}
-              className="w-12 h-12 flex items-center justify-center bg-slate-100 dark:bg-white/5 hover:bg-blue-600 hover:text-white hover:scale-110 active:scale-90 rounded-2xl transition-all shadow-xl"
+              className="w-12 h-12 flex items-center justify-center bg-slate-100 dark:bg-white/5 hover:bg-[#C9A84C] hover:text-[#0C0C0A] hover:scale-110 active:scale-90 rounded-2xl transition-all shadow-xl"
             >
               <Menu size={20} />
             </button>
@@ -158,35 +182,63 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
               if (!Icon) return null;
 
               return (
-                <li key={item.href}>
+                <li key={item.href} className="relative px-3">
                   <Link
                     href={item.href}
                     className={`
                       flex items-center px-4 py-4 rounded-2xl
-                      transition-all duration-300 group relative
+                      transition-all duration-300 group relative z-10
                       ${isActive 
-                        ? 'bg-blue-600/5 dark:bg-blue-600/10 text-blue-600 dark:text-blue-400 shadow-[inset_0_1px_1px_rgba(37,99,235,0.05)]' 
-                        : 'text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white'
+                        ? 'text-[#C9A84C]' 
+                        : 'text-slate-400 hover:text-slate-900 dark:hover:text-white'
                       }
                     `}
                   >
+                    {isActive && (
+                      <motion.div
+                        layoutId="active-pill"
+                        className="absolute inset-0 bg-[#C9A84C]/5 dark:bg-[#C9A84C]/10 rounded-2xl border border-[#C9A84C]/20 shadow-[0_0_20px_rgba(201,168,76,0.1)]"
+                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                      />
+                    )}
+
                     <Icon size={20} className={`
-                      shrink-0 transition-all duration-500
-                      ${isActive ? 'text-blue-600 dark:text-blue-500 scale-125' : 'text-slate-300 dark:text-white/20 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:scale-110'}
+                      shrink-0 transition-all duration-500 relative z-20
+                      ${isActive ? 'text-[#C9A84C] scale-110' : 'text-slate-300 dark:text-white/20 group-hover:text-[#C9A84C] group-hover:scale-110'}
                       ${isOpen ? 'mr-5' : 'mx-auto'}
-                    `} strokeWidth={2.5} />
+                    `} strokeWidth={isActive ? 2.5 : 2} />
                     
                     {isOpen && (
                       <span className={`
-                        text-[11px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition-colors
-                        ${isActive ? 'text-blue-600 dark:text-blue-400' : ''}
+                        text-[11px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition-colors relative z-20
+                        ${isActive ? 'text-[#C9A84C]' : ''}
                       `}>
                         {item.label}
                       </span>
                     )}
 
+                    {/* Numeric Badges */}
+                    {isOpen && item.label === "Messages" && stats.unreadMessagesCount > 0 && (
+                      <span className="ml-auto bg-[#C9A84C] text-[#0C0C0A] text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-lg shadow-[#C9A84C]/20 border border-[#0C0C0A]/10 relative z-20">
+                        {stats.unreadMessagesCount}
+                      </span>
+                    )}
+                    
+                    {isOpen && item.label === "Dashboard" && stats.newCasesCount > 0 && (
+                      <span className="ml-auto bg-emerald-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full shadow-lg shadow-emerald-500/20 relative z-20">
+                        {stats.newCasesCount}
+                      </span>
+                    )}
+
+                    {!isOpen && ((item.label === "Messages" && stats.unreadMessagesCount > 0) || (item.label === "Dashboard" && stats.newCasesCount > 0)) && (
+                      <div className="absolute top-2 right-2 w-2 h-2 bg-[#C9A84C] rounded-full ring-2 ring-white dark:ring-[#0C0C0A] animate-pulse z-30" />
+                    )}
+
                     {isActive && (
-                       <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-8 bg-blue-600 rounded-r-full shadow-[0_0_20px_rgba(37,99,235,0.8)]" />
+                       <motion.div 
+                         layoutId="active-bar"
+                         className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-[#C9A84C] rounded-r-full shadow-[0_0_15px_rgba(201,168,76,0.5)] z-30" 
+                       />
                     )}
                   </Link>
                 </li>
@@ -198,8 +250,8 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
         {/* Footer Sidebar Apparence Bento */}
         <div className="p-4 bg-slate-50 dark:bg-slate-900/40 border-t border-slate-200 dark:border-white/5 pb-8 transition-colors">
           {isOpen ? (
-            <div className={`flex items-center gap-4 p-4 rounded-3xl bg-white dark:bg-blue-600/5 border border-slate-200 dark:border-white/5 group hover:border-blue-600/20 transition-all duration-500 shadow-sm`}>
-              <div className="w-11 h-11 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-sm font-black shadow-lg shadow-blue-600/30 group-hover:rotate-12 transition-transform">
+            <div className={`flex items-center gap-4 p-4 rounded-3xl bg-white dark:bg-[#C9A84C]/5 border border-slate-200 dark:border-white/5 group hover:border-[#C9A84C]/20 transition-all duration-500 shadow-sm`}>
+              <div className="w-11 h-11 bg-[#C9A84C] rounded-2xl flex items-center justify-center text-[#0C0C0A] text-sm font-black shadow-lg shadow-[#C9A84C]/30 group-hover:rotate-12 transition-transform">
                 {session?.user?.name?.[0] || 'A'}
               </div>
               <div className="flex-1 min-w-0">
@@ -219,7 +271,7 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
             </div>
           ) : (
              <div className="flex flex-col items-center gap-4">
-                <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-black shadow-xl">
+                <div className="w-12 h-12 bg-[#C9A84C] rounded-2xl flex items-center justify-center text-[#0C0C0A] font-black shadow-xl">
                   {session?.user?.name?.[0] || 'A'}
                 </div>
                 <button 

@@ -29,6 +29,8 @@ const outfit = Outfit({
   preload: true,
 })
 
+import SystemBanner from "@/components/shared/SystemBanner";
+
 export default async function RootLayout({
   children,
   params,
@@ -61,6 +63,7 @@ export default async function RootLayout({
       <body className="font-outfit antialiased bg-background text-foreground">
         <Providers locale={locale} messages={messages}>
           <MainLayoutWrapper>
+            <SystemBanner />
             {children}
           </MainLayoutWrapper>
         </Providers>
