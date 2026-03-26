@@ -61,14 +61,14 @@ export default function Navbar() {
   ];
 
   const LanguageSwitcher = () => (
-    <div className="flex items-center gap-1 rounded-full border border-border bg-muted/30 p-1 shadow-inner">
+    <div className="flex items-center gap-1 rounded-md border border-border bg-muted/30 p-1 shadow-inner">
       {["fr", "en", "sw"].map((l) => (
         <Link
           key={l}
           href={pathname}
           locale={l}
           aria-label={`Switch language to ${l.toUpperCase()}`}
-          className={`text-[9px] font-bold w-8 h-8 flex items-center justify-center transition-all rounded-full ${
+          className={`text-[9px] font-bold w-8 h-8 flex items-center justify-center transition-all rounded-md ${
             locale === l ? "bg-[#C9A84C] text-[#0C0C0A] shadow-md" : "text-foreground/60 hover:text-foreground"
           }`}
         >
@@ -85,7 +85,7 @@ export default function Navbar() {
         <div className="flex whitespace-nowrap animate-ticker">
           {[...tickerItems, ...tickerItems].map((item: any, i) => (
             <span key={i} className="mx-12 text-[10px] font-outfit font-medium uppercase tracking-[0.4em] text-[#F5F2EC]/60 flex items-center gap-4">
-              <span className="w-1.5 h-1.5 bg-[#C9A84C] rounded-full shadow-[0_0_10px_rgba(201,168,76,0.8)]" />
+              <span className="w-1.5 h-1.5 bg-[#C9A84C] rounded-md shadow-[0_0_10px_rgba(201,168,76,0.8)]" />
               {item}
             </span>
           ))}
@@ -103,7 +103,7 @@ export default function Navbar() {
         <div
           className={`container mx-auto transition-all duration-500 ease-in-out relative flex items-center justify-between ${
             isScrolled 
-            ? "max-w-6xl h-16 bg-background/80 backdrop-blur-xl border border-border/50 rounded-full px-8 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)]" 
+            ? "max-w-6xl h-16 bg-background/80 backdrop-blur-xl border border-border/50 rounded-md px-8 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)]" 
             : "max-w-full h-20 bg-transparent px-6"
           }`}
         >
@@ -156,7 +156,7 @@ export default function Navbar() {
             </button>
 
             {session ? (
-              <Link href="/admin" className="flex items-center gap-3 group border border-border/50 bg-muted/20 px-4 py-1.5 rounded-full hover:bg-[#C9A84C]/10 transition-all">
+              <Link href="/admin" className="flex items-center gap-3 group border border-border/50 bg-muted/20 px-4 py-1.5 rounded-md hover:bg-[#C9A84C]/10 transition-all">
                  <div className="w-6 h-6 rounded-full bg-[#C9A84C] text-[10px] font-black flex items-center justify-center text-[#0C0C0A]">
                    {session.user?.name?.[0] || 'A'}
                  </div>
@@ -177,7 +177,7 @@ export default function Navbar() {
 
             <Link
               href="/contact"
-              className={`px-6 py-2.5 bg-[#C9A84C] text-[#0C0C0A] text-[9px] font-black uppercase tracking-[0.2em] rounded-full hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-lg hover:shadow-[#C9A84C]/20`}
+              className={`px-6 py-2.5 bg-[#C9A84C] text-[#0C0C0A] text-[9px] font-black uppercase tracking-[0.2em] rounded-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-lg hover:shadow-[#C9A84C]/20`}
             >
               {t("contact")}
               <ArrowRight size={12} strokeWidth={3} />
@@ -212,7 +212,7 @@ export default function Navbar() {
               </span>
               <button 
                 onClick={() => setIsOpen(false)} 
-                className="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 rounded-full"
+                className="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 rounded-md"
                 aria-label="Close mobile menu"
               >
                 <X size={24} />
@@ -270,7 +270,7 @@ export default function Navbar() {
                     </span>
                  </div>
                  {session ? (
-                   <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-black text-xs">
+                   <div className="w-10 h-10 rounded-md bg-blue-600 flex items-center justify-center text-white font-black text-xs">
                      {session.user?.name?.[0] || 'A'}
                    </div>
                  ) : (

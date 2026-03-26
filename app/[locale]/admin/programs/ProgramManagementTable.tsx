@@ -111,7 +111,7 @@ export default function ProgramManagementTable({
                 <div className="absolute top-3 right-3 flex gap-2">
                   <button 
                     onClick={() => handleToggleFeatured(p.id, p.featured)}
-                    className={`p-1.5 rounded-full transition-all ${p.featured ? 'bg-amber-500 text-white' : 'bg-white/80 text-slate-400 hover:text-amber-500'}`}
+                    className={`p-1.5 rounded-md transition-all ${p.featured ? 'bg-amber-500 text-white' : 'bg-white/80 text-slate-400 hover:text-amber-500'}`}
                   >
                     <Star size={16} fill={p.featured ? "currentColor" : "none"} />
                   </button>

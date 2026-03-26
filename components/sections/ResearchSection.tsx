@@ -27,7 +27,7 @@ export default function ResearchSection({ articles = [] }: ResearchSectionProps)
                         <h2 className="text-4xl font-serif font-bold text-slate-900 mb-4">
                             Recherches récentes
                         </h2>
-                        <div className="w-20 h-1.5 bg-blue-600 rounded-full" />
+                        <div className="w-20 h-1.5 bg-blue-600 rounded-md" />
                     </motion.div>
 
                     <motion.div

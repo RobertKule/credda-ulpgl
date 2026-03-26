@@ -26,7 +26,7 @@ export default function PdfPreview({ url }: PdfPreviewProps) {
   if (!url) {
     return (
       <div className="w-full h-full bg-slate-100 flex flex-col items-center justify-center gap-3 p-4">
-        <div className="w-14 h-14 bg-slate-200 rounded-full flex items-center justify-center">
+        <div className="w-14 h-14 bg-slate-200 rounded-md flex items-center justify-center">
           <FileText size={28} className="text-slate-400" />
         </div>
         <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold text-center">
@@ -66,8 +66,8 @@ export default function PdfPreview({ url }: PdfPreviewProps) {
     <div className="w-full h-full bg-gradient-to-br from-slate-900 to-blue-950 flex flex-col items-center justify-center gap-4 p-6 relative overflow-hidden group">
       {/* Background decoration */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute bottom-0 right-0 w-40 h-40 bg-blue-400 rounded-full blur-3xl" />
-        <div className="absolute top-0 left-0 w-32 h-32 bg-indigo-400 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-40 h-40 bg-blue-400 rounded-md blur-3xl" />
+        <div className="absolute top-0 left-0 w-32 h-32 bg-indigo-400 rounded-md blur-3xl" />
       </div>
 
       {/* PDF icon */}

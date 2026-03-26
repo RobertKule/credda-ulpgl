@@ -95,7 +95,7 @@ export function ImageUploader({ onUploadSuccess, defaultImage }: ImageUploaderPr
                             <button
                                 type="button"
                                 onClick={clearImage}
-                                className="absolute top-4 right-4 bg-red-500 text-white p-1.5 rounded-full hover:bg-red-600 shadow-md transition-colors"
+                                className="absolute top-4 right-4 bg-red-500 text-white p-1.5 rounded-md hover:bg-red-600 shadow-md transition-colors"
                                 title="Supprimer l'image"
                             >
                                 <X size={16} />
@@ -106,7 +106,7 @@ export function ImageUploader({ onUploadSuccess, defaultImage }: ImageUploaderPr
                             <div className="absolute inset-0 bg-white/70 flex items-center justify-center backdrop-blur-md rounded-md">
                                 <div className="flex flex-col items-center text-blue-600 gap-3 w-full px-8">
                                     <Loader2 className="animate-spin" size={32} />
-                                    <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                    <div className="w-full bg-slate-200 h-1.5 rounded-md overflow-hidden">
                                         <div 
                                             className="bg-blue-600 h-full transition-all duration-300" 
                                             style={{ width: `${uploadProgress}%` }}

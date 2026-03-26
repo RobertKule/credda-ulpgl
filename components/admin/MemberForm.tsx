@@ -127,8 +127,8 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
               <div className="text-center p-6 w-full h-full flex flex-col items-center justify-center">
                 {uploading ? (
                   <div className="space-y-4 w-full px-6">
-                    <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-full animate-spin mx-auto" />
-                    <div className="w-full bg-slate-200 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                    <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-md animate-spin mx-auto" />
+                    <div className="w-full bg-slate-200 dark:bg-white/10 h-1.5 rounded-md overflow-hidden">
                       <div 
                         className="bg-blue-600 h-full transition-all duration-300" 
                         style={{ width: `${uploadProgress}%` }}

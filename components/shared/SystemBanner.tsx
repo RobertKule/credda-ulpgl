@@ -57,7 +57,7 @@ export default function SystemBanner() {
             </div>
             <button
               onClick={handleDismiss}
-              className="p-2 hover:bg-[#0C0C0A]/10 rounded-full transition-colors active:scale-90 flex-shrink-0"
+              className="p-2 hover:bg-[#0C0C0A]/10 rounded-md transition-colors active:scale-90 flex-shrink-0"
               aria-label="Fermer l'annonce"
             >
               <X size={16} />

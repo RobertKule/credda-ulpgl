@@ -84,7 +84,7 @@ export default async function PublicationDetailPage({
 
              <div className="flex flex-wrap items-center gap-x-12 gap-y-6 pt-12 border-t border-white/5">
                 <div className="flex items-center gap-3">
-                   <div className="w-10 h-10 rounded-full bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C]">
+                   <div className="w-10 h-10 rounded-md bg-[#C9A84C]/10 flex items-center justify-center text-[#C9A84C]">
                       <User size={18} />
                    </div>
                    <div>
@@ -94,7 +94,7 @@ export default async function PublicationDetailPage({
                 </div>
 
                 <div className="flex items-center gap-3">
-                   <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/40">
+                   <div className="w-10 h-10 rounded-md bg-white/5 flex items-center justify-center text-white/40">
                       <Calendar size={18} />
                    </div>
                    <div>
@@ -104,7 +104,7 @@ export default async function PublicationDetailPage({
                 </div>
 
                 <div className="flex items-center gap-3">
-                   <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/40">
+                   <div className="w-10 h-10 rounded-md bg-white/5 flex items-center justify-center text-white/40">
                       <Clock size={18} />
                    </div>
                    <div>

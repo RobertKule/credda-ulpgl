@@ -147,17 +147,24 @@ export default function Hero() {
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               </motion.p>
 
-              {/* ACTIONS - CENTERED */}
-              <div className="flex flex-col flex-wrap items-center justify-center gap-6 sm:flex-row sm:gap-10" style={{ transform: "translateZ(80px)" }}>
-                <Link 
-                  href="/publications" 
-                  className="group relative inline-flex justify-center px-10 py-6 font-outfit text-[10px] font-black uppercase tracking-[0.3em] text-primary-foreground shadow-2xl transition-all hover:scale-[1.03] active:scale-95 sm:px-14 sm:py-7 md:px-16 md:py-8 bg-primary overflow-hidden rounded-md"
+               {/* ACTIONS - CENTERED */}
+              <motion.div 
+                style={{ y: descY, z: 40 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: 1 }}
+                className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8"
+              >
+                <Link
+                  href="/contact"
+                  className="group relative px-12 py-5 bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-[0.4em] overflow-hidden rounded-md transition-all hover:scale-105 active:scale-95 shadow-2xl hover:shadow-primary/20 border border-transparent hover:border-emerald/40"
                 >
-                  <span className="relative z-10 flex items-center gap-4">
-                    {t('hero.cta_publications')} 
-                    <ArrowRight size={18} className="group-hover:translate-x-3 transition-transform duration-700" />
+                  <span className="relative z-10 flex items-center gap-3">
+                    {t('cta.partner')}
+                    <ArrowRight size={14} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
                   </span>
-                  <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-700 opacity-20" />
+                  <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                 </Link>
                 
                 <Link 
@@ -173,7 +180,7 @@ export default function Hero() {
                     <span className="text-[12px] font-outfit font-bold uppercase tracking-[0.1em] opacity-40 group-hover:opacity-100 transition-opacity">Découvrir le CREDDA</span>
                   </div>
                 </Link>
-              </div>
+              </motion.div>
             </motion.div>
           </motion.div>
         </div>

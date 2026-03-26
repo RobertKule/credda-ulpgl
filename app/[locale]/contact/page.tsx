@@ -107,7 +107,7 @@ export default function ContactPage() {
                     exit={{ opacity: 0, y: -20 }}
                     className="flex flex-col items-center text-center space-y-8"
                   >
-                    <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center text-primary border border-primary/20">
+                    <div className="w-20 h-20 bg-primary/10 rounded-md flex items-center justify-center text-primary border border-primary/20">
                       <CheckCircle2 size={40} />
                     </div>
                     <div className="space-y-2">

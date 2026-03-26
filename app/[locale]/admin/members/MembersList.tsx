@@ -91,11 +91,11 @@ export default function MembersList({
                 </div>
                 
                 {m.image ? (
-                  <div className="relative w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden z-10 translate-y-8 group-hover:scale-110 transition-transform duration-500">
+                  <div className="relative w-24 h-24 rounded-md border-4 border-white shadow-lg overflow-hidden z-10 translate-y-8 group-hover:scale-110 transition-transform duration-500">
                     <img src={m.image} alt={content.name} className="w-full h-full object-cover" />
                   </div>
                 ) : (
-                  <div className="relative w-24 h-24 rounded-full border-4 border-white shadow-lg bg-slate-100 flex items-center justify-center z-10 translate-y-8 group-hover:scale-110 transition-transform duration-500 text-slate-400 text-xl font-black">
+                  <div className="relative w-24 h-24 rounded-md border-4 border-white shadow-lg bg-slate-100 flex items-center justify-center z-10 translate-y-8 group-hover:scale-110 transition-transform duration-500 text-slate-400 text-xl font-black">
                     {getInitials(content.name)}
                   </div>
                 )}

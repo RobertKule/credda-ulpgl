@@ -40,7 +40,7 @@ export default function PartnersSection({ partners = [] }: PartnersSectionProps)
                         <h2 className="text-3xl md:text-4xl font-serif font-bold text-slate-900">
                             Partenaires Internationaux
                         </h2>
-                        <div className="w-16 h-1 mt-2 bg-blue-600 rounded-full" />
+                        <div className="w-16 h-1 mt-2 bg-blue-600 rounded-md" />
                     </div>
                     <p className="text-slate-500 max-w-2xl mx-auto mt-4">
                         Notre réseau mondial d'institutions académiques et d'organisations environnementales.

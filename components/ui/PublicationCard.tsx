@@ -31,7 +31,7 @@ export default function PublicationCard({ report, delay = 0 }: PublicationCardPr
 
                 <div className="space-y-2">
                     <div className="flex items-center gap-3">
-                        <span className="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
+                        <span className="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-3 py-1 rounded-md">
                             {category}
                         </span>
                         <div className="flex items-center gap-1 text-slate-400 text-sm font-medium">

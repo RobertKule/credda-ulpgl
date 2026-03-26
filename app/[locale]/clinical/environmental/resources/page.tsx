@@ -67,7 +67,7 @@ export default async function LegalResourceLibrary({ params }: { params: Promise
         {/* Resource Grid */}
         {resources.length === 0 ? (
           <div className="bg-white border border-slate-200 p-20 text-center space-y-4">
-            <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto text-slate-300">
+            <div className="w-16 h-16 bg-slate-50 rounded-md flex items-center justify-center mx-auto text-slate-300">
               <BookOpen size={32} />
             </div>
             <div className="space-y-1">

@@ -76,7 +76,7 @@ export default function ConnectedGallerySection({ images }: { images: any[] }) {
                                         </div>
                                     </div>
                                     <div className="absolute top-3 left-3 z-10">
-                                        <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[6px] sm:text-[7px] lg:text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-full">
+                                        <Badge className="bg-black/50 backdrop-blur-sm text-white border-none text-[6px] sm:text-[7px] lg:text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-md">
                                             {img.category}
                                         </Badge>
                                     </div>
@@ -85,14 +85,14 @@ export default function ConnectedGallerySection({ images }: { images: any[] }) {
                         ))}
                     </CarouselContent>
                     <div className="absolute top-1/2 -translate-y-1/2 left-4 right-4 flex justify-between pointer-events-none z-20">
-                        <CarouselPrevious className="static translate-y-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full bg-white/80 backdrop-blur-sm hover:bg-blue-600 hover:text-white border-0 shadow-xl pointer-events-auto" />
-                        <CarouselNext className="static translate-y-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-full bg-white/80 backdrop-blur-sm hover:bg-blue-600 hover:text-white border-0 shadow-xl pointer-events-auto" />
+                        <CarouselPrevious className="static translate-y-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-md bg-white/80 backdrop-blur-sm hover:bg-blue-600 hover:text-white border-0 shadow-xl pointer-events-auto" />
+                        <CarouselNext className="static translate-y-0 w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-md bg-white/80 backdrop-blur-sm hover:bg-blue-600 hover:text-white border-0 shadow-xl pointer-events-auto" />
                     </div>
                     <div className="flex justify-center gap-2 mt-6">
                         {images.map((_: any, idx: number) => (
                             <button
                                 key={idx}
-                                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-all duration-300 ${idx === currentGalleryIndex ? 'bg-blue-600 w-4 sm:w-6' : 'bg-slate-300 hover:bg-slate-400'}`}
+                                className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-md transition-all duration-300 ${idx === currentGalleryIndex ? 'bg-blue-600 w-4 sm:w-6' : 'bg-slate-300 hover:bg-slate-400'}`}
                                 onClick={() => setCurrentGalleryIndex(idx)}
                             />
                         ))}

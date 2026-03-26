@@ -96,7 +96,7 @@ export default function ProfileForm({ user }: ProfileFormProps) {
       {/* Colonne Gauche : Infos & Status */}
       <div className="space-y-6">
         <div className="bg-slate-900 dark:bg-slate-900/50 text-white p-10 rounded-3xl border border-white/5 relative overflow-hidden group shadow-2xl">
-           <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-600/20 blur-[80px] rounded-full group-hover:bg-blue-600/30 transition-all duration-700" />
+           <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-blue-600/20 blur-[80px] rounded-md group-hover:bg-blue-600/30 transition-all duration-700" />
            <div className="relative z-10 space-y-8">
               <div className="w-20 h-20 bg-white/10 rounded-2xl flex items-center justify-center text-4xl font-serif font-black text-blue-400 border border-white/10 shadow-xl group-hover:scale-105 transition-transform">
                 {user.name?.[0] || 'A'}

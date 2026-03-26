@@ -66,7 +66,7 @@ export default async function MobileClinicPage({ params }: { params: Promise<{ l
                </div>
                <div className="flex items-center gap-8">
                   <div className="flex items-center gap-2">
-                     <div className="w-3 h-3 bg-secondary rounded-full animate-pulse" />
+                     <div className="w-3 h-3 bg-secondary rounded-md animate-pulse" />
                      <span className="text-[10px] font-black uppercase tracking-widest text-primary">Active Sessions</span>
                   </div>
                </div>

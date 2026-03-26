@@ -55,13 +55,13 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
         <section className="relative overflow-hidden bg-background py-24 lg:py-40 text-foreground">
             {/* Background elements */}
             <SectionDecorNumber value="05" className="hidden sm:block right-4 top-16 opacity-5" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-md blur-[120px] pointer-events-none" />
 
             <div className="relative z-10 w-full max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12">
                 {/* Section Header */}
                 <div className="flex flex-col items-center text-center mb-16 lg:mb-24">
                     <GSAPReveal direction="up">
-                        <Badge className="bg-primary/10 text-primary border border-primary/20 rounded-full uppercase text-[10px] tracking-[0.4em] font-bold px-6 py-2 mb-8 lg:mb-12">
+                        <Badge className="bg-primary/10 text-primary border border-primary/20 rounded-md uppercase text-[10px] tracking-[0.4em] font-bold px-6 py-2 mb-8 lg:mb-12">
                             {t('testimonials.badge')}
                         </Badge>
                         <h2 className="text-5xl lg:text-7xl xl:text-8xl font-fraunces font-black leading-[1.1] tracking-tighter text-foreground max-w-4xl mx-auto">
@@ -107,8 +107,8 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
 
                                             {/* Author Info */}
                                             <div className="relative z-10 mt-auto flex items-center gap-5">
-                                                <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden border border-primary/20 p-1 bg-background shrink-0">
-                                                    <div className="relative w-full h-full rounded-full overflow-hidden bg-muted shadow-inner">
+                                                <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-md overflow-hidden border border-primary/20 p-1 bg-background shrink-0">
+                                                    <div className="relative w-full h-full rounded-md overflow-hidden bg-muted shadow-inner">
                                                         <Image src={testi.image} alt={testi.name} fill sizes="80px" className="object-cover" />
                                                     </div>
                                                 </div>
@@ -128,7 +128,7 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-8 lg:gap-12 mt-8 lg:mt-16">
                         <button 
                             onClick={() => emblaApi?.scrollPrev()} 
-                            className="hidden sm:flex w-14 h-14 rounded-full border border-border items-center justify-center hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-500 group"
+                            className="hidden sm:flex w-14 h-14 rounded-md border border-border items-center justify-center hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-500 group"
                         >
                             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
                         </button>
@@ -138,7 +138,7 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
                                 <button
                                     key={idx}
                                     onClick={() => emblaApi?.scrollTo(idx)}
-                                    className={`h-1.5 rounded-full transition-all duration-500 ${selectedIndex === idx ? 'w-12 bg-primary' : 'w-4 bg-border hover:bg-primary/50'}`}
+                                    className={`h-1.5 rounded-md transition-all duration-500 ${selectedIndex === idx ? 'w-12 bg-primary' : 'w-4 bg-border hover:bg-primary/50'}`}
                                     aria-label={`Slide ${idx + 1}`}
                                 />
                             ))}
@@ -146,7 +146,7 @@ export default function TestimonialSection({ testimonials = [] }: TestimonialSec
 
                         <button 
                             onClick={() => emblaApi?.scrollNext()} 
-                            className="hidden sm:flex w-14 h-14 rounded-full bg-primary items-center justify-center text-primary-foreground hover:scale-110 shadow-lg shadow-primary/25 transition-all duration-500 group"
+                            className="hidden sm:flex w-14 h-14 rounded-md bg-primary items-center justify-center text-primary-foreground hover:scale-110 shadow-lg shadow-primary/25 transition-all duration-500 group"
                         >
                             <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                         </button>

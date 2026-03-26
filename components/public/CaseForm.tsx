@@ -75,12 +75,12 @@ export default function CaseForm() {
 
   if (success) {
     return (
-      <div className="bg-primary text-white p-12 lg:p-20 text-center space-y-8 relative overflow-hidden border border-secondary shadow-3xl">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 -skew-x-12 translate-x-1/2 pointer-events-none" />
+      <div className="bg-emerald text-white p-12 lg:p-20 text-center space-y-8 relative overflow-hidden border border-emerald/20 shadow-3xl rounded-md">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 -skew-x-12 translate-x-1/2 pointer-events-none" />
         <motion.div 
           initial={{ scale: 0 }} 
           animate={{ scale: 1 }} 
-          className="w-24 h-24 bg-secondary text-primary rounded-full mx-auto flex items-center justify-center p-6 mb-8"
+          className="w-24 h-24 bg-white/10 text-white rounded-md mx-auto flex items-center justify-center p-6 mb-8 emerald-glow"
         >
           <CheckCircle2 size={48} strokeWidth={2.5} />
         </motion.div>
@@ -90,7 +90,7 @@ export default function CaseForm() {
             Your case has been recorded in our secure legal registry. Our clinicians will analyze the submission and contact you via the provided coordinates.
           </p>
         </div>
-        <Button onClick={() => { setSuccess(false); setStep(1); }} className="bg-secondary text-primary rounded-none px-12 h-16 font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all">
+        <Button onClick={() => { setSuccess(false); setStep(1); }} className="bg-white text-emerald rounded-md px-12 h-16 font-black uppercase tracking-widest text-[10px] hover:bg-white/90 transition-all">
           New Submission
         </Button>
       </div>
@@ -141,7 +141,7 @@ export default function CaseForm() {
                     value={formData.name}
                     onChange={(e) => updateField('name', e.target.value)}
                     placeholder="John Doe" 
-                    className="rounded-none border-light-gray h-14 focus:border-secondary transition-all" 
+                    className="rounded-md border-light-gray h-14 focus:border-secondary transition-all" 
                     required 
                   />
                 </div>
@@ -152,7 +152,7 @@ export default function CaseForm() {
                     value={formData.phone}
                     onChange={(e) => updateField('phone', e.target.value)}
                     placeholder="+243..." 
-                    className="rounded-none border-light-gray h-14 focus:border-secondary transition-all" 
+                    className="rounded-md border-light-gray h-14 focus:border-secondary transition-all" 
                     required 
                   />
                 </div>
@@ -183,14 +183,14 @@ export default function CaseForm() {
                     value={formData.location}
                     onChange={(e) => updateField('location', e.target.value)}
                     placeholder="Ex: Rubaya, Masisi" 
-                    className="rounded-none border-light-gray h-14 focus:border-secondary transition-all" 
+                    className="rounded-md border-light-gray h-14 focus:border-secondary transition-all" 
                     required 
                   />
                 </div>
                 <div className="space-y-3">
                   <Label htmlFor="problemType" className="text-[10px] font-black uppercase tracking-widest text-primary/40">Nature du Conflit *</Label>
                   <Select value={formData.problemType} onValueChange={(v) => updateField('problemType', v)} required>
-                    <SelectTrigger className="rounded-none border-light-gray h-14 focus:border-secondary transition-all">
+                    <SelectTrigger className="rounded-md border-light-gray h-14 focus:border-secondary transition-all">
                       <SelectValue placeholder="Sélectionnez..." />
                     </SelectTrigger>
                     <SelectContent>
@@ -229,7 +229,7 @@ export default function CaseForm() {
                     value={formData.description}
                     onChange={(e) => updateField('description', e.target.value)}
                     placeholder="Exposez les faits de manière objective..." 
-                    className="rounded-none border-light-gray min-h-[120px] focus:border-secondary transition-all"
+                    className="rounded-md border-light-gray min-h-[120px] focus:border-secondary transition-all"
                     required 
                   />
                 </div>
@@ -241,7 +241,7 @@ export default function CaseForm() {
                     value={formData.expectations}
                     onChange={(e) => updateField('expectations', e.target.value)}
                     placeholder="Attentes vis-à-vis de la clinique..." 
-                    className="rounded-none border-light-gray min-h-[100px] focus:border-secondary transition-all"
+                    className="rounded-md border-light-gray min-h-[100px] focus:border-secondary transition-all"
                   />
                 </div>
               </div>
@@ -265,14 +265,14 @@ export default function CaseForm() {
 
         <div className="mt-16 pt-8 border-t border-light-gray flex justify-between gap-6">
           {step > 1 ? (
-            <Button type="button" onClick={prevStep} variant="outline" className="rounded-none px-10 h-14 border-primary text-primary font-black uppercase tracking-widest text-[9px] hover:bg-primary hover:text-white transition-all">
+            <Button type="button" onClick={prevStep} variant="outline" className="rounded-md px-10 h-14 border-primary text-primary font-black uppercase tracking-widest text-[9px] hover:bg-primary hover:text-white transition-all">
               <ArrowLeft size={16} className="mr-3" /> Previous
             </Button>
           ) : (
             <div />
           )}
 
-          <Button type="submit" disabled={loading} className="bg-primary text-white rounded-none px-12 h-14 font-black uppercase tracking-widest text-[9px] hover:bg-secondary hover:text-primary transition-all group">
+          <Button type="submit" disabled={loading} className="bg-primary text-white rounded-md px-12 h-14 font-black uppercase tracking-widest text-[9px] hover:bg-secondary hover:text-primary transition-all group">
             {loading ? (
               <Loader2 className="mr-3 h-4 w-4 animate-spin" />
             ) : (

@@ -132,7 +132,7 @@ export default function SecurityPage() {
             </div>
 
             <div className="p-6 rounded-3xl bg-slate-50 border border-slate-100 flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+              <div className="w-10 h-10 rounded-md bg-white flex items-center justify-center shadow-sm">
                 <KeyRound size={18} className="text-slate-400" />
               </div>
               <div>

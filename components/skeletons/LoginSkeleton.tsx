@@ -10,8 +10,8 @@ export default function LoginSkeleton() {
       {/* PARTIE GAUCHE - SKELETON */}
       <div className="hidden md:flex md:w-1/2 bg-[#050a15] relative overflow-hidden items-center justify-center p-12">
         <div className="absolute top-0 left-0 w-full h-full opacity-20">
-          <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full border border-blue-500/30" />
-          <div className="absolute bottom-[-5%] right-[-5%] w-[300px] h-[300px] rounded-full border border-blue-500/20" />
+          <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-md border border-blue-500/30" />
+          <div className="absolute bottom-[-5%] right-[-5%] w-[300px] h-[300px] rounded-md border border-blue-500/20" />
         </div>
 
         <div className="relative z-10 max-w-md text-center md:text-left space-y-8 w-full">

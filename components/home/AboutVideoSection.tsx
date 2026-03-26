@@ -86,7 +86,7 @@ export default function AboutVideoSection() {
                       className="w-full h-full object-cover opacity-60 group-hover/vid:opacity-80 transition-opacity duration-500"
                     />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary/90 flex items-center justify-center text-primary-foreground shadow-2xl group-hover/vid:scale-110 transition-transform duration-500">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-md bg-primary/90 flex items-center justify-center text-primary-foreground shadow-2xl group-hover/vid:scale-110 transition-transform duration-500">
                         <Play size={32} fill="currentColor" className="ml-1" />
                       </div>
                     </div>
@@ -106,7 +106,7 @@ export default function AboutVideoSection() {
               
               {/* Subtle Overlay Label */}
               <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/5">
+                <div className="flex items-center gap-2 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-md border border-white/5">
                   <Play size={12} className="text-primary fill-primary" />
                   <span className="text-[8px] uppercase font-bold tracking-widest text-white/80">
                     {t('video.watch')}
@@ -120,12 +120,12 @@ export default function AboutVideoSection() {
             <motion.div 
               animate={{ y: [0, -15, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-10 -right-10 w-24 h-24 bg-primary/5 rounded-full blur-xl border border-primary/10"
+              className="absolute -top-10 -right-10 w-24 h-24 bg-primary/5 rounded-md blur-xl border border-primary/10"
             />
             <motion.div 
               animate={{ y: [0, 15, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-8 -left-8 w-16 h-16 bg-primary/10 rounded-full blur-lg border border-primary/20"
+              className="absolute -bottom-8 -left-8 w-16 h-16 bg-primary/10 rounded-md blur-lg border border-primary/20"
             />
           </motion.div>
 

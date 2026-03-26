@@ -67,7 +67,7 @@ export default function HeroSection() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95 }}
                         transition={{ duration: 0.4 }}
-                        className="absolute top-8 right-8 lg:top-12 lg:right-12 z-30 flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-full shadow-2xl"
+                        className="absolute top-8 right-8 lg:top-12 lg:right-12 z-30 flex items-center gap-3 bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-md shadow-2xl"
                     >
                         <button
                             onClick={togglePlay}

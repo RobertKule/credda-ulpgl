@@ -15,10 +15,12 @@ Cette plateforme "Production-Ready" centralise :
 - Une interface administrative moderne pour le pilotage des contenus.
 
 ## 🛠️ Stack Technique
+- **Projet** : CREDDA-ULPGL
 - **Framework** : Next.js 15 (App Router, Turbopack)
 - **Langage** : TypeScript
 - **Styling** : Tailwind CSS 4 + Framer Motion (Animations Premium)
-- **Base de Données** : PostgreSQL via Prisma ORM
+- **Base de Données** : PostgreSQL via **Supabase** (Transaction Pooler)
+- **Stockage Assets** : **Supabase Storage** (Remplacement de Cloudinary)
 - **Authentification** : NextAuth.js
 - **Internationalisation** : next-intl (Support multi-locales : FR, EN, SW)
 - **Déploiement** : Vercel
@@ -38,8 +40,9 @@ cd credda-ulpgl
 ### Étape 2 : Configuration
 Copiez le fichier `.env.example` en `.env` et renseignez les variables nécessaires :
 - `DATABASE_URL` (Supabase Transaction Pooler)
+- `DIRECT_URL` (Connexion directe DB)
+- `SUPABASE_URL` & `SUPABASE_ANON_KEY` (Gestion du stockage)
 - `NEXTAUTH_SECRET`
-- `UPSTASH_REDIS_REST_URL` (Optionnel pour le rate limiting)
 
 ### Étape 3 : Installation des dépendances
 ```bash

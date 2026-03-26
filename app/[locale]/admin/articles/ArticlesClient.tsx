@@ -137,7 +137,7 @@ export default function ArticlesClient({
                     <Badge variant="outline" className="rounded-none text-[8px] font-black tracking-widest uppercase px-2 py-0.5 border-slate-200 text-slate-500">
                       {category}
                     </Badge>
-                    <div className={`w-2 h-2 rounded-full ${a.published ? 'bg-emerald-500' : 'bg-amber-500'} animate-pulse`} />
+                    <div className={`w-2 h-2 rounded-md ${a.published ? 'bg-emerald-500' : 'bg-amber-500'} animate-pulse`} />
                   </div>
                   <h3 className="font-serif font-bold text-slate-900 leading-tight group-hover:text-blue-600 transition-colors line-clamp-2">
                     {content.title}

@@ -150,7 +150,7 @@ export function MessageItem({ msg, isSelected, onSelect }: MessageItemProps) {
                 />
               </div>
 
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+              <div className={`w-10 h-10 rounded-md flex items-center justify-center flex-shrink-0 ${
                 msg.status === "UNREAD" ? "bg-blue-100" : "bg-slate-100"
               }`}>
                 <span className="text-sm font-bold text-slate-700">

@@ -129,7 +129,7 @@ export default async function SearchResultsPage({
         ) : (
           <div className="py-32 text-center bg-white border border-slate-100 max-w-2xl mx-auto">
             <div className="relative mb-8">
-              <div className="absolute inset-0 bg-blue-600/5 blur-3xl rounded-full" />
+              <div className="absolute inset-0 bg-blue-600/5 blur-3xl rounded-md" />
               <SearchX size={80} className="mx-auto text-slate-300 relative z-10" strokeWidth={1} />
             </div>
             <h3 className="text-3xl font-serif font-bold text-slate-900 mb-4">

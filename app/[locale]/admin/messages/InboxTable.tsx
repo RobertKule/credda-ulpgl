@@ -316,7 +316,7 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
       <Dialog open={!!replyingTo} onOpenChange={(open) => !open && setReplyingTo(null)}>
         <DialogContent className="sm:max-w-[700px] rounded-[3rem] border-none shadow-3xl p-0 bg-white dark:bg-slate-950 overflow-hidden">
           <div className="bg-slate-900 dark:bg-blue-600 p-12 text-white space-y-2 relative overflow-hidden">
-            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-full" />
+            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-md" />
             <h2 className="text-3xl font-serif font-black italic tracking-tighter leading-none relative z-10">Rédaction de Réponse</h2>
             <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.3em] relative z-10">{replyingTo?.name} • {replyingTo?.email}</p>
           </div>
@@ -338,7 +338,7 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
             </div>
 
             <div className="flex items-center gap-3 text-slate-400 dark:text-white/20 ml-2">
-               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+               <div className="w-1.5 h-1.5 rounded-md bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
                <p className="text-[9px] font-black uppercase tracking-widest">Envoi via les serveurs sécurisés CREDDA-CDE</p>
             </div>
           </div>

@@ -82,7 +82,7 @@ function GalleryItem({ img }: { img: any }) {
        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500">
           <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
              <div className="flex items-center gap-3 mb-4">
-                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground">
+                <div className="w-8 h-8 rounded-md bg-primary flex items-center justify-center text-primary-foreground">
                    <ImageIcon size={14} />
                 </div>
                 <span className="text-[9px] font-outfit font-bold uppercase tracking-widest text-primary">
@@ -97,7 +97,7 @@ function GalleryItem({ img }: { img: any }) {
              </p>
           </div>
           <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-             <div className="w-10 h-10 rounded-full bg-background/10 backdrop-blur-md flex items-center justify-center text-foreground/60 hover:text-foreground transition-colors cursor-pointer border border-border/10">
+             <div className="w-10 h-10 rounded-md bg-background/10 backdrop-blur-md flex items-center justify-center text-foreground/60 hover:text-foreground transition-colors cursor-pointer border border-border/10">
                 <Maximize2 size={16} />
              </div>
           </div>

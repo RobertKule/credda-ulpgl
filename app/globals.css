@@ -14,6 +14,8 @@
   --color-accent: #E8C97A;
   --color-gold: #C9A84C;
   --color-gold-light: #E8C97A;
+  --color-emerald: #064E3B;
+  --color-emerald-glow: rgba(6, 78, 59, 0.4);
 
   /* Mapping des variables sémantiques (Shadcn + Custom) */
   --color-background: var(--background);
@@ -38,7 +40,8 @@
 
 /* 2. VARIABLES CSS (Design System) */
 :root {
-  --radius: 1rem; /* On peut augmenter pour le style CREDDA */
+  --radius: 0.375rem; /* Strict institutional radius (6px) */
+  --emerald: #064E3B;
   
   /* MODE SOMBRE (Par défaut) */
   --background: #0C0C0A;
@@ -95,6 +98,16 @@
 
   .glass-gold {
     @apply bg-primary/5 backdrop-blur-xl border border-primary/20;
+  }
+
+  .emerald-glow {
+    filter: drop-shadow(0 0 8px var(--color-emerald-glow));
+    @apply transition-all duration-300;
+  }
+
+  .hover-emerald-glow:hover {
+    filter: drop-shadow(0 0 12px var(--color-emerald-glow));
+    @apply border-emerald/40 text-emerald;
   }
 
   /* Grid dynamiques */

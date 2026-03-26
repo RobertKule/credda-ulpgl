@@ -16,7 +16,7 @@ export default function DigitalLibrarySection() {
             <div className="container mx-auto px-4 sm:px-6 relative z-10">
                 <div className="bg-slate-50 border border-slate-100 p-8 sm:p-12 lg:p-16 flex flex-col md:flex-row items-center justify-between gap-10">
                     <div className="max-w-2xl space-y-6">
-                        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-6">
+                        <div className="w-16 h-16 bg-blue-100 rounded-md flex items-center justify-center text-blue-600 mb-6">
                             <BookOpen size={28} />
                         </div>
                         <FormattedHTML
@@ -40,8 +40,8 @@ export default function DigitalLibrarySection() {
                             <div className="absolute inset-0 bg-blue-900/10 mix-blend-multiply" />
                         </div>
                         {/* Decors flottants */}
-                        <div className="absolute -top-6 -right-6 w-24 h-24 bg-blue-500/10 rounded-full blur-xl animate-pulse" />
-                        <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-emerald-500/10 rounded-full blur-xl animate-pulse delay-1000" />
+                        <div className="absolute -top-6 -right-6 w-24 h-24 bg-blue-500/10 rounded-md blur-xl animate-pulse" />
+                        <div className="absolute -bottom-8 -left-8 w-32 h-32 bg-emerald-500/10 rounded-md blur-xl animate-pulse delay-1000" />
                     </div>
                 </div>
             </div>

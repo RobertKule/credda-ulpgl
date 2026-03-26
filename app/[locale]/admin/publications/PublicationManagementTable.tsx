@@ -97,7 +97,7 @@ export default function PublicationManagementTable({
           return (
             <div key={p.id} className="bg-white border border-slate-200 p-6 flex flex-col md:flex-row gap-6 hover:shadow-xl hover:shadow-blue-900/5 transition-all group relative overflow-hidden">
               {/* Background accent */}
-              <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 opacity-[0.03] group-hover:scale-150 transition-transform duration-700 rounded-full ${p.domain === 'RESEARCH' ? 'bg-blue-600' : 'bg-emerald-600'}`} />
+              <div className={`absolute top-0 right-0 w-24 h-24 -mr-8 -mt-8 opacity-[0.03] group-hover:scale-150 transition-transform duration-700 rounded-md ${p.domain === 'RESEARCH' ? 'bg-blue-600' : 'bg-emerald-600'}`} />
               
               <div className="w-16 h-20 bg-slate-50 flex flex-col items-center justify-center border border-slate-100 shrink-0 group-hover:bg-blue-50 transition-colors">
                 <FileText size={32} className="text-slate-300 group-hover:text-blue-600" />

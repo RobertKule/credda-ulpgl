@@ -19,7 +19,7 @@ export default function LegalPage() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-3xl"
           >
-            <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-widest uppercase mb-6">
+            <span className="inline-block px-4 py-1.5 rounded-md bg-primary/10 text-primary text-xs font-bold tracking-widest uppercase mb-6">
               {t("header.badge")}
             </span>
             <h1 className="text-5xl md:text-6xl font-serif text-slate-900 mb-8 leading-tight"

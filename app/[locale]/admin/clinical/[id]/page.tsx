@@ -182,7 +182,7 @@ export default async function CaseDetailPage({ params }: Props) {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-white/10 flex items-center justify-center rounded-full text-emerald-300">
+                <div className="w-12 h-12 bg-white/10 flex items-center justify-center rounded-md text-emerald-300">
                   <User size={24} />
                 </div>
                 <div>

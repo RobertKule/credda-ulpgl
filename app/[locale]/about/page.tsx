@@ -72,12 +72,12 @@ export default function PremiumAboutPage() {
         <motion.div
           animate={{ x: mousePos.x * -2, y: mousePos.y * -2 }}
           transition={{ type: "spring", stiffness: 40, damping: 20 }}
-          className="absolute top-[15%] left-[10%] w-[250px] h-[250px] md:w-[500px] md:h-[500px] bg-primary/20 rounded-full blur-[80px] md:blur-[130px] pointer-events-none z-10"
+          className="absolute top-[15%] left-[10%] w-[250px] h-[250px] md:w-[500px] md:h-[500px] bg-primary/20 rounded-md blur-[80px] md:blur-[130px] pointer-events-none z-10"
         />
         <motion.div
           animate={{ x: mousePos.x * 2.5, y: mousePos.y * 2.5 }}
           transition={{ type: "spring", stiffness: 35, damping: 25 }}
-          className="absolute bottom-[10%] right-[5%] w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-blue-600/15 rounded-full blur-[100px] md:blur-[150px] pointer-events-none z-10"
+          className="absolute bottom-[10%] right-[5%] w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-blue-600/15 rounded-md blur-[100px] md:blur-[150px] pointer-events-none z-10"
         />
 
         {/* DYNAMIC CONTROLS — fade on idle */}
@@ -88,7 +88,7 @@ export default function PremiumAboutPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
-              className="absolute top-8 right-8 md:top-12 md:right-12 z-40 flex items-center gap-1 bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-full shadow-2xl"
+              className="absolute top-8 right-8 md:top-12 md:right-12 z-40 flex items-center gap-1 bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-md shadow-2xl"
             >
               <button onClick={togglePlay} className="p-2 text-white/80 hover:text-white transition hover:scale-110">
                 {isPaused ? <Play size={18} fill="currentColor" /> : <Pause size={18} fill="currentColor" />}
@@ -109,8 +109,8 @@ export default function PremiumAboutPage() {
           className="relative z-20 container mx-auto px-6 text-center"
         >
           <motion.div animate={{ rotateX: mousePos.y * 0.05, rotateY: mousePos.x * -0.05 }} style={{ transformStyle: "preserve-3d" }}>
-            <div className="inline-flex items-center gap-3 border border-primary/40 text-primary bg-black/30 backdrop-blur-md rounded-full px-6 py-2 mb-10 shadow-lg">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <div className="inline-flex items-center gap-3 border border-primary/40 text-primary bg-black/30 backdrop-blur-md rounded-md px-6 py-2 mb-10 shadow-lg">
+              <span className="w-2 h-2 rounded-md bg-primary animate-pulse" />
               <span className="text-[9px] md:text-[11px] tracking-[0.4em] uppercase font-bold">{t('hero.badge')}</span>
             </div>
 

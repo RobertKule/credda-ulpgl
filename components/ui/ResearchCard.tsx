@@ -35,7 +35,7 @@ export default function ResearchCard({ article, delay = 0 }: ResearchCardProps) 
                     fill
                     className="object-cover transition-transform duration-[1500ms] group-hover:scale-110"
                 />
-                <div className="absolute top-6 left-6 bg-primary/90 backdrop-blur-md text-primary-foreground text-[10px] font-black px-4 py-2 rounded-full uppercase tracking-widest shadow-xl">
+                <div className="absolute top-6 left-6 bg-primary/90 backdrop-blur-md text-primary-foreground text-[10px] font-black px-4 py-2 rounded-md uppercase tracking-widest shadow-xl">
                     {category}
                 </div>
             </div>
@@ -64,7 +64,7 @@ export default function ResearchCard({ article, delay = 0 }: ResearchCardProps) 
                         className="inline-flex items-center gap-3 text-primary font-bold text-[11px] uppercase tracking-widest group/link"
                     >
                         Lire l'article
-                        <div className="w-8 h-8 rounded-full border border-primary/20 flex items-center justify-center group-hover/link:bg-primary group-hover/link:text-primary-foreground transition-all duration-500">
+                        <div className="w-8 h-8 rounded-md border border-primary/20 flex items-center justify-center group-hover/link:bg-primary group-hover/link:text-primary-foreground transition-all duration-500">
                             <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                         </div>
                     </Link>

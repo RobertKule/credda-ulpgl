@@ -40,7 +40,7 @@ export default function LoadingModal() {
             className="bg-white dark:bg-slate-900 p-10 rounded-3xl shadow-2xl border border-white/10 flex flex-col items-center space-y-6 max-w-sm w-full mx-4 text-center"
           >
             <div className="relative">
-              <div className="w-20 h-20 border-4 border-blue-600/20 rounded-full" />
+              <div className="w-20 h-20 border-4 border-blue-600/20 rounded-md" />
               <Loader2 className="w-20 h-20 text-blue-600 animate-spin absolute top-0 left-0" />
             </div>
             
@@ -53,7 +53,7 @@ export default function LoadingModal() {
               </p>
             </div>
 
-            <div className="w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+            <div className="w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-md overflow-hidden">
                <motion.div 
                  initial={{ x: "-100%" }}
                  animate={{ x: "100%" }}

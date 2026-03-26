@@ -124,7 +124,7 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
               <tr key={u.id} className="hover:bg-slate-50/50 transition-colors">
                 <td className="p-4">
                   <div className="flex items-center gap-4">
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    <div className={`w-10 h-10 rounded-md flex items-center justify-center ${
                       u.status === 'PENDING' ? 'bg-amber-50 text-amber-600' : 
                       u.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-600' : 
                       'bg-red-50 text-red-600'

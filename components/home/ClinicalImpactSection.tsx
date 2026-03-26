@@ -19,7 +19,7 @@ export default function ClinicalImpactSection() {
                     <div className="absolute inset-0 bg-emerald-900/20" />
                 </div>
                 <div className="space-y-6 sm:space-y-8 order-1 lg:order-2">
-                    <Badge className="bg-emerald-500/20 text-emerald-400 rounded-full uppercase text-[9px] tracking-[0.4em] px-4 py-1.5 border border-emerald-500/30 font-bold">{t('clinical.badge')}</Badge>
+                    <Badge className="bg-emerald-500/20 text-emerald-400 rounded-md uppercase text-[9px] tracking-[0.4em] px-4 py-1.5 border border-emerald-500/30 font-bold">{t('clinical.badge')}</Badge>
                     <FormattedHTML
                         html={t.raw('clinical.title')}
                         as="h3"

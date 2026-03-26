@@ -42,7 +42,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
           </p>
         </div>
         
-        <div className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full border border-emerald-100 shadow-sm animate-pulse-slow">
+        <div className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-md border border-emerald-100 shadow-sm animate-pulse-slow">
            <Shield size={16} />
            <span className="text-[10px] font-black uppercase tracking-widest">Protégé par Auth.js</span>
         </div>

@@ -79,7 +79,7 @@ export function ProgramForm({ initialData, isEditing = false }: any) {
       <div className="sticky top-0 z-30 flex flex-col sm:flex-row items-start sm:items-center justify-between bg-white/70 dark:bg-slate-950/70 backdrop-blur-2xl py-6 border-b border-slate-200 dark:border-white/5 -mx-4 sm:-mx-6 lg:-mx-10 px-4 sm:px-6 lg:px-10 transition-all">
         <div className="flex flex-col gap-1 mb-4 sm:mb-0">
           <div className="flex items-center gap-2 mb-1">
-             <div className="w-2 h-2 rounded-full bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.5)]" />
+             <div className="w-2 h-2 rounded-md bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.5)]" />
              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 dark:text-white/30">Gestion des Programmes</span>
           </div>
           <h1 className="text-3xl font-serif font-black text-slate-900 dark:text-white flex items-center gap-3">
@@ -202,7 +202,7 @@ export function ProgramForm({ initialData, isEditing = false }: any) {
           </div>
 
           <div className="bg-slate-900 dark:bg-blue-600 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden group transition-all">
-             <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-700" />
+             <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-md group-hover:scale-150 transition-transform duration-700" />
              <div className="relative z-10 space-y-6">
                 <h3 className="font-serif font-black uppercase tracking-tight flex items-center gap-3">
                   <ImageIcon size={18} />

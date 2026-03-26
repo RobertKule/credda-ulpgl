@@ -98,7 +98,7 @@ export function SmartImageInput({ value, onChange, folder = "gallery", label = "
                 {uploading ? (
                   <div className="space-y-4 px-6">
                     <Loader2 className="w-8 h-8 text-blue-600 animate-spin mx-auto" />
-                    <div className="w-full bg-slate-200 dark:bg-white/10 h-1.5 rounded-full overflow-hidden">
+                    <div className="w-full bg-slate-200 dark:bg-white/10 h-1.5 rounded-md overflow-hidden">
                       <div 
                         className="bg-blue-600 h-full transition-all duration-300" 
                         style={{ width: `${progress}%` }}

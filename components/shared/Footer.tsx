@@ -59,7 +59,7 @@ export default function Footer() {
       {Array.isArray(expertiseItems) && expertiseItems.map((item: string) => (
         <li key={item} className="group">
           <Link href="/research" className="text-sm text-muted-foreground hover:text-primary transition-all flex items-center gap-3">
-            <span className="w-1.5 h-1.5 bg-primary rounded-full scale-0 group-hover:scale-100 transition-transform duration-300" />
+            <span className="w-1.5 h-1.5 bg-primary rounded-md scale-0 group-hover:scale-100 transition-transform duration-300" />
             {item}
           </Link>
         </li>
@@ -140,7 +140,7 @@ export default function Footer() {
           
           <div className="flex items-center gap-6">
             <div className="px-4 py-2 bg-muted border border-border flex items-center gap-3">
-               <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
+               <div className="w-1.5 h-1.5 bg-primary rounded-md animate-pulse" />
                <span className="text-[9px] uppercase font-outfit font-bold text-muted-foreground tracking-widest">
                  {t('bottom.system')}
                </span>

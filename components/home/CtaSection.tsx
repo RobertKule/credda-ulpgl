@@ -10,7 +10,7 @@ export default function CtaSection() {
 
     return (
         <section className="py-16 sm:py-20 lg:py-24 xl:py-28 bg-blue-900 text-white text-center relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-48 sm:w-64 lg:w-96 h-48 sm:h-64 lg:h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="absolute top-0 right-0 w-48 sm:w-64 lg:w-96 h-48 sm:h-64 lg:h-96 bg-white/5 rounded-md -translate-y-1/2 translate-x-1/2" />
             <div className="container mx-auto px-4 sm:px-6 relative z-10 space-y-6 sm:space-y-8 lg:space-y-10 xl:space-y-12">
                 <FormattedHTML
                     html={t.raw('cta.title')}

@@ -115,11 +115,11 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
       
       {/* SECTION DOCUMENT PDF - LUXE DARK STYLE */}
       <div className="bg-slate-950 dark:bg-slate-900/50 p-10 rounded-[2.5rem] border border-white/5 relative overflow-hidden shadow-2xl group transition-all">
-        <div className="absolute -right-20 -top-20 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-full group-hover:bg-blue-600/20 transition-all duration-700 pointer-events-none" />
+        <div className="absolute -right-20 -top-20 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-md group-hover:bg-blue-600/20 transition-all duration-700 pointer-events-none" />
         
         <div className="relative z-10 space-y-8">
           <div className="flex items-center gap-3">
-             <div className="w-1.5 h-1.5 bg-blue-600 rounded-full shadow-[0_0_8px_rgba(37,99,235,1)]" />
+             <div className="w-1.5 h-1.5 bg-blue-600 rounded-md shadow-[0_0_8px_rgba(37,99,235,1)]" />
              <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-blue-500">Archive de Publication</h3>
           </div>
 
@@ -146,8 +146,8 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
                 <div className="w-full text-center space-y-6 px-4">
                   {uploading ? (
                     <div className="space-y-6">
-                      <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-full animate-spin mx-auto" />
-                      <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                      <div className="w-12 h-12 border-4 border-blue-600/20 border-t-blue-600 rounded-md animate-spin mx-auto" />
+                      <div className="w-full bg-white/5 h-1.5 rounded-md overflow-hidden">
                         <div 
                           className="bg-blue-600 h-full transition-all duration-300" 
                           style={{ width: `${uploadProgress}%` }}

@@ -37,13 +37,13 @@ export default function TeamSection({ team }: { team: any[] }) {
                     <div className="flex gap-2 sm:gap-4">
                         <button
                             onClick={() => carouselRef.current?.scrollPrev()}
-                            className="w-14 h-14 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all duration-500"
+                            className="w-14 h-14 rounded-md border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all duration-500"
                         >
                             <ArrowLeft size={20} />
                         </button>
                         <button
                             onClick={() => carouselRef.current?.scrollNext()}
-                            className="w-14 h-14 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all duration-500"
+                            className="w-14 h-14 rounded-md border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all duration-500"
                         >
                             <ArrowRight size={20} />
                         </button>
@@ -68,7 +68,7 @@ export default function TeamSection({ team }: { team: any[] }) {
                                             className="object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
-                                        <div className="absolute bottom-6 right-6 w-12 h-12 bg-primary rounded-full flex items-center justify-center text-primary-foreground opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                                        <div className="absolute bottom-6 right-6 w-12 h-12 bg-primary rounded-md flex items-center justify-center text-primary-foreground opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
                                             <ArrowRight size={20} />
                                         </div>
                                     </div>

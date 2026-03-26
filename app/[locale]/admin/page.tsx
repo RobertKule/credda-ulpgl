@@ -147,7 +147,7 @@ export default async function AdminPage({ params }: Props) {
             href={stat.href}
             className="group relative bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 p-8 aspect-square rounded-[2rem] hover:border-blue-600/50 dark:hover:border-blue-500/50 hover:-translate-y-1 transition-all shadow-sm hover:shadow-2xl overflow-hidden flex flex-col justify-between"
           >
-            <div className={`absolute -right-4 -top-4 w-32 h-32 bg-blue-600 opacity-[0.03] dark:opacity-[0.05] rounded-full group-hover:scale-150 transition-transform duration-700 pointer-events-none`} />
+            <div className={`absolute -right-4 -top-4 w-32 h-32 bg-blue-600 opacity-[0.03] dark:opacity-[0.05] rounded-md group-hover:scale-150 transition-transform duration-700 pointer-events-none`} />
             
             <div className="relative z-10 flex flex-col h-full justify-between">
               <div className={`p-4 w-fit mb-4 rounded-2xl group-hover:bg-blue-600 group-hover:text-white border border-blue-100 dark:border-blue-900/10 transition-all duration-500 ${stat.textColor} bg-blue-50 dark:bg-blue-600/5`}>
@@ -194,9 +194,9 @@ export default async function AdminPage({ params }: Props) {
                         {article.category?.translations?.[0]?.title || 'Général'}
                       </span>
                       {article.published ? (
-                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                        <div className="h-1.5 w-1.5 rounded-md bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
                       ) : (
-                        <div className="h-1.5 w-1.5 rounded-full bg-amber-500" />
+                        <div className="h-1.5 w-1.5 rounded-md bg-amber-500" />
                       )}
                     </div>
                     <h3 className="font-serif font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-500 transition-colors line-clamp-2 leading-tight mb-2">
@@ -249,7 +249,7 @@ export default async function AdminPage({ params }: Props) {
                         <p className="text-[8px] font-bold text-slate-400 mt-1 uppercase tracking-widest">{new Date(msg.createdAt).toLocaleDateString(locale)}</p>
                       </div>
                       {msg.status === 'UNREAD' && (
-                        <div className="h-1.5 w-1.5 rounded-full bg-blue-600 animate-pulse" />
+                        <div className="h-1.5 w-1.5 rounded-md bg-blue-600 animate-pulse" />
                       )}
                    </div>
                    <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed italic mb-4">
