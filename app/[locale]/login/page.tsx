@@ -12,13 +12,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/shared/ThemeProvider";
 
 export default function AdminLogin() {
   const { locale } = useParams<{ locale: string }>();
   const router = useRouter();
   const t = useTranslations('LoginPage');
-  const { theme, resolvedTheme } = useTheme(); 
+  const { theme } = useTheme(); 
   
   const [mounted, setMounted] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -83,10 +83,10 @@ export default function AdminLogin() {
 
   if (!mounted) return null;
 
-  const isLight = resolvedTheme === "light" || theme === "light";
+  const isLight = theme === "light";
 
   return (
-    <div className={isLight ? "light" : ""}>
+    <div className={isLight ? "light text-slate-900" : "dark text-white"}>
       <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-background text-foreground transition-colors duration-700 font-sans">
         
         {/* ANIMATION DE FOND INFINIE */}
