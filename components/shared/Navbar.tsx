@@ -187,6 +187,35 @@ export default function Navbar() {
 
             {/* Footer Mobile Fixe */}
             <div className="shrink-0 border-t border-border bg-card/95 p-6 pb-[env(safe-area-inset-bottom,24px)] space-y-4">
+
+              {/* THEME TOGGLE + LANGUAGE SWITCHER */}
+              <div className="flex items-center justify-between gap-4">
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center gap-3 flex-1 p-3 rounded-xl border border-border bg-background/60 text-foreground/70 hover:text-primary hover:border-primary/40 transition-all"
+                >
+                  {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+                    {theme === "dark" ? "Mode Clair" : "Mode Sombre"}
+                  </span>
+                </button>
+                <div className="flex items-center gap-1 rounded-xl border border-border bg-background/60 p-2">
+                  {["fr", "en", "sw"].map((l) => (
+                    <Link
+                      key={l}
+                      href={pathname}
+                      locale={l}
+                      onClick={() => setIsOpen(false)}
+                      className={`text-[9px] font-black w-9 h-9 flex items-center justify-center rounded-lg transition-all ${
+                        locale === l ? "bg-[#C9A84C] text-[#0C0C0A] shadow-md" : "text-foreground/50 hover:text-foreground"
+                      }`}
+                    >
+                      {l.toUpperCase()}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
               <Link href={loginHref} onClick={() => setIsOpen(false)} className="flex items-center justify-between w-full p-4 rounded-xl border border-[#C9A84C]/20 bg-[#C9A84C]/5 text-foreground">
                  <div className="flex flex-col">
                     <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#C9A84C]/60">Accès Membre</span>
