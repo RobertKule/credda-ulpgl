@@ -633,32 +633,42 @@
     }
   },
   "LoginPage": {
-    "left": {
-      "badge": "Secure Space",
-      "title": "Scientific Management <span>Portal</span>.",
-      "description": "Welcome to CREDDA management interface. This space is reserved for authorized researchers and administrators.",
-      "footer": "Active data protection"
+    "header": {
+      "back": "BACK TO SITE",
+      "title": "CREDDA",
+      "subtitle": "HARMONIZED ADMINISTRATION SYSTEM"
     },
-    "right": {
-      "back": "Back to site",
-      "logo": "CREDDA<span>.ULPGL</span>",
-      "title": "Admin Login",
-      "subtitle": "Please enter your access credentials.",
-      "fields": {
-        "email": {
-          "placeholder": "Academic email address"
-        },
-        "password": {
-          "placeholder": "Password"
-        }
-      },
-      "submit": "Login",
-      "submitting": "Logging in...",
-      "errors": {
-        "invalid": "Invalid credentials",
-        "connection": "Connection error"
-      },
-      "forgotPassword": "Forgot password ?"
+    "fields": {
+      "email_label": "Institutional ID",
+      "email_placeholder": "name@ulpgl.ac.cd",
+      "password_label": "Secure Access Key",
+      "password_placeholder": "••••••••",
+      "forgot_link": "Forgot?"
+    },
+    "submit": {
+      "label": "Initialize session",
+      "sending": "Initializing..."
+    },
+    "footer": {
+      "university": "ULPGL GOMA",
+      "copyright": "CREDDA © {year}"
+    },
+    "forgot_view": {
+      "back": "BACK TO LOGIN",
+      "title": "RECOVERY",
+      "description": "Enter your email to receive reset instructions.",
+      "submit": "Send instructions"
+    },
+    "modal": {
+      "welcome": "Welcome",
+      "denied": "Access Denied",
+      "retry": "Retry",
+      "reset_success": "If this email exists, a reset link has been sent.",
+      "success_msg": "Authentication successful. Redirecting..."
+    },
+    "errors": {
+      "invalid": "Invalid credentials",
+      "connection": "Connection error"
     }
   },
   "RegisterPage": {
