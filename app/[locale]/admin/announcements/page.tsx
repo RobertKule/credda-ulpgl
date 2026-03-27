@@ -78,39 +78,41 @@ export default function AdminAnnouncements() {
 
   return (
     <div className="p-6 sm:p-10 space-y-10 max-w-5xl mx-auto">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-6 pb-8 border-b border-border">
         <div>
-           <h1 className="text-3xl font-serif font-black text-slate-900 dark:text-white">Annonces Systèmes</h1>
-           <p className="text-slate-500 text-sm mt-1 uppercase tracking-widest font-black">Diffuser un message à tous les utilisateurs</p>
+           <h1 className="text-4xl font-serif font-black text-foreground transition-colors">
+             Annonces <span className="text-primary font-light italic">Systèmes</span>
+           </h1>
+           <p className="text-muted-foreground/60 text-[10px] sm:text-xs mt-2 uppercase tracking-[0.3em] font-black transition-colors">Diffuser un message à tous les utilisateurs</p>
         </div>
-        <div className="w-12 h-12 bg-[#C9A84C]/10 rounded-2xl flex items-center justify-center text-[#C9A84C]">
-           <Megaphone size={24} />
+        <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary shadow-lg shadow-primary/5">
+           <Megaphone size={28} />
         </div>
       </div>
 
-      <Card className="p-6 bg-white dark:bg-[#0C0C0A] border-slate-200 dark:border-white/5 rounded-md shadow-xl">
-        <form onSubmit={handleCreate} className="space-y-4">
-          <div className="space-y-2">
-            <label className="text-[10px] font-black uppercase tracking-widest text-[#C9A84C]">Nouveau Message</label>
+      <Card className="p-8 bg-card border-border rounded-2xl shadow-2xl transition-all">
+        <form onSubmit={handleCreate} className="space-y-6">
+          <div className="space-y-3">
+            <label className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/60 ml-1">Nouveau Message</label>
             <Input 
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Ex: Maintenance prévue ce soir à 0h00..."
-              className="bg-slate-50 dark:bg-white/5 border-transparent h-14 rounded-md font-bold px-6"
+              className="bg-muted/40 border-border h-16 rounded-xl font-bold px-6 text-foreground focus-visible:ring-primary/20 transition-all placeholder:text-muted-foreground/20"
             />
           </div>
           <Button 
             disabled={isLoading}
-            className="w-full h-14 bg-[#C9A84C] hover:bg-[#C9A84C]/90 text-[#0C0C0A] font-black uppercase tracking-[0.2em] rounded-md shadow-lg shadow-[#C9A84C]/20 transition-all hover:scale-[1.02] active:scale-95"
+            className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-[0.3em] rounded-xl shadow-xl shadow-primary/20 transition-all hover:scale-[1.01] active:scale-95"
           >
-            <Plus className="mr-2" size={20} />
+            {isLoading ? <Plus className="animate-spin mr-2" size={20} /> : <Plus className="mr-2" size={20} />}
             Diffuser Maintenant
           </Button>
         </form>
       </Card>
 
-      <div className="space-y-4">
-        <h2 className="text-[10px] font-black uppercase tracking-widest text-slate-400">Historique des annonces</h2>
+      <div className="space-y-6">
+        <h2 className="text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground/30 ml-1">Historique des annonces</h2>
         <div className="grid gap-4">
           <AnimatePresence mode="popLayout">
             {announcements.map((ann) => (
@@ -121,19 +123,19 @@ export default function AdminAnnouncements() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 className={`
-                  p-6 rounded-md border transition-all duration-500 group
+                  p-8 rounded-2xl border transition-all duration-700 group relative overflow-hidden
                   ${ann.isActive 
-                    ? 'bg-[#C9A84C]/5 border-[#C9A84C]/20 shadow-[0_0_50px_rgba(201,168,76,0.05)]' 
-                    : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/5 opacity-60'
+                    ? 'bg-primary/5 border-primary/20 shadow-[0_0_50px_rgba(var(--primary-rgb),0.05)]' 
+                    : 'bg-card border-border opacity-60'
                   }
                 `}
               >
-                <div className="flex items-center justify-between gap-6">
+                <div className="flex items-center justify-between gap-8">
                   <div className="flex-1">
-                    <p className={`font-bold transition-colors ${ann.isActive ? 'text-slate-900 dark:text-[#C9A84C]' : 'text-slate-500'}`}>
+                    <p className={`font-serif text-lg font-bold transition-colors ${ann.isActive ? 'text-foreground' : 'text-muted-foreground/60'}`}>
                       {ann.content}
                     </p>
-                    <p className="text-[8px] font-black uppercase tracking-widest text-slate-400 mt-2">
+                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/30 mt-3 transition-colors">
                       Créée le {new Date(ann.createdAt).toLocaleDateString()}
                     </p>
                   </div>
@@ -141,14 +143,14 @@ export default function AdminAnnouncements() {
                     <button
                       onClick={() => toggleActive(ann.id, ann.isActive)}
                       className={`
-                        p-3 rounded-md transition-all active:scale-90
+                        w-12 h-12 rounded-xl transition-all active:scale-90 flex items-center justify-center shadow-lg
                         ${ann.isActive 
-                          ? 'bg-[#C9A84C] text-[#0C0C0A]' 
-                          : 'bg-slate-100 dark:bg-white/10 text-slate-400 hover:text-[#C9A84C]'
+                          ? 'bg-primary text-primary-foreground shadow-primary/20' 
+                          : 'bg-muted text-muted-foreground/40 hover:text-primary hover:bg-primary/10'
                         }
                       `}
                     >
-                      {ann.isActive ? <Power size={18} /> : <PowerOff size={18} />}
+                      {ann.isActive ? <Power size={20} /> : <PowerOff size={20} />}
                     </button>
                     <button
                       onClick={() => handleDelete(ann.id)}

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Hero from "@/components/home/Hero";
+import React, { useState, useEffect, Suspense } from "react";
+import dynamic from "next/dynamic";
+const Hero = dynamic(() => import("@/components/home/Hero"), { ssr: false });
 import Stats from "@/components/home/Stats";
 import FeaturedResearch from "@/components/home/FeaturedResearch";
 import ClinicalSection from "@/components/home/ClinicalSection";
@@ -65,27 +66,12 @@ export default function HomeClient({
         {/* INTRO TYPEWRITER */}
         <section className="relative h-[100vh] w-full flex items-center justify-center bg-transparent">
           <motion.div style={{ opacity: introOpacity, scale: introScale, y: introY }} className="text-center">
-            <motion.h2 
-              animate={{ 
-                opacity: [1, 0.9, 1],
-                textShadow: [
-                  "0 0 0px var(--primary)",
-                  "2px 2px 0px rgba(255,0,0,0.3)",
-                  "-2px -2px 0px rgba(0,0,255,0.3)",
-                  "0 0 0px var(--primary)"
-                ]
-              }}
-              transition={{ 
-                duration: 0.2, 
-                repeat: Infinity, 
-                repeatDelay: 4,
-                ease: "linear"
-              }}
+            <motion.div 
               className="font-bricolage text-[18vw] font-black leading-none tracking-tighter text-foreground"
             >
               CREDDA
               <span className="animate-pulse text-primary">_</span>
-            </motion.h2>
+            </motion.div>
             <p className="mt-10 text-[10px] sm:text-xs uppercase tracking-[1.2em] text-primary font-bold">
               {t('intro_subtitle')}
             </p>
@@ -109,10 +95,10 @@ export default function HomeClient({
         </div>
 
         {/* ABOUT (Image 3D + Zoom) */}
-        <div id="about" className="relative z-20 mx-4 my-8 overflow-visible">
+        <div id="about" className="relative z-20 mx-4 my-8 overflow-hidden">
           {/* ── TOP ROPE CORD ── */}
-          <div className="absolute top-0 left-0 w-full z-30 pointer-events-none translate-y-[-50%]">
-            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block overflow-visible">
+          <div className="absolute top-0 left-[-0.5%] w-[101%] z-30 pointer-events-none translate-y-[-50%] overflow-hidden">
+            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block">
               <defs>
                 <filter id="ropeShadowAbout" x="-20%" y="-20%" width="140%" height="140%">
                   <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
@@ -177,8 +163,8 @@ export default function HomeClient({
           <AboutVideoSection />
 
           {/* ── BOTTOM ROPE CORD ── */}
-          <div className="absolute bottom-0 left-0 w-full z-30 pointer-events-none translate-y-[50%]">
-            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block overflow-visible">
+          <div className="absolute bottom-0 left-[-0.5%] w-[101%] z-30 pointer-events-none translate-y-[50%] overflow-hidden">
+            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block">
               <path d="M0,50 C200,0 400,100 600,50 C800,0 1000,100 1200,50 C1300,35 1380,65 1440,50" fill="none" stroke="currentColor" strokeOpacity="0.5" strokeWidth="4" className="text-primary" filter="url(#ropeShadowAbout)" />
               <path d="M0,55 C200,5 400,105 600,55 C800,5 1000,105 1200,55 C1300,40 1380,70 1440,55" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2.5" className="text-primary" />
             </svg>
@@ -192,10 +178,10 @@ export default function HomeClient({
           </div>
         </section>
 
-        <div id="clinical" className="relative z-20 mx-4 my-8 overflow-visible">
+        <div id="clinical" className="relative z-20 mx-4 my-8 overflow-hidden">
           {/* ── TOP ROPE CORD ── */}
-          <div className="absolute top-0 left-0 w-full z-30 pointer-events-none translate-y-[-50%]">
-            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block overflow-visible">
+          <div className="absolute top-0 left-[-0.5%] w-[101%] z-30 pointer-events-none translate-y-[-50%] overflow-hidden">
+            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block">
               <defs>
                 <filter id="ropeShadowClinical" x="-20%" y="-20%" width="140%" height="140%">
                   <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
@@ -221,8 +207,8 @@ export default function HomeClient({
           </motion.section>
 
           {/* ── BOTTOM ROPE CORD ── */}
-          <div className="absolute bottom-0 left-0 w-full z-30 pointer-events-none translate-y-[50%]">
-            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block overflow-visible">
+          <div className="absolute bottom-0 left-[-0.5%] w-[101%] z-30 pointer-events-none translate-y-[50%] overflow-hidden">
+            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block">
               <path d="M0,50 C200,0 400,100 600,50 C800,0 1000,100 1200,50 C1300,35 1380,65 1440,50" fill="none" stroke="currentColor" strokeOpacity="0.5" strokeWidth="4" className="text-primary" filter="url(#ropeShadowClinical)" />
               <path d="M0,55 C200,5 400,105 600,55 C800,5 1000,105 1200,55 C1300,40 1380,70 1440,55" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2.5" className="text-primary" />
             </svg>

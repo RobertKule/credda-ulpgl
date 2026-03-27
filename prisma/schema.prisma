@@ -169,6 +169,8 @@ model PublicationTranslation {
 
 model Member {
   id           String              @id @default(cuid())
+  slug         String              @unique @default("")
+  name         String              @default("")
   image        String?
   email        String?
   order        Int                 @default(0)
@@ -178,7 +180,7 @@ model Member {
 model MemberTranslation {
   id       String  @id @default(cuid())
   language String
-  name     String
+  name     String?
   role     String // ex: Directeur de recherche
   bio      String?
   memberId String

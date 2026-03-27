@@ -70,7 +70,7 @@
   --popover-foreground: #1A1814;
   --primary: #8E7022; /* High contrast for accessibility (Gold-Brown) */
   --muted: #F0EDE6;
-  --muted-foreground: rgba(26, 24, 20, 0.62);
+  --muted-foreground: rgba(26, 24, 20, 0.82);
   --border: rgba(26, 24, 20, 0.08);
   --input: rgba(26, 24, 20, 0.08);
   --primary-foreground: #FFFFFF;
@@ -130,4 +130,19 @@
 
 .animate-pulse-gold {
   animation: pulse-gold 8s ease-in-out infinite;
+}
+/* Ticker Animation */
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  display: flex !important;
+  width: fit-content !important;
+  animation: ticker 30s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
 }

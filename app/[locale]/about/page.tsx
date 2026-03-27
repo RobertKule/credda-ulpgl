@@ -138,8 +138,7 @@ export default function PremiumAboutPage() {
           </motion.div>
         </motion.div>
 
-        {/* ── BOTTOM WAVY SEPARATOR ── */}
-        <div className="absolute bottom-0 left-0 w-full z-30 pointer-events-none overflow-hidden leading-none">
+        <div className="absolute bottom-0 left-[-0.5%] w-[101%] z-30 pointer-events-none overflow-hidden leading-none">
           <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[60px] md:h-[100px] block">
             <path d="M0,40 C240,100 480,0 720,50 C960,100 1200,20 1440,60 L1440,100 L0,100 Z" className="fill-background" />
           </svg>

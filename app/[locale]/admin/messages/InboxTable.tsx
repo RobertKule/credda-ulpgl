@@ -121,30 +121,30 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
     <div className="space-y-8 pb-20">
       
       {/* Search & Filters PREMIUM */}
-      <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-white dark:bg-white/5 p-6 border border-slate-200 dark:border-white/5 rounded-[2rem] shadow-sm">
+      <div className="flex flex-col md:flex-row gap-6 justify-between items-center bg-card border border-border p-6 rounded-[2rem] shadow-sm transition-all">
         <div className="relative w-full md:w-[450px]">
-          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" size={18} strokeWidth={2.5} />
+          <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-muted-foreground/30" size={18} strokeWidth={2.5} />
           <input 
             type="text" 
             placeholder="Rechercher dans la boîte..." 
-            className="w-full pl-14 pr-6 h-14 bg-slate-50 dark:bg-white/5 border-transparent dark:border-transparent rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-600/10 focus:border-blue-600 transition-all font-bold tracking-tight text-slate-900 dark:text-white placeholder:text-slate-400"
+            className="w-full pl-14 pr-6 h-14 bg-muted/40 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-bold tracking-tight text-foreground placeholder:text-muted-foreground/20"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         
         <div className="flex items-center gap-4 w-full md:w-auto">
-          <div className="h-14 bg-slate-50 dark:bg-white/5 px-6 rounded-2xl border border-transparent dark:border-white/5 flex items-center gap-3">
-             <Filter size={16} className="text-slate-400" strokeWidth={2.5} />
+          <div className="h-14 bg-muted/40 px-6 rounded-xl border border-border flex items-center gap-3">
+             <Filter size={16} className="text-muted-foreground/30" strokeWidth={2.5} />
              <select 
-               className="bg-transparent text-xs font-black uppercase tracking-widest focus:outline-none cursor-pointer text-slate-900 dark:text-white/80"
+               className="bg-transparent text-xs font-black uppercase tracking-widest focus:outline-none cursor-pointer text-foreground appearance-none"
                value={statusFilter}
                onChange={(e) => setStatusFilter(e.target.value)}
              >
-               <option value="all" className="dark:bg-slate-900">Tous les Messages</option>
-               <option value="UNREAD" className="dark:bg-slate-900">Non Lus</option>
-               <option value="READ" className="dark:bg-slate-900">Lus</option>
-               <option value="ARCHIVED" className="dark:bg-slate-900">Archivés</option>
+               <option value="all">Tous les Messages</option>
+               <option value="UNREAD">Non Lus</option>
+               <option value="READ">Lus</option>
+               <option value="ARCHIVED">Archivés</option>
              </select>
           </div>
         </div>
@@ -155,14 +155,14 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
         {filteredMessages.map((m) => (
           <div 
             key={m.id} 
-            className={`group bg-white dark:bg-white/5 border transition-all duration-500 overflow-hidden rounded-[2.5rem] ${
-              m.status === 'UNREAD' ? 'border-primary/20 dark:border-blue-600/30 shadow-xl shadow-blue-600/5' : 'border-slate-100 dark:border-white/5'
-            } ${expandedId === m.id ? 'shadow-2xl border-blue-600 ring-4 ring-blue-600/5' : 'hover:border-slate-300 dark:hover:border-white/20'}`}
+            className={`group bg-card border transition-all duration-500 overflow-hidden rounded-[2.5rem] ${
+              m.status === 'UNREAD' ? 'border-primary/20 shadow-xl shadow-primary/5' : 'border-border'
+            } ${expandedId === m.id ? 'shadow-2xl border-primary ring-4 ring-primary/5' : 'hover:border-primary/30'}`}
           >
-            <div className={`flex items-center p-6 md:p-10 gap-8 cursor-pointer relative`} onClick={() => setExpandedId(expandedId === m.id ? null : m.id)}>
+            <div className={`flex items-center p-6 md:p-10 gap-8 cursor-pointer relative transition-colors ${expandedId === m.id ? 'bg-primary/[0.02]' : ''}`} onClick={() => setExpandedId(expandedId === m.id ? null : m.id)}>
               
               <div className={`w-14 h-14 rounded-3xl hidden md:flex items-center justify-center shrink-0 transition-transform group-hover:scale-110 duration-500 shadow-lg ${
-                m.status === 'UNREAD' ? 'bg-primary text-white shadow-blue-600/30' : 'bg-slate-50 dark:bg-white/5 text-slate-400'
+                m.status === 'UNREAD' ? 'bg-primary text-primary-foreground shadow-primary/30' : 'bg-muted/40 text-muted-foreground/30'
               }`}>
                 {m.status === 'UNREAD' ? <Mail size={22} strokeWidth={2.5} /> : <MailOpen size={22} strokeWidth={2.5} />}
               </div>
@@ -170,37 +170,37 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
               <div className="flex-1 min-w-0 space-y-2">
                 <div className="flex flex-col md:flex-row md:items-center gap-3 md:justify-between">
                   <div className="flex items-center gap-4">
-                    <h3 className={`text-lg font-serif font-black tracking-tight ${m.status === 'UNREAD' ? 'text-slate-900 dark:text-white' : 'text-slate-600 dark:text-white/60'}`}>
+                    <h3 className={`text-lg font-serif font-black tracking-tight transition-colors ${m.status === 'UNREAD' ? 'text-foreground' : 'text-muted-foreground/60'}`}>
                       {m.name}
                     </h3>
                     <div className="flex gap-2">
-                       <Badge className={`rounded-xl px-3 py-1 text-[8px] font-black tracking-widest uppercase border-0 ${
-                         m.status === 'UNREAD' ? 'bg-primary text-white' : m.status === 'READ' ? 'bg-emerald-600/20 text-emerald-600' : 'bg-slate-400/20 text-slate-400'
+                       <Badge className={`rounded-xl px-3 py-1 text-[8px] font-black tracking-widest uppercase border-0 transition-colors ${
+                         m.status === 'UNREAD' ? 'bg-primary text-primary-foreground' : m.status === 'READ' ? 'bg-emerald-500/20 text-emerald-500' : 'bg-muted text-muted-foreground/40'
                        }`}>
                          {m.status}
                        </Badge>
                        {m.repliedAt && (
-                         <Badge className="bg-emerald-600 text-white rounded-xl px-3 py-1 text-[8px] font-black tracking-widest uppercase border-0">
+                         <Badge className="bg-emerald-500 text-white rounded-xl px-3 py-1 text-[8px] font-black tracking-widest uppercase border-0">
                            Répondu
                          </Badge>
                        )}
                     </div>
                   </div>
-                  <span className="text-[10px] font-black text-slate-400 dark:text-white/20 uppercase tracking-[0.2em] flex items-center gap-2">
+                  <span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.2em] flex items-center gap-2 transition-colors">
                     <Clock size={14} className="text-primary" /> {formatDate(m.createdAt)}
                   </span>
                 </div>
-                <p className={`text-sm font-bold tracking-tight ${m.status === 'UNREAD' ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-white/40'} truncate uppercase tracking-widest`}>
+                <p className={`text-sm font-bold tracking-tight transition-colors ${m.status === 'UNREAD' ? 'text-foreground' : 'text-muted-foreground/40'} truncate uppercase tracking-widest`}>
                    {m.subject}
                 </p>
-                <p className="text-sm font-medium text-slate-400 dark:text-white/30 line-clamp-1 italic font-serif">
+                <p className="text-sm font-medium text-muted-foreground/30 line-clamp-1 italic font-serif transition-colors">
                    "{m.message}"
                 </p>
               </div>
 
               <div className="flex items-center gap-4 shrink-0 pr-4">
                   <button 
-                    className="p-3 bg-slate-50 dark:bg-white/5 text-slate-400 hover:text-primary rounded-2xl transition-all active:scale-95"
+                    className="p-3 bg-muted/40 text-muted-foreground/30 hover:text-primary rounded-xl transition-all active:scale-95"
                     onClick={(e) => {
                       e.stopPropagation();
                       setExpandedId(expandedId === m.id ? null : m.id);
@@ -212,27 +212,27 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
                   <div className="hidden lg:flex" onClick={e => e.stopPropagation()}>
                      <DropdownMenu>
                        <DropdownMenuTrigger asChild>
-                         <Button variant="ghost" size="icon" className="h-10 w-10 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 rounded-xl">
+                         <Button variant="ghost" size="icon" className="h-10 w-10 text-muted-foreground/30 hover:bg-muted rounded-xl transition-all">
                            <MoreVertical size={20} />
                          </Button>
                        </DropdownMenuTrigger>
-                       <DropdownMenuContent align="end" className="w-56 p-2 rounded-2xl border-slate-200 dark:border-white/5 shadow-2xl">
+                       <DropdownMenuContent align="end" className="w-56 p-2 rounded-2xl border-border bg-card shadow-2xl">
                          {m.status !== 'READ' && (
-                           <DropdownMenuItem onClick={() => handleMarkAsRead(m.id)} className="rounded-xl py-3 font-bold text-xs">
+                           <DropdownMenuItem onClick={() => handleMarkAsRead(m.id)} className="rounded-xl py-3 font-bold text-xs cursor-pointer">
                              <MailOpen size={16} className="mr-3 text-primary" /> Marquer comme lu
                            </DropdownMenuItem>
                          )}
                          {m.status !== 'ARCHIVED' && (
-                           <DropdownMenuItem onClick={() => handleArchive(m.id)} className="rounded-xl py-3 font-bold text-xs">
-                             <Archive size={16} className="mr-3 text-amber-600" /> Archiver
+                           <DropdownMenuItem onClick={() => handleArchive(m.id)} className="rounded-xl py-3 font-bold text-xs cursor-pointer">
+                             <Archive size={16} className="mr-3 text-amber-500" /> Archiver
                            </DropdownMenuItem>
                          )}
-                         <DropdownMenuItem onClick={() => setReplyingTo(m)} className="rounded-xl py-3 font-bold text-xs">
-                           <Reply size={16} className="mr-3 text-emerald-600" /> Répondre
+                         <DropdownMenuItem onClick={() => setReplyingTo(m)} className="rounded-xl py-3 font-bold text-xs cursor-pointer">
+                             <Reply size={16} className="mr-3 text-emerald-500" /> Répondre
                          </DropdownMenuItem>
-                         <DropdownMenuSeparator className="my-2 opacity-50" />
-                         <DropdownMenuItem className="rounded-xl py-3 font-bold text-xs text-red-600">
-                           <Trash2 size={16} className="mr-3" /> Supprimer définitivement
+                         <DropdownMenuSeparator className="my-2 opacity-10" />
+                         <DropdownMenuItem className="rounded-xl py-3 font-bold text-xs text-destructive cursor-pointer">
+                            <Trash2 size={16} className="mr-3" /> Supprimer définitivement
                          </DropdownMenuItem>
                        </DropdownMenuContent>
                      </DropdownMenu>
@@ -242,37 +242,39 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
 
             {/* Expanded Content MODERNE */}
             {expandedId === m.id && (
-              <div className="px-6 md:px-24 pb-12 space-y-10 animate-in slide-in-from-top-4 fade-in duration-700">
-                <div className="bg-slate-50 dark:bg-white/[0.03] p-10 rounded-[3rem] border border-slate-100 dark:border-white/5 space-y-10">
-                  <div className="flex flex-col md:flex-row gap-8 justify-between border-b border-slate-100 dark:border-white/5 pb-8">
+              <div className="px-6 md:px-24 pb-12 space-y-10 animate-in slide-in-from-top-4 fade-in duration-700 transition-all">
+                <div className="bg-muted/20 p-10 rounded-[3rem] border border-border space-y-10 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-primary/2 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+                  
+                  <div className="flex flex-col md:flex-row gap-8 justify-between border-b border-border pb-8">
                      <div className="space-y-2">
-                        <span className="text-[10px] font-black uppercase text-slate-400 dark:text-white/20 tracking-widest ml-1">Expéditeur</span>
-                        <p className="text-xl font-serif font-black text-slate-900 dark:text-white leading-tight">{m.name}</p>
-                        <p className="text-xs font-bold text-primary dark:text-blue-400/60 uppercase tracking-widest">{m.email}</p>
+                        <span className="text-[10px] font-black uppercase text-muted-foreground/30 tracking-widest ml-1">Expéditeur</span>
+                        <p className="text-xl font-serif font-black text-foreground leading-tight transition-colors">{m.name}</p>
+                        <p className="text-xs font-bold text-primary uppercase tracking-widest transition-colors">{m.email}</p>
                      </div>
                      <div className="space-y-2 lg:text-right">
-                        <span className="text-[10px] font-black uppercase text-slate-400 dark:text-white/20 tracking-widest mr-1">Date et Heure</span>
-                        <p className="text-sm font-black text-slate-900 dark:text-white">{new Date(m.createdAt).toLocaleString('fr-FR', { dateStyle: 'full', timeStyle: 'short' })}</p>
+                        <span className="text-[10px] font-black uppercase text-muted-foreground/30 tracking-widest mr-1">Date et Heure</span>
+                        <p className="text-sm font-black text-foreground transition-colors">{new Date(m.createdAt).toLocaleString('fr-FR', { dateStyle: 'full', timeStyle: 'short' })}</p>
                      </div>
                   </div>
                   
                   <div className="space-y-4">
-                    <span className="text-[10px] font-black uppercase text-slate-400 dark:text-white/20 tracking-widest ml-1">Corps de la Requête</span>
-                    <div className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed font-serif bg-white dark:bg-slate-900/40 p-10 rounded-[2rem] border border-slate-100 dark:border-white/5 shadow-inner italic">
+                    <span className="text-[10px] font-black uppercase text-muted-foreground/30 tracking-widest ml-1">Corps de la Requête</span>
+                    <div className="text-lg text-foreground/80 leading-relaxed font-serif bg-card/60 p-10 rounded-[2.5rem] border border-border shadow-inner italic transition-colors">
                       {m.message}
                     </div>
                   </div>
 
                   {m.replyContent && (
-                    <div className="bg-emerald-50 dark:bg-emerald-950/20 p-10 rounded-[2.5rem] border border-emerald-100 dark:border-emerald-600/10 space-y-6 animate-in slide-in-from-bottom-4 duration-700">
+                    <div className="bg-emerald-500/5 p-10 rounded-[2.5rem] border border-emerald-500/10 space-y-6 animate-in slide-in-from-bottom-4 duration-700 transition-all">
                       <div className="flex items-center justify-between">
                          <div className="flex items-center gap-3">
-                            <CheckCircle2 size={18} className="text-emerald-600" />
-                            <span className="text-[10px] font-black uppercase text-emerald-600 tracking-widest">Réponse Transmise</span>
+                            <CheckCircle2 size={18} className="text-emerald-500" />
+                            <span className="text-[10px] font-black uppercase text-emerald-500 tracking-widest">Réponse Transmise</span>
                          </div>
-                         <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-tighter">{formatDate(m.repliedAt!)}</span>
+                         <span className="text-[9px] font-bold text-emerald-400/60 uppercase tracking-tighter">{formatDate(m.repliedAt!)}</span>
                       </div>
-                      <p className="text-base text-emerald-900 dark:text-emerald-400 font-serif leading-relaxed italic">
+                      <p className="text-base text-emerald-500/80 font-serif leading-relaxed italic transition-colors">
                         {m.replyContent}
                       </p>
                     </div>
@@ -282,14 +284,14 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
                 <div className="flex justify-end gap-5">
                    <Button 
                      variant="outline" 
-                     className="text-[10px] font-black uppercase tracking-widest rounded-2xl h-14 px-10 border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 text-slate-500 transition-all"
+                     className="text-[10px] font-black uppercase tracking-widest rounded-2xl h-14 px-10 border-border hover:bg-muted text-muted-foreground/40 transition-all"
                      onClick={() => handleArchive(m.id)}
                      disabled={isPending || m.status === 'ARCHIVED'}
                    >
                      <Archive size={18} className="mr-3" /> Archiver
                    </Button>
                    <Button 
-                     className="bg-slate-900 dark:bg-primary hover:scale-105 active:scale-95 text-white h-14 px-12 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-2xl transition-all"
+                     className="bg-primary hover:bg-primary/90 text-primary-foreground hover:scale-105 active:scale-95 h-14 px-12 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-2xl transition-all"
                      onClick={() => setReplyingTo(m)}
                      disabled={isPending}
                    >
@@ -302,11 +304,11 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
         ))}
 
         {filteredMessages.length === 0 && (
-          <div className="py-32 text-center bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 border-dashed rounded-[3rem]">
-            <Inbox size={64} className="mx-auto text-slate-200 dark:text-white/5 mb-6" />
+          <div className="py-32 text-center bg-muted/20 border border-border border-dashed rounded-[3rem] transition-all">
+            <Inbox size={64} className="mx-auto text-muted-foreground/10 mb-6" />
             <div className="space-y-2">
-               <h3 className="text-xl font-serif font-black text-slate-400 dark:text-white/20 uppercase tracking-tighter italic">Boîte aux lettres vide</h3>
-               <p className="text-[10px] text-slate-300 dark:text-white/10 uppercase font-black tracking-widest">Aucun message ne correspond à vos filtres</p>
+               <h3 className="text-xl font-serif font-black text-muted-foreground/30 uppercase tracking-tighter italic transition-colors">Boîte aux lettres vide</h3>
+               <p className="text-[10px] text-muted-foreground/10 uppercase font-black tracking-widest transition-colors">Aucun message ne correspond à vos filtres</p>
             </div>
           </div>
         )}
@@ -314,24 +316,24 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
 
       {/* Reply Dialog LUXE */}
       <Dialog open={!!replyingTo} onOpenChange={(open) => !open && setReplyingTo(null)}>
-        <DialogContent className="sm:max-w-[700px] rounded-[3rem] border-none shadow-3xl p-0 bg-white dark:bg-slate-950 overflow-hidden">
-          <div className="bg-slate-900 dark:bg-primary p-12 text-white space-y-2 relative overflow-hidden">
-            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/10 rounded-md" />
-            <h2 className="text-3xl font-serif font-black italic tracking-tighter leading-none relative z-10">Rédaction de Réponse</h2>
-            <p className="text-white/60 text-[10px] font-black uppercase tracking-[0.3em] relative z-10">{replyingTo?.name} • {replyingTo?.email}</p>
+        <DialogContent className="sm:max-w-[700px] rounded-[3rem] border-none shadow-3xl p-0 bg-background overflow-hidden transition-colors">
+          <div className="bg-primary p-12 text-primary-foreground space-y-2 relative overflow-hidden transition-colors">
+            <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/5 rounded-full blur-2xl" />
+            <h2 className="text-3xl font-serif font-black italic tracking-tighter leading-none relative z-10 transition-colors">Rédaction de Réponse</h2>
+            <p className="text-primary-foreground/60 text-[10px] font-black uppercase tracking-[0.3em] relative z-10 transition-colors">{replyingTo?.name} • {replyingTo?.email}</p>
           </div>
           
           <div className="p-10 space-y-8">
-            <div className="bg-slate-50 dark:bg-white/5 p-8 rounded-3xl border border-slate-100 dark:border-white/5 shadow-inner">
-               <span className="text-[9px] font-black uppercase text-slate-400 dark:text-white/20 tracking-[0.3em] mb-3 block">Sujet de Référence</span>
-               <p className="text-base font-serif font-bold text-slate-900 dark:text-white italic leading-tight">RE: {replyingTo?.subject}</p>
+            <div className="bg-muted/40 p-8 rounded-3xl border border-border shadow-inner transition-colors">
+               <span className="text-[9px] font-black uppercase text-muted-foreground/30 tracking-[0.3em] mb-3 block">Sujet de Référence</span>
+               <p className="text-base font-serif font-bold text-foreground italic leading-tight transition-colors">RE: {replyingTo?.subject}</p>
             </div>
 
             <div className="space-y-4">
-              <Label className="text-[10px] font-black uppercase text-slate-500 dark:text-white/40 tracking-widest ml-1">Contenu de la Réponse</Label>
+              <Label className="text-[10px] font-black uppercase text-muted-foreground/60 tracking-widest ml-1">Contenu de la Réponse</Label>
               <Textarea 
                 placeholder="Rédigez votre réponse officielle ici..."
-                className="min-h-[250px] bg-slate-50 dark:bg-white/5 rounded-[2.5rem] border-slate-200 dark:border-white/10 p-8 focus:ring-blue-600/10 focus:border-blue-600 font-serif text-lg leading-relaxed text-slate-800 dark:text-slate-200"
+                className="min-h-[250px] bg-muted/40 rounded-[2.5rem] border-border p-8 focus:ring-primary/20 focus:border-primary font-serif text-lg leading-relaxed text-foreground transition-colors"
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
               />
@@ -344,11 +346,11 @@ export default function InboxTable({ initialMessages }: { initialMessages: Messa
           </div>
 
           <div className="p-10 pt-0 flex flex-col sm:flex-row justify-between items-center gap-6">
-            <Button variant="ghost" onClick={() => setReplyingTo(null)} className="text-slate-400 font-black uppercase text-[10px] tracking-widest gap-2">
+            <Button variant="ghost" onClick={() => setReplyingTo(null)} className="text-muted-foreground/40 hover:text-foreground font-black uppercase text-[10px] tracking-widest gap-2 transition-colors">
               <X size={16} /> Annuler
             </Button>
             <Button 
-              className="w-full sm:w-auto bg-slate-900 dark:bg-primary hover:scale-105 active:scale-95 text-white px-12 h-14 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-2xl transition-all"
+              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground hover:scale-105 active:scale-95 px-12 h-14 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-2xl transition-all"
               onClick={handleSendReply}
               disabled={isPending || !replyText.trim()}
             >

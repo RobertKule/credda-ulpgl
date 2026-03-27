@@ -1,4 +1,12 @@
 {
+  "ErrorPage": {
+    "title": "A <italic>Scientific</italic> Error Occurred",
+    "description": "Our systems encountered an unexpected interruption. The CREDDA technical team has been notified.",
+    "retry": "Attempt Recovery",
+    "home": "Return to Portal",
+    "reported": "Automatically Reported",
+    "system": "CREDDA CORE"
+  },
   "Navigation": {
     "research": "Research",
     "clinical": "Legal Clinic",
@@ -92,12 +100,16 @@
       "title": "Scientific Leadership",
       "title_alt": "Scientific Leadership",
       "subtitle": "The Research Team",
-      "badge": "Our Team"
+      "badge": "Our Team",
+      "prev": "Previous",
+      "next": "Next"
     },
     "testimonials": {
       "badge": "International Trust",
       "title": "They <span>trust us</span>.",
       "title_alt": "International Recognition",
+      "prev": "Previous",
+      "next": "Next",
       "items": [
         {
           "name": "David MICHAEL PEYTON",
@@ -535,6 +547,12 @@
     "contact": {
       "email": "Contact by email",
       "linkedin": "LinkedIn profile"
+    },
+    "detail": {
+      "backToTeam": "Back to Team",
+      "contactTitle": "Contact Coordinates",
+      "expertiseTitle": "Expertise Fields",
+      "biographyTitle": "Biography & Career"
     }
   },
   "SearchPage": {
@@ -1057,6 +1075,7 @@
     "recentMessages": {
       "title": "<italic>Central</italic> Desk",
       "unread": "{count} New messages waiting",
+      "consult": "Consult",
       "viewAll": "View all"
     },
     "health": {
@@ -1069,6 +1088,56 @@
     "footer": {
       "node": "Node: {version} • Prisma 6 • Neon Serverless",
       "sync": "Last sync: {time}"
+    },
+    "search": {
+      "placeholder": "Search articles, members or data...",
+      "results": "Search Results",
+      "searching": "Searching...",
+      "noResults": "No results found for \"{query}\"",
+      "shortcut": "Search"
+    },
+    "ui": {
+      "theme": "Toggle theme",
+      "language": "Change language",
+      "notifications": "Notifications",
+      "profile": "User Profile"
+    },
+    "sidebar": {
+      "main": "Main",
+      "dashboard": "Dashboard",
+      "articles": "Articles",
+      "programs": "Programs",
+      "gallery": "Gallery",
+      "team": "Team",
+      "clinical": "Clinical Cases",
+      "resources": "Resources",
+      "sessions": "Field Missions",
+      "messages": "Messages",
+      "announcements": "Announcements",
+      "users": "Access Control",
+      "profile": "My Profile",
+      "active": "Active",
+      "logout": "Logout"
+    },
+    "form": {
+      "save": "Save",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "create": "Create",
+      "search": "Search...",
+      "noResults": "No results found",
+      "optional": "(Optional)",
+      "required": "Required"
+    },
+    "ErrorPage": {
+      "title": "Something went {italic} unexpected {/italic}.",
+      "description": "We encountered a technical issue while processing this page. Our team has been notified.",
+      "retry": "Try again",
+      "home": "Back Home",
+      "reported": "Error Reported",
+      "system": "System Error"
     }
   }
 }

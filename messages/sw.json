@@ -1,4 +1,12 @@
 {
+  "ErrorPage": {
+    "title": "Hitilafu ya <italic>Kisayansi</italic> Imetokea",
+    "description": "Mifumo yetu imekumbwa na usumbufu usiotarajiwa. Timu ya ufundi ya CREDDA imearifiwa.",
+    "retry": "Jaribu tena",
+    "home": "Rudi Nyumbani",
+    "reported": "Imearifiwa kiotomatiki",
+    "system": "CREDDA CORE"
+  },
   "Navigation": {
     "research": "Utafiti",
     "clinical": "Kliniki ya Sheria",
@@ -92,11 +100,15 @@
       "title": "Uongozi wa Kisayansi",
       "title_alt": "Uongozi wa Kisayansi",
       "subtitle": "Timu ya Utafiti",
-      "badge": "Timu Yetu"
+      "badge": "Timu Yetu",
+      "prev": "Iliyopita",
+      "next": "Inayofuata"
     },
     "testimonials": {
       "badge": "Imani ya Kimataifa",
       "title_alt": "Utambuzi wa Kimataifa",
+      "prev": "Iliyopita",
+      "next": "Inayofuata",
       "items": [
         {
           "name": "David MICHAEL PEYTON",
@@ -534,6 +546,12 @@
     "contact": {
       "email": "Wasiliana kwa email",
       "linkedin": "Wasifu wa LinkedIn"
+    },
+    "detail": {
+      "backToTeam": "Rudi kwenye timu",
+      "contactTitle": "Maelezo ya Mawasiliano",
+      "expertiseTitle": "Maeneo ya Utaalamu",
+      "biographyTitle": "Wasifu na Kazi"
     }
   },
   "SearchPage": {
@@ -717,7 +735,7 @@
       "viewAll": "Ona yote"
     },
     "recentMessages": {
-      "title": "Dawati <italic>Kuu</italic>",
+      "title": "Dawati Kuu",
       "unread": "{count} Ujumbe mpya unaongoja",
       "viewAll": "Ona yote"
     },
@@ -729,8 +747,58 @@
       "desc": "85% ya rasilimali zimetafsiriwa"
     },
     "footer": {
-      "node": "Node: {version} • Prisma 6 • Neon Serverless",
+      "node": "Nodi: {version} • Prisma 6 • Neon Serverless",
       "sync": "Sasisho la mwisho: {time}"
+    },
+    "sidebar": {
+      "main": "Kuu",
+      "dashboard": "Dashibodi",
+      "articles": "Makala",
+      "programs": "Programu",
+      "gallery": "Picha",
+      "team": "Timu",
+      "clinical": "Kliniki",
+      "resources": "Rasilimali",
+      "sessions": "Misheni za Nje",
+      "messages": "Ujumbe",
+      "announcements": "Matangazo",
+      "users": "Udhibiti",
+      "profile": "Wasifu Wangu",
+      "active": "Inafanya kazi",
+      "logout": "Ondoka"
+    },
+    "search": {
+      "placeholder": "Tafuta makala, wanachama au data...",
+      "results": "Matokeo ya Utafutaji",
+      "searching": "Inatafuta...",
+      "noResults": "Hakuna matokeo yaliyopatikana kwa \"{query}\"",
+      "shortcut": "Tafuta"
+    },
+    "ui": {
+      "theme": "Badilisha mandhari",
+      "language": "Badilisha lugha",
+      "notifications": "Arifa",
+      "profile": "Wasifu wa Mtumiaji"
+    },
+    "form": {
+      "save": "Hifadhi",
+      "saving": "Inahifadhi...",
+      "cancel": "Ghairi",
+      "delete": "Futa",
+      "edit": "Hariri",
+      "create": "Unda",
+      "search": "Tafuta...",
+      "noResults": "Hakuna matokeo yaliyopatikana",
+      "optional": "(Hiari)",
+      "required": "Lazima"
+    },
+    "ErrorPage": {
+      "title": "Hitilafu {italic} isiyotarajiwa {/italic} imetokea.",
+      "description": "Tumepata tatizo la kuufundi wakati wa kuchakata ukurasa huu. Timu yetu imeelezwa.",
+      "retry": "Jaribu tena",
+      "home": "Rudi Nyumbani",
+      "reported": "Hitilafu Imeripotiwa",
+      "system": "Hitilafu ya Mfumo"
     }
   },
   "Navbar": {
@@ -938,30 +1006,5 @@
       "description": "Kwa maswali yoyote kuhusu sera yetu ya faragha au kutumia haki zako, tafadhali usisite kuwasiliana nasi.",
       "cta": "Andika kwa sekretarieti"
     }
-  },
-  "LegalPage": {
-    "header": {
-      "badge": "Habari Rasmi",
-      "title": "Taarifa za <span>Kisheria</span>",
-      "description": "Habari za kisheria zinazohusiana na taasisi na masharti ya matumizi ya tovuti."
-    },
-    "sections": [
-      {
-        "title": "Mchapishaji wa Tovuti",
-        "content": "Kituo cha Utafiti juu ya Demokrasia na Maendeleo barani Afrika (CREDDA-ULPGL), taasisi ya kiakademia ya Chuo Kikuu Huria cha Nchi za Maziwa Makuu (ULPGL-Goma)."
-      },
-      {
-        "title": "Usimamizi",
-        "content": "Mkurugenzi wa Machapisho: Prof. Dr. Kennedy Kihangi Bindu, Mkurugenzi wa CREDDA."
-      },
-      {
-        "title": "Makao Makuu",
-        "content": "Kampasi ya Salomon, Avenue de la Corniche, Q. Himbi, Goma, Kivu Kaskazini, Jamhuri ya Kidemokrasia ya Kongo."
-      },
-      {
-        "title": "Mali ya Kiakili",
-        "content": "Ripoti zote, makala na maudhui ya multimedia ni mali ya kipekee ya CREDDA-ULPGL, isipokuwa ikiwa imeelezwa vinginevyo. Utoaji wowote unategemea idhini ya awali."
-      }
-    ]
   }
 }

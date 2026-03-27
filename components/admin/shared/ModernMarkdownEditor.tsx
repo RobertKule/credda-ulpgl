@@ -50,17 +50,17 @@ export function ModernMarkdownEditor({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">{label}</Label>
+        <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{label}</Label>
         <span className="text-[9px] font-bold text-primary/50 uppercase tracking-tighter">Markdown supporté</span>
       </div>
 
-      <div className="border border-slate-200 dark:border-white/5 rounded-[2rem] overflow-hidden bg-white dark:bg-slate-950/50 shadow-sm transition-all focus-within:border-blue-600/50 min-h-[400px] flex flex-col">
+      <div className="border border-border rounded-[2rem] overflow-hidden bg-card shadow-sm transition-all focus-within:border-primary/50 min-h-[400px] flex flex-col">
         <Tabs 
           value={activeTab} 
           onValueChange={(v) => setActiveTab(v as "write" | "preview")} 
           className="w-full flex-1 flex flex-col"
         >
-          <div className="flex items-center justify-between bg-slate-50 dark:bg-white/[0.02] px-4 py-2 border-b border-slate-100 dark:border-white/5">
+          <div className="flex items-center justify-between bg-muted/20 px-4 py-2 border-b border-border">
             <TabsList className="bg-transparent h-8 p-0 gap-4">
               <TabsTrigger value="write" className="bg-transparent data-[state=active]:bg-transparent data-[state=active]:text-primary font-black uppercase text-[9px] tracking-[0.2em] shadow-none">
                 <PenLine size={14} className="mr-2" /> Écrire
@@ -72,16 +72,16 @@ export function ModernMarkdownEditor({
 
             {activeTab === "write" && (
               <div className="flex items-center gap-1">
-                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-primary hover:bg-white dark:hover:bg-white/5" onClick={() => insertText("# ")} title="Titre">
+                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-muted" onClick={() => insertText("# ")} title="Titre">
                   <Heading1 size={14} />
                 </Button>
-                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-primary hover:bg-white dark:hover:bg-white/5" onClick={() => insertText("## ")} title="Sous-titre">
+                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-muted" onClick={() => insertText("## ")} title="Sous-titre">
                   <Heading2 size={14} />
                 </Button>
-                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-primary hover:bg-white dark:hover:bg-white/5" onClick={() => insertText("\n\n")} title="Paragraphe">
-                  <Type size={14} />
+                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-muted" onClick={() => insertText("\n\n")} title="Paragraphe">
+                  <Type size={12} />
                 </Button>
-                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-primary hover:bg-white dark:hover:bg-white/5" onClick={() => insertText("[", "](url)")} title="Lien">
+                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-muted" onClick={() => insertText("[", "](url)")} title="Lien">
                   <LinkIcon size={14} />
                 </Button>
               </div>
@@ -91,14 +91,14 @@ export function ModernMarkdownEditor({
           <TabsContent value="write" className="mt-0 outline-none flex-1 flex">
             <Textarea 
               ref={textareaRef}
-              className="flex-1 min-h-[350px] border-0 rounded-md bg-transparent font-mono text-xs leading-relaxed p-6 focus-visible:ring-0 text-slate-900 dark:text-white resize-none"
+              className="flex-1 min-h-[350px] border-0 rounded-md bg-transparent font-mono text-xs leading-relaxed p-6 focus-visible:ring-0 text-foreground resize-none"
               placeholder={placeholder}
               value={value}
               onChange={(e) => onChange(e.target.value)}
             />
           </TabsContent>
 
-          <TabsContent value="preview" className="mt-0 outline-none flex-1 overflow-auto bg-white/5 backdrop-blur-sm">
+          <TabsContent value="preview" className="mt-0 outline-none flex-1 overflow-auto bg-muted/10 backdrop-blur-sm">
             <div className="p-8 prose prose-slate dark:prose-invert max-w-none prose-headings:font-serif prose-headings:text-primary prose-a:text-primary prose-p:leading-relaxed prose-lg">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {value || "*Aucun contenu à prévisualiser*"}

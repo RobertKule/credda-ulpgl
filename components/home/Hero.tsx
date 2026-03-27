@@ -21,7 +21,8 @@ export default function Hero() {
   useEffect(() => {
     setMounted(true);
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setReduceMotion(prefersReducedMotion);
+    const isMobileDevice = window.matchMedia('(max-width: 768px)').matches;
+    setReduceMotion(prefersReducedMotion || isMobileDevice);
 
     // Force hide loading screen after 0.8s
     const timer = setTimeout(() => {
@@ -171,7 +172,7 @@ export default function Hero() {
                   href="/about" 
                   className="group flex items-center gap-6 text-foreground hover:text-primary transition-all duration-700"
                 >
-                  <div className="w-20 h-20 rounded-full border border-border flex items-center justify-center group-hover:border-primary group-hover:bg-primary/5 transition-all duration-1000 relative">
+                  <div className="w-20 h-20 rounded-full border border-border flex items-center justify-center group-hover:border-primary group-hover:bg-primary/5 transition-all duration-1000 relative" aria-label="Play Introduction Video">
                     <div className="absolute inset-0 rounded-full border border-primary/0 group-hover:border-primary/20 group-hover:scale-150 transition-all duration-1000" />
                     <Play size={20} fill="currentColor" className="ml-1" />
                   </div>
@@ -202,8 +203,8 @@ export default function Hero() {
       {/* ── BOTTOM ROPE CORD ── */}
       <div className="absolute bottom-0 left-0 w-full z-20 pointer-events-none translate-y-[50%]">
         <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[50px] md:h-[100px] block overflow-visible">
-          <path d="M0,50 C200,0 400,100 600,50 C800,0 1000,100 1200,50 C1300,35 1380,65 1440,50" fill="none" stroke="currentColor" strokeOpacity="0.5" strokeWidth="4" className="text-primary" filter="url(#ropeShadow)" />
-          <path d="M0,55 C200,5 400,105 600,55 C800,5 1000,105 1200,55 C1300,40 1380,70 1440,55" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2.5" className="text-primary" />
+          <path d="M0,50 C200,0 400,100 600,50 C800,0 1000,100 1200,50 C1300,35 1380,65 1440,50" fill="none" stroke="currentColor" strokeOpacity="0.5" strokeWidth="4" className="text-primary hidden md:block" filter="url(#ropeShadow)" />
+          <path d="M0,55 C200,5 400,105 600,55 C800,5 1000,105 1200,55 C1300,40 1380,70 1440,55" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2.5" className="text-primary hidden md:block" />
           <path d="M0,45 C200,-5 400,95 600,45 C800,-5 1000,95 1200,45 C1300,30 1380,60 1440,45" fill="none" stroke="currentColor" strokeOpacity="0.15" strokeWidth="1.5" className="text-primary" />
         </svg>
       </div>

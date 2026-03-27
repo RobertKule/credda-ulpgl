@@ -1,6 +1,6 @@
 // app/[locale]/admin/layout.tsx
 import { redirect } from "next/navigation";
-import { getMessages } from "next-intl/server";
+import { getMessages, getTranslations } from "next-intl/server";
 import { NextIntlClientProvider } from "next-intl";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminTopBar from "@/components/admin/AdminTopBar";
@@ -28,25 +28,25 @@ export default async function AdminLayout({
   }
 
   const messages = await getMessages();
+  const t = await getTranslations("AdminDashboard.sidebar");
 
   const menuItems = [
-    { href: "/admin", label: "Dashboard", icon: "LayoutDashboard" },
-    { href: "/admin/articles", label: "Articles", icon: "FileText" },
-    { href: "/admin/publications", label: "Publications", icon: "BookOpen" },
-    { href: "/admin/programs", label: "Programmes", icon: "Layout" },
-    { href: "/admin/gallery", label: "Gallerie", icon: "BookOpen" },
-    { href: "/admin/members", label: "Équipe", icon: "UserCircle" },
-    { href: "/admin/clinical", label: "Cas Cliniques", icon: "Scale" },
-    { href: "/admin/resources", label: "Ressources", icon: "BookOpen" },
-    { href: "/admin/sessions", label: "Itinérances", icon: "Calendar" },
-    { href: "/admin/messages", label: "Messages", icon: "MessageSquare" },
-    { href: "/admin/announcements", label: "Annonces", icon: "Megaphone" },
-    { href: "/admin/users", label: "Accès", icon: "Users" },
+    { href: "/admin", label: t("dashboard"), icon: "LayoutDashboard" },
+    { href: "/admin/articles", label: t("articles"), icon: "FileText" },
+    { href: "/admin/programs", label: t("programs"), icon: "Layout" },
+    { href: "/admin/gallery", label: t("gallery"), icon: "BookOpen" },
+    { href: "/admin/members", label: t("team"), icon: "UserCircle" },
+    { href: "/admin/clinical", label: t("clinical"), icon: "Scale" },
+    { href: "/admin/resources", label: t("resources"), icon: "BookOpen" },
+    { href: "/admin/sessions", label: t("sessions"), icon: "Calendar" },
+    { href: "/admin/messages", label: t("messages"), icon: "MessageSquare" },
+    { href: "/admin/announcements", label: t("announcements"), icon: "Megaphone" },
+    { href: "/admin/users", label: t("users"), icon: "Users" },
   ];
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
-      <div className="flex min-h-screen bg-white dark:bg-slate-950 transition-colors duration-500">
+      <div className="flex min-h-screen bg-background transition-colors duration-500">
         
         {/* Sidebar */}
         <AdminSidebar locale={locale} menuItems={menuItems} />

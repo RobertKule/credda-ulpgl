@@ -6,50 +6,61 @@ import {
 } from "recharts";
 import { useTheme } from "@/components/shared/ThemeProvider";
 
-const data = [
-  { name: "Jan", total: 400 },
-  { name: "Feb", total: 300 },
-  { name: "Mar", total: 600 },
-  { name: "Apr", total: 800 },
-  { name: "May", total: 500 },
-  { name: "Jun", total: 900 },
-  { name: "Jul", total: 1000 },
-];
+interface DashboardChartsProps {
+  areaData: { name: string; research: number; clinical: number }[];
+  pieData: { name: string; value: number; color: string }[];
+}
 
-const pieData = [
-  { name: "Articles", value: 45, color: "#2563eb" },
-  { name: "Publications", value: 25, color: "#10b981" },
-  { name: "Médias", value: 20, color: "#f59e0b" },
-  { name: "Membres", value: 10, color: "#64748b" },
-];
-
-export default function DashboardCharts() {
+export default function DashboardCharts({ areaData, pieData }: DashboardChartsProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+
+  // Fallback data if empty
+  const displayAreaData = areaData?.length > 0 ? areaData : [
+    { name: "Jan", research: 0, clinical: 0 },
+    { name: "Feb", research: 0, clinical: 0 },
+    { name: "Mar", research: 0, clinical: 0 },
+  ];
+
+  const displayPieData = pieData?.length > 0 ? pieData : [
+    { name: "No Data", value: 100, color: "#cbd5e1" }
+  ];
+
+  const totalValue = pieData?.reduce((acc, curr) => acc + curr.value, 0) || 0;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       
       {/* Graphique d'Évolution (Area Chart) */}
-      <div className="lg:col-span-2 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 p-8 rounded-3xl shadow-sm transition-colors duration-500">
+      <div className="lg:col-span-2 bg-card border border-border p-8 rounded-3xl shadow-sm transition-colors duration-500">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h3 className="text-sm font-black uppercase tracking-widest text-slate-900 dark:text-white">Évolution de l'Audience</h3>
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mt-1">Données consolidées • 7 derniers mois</p>
+            <h3 className="text-sm font-black uppercase tracking-widest text-foreground">Évolution du Contenu</h3>
+            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-1">Données réelles • 7 derniers mois</p>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-primary rounded-md" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Croissance</span>
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-primary rounded-md shadow-[0_0_8px_rgba(var(--primary-rgb),0.3)]" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Recherche</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-blue-500 rounded-md shadow-[0_0_8px_rgba(59,130,246,0.3)]" />
+              <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Clinique</span>
+            </div>
           </div>
         </div>
 
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+            <AreaChart data={displayAreaData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
-                <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#2563eb" stopOpacity={0.3} />
-                  <stop offset="95%" stopColor="#2563eb" stopOpacity={0} />
+                <linearGradient id="colorResearch" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="colorClinical" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"} />
@@ -67,8 +78,8 @@ export default function DashboardCharts() {
               />
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: isDark ? "#0f172a" : "#fff", 
-                  borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+                  backgroundColor: isDark ? "hsl(var(--card))" : "#fff", 
+                  borderColor: "hsl(var(--border))",
                   borderRadius: "16px",
                   fontSize: "12px",
                   fontWeight: "bold",
@@ -77,11 +88,19 @@ export default function DashboardCharts() {
               />
               <Area 
                 type="monotone" 
-                dataKey="total" 
-                stroke="#2563eb" 
+                dataKey="research" 
+                stroke="var(--primary)" 
                 strokeWidth={4}
                 fillOpacity={1} 
-                fill="url(#colorTotal)" 
+                fill="url(#colorResearch)" 
+              />
+              <Area 
+                type="monotone" 
+                dataKey="clinical" 
+                stroke="#3B82F6" 
+                strokeWidth={4}
+                fillOpacity={1} 
+                fill="url(#colorClinical)" 
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -89,15 +108,15 @@ export default function DashboardCharts() {
       </div>
 
       {/* Répartition des Contenus (Pie Chart) */}
-      <div className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 p-8 rounded-3xl shadow-sm transition-colors duration-500 flex flex-col">
-        <h3 className="text-sm font-black uppercase tracking-widest text-slate-900 dark:text-white mb-2">Structure des Données</h3>
-        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-8">Répartition par catégorie</p>
+      <div className="bg-card border border-border p-8 rounded-3xl shadow-sm transition-colors duration-500 flex flex-col">
+        <h3 className="text-sm font-black uppercase tracking-widest text-foreground mb-2">Structure du Hub</h3>
+        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-8">Répartition des ressources</p>
 
         <div className="h-[220px] w-full relative">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={pieData}
+                data={displayPieData}
                 cx="50%"
                 cy="50%"
                 innerRadius={60}
@@ -105,33 +124,35 @@ export default function DashboardCharts() {
                 paddingAngle={8}
                 dataKey="value"
               >
-                {pieData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+                {displayPieData.map((entry, index) => (
+                   <Cell key={`cell-${index}`} fill={entry.color === "#C9A84C" ? "var(--primary)" : entry.color} stroke="none" />
                 ))}
               </Pie>
               <Tooltip 
                 contentStyle={{ 
-                  backgroundColor: isDark ? "#0f172a" : "#fff", 
-                  borderColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+                  backgroundColor: isDark ? "hsl(var(--card))" : "#fff", 
+                  borderColor: "hsl(var(--border))",
                   borderRadius: "12px" 
                 }}
               />
             </PieChart>
           </ResponsiveContainer>
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-             <span className="text-2xl font-black text-slate-900 dark:text-white">100%</span>
-             <span className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-400">Total</span>
+             <span className="text-2xl font-black text-foreground">{totalValue}</span>
+             <span className="text-[8px] font-black uppercase tracking-[0.2em] text-muted-foreground">Total Items</span>
           </div>
         </div>
 
-        <div className="mt-auto space-y-3 pt-6 border-t border-slate-100 dark:border-white/5">
-           {pieData.map((item) => (
+        <div className="mt-auto space-y-3 pt-6 border-t border-border">
+           {displayPieData.map((item) => (
              <div key={item.name} className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                   <div className="w-2 h-2 rounded-md" style={{ backgroundColor: item.color }} />
-                   <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{item.name}</span>
+                   <div className="w-2 h-2 rounded-md" style={{ backgroundColor: item.color === "#C9A84C" ? "var(--primary)" : item.color }} />
+                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{item.name}</span>
                 </div>
-                <span className="text-[10px] font-black text-slate-900 dark:text-white">{item.value}%</span>
+                <span className="text-[10px] font-black text-foreground">
+                  {totalValue > 0 ? Math.round((item.value / totalValue) * 100) : 0}%
+                </span>
              </div>
            ))}
         </div>

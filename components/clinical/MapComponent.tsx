@@ -60,7 +60,7 @@ export default function MapComponent({ sessions }: { sessions: Session[] }) {
             <Marker key={session.id} position={[session.lat, session.lng]}>
               <Popup className="font-serif">
                 <div className="space-y-2 p-2">
-                  <p className="text-[10px] font-black uppercase text-primary tracking-widest">
+                  <p className="text-[10px] font-black uppercase text-emerald-700 tracking-widest">
                     {session.isMobile ? "Clinique Mobile" : "Centre Fixe"}
                   </p>
                   <h4 className="font-bold text-slate-900 leading-tight">{session.title}</h4>

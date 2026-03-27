@@ -177,6 +177,7 @@ export default function Navbar() {
 
             <Link
               href="/contact"
+              aria-label={t("contact")}
               className={`px-6 py-2.5 bg-[#C9A84C] text-[#0C0C0A] text-[9px] font-black uppercase tracking-[0.2em] rounded-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-lg hover:shadow-[#C9A84C]/20`}
             >
               {t("contact")}

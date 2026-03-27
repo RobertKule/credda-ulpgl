@@ -18,6 +18,8 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.mdn.mozilla.org', pathname: '/**' },
       { protocol: 'https', hostname: '**.mozilla.org', pathname: '/**' },
       { protocol: 'https', hostname: '**.org', pathname: '/**' },
+      { protocol: 'https', hostname: '**.net', pathname: '/**' },
+      { protocol: 'https', hostname: 'www.google.com', pathname: '/**' },
     ],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',

@@ -55,24 +55,57 @@ async function ResearchContent({ locale }: { locale: string }) {
 
   return (
     <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
-      {/* 1. HEADER */}
-      <section style={{ padding: '80px 40px 64px', borderBottom: '1px solid rgba(245,242,236,0.07)', marginBottom: '80px' }}>
-        <ScrollReveal>
-          <header className="max-w-7xl mx-auto text-center relative overflow-hidden py-20 px-10 border border-border bg-card shadow-sm">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-[#C9A84C]/5 rounded-md blur-[100px] -translate-y-1/2 translate-x-1/2" />
-            
-            <p style={{ fontFamily: 'var(--font-outfit)', fontSize: '9px', letterSpacing: '0.2em', color: '#C9A84C', textTransform: 'uppercase', fontWeight: 600, marginBottom: 16 }}>
-              CREDDA · Intelligence & Analyse
-            </p>
-            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1, marginBottom: 40 }}>
-               Recherche <em style={{ fontStyle: 'italic', color: '#C9A84C' }}>& Analyses.</em>
+      {/* 1. AUTHORITATIVE HERO */}
+      <section className="bg-indigo-950 text-white pt-32 pb-48 relative overflow-hidden">
+        <div className="absolute inset-0 bg-indigo-900/20 -skew-y-3 translate-y-24 pointer-events-none" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="max-w-4xl space-y-8">
+            <div className="flex items-center gap-3 text-indigo-400 text-[10px] font-black uppercase tracking-[0.4em]">
+              <FileText size={18} />
+              <span>{t('header.badge')}</span>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-serif font-black leading-[1.05]">
+              <span dangerouslySetInnerHTML={{ __html: t.raw('header.title') }} />
             </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed mt-10">
-               Explorez nos travaux sur la gouvernance, la démocratie et le développement durable en Afrique, produits par nos chercheurs et partenaires.
+            <p className="text-xl text-white/50 font-light leading-relaxed max-w-2xl">
+              {t('header.description')}
             </p>
-          </header>
-        </ScrollReveal>
+          </div>
+        </div>
       </section>
+
+      {/* 2. RESEARCH STATUS BAR */}
+      <div className="container mx-auto px-6 -mt-16 relative z-20">
+        <div className="grid grid-cols-1 md:grid-cols-3 bg-card border border-border shadow-3xl">
+           <div className="p-10 border-r border-border flex items-start gap-6 group hover:bg-indigo-50 dark:hover:bg-indigo-950/20 transition-colors">
+              <div className="p-4 bg-indigo-600/10 text-indigo-600">
+                <FileText size={28} strokeWidth={1.5} />
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-serif font-black text-indigo-800 dark:text-indigo-400 uppercase text-xs tracking-widest">Open Archive</h3>
+                <p className="text-anthracite/50 text-sm font-light leading-snug">Accès libre aux publications et rapports scientifiques.</p>
+              </div>
+           </div>
+           <div className="p-10 border-r border-border flex items-start gap-6 group hover:bg-indigo-50 dark:hover:bg-indigo-950/20 transition-colors">
+              <div className="p-4 bg-indigo-600/10 text-indigo-600">
+                <Filter size={28} strokeWidth={1.5} />
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-serif font-black text-indigo-800 dark:text-indigo-400 uppercase text-xs tracking-widest">Analyse Critique</h3>
+                <p className="text-muted-foreground text-sm font-light leading-snug">Décryptage des enjeux de gouvernance en Afrique.</p>
+              </div>
+           </div>
+           <div className="p-10 flex items-start gap-6 group hover:bg-indigo-50 dark:hover:bg-indigo-950/20 transition-colors">
+              <div className="p-4 bg-indigo-600/10 text-indigo-600">
+                <Download size={28} strokeWidth={1.5} />
+              </div>
+              <div className="space-y-1">
+                <h3 className="font-serif font-black text-indigo-800 dark:text-indigo-400 uppercase text-xs tracking-widest">Ressources PDF</h3>
+                <p className="text-anthracite/50 text-sm font-light leading-snug">Téléchargement gratuit des travaux de recherche.</p>
+              </div>
+           </div>
+        </div>
+      </div>
 
       {/* 2. RESEARCH GRID */}
       <section className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -90,14 +123,14 @@ async function ResearchContent({ locale }: { locale: string }) {
       </section>
 
       {/* 3. SUBMISSION CTA */}
-      <section className="mt-32 max-w-7xl mx-auto bg-gradient-to-r from-[#C9A84C] to-[#E8C97A] p-12 lg:p-24 text-center">
-         <h2 className="text-4xl md:text-6xl font-serif font-black text-[#0C0C0A] mb-8">
+      <section className="mt-32 max-w-7xl mx-auto bg-gradient-to-r from-indigo-900 to-slate-900 p-12 lg:p-24 text-center rounded-[2rem] border border-indigo-500/20">
+         <h2 className="text-4xl md:text-6xl font-serif font-black text-white mb-8">
             Contribute to the <span className="italic">Scholarly Body</span>
          </h2>
-         <p className="text-[#0C0C0A]/60 text-lg font-medium max-w-2xl mx-auto mb-12">
+         <p className="text-white/60 text-lg font-medium max-w-2xl mx-auto mb-12">
             Le CREDDA accueille les contributions de chercheurs externes. Soumettez vos travaux pour une parution dans nos prochaines éditions.
          </p>
-         <Link href="/contact" className="inline-flex items-center gap-4 bg-background text-foreground px-10 py-6 font-black uppercase text-[10px] tracking-widest hover:bg-foreground hover:text-background transition-all border border-foreground/10">
+         <Link href="/contact" className="inline-flex items-center gap-4 bg-indigo-600 text-white px-10 py-6 font-black uppercase text-[10px] tracking-widest hover:bg-white hover:text-indigo-950 transition-all border border-indigo-500/20 shadow-xl shadow-indigo-900/20">
             Soumettre un Article <ArrowRight size={14} />
          </Link>
       </section>
@@ -109,7 +142,7 @@ function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
   const t = doc.translations?.[0];
   return (
     <Link href={`/publications/${doc.slug || doc.id}`} className="group block bg-card border border-border hover:border-primary/50 transition-all duration-700">
-       <div className="relative aspect-[4/5] overflow-hidden bg-black">
+        <div className="relative aspect-[4/5] overflow-hidden bg-black">
           {doc.image ? (
             <Image src={doc.image} alt="Research paper" fill className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000" />
           ) : (
@@ -118,7 +151,7 @@ function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
             </div>
           )}
           <div className="absolute top-8 left-8">
-             <span className="px-4 py-2 bg-[#C9A84C] text-[#0C0C0A] text-[9px] font-black uppercase tracking-widest">
+             <span className="px-4 py-2 bg-indigo-600 text-white text-[9px] font-black uppercase tracking-widest">
                 {doc.type || "Research Paper"}
              </span>
           </div>
@@ -126,16 +159,16 @@ function ResearchCard({ doc, locale }: { doc: any, locale: string }) {
        <div className="p-10">
           <div className="flex items-center gap-4 text-[9px] font-black uppercase tracking-widest text-muted-foreground/40 mb-6">
              <span>{new Date(doc.createdAt).getFullYear()} Edition</span>
-             <span className="w-1 h-1 bg-[#C9A84C] rounded-md" />
+             <span className="w-1 h-1 bg-indigo-600 rounded-md" />
              <span className="flex items-center gap-2"><Clock size={12} /> 12 Min Read</span>
           </div>
-          <h3 className="text-2xl font-serif font-black text-foreground mb-6 line-clamp-2 leading-tight group-hover:text-primary transition-colors">
+          <h3 className="text-2xl font-serif font-black text-foreground mb-6 line-clamp-2 leading-tight group-hover:text-indigo-400 transition-colors">
              {t?.title || "Research Project"}
           </h3>
           <p className="text-muted-foreground text-sm font-light leading-relaxed line-clamp-3 mb-8">
              {t?.excerpt || t?.description || "Detailed analysis of legal frameworks and societal progress within the African Great Lakes Region."}
           </p>
-          <div className="inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-[#C9A84C] group-hover:gap-6 transition-all">
+          <div className="inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-indigo-400 group-hover:gap-6 transition-all">
              View Journal <ArrowRight size={14} />
           </div>
        </div>

@@ -8,10 +8,18 @@ export async function createMember(formData: any): Promise<ActionResponse<any>> 
   return withSafeAction("createMember", async () => {
     const member = await db.member.create({
       data: {
+        slug: formData.slug,
+        name: formData.name,
         image: formData.image,
         email: formData.email,
         order: parseInt(formData.order) || 0,
-        translations: { create: formData.translations }
+        translations: { 
+          create: formData.translations.map((t: any) => ({
+            language: t.language,
+            role: t.role,
+            bio: t.bio
+          })) 
+        }
       }
     });
     revalidatePath("/[locale]/admin/members", "layout");
@@ -32,12 +40,18 @@ export async function updateMember(id: string, formData: any): Promise<ActionRes
     const member = await db.member.update({
       where: { id },
       data: {
+        slug: formData.slug,
+        name: formData.name,
         image: formData.image,
         email: formData.email,
         order: parseInt(formData.order) || 0,
         translations: {
           deleteMany: {},
-          create: formData.translations
+          create: formData.translations.map((t: any) => ({
+            language: t.language,
+            role: t.role,
+            bio: t.bio
+          }))
         }
       }
     });
