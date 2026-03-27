@@ -78,10 +78,10 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
 
   return (
     <form onSubmit={handleSubmit} className="space-y-10">
-      <div className="sticky top-20 z-30 flex items-center justify-between bg-white/80 dark:bg-slate-950/80 backdrop-blur-md py-4 border-b border-slate-200 dark:border-white/5 -mx-4 sm:-mx-6 lg:-mx-10 px-4 sm:px-6 lg:px-10 mb-8 transition-colors">
+      <div className="sticky top-20 z-30 flex items-center justify-between bg-background/80 backdrop-blur-md py-4 border-b border-border -mx-4 sm:-mx-6 lg:-mx-10 px-4 sm:px-6 lg:px-10 mb-8 transition-colors">
         <div className="flex items-center gap-2">
-          <Settings2 size={18} className="text-slate-400" />
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Configuration de l'article</span>
+          <Settings2 size={18} className="text-muted-foreground/60" />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Configuration de l'article</span>
         </div>
         <div className="flex gap-3">
           <Button type="button" variant="ghost" onClick={() => router.back()} className="text-[10px] font-black uppercase tracking-widest rounded-xl">Annuler</Button>
@@ -95,9 +95,9 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
           <Tabs defaultValue="fr" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 h-14 bg-slate-100 dark:bg-white/5 p-1 rounded-2xl">
+            <TabsList className="grid w-full grid-cols-3 h-14 bg-muted p-1 rounded-2xl">
               {LANGUAGES.map(l => (
-                <TabsTrigger key={l.code} value={l.code} className="font-black uppercase text-[9px] tracking-[0.2em] rounded-xl data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 shadow-none">
+                <TabsTrigger key={l.code} value={l.code} className="font-black uppercase text-[9px] tracking-[0.2em] rounded-xl data-[state=active]:bg-card data-[state=active]:text-foreground shadow-none">
                   <Globe size={14} className="mr-2" /> {l.label}
                 </TabsTrigger>
               ))}
@@ -105,11 +105,11 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
 
             {LANGUAGES.map(l => (
               <TabsContent key={l.code} value={l.code} className="mt-6 space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500 outline-none">
-                <Card className="p-8 space-y-8 rounded-[2.5rem] border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 shadow-sm">
+                <Card className="p-8 space-y-8 rounded-[2.5rem] border-border bg-card shadow-sm">
                   <div className="space-y-4">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Titre Scientifique ({l.code})</Label>
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Titre Scientifique ({l.code})</Label>
                     <Input 
-                      className="text-3xl font-serif font-black border-0 border-b border-slate-100 dark:border-white/5 rounded-md px-0 focus-visible:ring-0 focus-visible:border-blue-600 bg-transparent text-slate-900 dark:text-white"
+                      className="text-3xl font-serif font-black border-0 border-b border-border rounded-md px-0 focus-visible:ring-0 focus-visible:border-primary bg-transparent text-foreground"
                       placeholder="Entrez le titre..."
                       value={translations[l.code].title}
                       onChange={(e) => setTranslations({...translations, [l.code]: {...translations[l.code], title: e.target.value}})}
@@ -117,9 +117,9 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
                   </div>
                   
                   <div className="space-y-4">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Résumé / Excerpt</Label>
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Résumé / Excerpt</Label>
                     <Textarea 
-                      className="rounded-2xl border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02] italic font-medium min-h-[100px] focus:border-blue-600 transition-all text-slate-900 dark:text-white"
+                      className="rounded-2xl border-border bg-muted/30 italic font-medium min-h-[100px] focus:border-primary transition-all text-foreground"
                       placeholder="Court résumé de l'article pour les cartes d'aperçu..."
                       value={translations[l.code].excerpt}
                       onChange={(e) => setTranslations({...translations, [l.code]: {...translations[l.code], excerpt: e.target.value}})}
@@ -138,8 +138,8 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
         </div>
 
         <div className="space-y-6">
-          <Card className="p-8 space-y-8 rounded-[2.5rem] border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 shadow-sm">
-            <h3 className="font-black uppercase text-[10px] tracking-[0.3em] text-primary dark:text-blue-400 border-b border-slate-100 dark:border-white/5 pb-6">Paramètres</h3>
+          <Card className="p-8 space-y-8 rounded-[2.5rem] border-border bg-card shadow-sm">
+            <h3 className="font-black uppercase text-[10px] tracking-[0.3em] text-primary border-b border-border pb-6">Paramètres</h3>
             
             <div className="space-y-3">
               <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Slug de l'URL</Label>
@@ -154,7 +154,7 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
             <div className="space-y-3">
               <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Domaine de Recherche</Label>
               <select 
-                className="w-full h-12 bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 px-4 text-xs font-bold rounded-xl outline-none focus:border-blue-600 transition-all dark:text-white"
+                className="w-full h-12 bg-muted/40 border border-border px-4 text-xs font-bold rounded-xl outline-none focus:border-primary transition-all text-foreground"
                 value={baseData.domain}
                 onChange={(e) => setBaseData({...baseData, domain: e.target.value})}
               >
@@ -166,7 +166,7 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
             <div className="space-y-3">
               <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Classification</Label>
               <select 
-                className="w-full h-12 bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 px-4 text-xs font-bold rounded-xl outline-none focus:border-blue-600 transition-all dark:text-white"
+                className="w-full h-12 bg-muted/40 border border-border px-4 text-xs font-bold rounded-xl outline-none focus:border-primary transition-all text-foreground"
                 value={baseData.categoryId}
                 onChange={(e) => setBaseData({...baseData, categoryId: e.target.value})}
               >
@@ -188,8 +188,8 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
             </div>
           </Card>
 
-          <Card className="p-8 space-y-8 rounded-[2.5rem] border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/[0.02] shadow-sm">
-             <h3 className="font-black uppercase text-[10px] tracking-[0.3em] text-slate-400 border-b border-slate-100 dark:border-white/5 pb-6">Ressources Médias</h3>
+          <Card className="p-8 space-y-8 rounded-[2.5rem] border-border bg-card shadow-sm">
+             <h3 className="font-black uppercase text-[10px] tracking-[0.3em] text-muted-foreground border-b border-border pb-6">Ressources Médias</h3>
              
              <SmartImageInput 
                 label="Couverture Principale"

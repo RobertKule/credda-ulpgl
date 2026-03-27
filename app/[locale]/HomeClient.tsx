@@ -95,10 +95,10 @@ export default function HomeClient({
         </div>
 
         {/* ABOUT (Image 3D + Zoom) */}
-        <div id="about" className="relative z-20 mx-4 my-8 overflow-visible">
+        <div id="about" className="relative z-20 mx-4 my-8 overflow-hidden">
           {/* ── TOP ROPE CORD ── */}
-          <div className="absolute top-0 left-0 w-full z-30 pointer-events-none translate-y-[-50%]">
-            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block overflow-visible">
+          <div className="absolute top-0 left-[-0.5%] w-[101%] z-30 pointer-events-none translate-y-[-50%] overflow-hidden">
+            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block">
               <defs>
                 <filter id="ropeShadowAbout" x="-20%" y="-20%" width="140%" height="140%">
                   <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
@@ -163,8 +163,8 @@ export default function HomeClient({
           <AboutVideoSection />
 
           {/* ── BOTTOM ROPE CORD ── */}
-          <div className="absolute bottom-0 left-0 w-full z-30 pointer-events-none translate-y-[50%]">
-            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block overflow-visible">
+          <div className="absolute bottom-0 left-[-0.5%] w-[101%] z-30 pointer-events-none translate-y-[50%] overflow-hidden">
+            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block">
               <path d="M0,50 C200,0 400,100 600,50 C800,0 1000,100 1200,50 C1300,35 1380,65 1440,50" fill="none" stroke="currentColor" strokeOpacity="0.5" strokeWidth="4" className="text-primary" filter="url(#ropeShadowAbout)" />
               <path d="M0,55 C200,5 400,105 600,55 C800,5 1000,105 1200,55 C1300,40 1380,70 1440,55" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2.5" className="text-primary" />
             </svg>
@@ -178,10 +178,10 @@ export default function HomeClient({
           </div>
         </section>
 
-        <div id="clinical" className="relative z-20 mx-4 my-8 overflow-visible">
+        <div id="clinical" className="relative z-20 mx-4 my-8 overflow-hidden">
           {/* ── TOP ROPE CORD ── */}
-          <div className="absolute top-0 left-0 w-full z-30 pointer-events-none translate-y-[-50%]">
-            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block overflow-visible">
+          <div className="absolute top-0 left-[-0.5%] w-[101%] z-30 pointer-events-none translate-y-[-50%] overflow-hidden">
+            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block">
               <defs>
                 <filter id="ropeShadowClinical" x="-20%" y="-20%" width="140%" height="140%">
                   <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
@@ -207,8 +207,8 @@ export default function HomeClient({
           </motion.section>
 
           {/* ── BOTTOM ROPE CORD ── */}
-          <div className="absolute bottom-0 left-0 w-full z-30 pointer-events-none translate-y-[50%]">
-            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block overflow-visible">
+          <div className="absolute bottom-0 left-[-0.5%] w-[101%] z-30 pointer-events-none translate-y-[50%] overflow-hidden">
+            <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[40px] md:h-[80px] block">
               <path d="M0,50 C200,0 400,100 600,50 C800,0 1000,100 1200,50 C1300,35 1380,65 1440,50" fill="none" stroke="currentColor" strokeOpacity="0.5" strokeWidth="4" className="text-primary" filter="url(#ropeShadowClinical)" />
               <path d="M0,55 C200,5 400,105 600,55 C800,5 1000,105 1200,55 C1300,40 1380,70 1440,55" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2.5" className="text-primary" />
             </svg>

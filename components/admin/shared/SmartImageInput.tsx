@@ -58,7 +58,7 @@ export function SmartImageInput({ value, onChange, folder = "gallery", label = "
 
   return (
     <div className="space-y-4">
-      <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-3">
+      <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground flex items-center gap-3">
         <ImageIcon size={14} className="text-primary" /> {label}
       </Label>
 
@@ -67,17 +67,17 @@ export function SmartImageInput({ value, onChange, folder = "gallery", label = "
         onValueChange={(v) => setActiveTab(v as "upload" | "url")} 
         className="w-full"
       >
-        <TabsList className="grid w-full grid-cols-2 h-10 bg-slate-100 dark:bg-white/5 p-1 rounded-xl mb-4 text-slate-500">
-          <TabsTrigger value="upload" className="text-[9px] font-black uppercase tracking-widest rounded-lg data-[state=active]:bg-white dark:data-[state=active]:bg-white/10">
+        <TabsList className="grid w-full grid-cols-2 h-10 bg-muted p-1 rounded-xl mb-4 text-muted-foreground">
+          <TabsTrigger value="upload" className="text-[9px] font-black uppercase tracking-widest rounded-lg data-[state=active]:bg-background data-[state=active]:text-foreground shadow-sm">
             <Upload size={12} className="mr-2" /> Upload
           </TabsTrigger>
-          <TabsTrigger value="url" className="text-[9px] font-black uppercase tracking-widest rounded-lg data-[state=active]:bg-white dark:data-[state=active]:bg-white/10">
+          <TabsTrigger value="url" className="text-[9px] font-black uppercase tracking-widest rounded-lg data-[state=active]:bg-background data-[state=active]:text-foreground shadow-sm">
             <LinkIcon size={12} className="mr-2" /> URL
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="upload" className="mt-0 outline-none">
-          <div className="relative aspect-video bg-white dark:bg-slate-900 border border-dashed border-slate-200 dark:border-white/10 flex flex-col items-center justify-center overflow-hidden group rounded-2xl shadow-inner transition-all hover:border-blue-600/50">
+          <div className="relative aspect-video bg-card border border-dashed border-border flex flex-col items-center justify-center overflow-hidden group rounded-2xl shadow-inner transition-all hover:border-primary/50">
             {value && activeTab === "upload" ? (
               <>
                 <Image src={value} alt="Preview" fill className="object-cover" />
@@ -98,7 +98,7 @@ export function SmartImageInput({ value, onChange, folder = "gallery", label = "
                 {uploading ? (
                   <div className="space-y-4 px-6">
                     <Loader2 className="w-8 h-8 text-primary animate-spin mx-auto" />
-                    <div className="w-full bg-slate-200 dark:bg-white/10 h-1.5 rounded-md overflow-hidden">
+                    <div className="w-full bg-muted h-1.5 rounded-full overflow-hidden">
                       <div 
                         className="bg-primary h-full transition-all duration-300" 
                         style={{ width: `${progress}%` }}
@@ -111,12 +111,12 @@ export function SmartImageInput({ value, onChange, folder = "gallery", label = "
                      <Button
                        type="button"
                        variant="outline"
-                       className="border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 px-6 py-6 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all active:scale-95 flex items-center gap-2 mx-auto"
+                       className="border-border hover:bg-muted px-6 py-6 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all active:scale-95 flex items-center gap-2 mx-auto"
                        onClick={() => fileInputRef.current?.click()}
                      >
                        <Upload size={14} /> Sélectionner un fichier
                      </Button>
-                     <p className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">JPG, PNG ou WEBP • Max 4.5MB</p>
+                     <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-tighter">JPG, PNG ou WEBP • Max 4.5MB</p>
                   </div>
                 )}
               </div>
@@ -137,10 +137,10 @@ export function SmartImageInput({ value, onChange, folder = "gallery", label = "
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 placeholder="https://images.unsplash.com/photo-..." 
-                className="rounded-xl bg-slate-50 dark:bg-white/[0.02] border-slate-100 dark:border-white/5 font-bold text-xs h-12"
+                className="rounded-xl bg-muted/20 border-border font-bold text-xs h-12 text-foreground focus:ring-primary/20 transition-all"
               />
               {value && activeTab === 'url' && (
-                <div className="relative aspect-video rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-white/5">
+                <div className="relative aspect-video rounded-2xl overflow-hidden border border-border bg-muted">
                   <Image 
                     src={value} 
                     alt="URL Preview" 

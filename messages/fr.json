@@ -1,4 +1,12 @@
 {
+  "ErrorPage": {
+    "title": "Une Erreur <italic>Scientifique</italic> est survenue",
+    "description": "Nos systèmes ont rencontré une interruption inattendue. L'équipe technique du CREDDA a été alertée.",
+    "retry": "Tenter une récupération",
+    "home": "Retour au Portail",
+    "reported": "Signalement automatique",
+    "system": "CREDDA CORE"
+  },
   "Navigation": {
     "research": "Recherche",
     "clinical": "Clinique Juridique",
@@ -92,11 +100,15 @@
       "title": "Leadership Scientifique",
       "title_alt": "Leadership Scientifique",
       "subtitle": "L'Équipe de Recherche",
-      "badge": "Notre Équipe"
+      "badge": "Notre Équipe",
+      "prev": "Précédent",
+      "next": "Suivant"
     },
     "testimonials": {
       "badge": "Confiance Internationale",
       "title_alt": "Reconnaissance Internationale",
+      "prev": "Précédent",
+      "next": "Suivant",
       "items": [
         {
           "name": "David MICHAEL PEYTON",
@@ -534,6 +546,12 @@
     "contact": {
       "email": "Contacter par email",
       "linkedin": "Profil LinkedIn"
+    },
+    "detail": {
+      "backToTeam": "Retour à l'équipe",
+      "contactTitle": "Coordonnées de Contact",
+      "expertiseTitle": "Domaines d'Expertise",
+      "biographyTitle": "Biographie & Parcours"
     }
   },
   "SearchPage": {
@@ -1056,6 +1074,7 @@
     "recentMessages": {
       "title": "<italic>Bureau</italic> Central",
       "unread": "{count} Nouveaux messages en attente",
+      "consult": "Consulter",
       "viewAll": "Tout voir"
     },
     "health": {
@@ -1067,7 +1086,57 @@
     },
     "footer": {
       "node": "Node: {version} • Prisma 6 • Neon Serverless",
-      "sync": "Last sync: {time}"
+      "sync": "Dernière synchro : {time}"
+    },
+    "search": {
+      "placeholder": "Rechercher un article, un membre ou une donnée...",
+      "results": "Résultats de recherche",
+      "searching": "Recherche en cours...",
+      "noResults": "Aucun résultat trouvé pour \"{query}\"",
+      "shortcut": "Rechercher"
+    },
+    "ui": {
+      "theme": "Changer le thème",
+      "language": "Changer de langue",
+      "notifications": "Notifications",
+      "profile": "Profil Utilisateur"
+    },
+    "sidebar": {
+      "main": "Principal",
+      "dashboard": "Dashboard",
+      "articles": "Articles",
+      "programs": "Programmes",
+      "gallery": "Galerie",
+      "team": "Équipe",
+      "clinical": "Cas Cliniques",
+      "resources": "Ressources",
+      "sessions": "Itinérances",
+      "messages": "Messages",
+      "announcements": "Annonces",
+      "users": "Accès",
+      "profile": "Mon Profil",
+      "active": "Actif",
+      "logout": "Déconnexion"
+    },
+    "form": {
+      "save": "Enregistrer",
+      "saving": "Enregistrement...",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "create": "Créer",
+      "search": "Rechercher...",
+      "noResults": "Aucun résultat trouvé",
+      "optional": "(Optionnel)",
+      "required": "Requis"
+    },
+    "ErrorPage": {
+      "title": "Une erreur {italic} inattendue {/italic} est survenue.",
+      "description": "Nous avons rencontré un problème technique lors du traitement de cette page. Notre équipe a été notifiée.",
+      "retry": "Réessayer",
+      "home": "Retour à l'accueil",
+      "reported": "Erreur signalée",
+      "system": "Erreur Système"
     }
   }
 }

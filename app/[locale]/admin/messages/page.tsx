@@ -16,33 +16,33 @@ export default async function AdminMessagesPage() {
   };
 
   return (
-    <div className="space-y-12 pb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="space-y-12 pb-10 animate-in fade-in slide-in-from-bottom-4 duration-700 bg-background transition-colors min-h-screen">
       
       {/* Executive Header */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 border-b border-slate-200 dark:border-white/5 pb-10">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 border-b border-border pb-10">
         <div className="space-y-2">
           <div className="flex items-center gap-3 mb-2">
-            <div className="h-[1px] w-8 bg-primary shadow-[0_0_8px_rgba(37,99,235,0.4)]" />
-            <span className="text-[10px] text-primary dark:text-blue-400 font-black uppercase tracking-[0.3em]">
+            <div className="h-[1px] w-8 bg-primary shadow-[0_0_8px_rgba(var(--primary-rgb),0.4)]" />
+            <span className="text-[10px] text-primary font-black uppercase tracking-[0.3em]">
               Centre de Communications
             </span>
           </div>
-          <h1 className="text-5xl font-serif font-black text-slate-900 dark:text-white tracking-tighter uppercase leading-none">
-            Boîte de <span className="text-primary dark:text-blue-500 italic font-light">Réception</span>
+          <h1 className="text-5xl font-serif font-black text-foreground tracking-tighter uppercase leading-none transition-colors">
+            Boîte de <span className="text-primary italic font-light">Réception</span>
           </h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+          <p className="text-sm text-muted-foreground font-medium max-w-xl transition-colors">
             Gérez les demandes publiques, les sollicitations de recherche et les partenariats stratégiques du CREDDA.
           </p>
         </div>
         
         <div className="flex gap-4">
-          <div className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 p-6 flex flex-col items-center justify-center min-w-[120px] rounded-3xl shadow-sm transition-all hover:border-blue-600/20">
-            <span className="text-2xl font-black text-slate-900 dark:text-white leading-none mb-1">{stats.unread}</span>
-            <span className="text-[9px] font-black uppercase tracking-widest text-primary dark:text-blue-400">Non lus</span>
+          <div className="bg-card border border-border p-6 flex flex-col items-center justify-center min-w-[120px] rounded-3xl shadow-sm transition-all hover:border-primary/20">
+            <span className="text-2xl font-black text-foreground leading-none mb-1 transition-colors">{stats.unread}</span>
+            <span className="text-[9px] font-black uppercase tracking-widest text-primary">Non lus</span>
           </div>
-          <div className="bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 p-6 flex flex-col items-center justify-center min-w-[120px] rounded-3xl shadow-sm transition-all hover:border-emerald-600/20">
-            <span className="text-2xl font-black text-slate-900 dark:text-white leading-none mb-1">{stats.replied}</span>
-            <span className="text-[9px] font-black uppercase tracking-widest text-emerald-600 dark:text-emerald-500">Répondus</span>
+          <div className="bg-card border border-border p-6 flex flex-col items-center justify-center min-w-[120px] rounded-3xl shadow-sm transition-all hover:border-emerald-500/20">
+            <span className="text-2xl font-black text-foreground leading-none mb-1 transition-colors">{stats.replied}</span>
+            <span className="text-[9px] font-black uppercase tracking-widest text-emerald-500">Répondus</span>
           </div>
         </div>
       </div>

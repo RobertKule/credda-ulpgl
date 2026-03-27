@@ -105,7 +105,7 @@ export default function AdminLogin() {
           <div className="absolute inset-0 bg-gradient-to-tr from-background via-background/80 to-transparent" />
         </div>
 
-        <div className="relative z-10 w-full max-w-[480px] p-4 sm:p-6 mt-12 mb-12">
+        <div className="relative z-10 w-full max-w-[540px] p-4 sm:p-6 mt-12 mb-12">
           <AnimatePresence mode="wait">
             {view === "login" ? (
               <motion.div 
@@ -113,7 +113,7 @@ export default function AdminLogin() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="relative w-full bg-card/60 backdrop-blur-3xl border border-white/10 p-8 sm:p-12 md:p-16 flex flex-col justify-center rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] group overflow-hidden"
+                className="relative w-full bg-card/40 backdrop-blur-3xl border border-white/10 p-10 sm:p-14 md:p-20 flex flex-col justify-center rounded-[3rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.5)] group overflow-hidden"
               >
                 {/* LUXURY ACCENTS */}
                 <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
@@ -313,6 +313,14 @@ export default function AdminLogin() {
                   <p className="text-[10px] text-muted-foreground leading-relaxed font-medium uppercase tracking-[0.2em]">
                     {modalMessage}
                   </p>
+                  {modalType === 'success' && (
+                    <motion.div 
+                      initial={{ width: 0 }} 
+                      animate={{ width: "100%" }} 
+                      className="h-1 bg-primary rounded-full mt-4" 
+                      transition={{ duration: 1.5 }}
+                    />
+                  )}
                 </div>
                 {modalType === 'error' && (
                   <Button onClick={() => setModalType(null)} className="w-full h-12 rounded-xl bg-foreground text-background font-bold text-[10px] uppercase tracking-widest transition-all hover:scale-[1.02]">

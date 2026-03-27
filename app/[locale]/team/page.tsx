@@ -69,38 +69,41 @@ export default async function TeamPage({ params }: Props) {
         {members.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24 px-6">
             {members.map((member: any, i: number) => {
-              const content = member.translations[0];
-              if (!content) return null;
+              const content = member.translations?.[0] || { role: "Chercheur", bio: "" };
 
               return (
                 <ScrollReveal key={member.id} delay={i * 0.08}>
                 <div className="group">
                   {/* Photo Profile */}
-                  <div className="relative aspect-[3/4] overflow-hidden bg-card border border-border mb-8 shadow-2xl">
-                    {member.image ? (
-                      <Image
-                        src={member.image.replace(/\\/g, '/').replace(/^public\//, '/')}
-                        alt={content.name}
-                        fill
-                        className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-white/5">
-                        <Users size={120} strokeWidth={0.5} />
-                      </div>
-                    )}
-                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background to-transparent opacity-60" />
-                  </div>
+                  <Link href={`/${locale}/team/${member.slug}`}>
+                    <div className="relative aspect-[3/4] overflow-hidden bg-card border border-border mb-8 shadow-2xl">
+                      {member.image ? (
+                        <Image
+                          src={member.image.replace(/\\/g, '/').replace(/^public\//, '/')}
+                          alt={member.name}
+                          fill
+                          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-white/5">
+                          <Users size={120} strokeWidth={0.5} />
+                        </div>
+                      )}
+                      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background to-transparent opacity-60" />
+                    </div>
+                  </Link>
 
                   {/* Infos */}
                   <div className="space-y-4">
                     <div className="space-y-2">
-                       <span className="text-[9px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
-                        {content.role || "Chercheur"}
+                       <span className="text-[10px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
+                        {content.role}
                       </span>
-                      <h2 className="text-3xl font-bricolage font-bold text-foreground group-hover:text-primary transition-colors">
-                        {content.name}
-                      </h2>
+                      <Link href={`/${locale}/team/${member.slug}`}>
+                        <h2 className="text-3xl font-bricolage font-bold text-foreground group-hover:text-primary transition-colors">
+                          {member.name}
+                        </h2>
+                      </Link>
                     </div>
 
                     <div className="h-[1px] w-12 bg-primary transition-all group-hover:w-full duration-700" />
@@ -111,24 +114,33 @@ export default async function TeamPage({ params }: Props) {
                       </p>
                     )}
 
-                    {/* Social links */}
-                    <div className="flex gap-6 pt-4">
-                      {member.email && (
+                    {/* Action & Social links */}
+                    <div className="flex items-center justify-between pt-4">
+                      <div className="flex gap-6">
+                        {member.email && (
+                          <a
+                            href={`mailto:${member.email}`}
+                            className="text-muted-foreground/40 hover:text-primary transition-colors"
+                            title="Contact Email"
+                          >
+                            <Mail size={16} />
+                          </a>
+                        )}
                         <a
-                          href={`mailto:${member.email}`}
+                          href="#"
                           className="text-muted-foreground/40 hover:text-primary transition-colors"
-                          title="Contact Email"
+                          title="LinkedIn Profile"
                         >
-                          <Mail size={16} />
+                          <Linkedin size={16} />
                         </a>
-                      )}
-                      <a
-                        href="#"
-                        className="text-muted-foreground/40 hover:text-primary transition-colors"
-                        title="LinkedIn Profile"
+                      </div>
+                      
+                      <Link 
+                        href={`/${locale}/team/${member.slug}`}
+                        className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary flex items-center gap-2 group/link"
                       >
-                        <Linkedin size={16} />
-                      </a>
+                        Voir profil <ChevronRight size={12} className="group-hover/link:translate-x-1 transition-transform" />
+                      </Link>
                     </div>
                   </div>
                 </div>

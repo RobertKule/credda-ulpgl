@@ -139,12 +139,6 @@ export default function Footer() {
           </div>
           
           <div className="flex items-center gap-6">
-            <div className="px-4 py-2 bg-muted border border-border flex items-center gap-3">
-               <div className="w-1.5 h-1.5 bg-primary rounded-md animate-pulse" />
-               <span className="text-[9px] uppercase font-outfit font-bold text-muted-foreground tracking-widest">
-                 {t('bottom.system')}
-               </span>
-            </div>
             <div className="text-[10px] font-outfit font-medium text-muted-foreground/40 uppercase tracking-widest">
               {t('bottom.affiliation')}
             </div>

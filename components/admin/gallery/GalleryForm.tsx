@@ -77,14 +77,14 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-10">
-      <div className="sticky top-20 z-30 flex items-center justify-between bg-white/80 dark:bg-slate-950/80 backdrop-blur-md py-4 border-b border-slate-200 dark:border-white/5 -mx-4 sm:-mx-6 lg:-mx-10 px-4 sm:px-6 lg:px-10 mb-8 transition-colors">
+      <div className="sticky top-20 z-30 flex items-center justify-between bg-background/80 backdrop-blur-md py-4 border-b border-border -mx-4 sm:-mx-6 lg:-mx-10 px-4 sm:px-6 lg:px-10 mb-8 transition-all">
         <div className="flex items-center gap-2">
-          <Settings2 size={18} className="text-slate-400" />
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Gestion de la Galerie</span>
+          <Settings2 size={18} className="text-muted-foreground/40" />
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Gestion de la Photothèque</span>
         </div>
         <div className="flex gap-3">
-          <Button type="button" variant="ghost" onClick={() => router.back()} className="text-[10px] font-black uppercase tracking-widest rounded-xl">Annuler</Button>
-          <Button disabled={loading} className="bg-primary hover:bg-blue-700 shadow-lg shadow-blue-600/20 px-8 rounded-xl font-black text-[10px] uppercase tracking-widest active:scale-95 transition-all">
+          <Button type="button" variant="ghost" onClick={() => router.back()} className="text-[10px] font-black uppercase tracking-widest rounded-xl text-muted-foreground hover:text-foreground transition-all">Annuler</Button>
+          <Button disabled={loading} className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 px-8 rounded-xl font-black text-[10px] uppercase tracking-widest active:scale-95 transition-all">
             <Save className="mr-2" size={16} />
             {isEditing ? "Enregistrer" : "Créer"}
           </Button>
@@ -94,9 +94,9 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
           <Tabs defaultValue="fr" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 h-14 bg-slate-100 dark:bg-white/5 p-1 rounded-2xl">
+            <TabsList className="grid w-full grid-cols-3 h-14 bg-muted/50 p-1 rounded-2xl border border-border">
               {LANGUAGES.map(l => (
-                <TabsTrigger key={l.code} value={l.code} className="font-black uppercase text-[9px] tracking-[0.2em] rounded-xl data-[state=active]:bg-white dark:data-[state=active]:bg-white/10 shadow-none">
+                <TabsTrigger key={l.code} value={l.code} className="font-black uppercase text-[9px] tracking-[0.2em] rounded-xl data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all focus:outline-none">
                   <Globe size={14} className="mr-2" /> {l.label}
                 </TabsTrigger>
               ))}
@@ -104,11 +104,11 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
 
             {LANGUAGES.map(l => (
               <TabsContent key={l.code} value={l.code} className="mt-6 space-y-6 outline-none animate-in fade-in slide-in-from-bottom-2 duration-500">
-                <Card className="p-8 space-y-8 rounded-[2.5rem] border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 shadow-sm">
+                <Card className="p-8 space-y-8 rounded-[2.5rem] border-border bg-card shadow-sm transition-all">
                   <div className="space-y-4">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Titre de l'image ({l.code})</Label>
+                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Titre de l'image ({l.code})</Label>
                     <Input 
-                      className="text-2xl font-serif font-black border-0 border-b border-slate-100 dark:border-white/5 rounded-md px-0 focus-visible:ring-0 focus-visible:border-blue-600 bg-transparent text-slate-900 dark:text-white"
+                      className="text-2xl font-serif font-black border-0 border-b border-border rounded-none px-0 focus-visible:ring-0 focus-visible:border-primary bg-transparent text-foreground placeholder:text-muted-foreground/20 italic"
                       placeholder="Légende de l'image..."
                       value={translations[l.code].title}
                       onChange={(e) => setTranslations({...translations, [l.code]: {...translations[l.code], title: e.target.value}})}
@@ -127,8 +127,9 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
         </div>
 
         <div className="space-y-6">
-          <Card className="p-8 space-y-8 rounded-[2.5rem] border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 shadow-sm">
-            <h3 className="font-black uppercase text-[10px] tracking-[0.3em] text-primary dark:text-blue-400 border-b border-slate-100 dark:border-white/5 pb-6">Source & Organisation</h3>
+          <Card className="p-8 space-y-8 rounded-[2.5rem] border-border bg-card shadow-sm transition-all relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/2 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
+            <h3 className="font-black uppercase text-[10px] tracking-[0.3em] text-primary border-b border-border pb-6">Source & Organisation</h3>
             
             <SmartImageInput 
               label="Sélection de l'image"
@@ -138,21 +139,22 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
             />
 
             <div className="space-y-3">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-slate-400">Catégorie</Label>
+              <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Catégorie</Label>
               <Input 
                 value={baseData.category}
                 onChange={(e) => setBaseData({...baseData, category: e.target.value})}
                 placeholder="EVENT, RESEARCH, CAMPUS..." 
-                className="rounded-xl bg-slate-50 dark:bg-white/[0.02] border-slate-100 dark:border-white/5 font-bold text-xs"
+                className="rounded-xl bg-muted/20 border-border font-bold text-xs text-foreground focus:ring-primary/20 transition-all h-12"
               />
             </div>
 
-            <div className="flex items-center justify-between p-5 bg-primary/5 dark:bg-primary/10 rounded-2xl border border-blue-600/10 transition-colors">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-primary dark:text-blue-400 cursor-pointer" htmlFor="featured-switch">Mettre en vedette</Label>
+            <div className="flex items-center justify-between p-6 bg-primary/[0.03] rounded-2xl border border-primary/10 transition-all group hover:bg-primary/[0.05]">
+              <Label className="text-[10px] font-black uppercase tracking-widest text-primary cursor-pointer" htmlFor="featured-switch">Mettre en vedette</Label>
               <Switch 
                 id="featured-switch"
                 checked={baseData.featured}
                 onCheckedChange={(val) => setBaseData({...baseData, featured: val})}
+                className="data-[state=checked]:bg-primary"
               />
             </div>
           </Card>

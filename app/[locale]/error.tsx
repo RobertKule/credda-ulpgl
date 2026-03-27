@@ -5,6 +5,8 @@ import { Link } from '@/navigation';
 import { AlertTriangle, RefreshCcw, Home, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import { useTranslations } from 'next-intl';
+
 export default function Error({
   error,
   reset,
@@ -12,6 +14,8 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const t = useTranslations('ErrorPage');
+
   useEffect(() => {
     // Log the error to an error reporting service
     console.error('Production Error:', error);
@@ -37,11 +41,13 @@ export default function Error({
             </div>
 
             <h1 className="text-4xl md:text-5xl font-fraunces font-black tracking-tighter text-foreground mb-6">
-              Something went <span className="text-primary italic font-light">unexpected</span>.
+              {t.rich('title', {
+                italic: (chunks) => <span className="text-primary italic font-light">{chunks}</span>
+              })}
             </h1>
             
             <p className="text-muted-foreground text-lg font-outfit font-light mb-12 max-w-md leading-relaxed">
-              We encountered a technical issue while processing this page. Our team has been notified.
+              {t('description')}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -50,7 +56,7 @@ export default function Error({
                 className="flex items-center justify-center gap-3 px-8 py-4 bg-primary text-primary-foreground text-xs font-bold uppercase tracking-widest hover:scale-105 transition-all rounded-xl shadow-xl shadow-primary/20"
               >
                 <RefreshCcw size={16} />
-                Try again
+                {t('retry')}
               </button>
               
               <Link
@@ -58,17 +64,17 @@ export default function Error({
                 className="flex items-center justify-center gap-3 px-8 py-4 bg-secondary text-secondary-foreground text-xs font-bold uppercase tracking-widest hover:bg-secondary/80 transition-all rounded-xl"
               >
                 <Home size={16} />
-                Back Home
+                {t('home')}
               </Link>
             </div>
 
             <div className="mt-16 pt-8 border-t border-border/50 flex items-center justify-between text-[10px] uppercase font-bold tracking-[0.2em] text-muted-foreground/40">
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-primary rounded-md animate-pulse" />
-                Error Reported
+                {t('reported')}
               </div>
               <div className="font-mono">
-                {error.digest ? `ID: ${error.digest}` : 'System Error'}
+                {error.digest ? `ID: ${error.digest}` : t('system')}
               </div>
             </div>
           </div>

@@ -3,10 +3,9 @@
 
 import { useState, useTransition } from "react";
 import { 
-  Shield, Mail, Calendar, Trash2, 
-  CheckCircle2, XCircle, MoreVertical,
-  ShieldCheck, UserPlus, Search, Filter, Loader2,
-  Edit2
+  Shield, Mail, Trash2, 
+  CheckCircle2, XCircle,
+  Search, Filter
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -81,22 +80,22 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
   return (
     <div className="space-y-6">
       {/* Filters & Search */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-white p-4 border border-slate-200 shadow-sm">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-center bg-card p-4 border border-border rounded-xl shadow-sm transition-colors">
         <div className="relative w-full md:w-96">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/30" size={18} />
           <input 
             type="text" 
             placeholder="Search by name or email..." 
-            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+            className="w-full pl-10 pr-4 py-2 bg-muted/40 border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-medium text-foreground rounded-lg"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         
         <div className="flex items-center gap-3 w-full md:w-auto">
-          <Filter size={16} className="text-slate-400" />
+          <Filter size={16} className="text-muted-foreground/30" />
           <select 
-            className="bg-slate-50 border border-slate-200 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all"
+            className="bg-muted/40 border border-border px-4 py-2 text-[11px] font-black uppercase tracking-widest rounded-lg outline-none focus:ring-2 focus:ring-primary/20 transition-all text-foreground"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
           >
@@ -109,31 +108,31 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
       </div>
 
       {/* Table */}
-      <div className="bg-white border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden transition-colors">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-slate-50 border-b border-slate-200">
-              <th className="p-4 text-[10px] font-black uppercase tracking-widest text-slate-400">User Information</th>
-              <th className="p-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Status</th>
-              <th className="p-4 text-[10px] font-black uppercase tracking-widest text-slate-400">Role</th>
-              <th className="p-4 text-[10px] font-black uppercase tracking-widest text-slate-400 text-right">Actions</th>
+            <tr className="bg-muted/20 border-b border-border">
+              <th className="p-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/40">User Information</th>
+              <th className="p-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/40">Status</th>
+              <th className="p-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/40">Role</th>
+              <th className="p-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/40 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody>
             {filteredUsers.map((u) => (
-              <tr key={u.id} className="hover:bg-slate-50/50 transition-colors">
+              <tr key={u.id} className="hover:bg-muted/30 border-b border-border last:border-0 transition-colors">
                 <td className="p-4">
                   <div className="flex items-center gap-4">
                     <div className={`w-10 h-10 rounded-md flex items-center justify-center ${
-                      u.status === 'PENDING' ? 'bg-amber-50 text-amber-600' : 
-                      u.status === 'APPROVED' ? 'bg-emerald-50 text-emerald-600' : 
-                      'bg-red-50 text-red-600'
+                      u.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500' : 
+                      u.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-500' : 
+                      'bg-red-500/10 text-red-500'
                     }`}>
                       <Shield size={20} />
                     </div>
                     <div>
-                      <p className="font-bold text-slate-900 text-sm">{u.name || "N/A"}</p>
-                      <div className="flex items-center gap-2 text-xs text-slate-500">
+                      <p className="font-bold text-foreground text-sm">{u.name || "N/A"}</p>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground/60">
                         <Mail size={12} /> {u.email}
                       </div>
                     </div>
@@ -141,10 +140,10 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
                 </td>
                 <td className="p-4">
                   <Badge className={`
-                    rounded-md text-[8px] font-black tracking-widest uppercase px-2 py-1
-                    ${u.status === 'PENDING' ? 'bg-amber-100 text-amber-700 border-amber-200' : 
-                      u.status === 'APPROVED' ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 
-                      'bg-red-100 text-red-700 border-red-200'}
+                    rounded-md text-[8px] font-black tracking-widest uppercase px-2 py-1 border
+                    ${u.status === 'PENDING' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 
+                      u.status === 'APPROVED' ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 
+                      'bg-red-500/10 text-red-500 border-red-500/20'}
                   `}>
                     {u.status}
                   </Badge>
@@ -153,7 +152,7 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
                   <select 
                     value={u.role}
                     onChange={(e) => handleRoleUpdate(u.id, e.target.value as any)}
-                    className="text-xs font-bold bg-slate-50 border border-slate-200 px-2 py-1 cursor-pointer focus:ring-1 focus:ring-blue-500/20"
+                    className="text-xs font-black uppercase tracking-widest bg-muted/40 border border-border px-3 py-1.5 rounded-lg cursor-pointer focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground"
                     disabled={isPending}
                   >
                     <option value="USER">USER</option>
@@ -177,7 +176,7 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
                         <Button 
                           size="sm" 
                           variant="outline" 
-                          className="text-red-600 border-red-200 hover:bg-red-50 rounded-md h-8 text-[10px] font-black uppercase"
+                          className="text-red-500 border-red-500/20 hover:bg-red-500/10 rounded-md h-8 text-[10px] font-black uppercase"
                           onClick={() => handleStatusUpdate(u.id, 'REJECTED')}
                           disabled={isPending}
                         >
@@ -189,7 +188,7 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
                     <Button 
                       size="icon" 
                       variant="ghost" 
-                      className="text-slate-300 hover:text-red-600 h-8 w-8"
+                      className="text-muted-foreground/30 hover:text-red-500 h-8 w-8 hover:bg-red-500/5 transition-all"
                       onClick={() => handleDelete(u.id)}
                       disabled={isPending}
                     >
@@ -201,7 +200,7 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
             ))}
             {filteredUsers.length === 0 && (
               <tr>
-                <td colSpan={4} className="p-12 text-center text-slate-400 italic text-sm">
+                <td colSpan={4} className="p-12 text-center text-muted-foreground/30 italic text-sm">
                   No users found matching your criteria.
                 </td>
               </tr>

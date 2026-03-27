@@ -5,68 +5,86 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Megaphone, BellRing } from "lucide-react";
 
 export default function SystemBanner() {
-  const [announcement, setAnnouncement] = useState<{ id: string, content: string } | null>(null);
+  const [announcements, setAnnouncements] = useState<{ id: string, content: string }[]>([]);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const fetchAnnouncement = async () => {
+    const fetchAnnouncements = async () => {
       try {
         const res = await fetch('/api/announcements/active');
         if (res.ok) {
           const data = await res.json();
-          if (data && data.id) {
-            const dismissed = localStorage.getItem(`dismissed-announcement-${data.id}`);
+          if (Array.isArray(data) && data.length > 0) {
+            // Check if any of these are dismissed
+            const latestId = data[0].id; // We use the latest one to track dismissal for the whole bar
+            const dismissed = localStorage.getItem(`dismissed-announcement-${latestId}`);
             if (!dismissed) {
-              setAnnouncement(data);
+              setAnnouncements(data);
               setIsVisible(true);
             }
           }
         }
       } catch (error) {
-        console.error("Failed to fetch announcement:", error);
+        console.error("Failed to fetch announcements:", error);
       }
     };
-    fetchAnnouncement();
+    fetchAnnouncements();
   }, []);
 
   const handleDismiss = () => {
-    if (announcement) {
-      localStorage.setItem(`dismissed-announcement-${announcement.id}`, "true");
+    if (announcements.length > 0) {
+      localStorage.setItem(`dismissed-announcement-${announcements[0].id}`, "true");
       setIsVisible(false);
     }
   };
 
+  if (!isVisible || announcements.length === 0) return null;
+
   return (
     <AnimatePresence>
-      {isVisible && announcement && (
-        <motion.div
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: "auto", opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
-          className="relative z-[200] bg-[#C9A84C] text-[#0C0C0A] overflow-hidden"
-        >
-          <div className="max-w-7xl mx-auto px-4 py-3 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="hidden sm:flex w-8 h-8 items-center justify-center bg-[#0C0C0A]/10 rounded-md">
-                <BellRing size={16} className="animate-bounce" />
-              </div>
-              <p className="text-[11px] sm:text-xs font-black uppercase tracking-widest truncate">
-                <span className="opacity-60 mr-2">Info:</span>
-                {announcement.content}
-              </p>
+      <motion.div
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: "auto", opacity: 1 }}
+        exit={{ height: 0, opacity: 0 }}
+        className="relative z-[200] bg-emerald-600 text-white overflow-hidden"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex-1 flex items-center overflow-hidden h-10">
+            <div className="flex items-center gap-4 pl-4 z-10 bg-emerald-600 shadow-xl">
+               <BellRing size={14} className="animate-bounce" />
+               <span className="text-[10px] font-black uppercase tracking-widest whitespace-nowrap border-r border-white/20 pr-4">Actualités</span>
             </div>
-            <button
-              onClick={handleDismiss}
-              className="p-2 hover:bg-[#0C0C0A]/10 rounded-md transition-colors active:scale-90 flex-shrink-0"
-              aria-label="Fermer l'annonce"
-            >
-              <X size={16} />
-            </button>
+            
+            {/* INFINITE SCROLL MARQUEE */}
+            <div className="flex-1 overflow-hidden relative group">
+              <motion.div 
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{ 
+                  duration: 30, 
+                  ease: "linear", 
+                  repeat: Infinity 
+                }}
+                className="flex items-center gap-12 whitespace-nowrap px-6 w-max"
+              >
+                {[...announcements, ...announcements].map((ann, idx) => (
+                  <span key={`${ann.id}-${idx}`} className="text-[11px] font-bold uppercase tracking-wider flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white opacity-40" />
+                    {ann.content}
+                  </span>
+                ))}
+              </motion.div>
+            </div>
           </div>
-          {/* Decorative Shimmer */}
-          <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_3s_infinite]" />
-        </motion.div>
-      )}
+
+          <button
+            onClick={handleDismiss}
+            className="p-3 hover:bg-black/10 transition-colors z-10 bg-emerald-600"
+            aria-label="Fermer l'annonce"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      </motion.div>
     </AnimatePresence>
   );
 }
