@@ -319,7 +319,7 @@ export default function AdminLogin() {
 
           {/* Site link & Register */}
           <div className="pt-12 border-t border-border flex flex-col items-center gap-6">
-             <Link href={`/register`} className="text-[11px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-all border border-primary/20 bg-primary/5 px-6 py-3 rounded-xl hover:scale-105">
+             <Link href="/register" className="text-[11px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-all border border-primary/20 bg-primary/5 px-6 py-3 rounded-xl hover:scale-105">
                 {t('navigation.create_account') || "Créer un compte"}
              </Link>
              <Link href="/" className="group flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-muted-foreground hover:text-primary transition-all">
