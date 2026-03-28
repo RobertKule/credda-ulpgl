@@ -36,7 +36,6 @@ export const authOptions: NextAuthOptions = {
         }
 
         // 2. Recherche en base de données
-        // 2. Recherche en base de données avec select explicite pour éviter les colonnes non-migrées (ex: status)
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
           select: {
@@ -45,11 +44,19 @@ export const authOptions: NextAuthOptions = {
             password: true,
             role: true,
             name: true,
+            status: true,
           }
         });
 
         if (!user) {
           throw new Error("Email ou mot de passe incorrect");
+        }
+
+        if (user.status === "PENDING") {
+          throw new Error("Votre compte est en attente de validation par un administrateur.");
+        }
+        if (user.status === "REJECTED") {
+          throw new Error("Votre demande de compte a été rejetée.");
         }
 
         const isValid = await bcrypt.compare(credentials.password, user.password);

@@ -711,7 +711,8 @@
     },
     "navigation": {
       "exit": "ONDOKA",
-      "back_to_portal": "Rudi kwenye portal ya umma"
+      "back_to_portal": "Rudi kwenye portal ya umma",
+      "create_account": "Fungua akaunti"
     },
     "success_modal": {
       "title": "Ufikiaji Umekubaliwa",

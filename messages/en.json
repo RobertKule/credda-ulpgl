@@ -711,7 +711,8 @@
     },
     "navigation": {
       "exit": "EXIT",
-      "back_to_portal": "Back to public portal"
+      "back_to_portal": "Back to public portal",
+      "create_account": "Create an account"
     },
     "success_modal": {
       "title": "Access Granted",

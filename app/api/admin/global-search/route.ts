@@ -37,10 +37,7 @@ export async function GET(req: Request) {
       }),
       prisma.member.findMany({
         where: {
-          OR: [
-            { name: { contains: query, mode: 'insensitive' } },
-            { translations: { some: { name: { contains: query, mode: 'insensitive' } } } }
-          ]
+          translations: { some: { name: { contains: query, mode: 'insensitive' } } }
         },
         include: { translations: { take: 1 } },
         take: 5
@@ -68,7 +65,7 @@ export async function GET(req: Request) {
     const results = [
       ...articles.map(a => ({ id: a.id, title: a.translations[0]?.title || a.slug, type: "Article", href: `/admin/articles/edit/${a.id}` })),
       ...publications.map(p => ({ id: p.id, title: p.translations[0]?.title || p.slug, type: "Publication", href: `/admin/articles/edit/${p.id}?type=PUBLICATION` })),
-      ...members.map(m => ({ id: m.id, title: (m as any).translations[0]?.name || (m as any).name || "Membre", type: "Membre", href: `/admin/members` })),
+      ...members.map(m => ({ id: m.id, title: m.translations[0]?.name || m.slug || "Membre", type: "Membre", href: `/admin/members` })),
       ...messages.map(msg => ({ id: msg.id, title: `${msg.name}: ${msg.subject || 'Sujet' }`, type: "Message", href: `/admin/messages` })),
       ...users.map(u => ({ id: u.id, title: u.name || u.email, type: "User", href: `/admin/users` }))
     ];

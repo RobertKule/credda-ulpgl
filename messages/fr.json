@@ -711,7 +711,8 @@
     },
     "navigation": {
       "exit": "QUITTER",
-      "back_to_portal": "Retour au portail public"
+      "back_to_portal": "Retour au portail public",
+      "create_account": "Créer un compte"
     },
     "success_modal": {
       "title": "Accès Accordé",
