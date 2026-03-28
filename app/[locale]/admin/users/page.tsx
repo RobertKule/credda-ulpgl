@@ -1,11 +1,18 @@
 // app/[locale]/admin/users/page.tsx
 import { db } from "@/lib/db";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { UserPlus, ShieldPlus } from "lucide-react";
 import { Link } from "@/navigation";
 import { Button } from "@/components/ui/button";
 import UserManagementTable from "./UserManagementTable";
 
 export default async function AdminUsersPage() {
+  const session = await auth();
+  if ((session?.user as any)?.role === "EDITOR") {
+    redirect("/admin");
+  }
+
   const users = await db.user.findMany({ 
     orderBy: { createdAt: 'desc' },
     select: {

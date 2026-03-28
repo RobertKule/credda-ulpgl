@@ -22,15 +22,17 @@ export default async function AdminLayout({
     redirect(`/${locale}/login`);
   }
 
-  // Enforce ADMIN roles
-  if ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "SUPER_ADMIN") {
+  const userRole = (session.user as any).role;
+
+  // Enforce ADMIN and EDITOR roles
+  if (userRole !== "ADMIN" && userRole !== "SUPER_ADMIN" && userRole !== "EDITOR") {
     redirect(`/${locale}/`);
   }
 
   const messages = await getMessages();
   const t = await getTranslations("AdminDashboard.sidebar");
 
-  const menuItems = [
+  let menuItems = [
     { href: "/admin", label: t("dashboard"), icon: "LayoutDashboard" },
     { href: "/admin/articles", label: t("articles"), icon: "FileText" },
     { href: "/admin/programs", label: t("programs"), icon: "Layout" },
@@ -43,6 +45,12 @@ export default async function AdminLayout({
     { href: "/admin/announcements", label: t("announcements"), icon: "Megaphone" },
     { href: "/admin/users", label: t("users"), icon: "Users" },
   ];
+
+  if (userRole === "EDITOR") {
+    menuItems = menuItems.filter(item => 
+      ['/admin', '/admin/articles', '/admin/gallery', '/admin/resources'].includes(item.href)
+    );
+  }
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>

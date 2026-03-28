@@ -4,9 +4,14 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { sendApprovalNotification, sendRejectionNotification } from "./mail-service";
 import { AccountStatus } from "@prisma/client";
+import { auth } from "@/lib/auth";
 import bcrypt from "bcryptjs";
 
 export async function createUser(formData: any) {
+  const session = await auth();
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "SUPER_ADMIN")) {
+    return { success: false, error: "Unauthorized" };
+  }
   try {
     const hashedPassword = await bcrypt.hash(formData.password, 10);
     await db.user.create({
@@ -26,6 +31,10 @@ export async function createUser(formData: any) {
 }
 
 export async function deleteUser(id: string) {
+  const session = await auth();
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "SUPER_ADMIN")) {
+    return { success: false, error: "Unauthorized" };
+  }
   try {
     await db.user.delete({ where: { id } });
     revalidatePath("/admin/users", "layout");
@@ -48,6 +57,10 @@ export async function bulkDeleteUsers(ids: string[]) {
 }
 
 export async function updateUserStatus(id: string, status: AccountStatus) {
+  const session = await auth();
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "SUPER_ADMIN")) {
+    return { success: false, error: "Unauthorized" };
+  }
   try {
     const user = await db.user.update({
       where: { id },
@@ -69,6 +82,10 @@ export async function updateUserStatus(id: string, status: AccountStatus) {
 }
 
 export async function updateUserRole(id: string, role: "SUPER_ADMIN" | "ADMIN" | "EDITOR" | "USER") {
+  const session = await auth();
+  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "SUPER_ADMIN")) {
+    return { success: false, error: "Unauthorized" };
+  }
   try {
     await db.user.update({
       where: { id },
