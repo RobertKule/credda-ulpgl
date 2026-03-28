@@ -14,7 +14,7 @@ export async function GET(req: Request) {
   }
 
   try {
-    const [articles, publications, members, messages] = await Promise.all([
+    const [articles, publications, members, messages, users] = await Promise.all([
       prisma.article.findMany({
         where: {
           OR: [
@@ -53,6 +53,15 @@ export async function GET(req: Request) {
           ]
         },
         take: 5
+      }),
+      prisma.user.findMany({
+        where: {
+          OR: [
+            { name: { contains: query, mode: 'insensitive' } },
+            { email: { contains: query, mode: 'insensitive' } }
+          ]
+        },
+        take: 5
       })
     ]);
 
@@ -60,7 +69,8 @@ export async function GET(req: Request) {
       ...articles.map(a => ({ id: a.id, title: a.translations[0]?.title || a.slug, type: "Article", href: `/admin/articles/edit/${a.id}` })),
       ...publications.map(p => ({ id: p.id, title: p.translations[0]?.title || p.slug, type: "Publication", href: `/admin/articles/edit/${p.id}?type=PUBLICATION` })),
       ...members.map(m => ({ id: m.id, title: (m as any).translations[0]?.name || (m as any).name || "Membre", type: "Membre", href: `/admin/members` })),
-      ...messages.map(msg => ({ id: msg.id, title: `${msg.name}: ${msg.subject || 'Sujet' }`, type: "Message", href: `/admin/messages` }))
+      ...messages.map(msg => ({ id: msg.id, title: `${msg.name}: ${msg.subject || 'Sujet' }`, type: "Message", href: `/admin/messages` })),
+      ...users.map(u => ({ id: u.id, title: u.name || u.email, type: "User", href: `/admin/users` }))
     ];
 
     return NextResponse.json({ results });

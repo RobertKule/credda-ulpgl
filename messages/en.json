@@ -695,6 +695,30 @@
     "errors": {
       "invalid": "Invalid credentials",
       "connection": "Connection error"
+    },
+    "visual": {
+      "badge": "Secure Institutional Access",
+      "title": "Excellence in Service of {span} and Development.",
+      "span": "Research",
+      "description": "Log in to CREDDA's harmonized administration platform to manage your work, publications, and legal clinics.",
+      "slogan": "Research Excellence"
+    },
+    "form_header": {
+      "login_title": "Login",
+      "forgot_title": "Recovery",
+      "login_subtitle": "Harmonized Administration System",
+      "forgot_subtitle": "Institutional ID Required"
+    },
+    "navigation": {
+      "exit": "EXIT",
+      "back_to_portal": "Back to public portal"
+    },
+    "success_modal": {
+      "title": "Access Granted",
+      "message": "Verifying your access... You will be redirected to your dashboard."
+    },
+    "error_modal": {
+      "title": "Access Denied"
     }
   },
   "RegisterPage": {

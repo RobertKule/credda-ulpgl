@@ -54,35 +54,36 @@ export function ModernMarkdownEditor({
         <span className="text-[9px] font-bold text-primary/50 uppercase tracking-tighter">Markdown supporté</span>
       </div>
 
-      <div className="border border-border rounded-[2rem] overflow-hidden bg-card shadow-sm transition-all focus-within:border-primary/50 min-h-[400px] flex flex-col">
+      <div className="border border-border/60 rounded-[2.5rem] overflow-hidden bg-background/50 backdrop-blur-sm shadow-inner transition-all focus-within:border-primary/40 focus-within:ring-4 focus-within:ring-primary/5 min-h-[450px] flex flex-col group/editor">
         <Tabs 
           value={activeTab} 
           onValueChange={(v) => setActiveTab(v as "write" | "preview")} 
           className="w-full flex-1 flex flex-col"
         >
-          <div className="flex items-center justify-between bg-muted/20 px-4 py-2 border-b border-border">
-            <TabsList className="bg-transparent h-8 p-0 gap-4">
-              <TabsTrigger value="write" className="bg-transparent data-[state=active]:bg-transparent data-[state=active]:text-primary font-black uppercase text-[9px] tracking-[0.2em] shadow-none">
-                <PenLine size={14} className="mr-2" /> Écrire
+          <div className="flex items-center justify-between bg-muted/40 dark:bg-muted/20 px-6 py-3 border-b border-border/40">
+            <TabsList className="bg-transparent h-9 p-0 gap-6">
+              <TabsTrigger value="write" className="bg-transparent data-[state=active]:bg-transparent data-[state=active]:text-primary font-black uppercase text-[10px] tracking-[0.25em] shadow-none p-0 h-auto">
+                <PenLine size={16} className="mr-2.5" /> Écrire
               </TabsTrigger>
-              <TabsTrigger value="preview" className="bg-transparent data-[state=active]:bg-transparent data-[state=active]:text-primary font-black uppercase text-[9px] tracking-[0.2em] shadow-none">
-                <Eye size={14} className="mr-2" /> Aperçu
+              <TabsTrigger value="preview" className="bg-transparent data-[state=active]:bg-transparent data-[state=active]:text-primary font-black uppercase text-[10px] tracking-[0.25em] shadow-none p-0 h-auto">
+                <Eye size={16} className="mr-2.5" /> Aperçu
               </TabsTrigger>
             </TabsList>
 
             {activeTab === "write" && (
-              <div className="flex items-center gap-1">
-                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-muted" onClick={() => insertText("# ")} title="Titre">
-                  <Heading1 size={14} />
+              <div className="flex items-center gap-1.5 p-1 bg-background/50 rounded-xl border border-border/20 shadow-sm">
+                <Button type="button" variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-all" onClick={() => insertText("# ")} title="Titre">
+                  <Heading1 size={16} />
                 </Button>
-                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-muted" onClick={() => insertText("## ")} title="Sous-titre">
-                  <Heading2 size={14} />
+                <Button type="button" variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-all" onClick={() => insertText("## ")} title="Sous-titre">
+                  <Heading2 size={16} />
                 </Button>
-                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-muted" onClick={() => insertText("\n\n")} title="Paragraphe">
-                  <Type size={12} />
+                <div className="w-px h-6 bg-border/40 mx-1" />
+                <Button type="button" variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-all" onClick={() => insertText("\n\n")} title="Paragraphe">
+                  <Type size={14} />
                 </Button>
-                <Button type="button" variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-muted" onClick={() => insertText("[", "](url)")} title="Lien">
-                  <LinkIcon size={14} />
+                <Button type="button" variant="ghost" size="icon" className="h-9 w-9 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-all" onClick={() => insertText("[", "](url)")} title="Lien">
+                  <LinkIcon size={16} />
                 </Button>
               </div>
             )}
@@ -91,15 +92,15 @@ export function ModernMarkdownEditor({
           <TabsContent value="write" className="mt-0 outline-none flex-1 flex">
             <Textarea 
               ref={textareaRef}
-              className="flex-1 min-h-[350px] border-0 rounded-md bg-transparent font-mono text-xs leading-relaxed p-6 focus-visible:ring-0 text-foreground resize-none"
+              className="flex-1 min-h-[380px] border-0 rounded-none bg-transparent font-mono text-[13px] leading-relaxed p-8 focus-visible:ring-0 text-foreground resize-none selection:bg-primary/20"
               placeholder={placeholder}
               value={value}
               onChange={(e) => onChange(e.target.value)}
             />
           </TabsContent>
 
-          <TabsContent value="preview" className="mt-0 outline-none flex-1 overflow-auto bg-muted/10 backdrop-blur-sm">
-            <div className="p-8 prose prose-slate dark:prose-invert max-w-none prose-headings:font-serif prose-headings:text-primary prose-a:text-primary prose-p:leading-relaxed prose-lg">
+          <TabsContent value="preview" className="mt-0 outline-none flex-1 overflow-auto bg-muted/[0.02]">
+            <div className="p-10 prose prose-slate dark:prose-invert max-w-none prose-headings:font-fraunces prose-headings:font-black prose-headings:text-primary prose-a:text-primary prose-p:leading-relaxed prose-lg animate-in fade-in duration-500">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {value || "*Aucun contenu à prévisualiser*"}
               </ReactMarkdown>

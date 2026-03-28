@@ -694,6 +694,30 @@
     "errors": {
       "invalid": "Utambulisho usio sahihi",
       "connection": "Hitilafu ya unganisho"
+    },
+    "visual": {
+      "badge": "Ufikiaji wa Kitaasisi Salama",
+      "title": "Ubora katika Huduma ya {span} na Maendeleo.",
+      "span": "Utafiti",
+      "description": "Ingia kwenye jukwaa la utawala lililolinganishwa la CREDDA ili kudhibiti kazi zako, machapisho na kliniki za kisheria.",
+      "slogan": "Research Excellence"
+    },
+    "form_header": {
+      "login_title": "Ingia",
+      "forgot_title": "Urejeshaji",
+      "login_subtitle": "Mfumo Uliorekebishwa wa Utawala",
+      "forgot_subtitle": "Kitambulisho cha Kitaasisi Kinahitajika"
+    },
+    "navigation": {
+      "exit": "ONDOKA",
+      "back_to_portal": "Rudi kwenye portal ya umma"
+    },
+    "success_modal": {
+      "title": "Ufikiaji Umekubaliwa",
+      "message": "Kuhakiki ufikiaji wako... Utatafsiriwa kwenye dashibodi yako."
+    },
+    "error_modal": {
+      "title": "Ufikiaji Umekataliwa"
     }
   },
   "AdminDashboard": {

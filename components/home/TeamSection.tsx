@@ -61,12 +61,13 @@ export default function TeamSection({ team }: { team: any[] }) {
                     <CarouselContent className="-ml-4 sm:-ml-6 lg:-ml-8">
                         {team.map((member: any, idx: number) => (
                             <CarouselItem key={idx} className="pl-4 sm:pl-6 lg:pl-8 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                                <Link href={`/about#team-${member.id}`} className="group block">
+                                <Link href={`/team/${member.slug}`} className="group block">
                                     <div className="relative aspect-[3/4] overflow-hidden bg-muted border border-border mb-8">
                                         <Image
                                             src={member.image || "/images/director3.webp"}
-                                            alt={member.translations[0]?.name}
+                                            alt={member.name}
                                             fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                                             className="object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
@@ -76,7 +77,7 @@ export default function TeamSection({ team }: { team: any[] }) {
                                     </div>
                                     <div>
                                         <h3 className="text-xl font-fraunces font-extrabold text-foreground group-hover:text-primary transition-colors uppercase tracking-tight">
-                                            {member.translations[0]?.name}
+                                            {member.name}
                                         </h3>
                                         <p className="text-[10px] text-primary/60 font-outfit font-bold uppercase tracking-widest mt-2">
                                             {member.translations[0]?.role}

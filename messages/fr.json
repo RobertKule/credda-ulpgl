@@ -694,6 +694,30 @@
     "errors": {
       "invalid": "Identifiants invalides",
       "connection": "Erreur de connexion"
+    },
+    "visual": {
+      "badge": "Accès Institutionnel Sécurisé",
+      "title": "L'Excellence au Service de la {span} et du Développement.",
+      "span": "Recherche",
+      "description": "Connectez-vous à la plateforme d'administration harmonisée du CREDDA pour gérer vos travaux, publications et cliniques juridiques.",
+      "slogan": "Research Excellence"
+    },
+    "form_header": {
+      "login_title": "Connexion",
+      "forgot_title": "Récupération",
+      "login_subtitle": "Système Harmonisé d'Administration",
+      "forgot_subtitle": "Identifiant Institutionnel Requis"
+    },
+    "navigation": {
+      "exit": "QUITTER",
+      "back_to_portal": "Retour au portail public"
+    },
+    "success_modal": {
+      "title": "Accès Accordé",
+      "message": "Vérification de vos accès... Vous allez être redirigé vers votre tableau de bord."
+    },
+    "error_modal": {
+      "title": "Échec d'Accès"
     }
   },
   "RegisterPage": {

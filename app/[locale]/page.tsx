@@ -82,7 +82,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       `,
       // team
       sql`
-        SELECT m.id, m.image, m."order",
+        SELECT m.id, m.name, m.slug, m.image, m."order",
           (SELECT json_agg(t) FROM "MemberTranslation" t WHERE t."memberId" = m.id AND t.language = ${locale}) as translations
         FROM "Member" m
         ORDER BY m."order" ASC

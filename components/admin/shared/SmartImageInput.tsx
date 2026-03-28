@@ -9,6 +9,7 @@ import { ImageIcon, Upload, Link as LinkIcon, X, Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 interface SmartImageInputProps {
   value: string;
@@ -77,46 +78,52 @@ export function SmartImageInput({ value, onChange, folder = "gallery", label = "
         </TabsList>
 
         <TabsContent value="upload" className="mt-0 outline-none">
-          <div className="relative aspect-video bg-card border border-dashed border-border flex flex-col items-center justify-center overflow-hidden group rounded-2xl shadow-inner transition-all hover:border-primary/50">
+          <div className="relative aspect-video bg-muted/20 dark:bg-card border-2 border-dashed border-border/60 flex flex-col items-center justify-center overflow-hidden group rounded-[2rem] shadow-inner transition-all hover:border-primary/50 hover:bg-muted/30">
             {value && activeTab === "upload" ? (
               <>
                 <Image src={value} alt="Preview" fill className="object-cover" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-500 backdrop-blur-sm flex items-center justify-center">
                   <Button
                     type="button"
                     variant="destructive"
                     size="sm"
                     onClick={() => onChange("")}
-                    className="rounded-xl font-bold text-[10px] uppercase tracking-widest"
+                    className="rounded-xl font-black text-[10px] uppercase tracking-[0.2em] shadow-2xl shadow-black/50"
                   >
-                    <X size={14} className="mr-2" /> Supprimer
+                    <X size={14} className="mr-2" /> Supprimer l'image
                   </Button>
                 </div>
               </>
             ) : (
-              <div className="text-center p-6 w-full">
+              <div className="text-center p-8 w-full">
                 {uploading ? (
-                  <div className="space-y-4 px-6">
-                    <Loader2 className="w-8 h-8 text-primary animate-spin mx-auto" />
-                    <div className="w-full bg-muted h-1.5 rounded-full overflow-hidden">
-                      <div 
+                  <div className="space-y-6 px-10">
+                    <Loader2 className="w-10 h-10 text-primary animate-spin mx-auto" />
+                    <div className="w-full bg-muted h-2 rounded-full overflow-hidden border border-border/20 shadow-inner">
+                      <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progress}%` }}
                         className="bg-primary h-full transition-all duration-300" 
-                        style={{ width: `${progress}%` }}
                       />
                     </div>
-                    <p className="text-[9px] font-black text-primary uppercase tracking-widest">Envoi: {progress}%</p>
+                    <p className="text-[10px] font-black text-primary uppercase tracking-[0.3em]">Chargement : {progress}%</p>
                   </div>
                 ) : (
-                  <div className="space-y-4">
+                  <div className="space-y-5">
+                     <div className="w-16 h-16 rounded-2xl bg-primary/5 border border-primary/10 flex items-center justify-center mx-auto mb-2 transition-transform group-hover:scale-110 duration-500">
+                        <Upload size={24} className="text-primary/40" />
+                     </div>
                      <Button
                        type="button"
                        variant="outline"
-                       className="border-border hover:bg-muted px-6 py-6 rounded-xl font-black text-[9px] uppercase tracking-widest transition-all active:scale-95 flex items-center gap-2 mx-auto"
+                       className="border-border/60 hover:bg-background px-8 h-12 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] transition-all active:scale-95 flex items-center gap-2 mx-auto shadow-sm"
                        onClick={() => fileInputRef.current?.click()}
                      >
-                       <Upload size={14} /> Sélectionner un fichier
+                       Sélectionner un fichier
                      </Button>
-                     <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-tighter">JPG, PNG ou WEBP • Max 4.5MB</p>
+                     <p className="text-[9px] font-bold text-muted-foreground/30 uppercase tracking-widest pl-2">
+                        JPG, PNG ou WEBP • Maximum 4.5MB
+                     </p>
                   </div>
                 )}
               </div>
