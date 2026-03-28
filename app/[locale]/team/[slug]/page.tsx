@@ -78,6 +78,7 @@ export default async function MemberDetailPage({ params }: Props) {
                     src={member.image.replace(/\\/g, '/').replace(/^public\//, '/')} 
                     alt={member.name} 
                     fill 
+                    sizes="(max-width: 1024px) 100vw, 33vw"
                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
                     priority
                   />

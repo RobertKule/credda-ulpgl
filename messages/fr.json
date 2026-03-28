@@ -128,7 +128,8 @@
           "text": "J'ai visité l'ULPGL en 2015 pour mener des recherches pour mon doctorat. Le professeur Kennedy KIHANGI BINDU a été un excellent hôte qui a aidé à entrer en contact avec d'autres chercheurs et organisations.",
           "image": "/images/testimonials/britta.webp"
         }
-      ]
+      ],
+      "title": "They <span>trust us</span>."
     },
     "library": {
       "badge": "Ressources",
@@ -694,6 +695,31 @@
     "errors": {
       "invalid": "Identifiants invalides",
       "connection": "Erreur de connexion"
+    },
+    "visual": {
+      "badge": "Accès Institutionnel Sécurisé",
+      "title": "L'Excellence au Service de la {span} et du Développement.",
+      "span": "Recherche",
+      "description": "Connectez-vous à la plateforme d'administration harmonisée du CREDDA pour gérer vos travaux, publications et cliniques juridiques.",
+      "slogan": "Research Excellence"
+    },
+    "form_header": {
+      "login_title": "Connexion",
+      "forgot_title": "Récupération",
+      "login_subtitle": "Système Harmonisé d'Administration",
+      "forgot_subtitle": "Identifiant Institutionnel Requis"
+    },
+    "navigation": {
+      "exit": "QUITTER",
+      "back_to_portal": "Retour au portail public",
+      "create_account": "Créer un compte"
+    },
+    "success_modal": {
+      "title": "Accès Accordé",
+      "message": "Vérification de vos accès... Vous allez être redirigé vers votre tableau de bord."
+    },
+    "error_modal": {
+      "title": "Échec d'Accès"
     }
   },
   "RegisterPage": {
@@ -1075,7 +1101,8 @@
       "title": "<italic>Bureau</italic> Central",
       "unread": "{count} Nouveaux messages en attente",
       "consult": "Consulter",
-      "viewAll": "Tout voir"
+      "viewAll": "Tout voir",
+      "empty": "Aucun message récent."
     },
     "health": {
       "title": "Intégrité Système",
@@ -1137,6 +1164,54 @@
       "home": "Retour à l'accueil",
       "reported": "Erreur signalée",
       "system": "Erreur Système"
+    }
+  },
+  "AdminProfile": {
+    "header": {
+      "badge": "Gestion de Compte",
+      "title": "Mon <italic>Profil</italic>",
+      "subtitle": "\"L'intégrité de vos données est la fondation de notre sécurité institutionnelle.\"",
+      "protected": "Protégé par Auth.js"
+    },
+    "card": {
+      "certified": "Compte Certifié",
+      "securityTitle": "Sécurité de Session",
+      "securityDesc": "Votre session admin est protégée par un protocole SSL. Si vous remarquez une activité suspecte, changez immédiatement votre mot de passe et déconnectez-vous."
+    },
+    "personal": {
+      "title": "Informations Personnelles",
+      "name": "Nom complet",
+      "email": "Email professionnel",
+      "phone": "Téléphone de liaison",
+      "bio": "Biographie Courte",
+      "bioPlaceholder": "Expertise, titres académiques...",
+      "save": "Enregistrer les modifications"
+    },
+    "security": {
+      "title": "Sécurité & Accès",
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le nouveau",
+      "submit": "Réinitialiser les Clés d'Accès"
+    },
+    "messages": {
+      "loadingProfile": "Mise à jour de votre profil en cours...",
+      "successProfile": "Profil mis à jour avec succès",
+      "loadingPassword": "Sécurisation de votre nouveau mot de passe...",
+      "successPassword": "Mot de passe modifié",
+      "errorUpdate": "Une erreur est survenue",
+      "errorConn": "Erreur de connexion",
+      "errorMatch": "Les mots de passe ne correspondent pas"
+    }
+  },
+  "AdminUsers": {
+    "new": {
+      "title": "Créer un Administrateur",
+      "subtitle": "Ce compte aura accès à toute la gestion du site.",
+      "name": "Nom Complet",
+      "email": "Email Professionnel",
+      "password": "Mot de passe provisoire",
+      "submit": "Générer l'accès"
     }
   }
 }

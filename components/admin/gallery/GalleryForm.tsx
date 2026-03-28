@@ -12,7 +12,7 @@ import { SmartImageInput } from "@/components/admin/shared/SmartImageInput"
 import { ModernMarkdownEditor } from "@/components/admin/shared/ModernMarkdownEditor"
 import { createGalleryImage, updateGalleryImage } from "@/services/gallery-actions"
 import { toast } from "react-hot-toast"
-import { Save, Globe, Settings2 } from "lucide-react"
+import { Save, Globe, Settings2, Loader2 } from "lucide-react"
 
 const LANGUAGES = [
   { code: "fr", label: "Français" },
@@ -76,80 +76,131 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-10">
-      <div className="sticky top-20 z-30 flex items-center justify-between bg-background/80 backdrop-blur-md py-4 border-b border-border -mx-4 sm:-mx-6 lg:-mx-10 px-4 sm:px-6 lg:px-10 mb-8 transition-all">
-        <div className="flex items-center gap-2">
-          <Settings2 size={18} className="text-muted-foreground/40" />
-          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Gestion de la Photothèque</span>
+    <form onSubmit={handleSubmit} className="space-y-10 pb-20">
+      <div className="sticky top-20 z-30 flex items-center justify-between bg-background/80 backdrop-blur-xl py-6 border-b border-border -mx-4 sm:-mx-6 lg:-mx-10 px-4 sm:px-6 lg:px-10 mb-8 transition-all duration-500">
+        <div className="flex items-center gap-4">
+          <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/20">
+            <Settings2 size={20} className="text-primary" />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Administration</span>
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Photothèque : {isEditing ? "Édition" : "Nouveau"}</span>
+          </div>
         </div>
-        <div className="flex gap-3">
-          <Button type="button" variant="ghost" onClick={() => router.back()} className="text-[10px] font-black uppercase tracking-widest rounded-xl text-muted-foreground hover:text-foreground transition-all">Annuler</Button>
-          <Button disabled={loading} className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/20 px-8 rounded-xl font-black text-[10px] uppercase tracking-widest active:scale-95 transition-all">
-            <Save className="mr-2" size={16} />
-            {isEditing ? "Enregistrer" : "Créer"}
+        <div className="flex gap-4">
+          <Button 
+            type="button" 
+            variant="ghost" 
+            onClick={() => router.back()} 
+            className="text-[10px] font-black uppercase tracking-widest rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all border border-transparent hover:border-border"
+          >
+            Annuler
+          </Button>
+          <Button 
+            disabled={loading} 
+            className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-xl shadow-primary/20 px-10 rounded-xl font-black text-[10px] uppercase tracking-[0.2em] active:scale-95 transition-all h-12"
+          >
+            {loading ? (
+              <Loader2 className="animate-spin" size={18} />
+            ) : (
+              <>
+                <Save className="mr-3" size={18} />
+                {isEditing ? "Enregistrer" : "Créer l'entrée"}
+              </>
+            )}
           </Button>
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-6">
+      <div className="grid lg:grid-cols-3 gap-10">
+        <div className="lg:col-span-2 space-y-8">
           <Tabs defaultValue="fr" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 h-14 bg-muted/50 p-1 rounded-2xl border border-border">
+            <TabsList className="grid w-full grid-cols-3 h-14 bg-muted/30 backdrop-blur-sm p-1.5 rounded-2xl border border-border/50">
               {LANGUAGES.map(l => (
-                <TabsTrigger key={l.code} value={l.code} className="font-black uppercase text-[9px] tracking-[0.2em] rounded-xl data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm transition-all focus:outline-none">
-                  <Globe size={14} className="mr-2" /> {l.label}
+                <TabsTrigger 
+                  key={l.code} 
+                  value={l.code} 
+                  className="font-black uppercase text-[9px] tracking-[0.22em] rounded-xl data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-lg data-[state=active]:shadow-black/5 transition-all duration-500 focus:outline-none"
+                >
+                  <Globe size={14} className="mr-2.5" /> {l.label}
                 </TabsTrigger>
               ))}
             </TabsList>
 
             {LANGUAGES.map(l => (
-              <TabsContent key={l.code} value={l.code} className="mt-6 space-y-6 outline-none animate-in fade-in slide-in-from-bottom-2 duration-500">
-                <Card className="p-8 space-y-8 rounded-[2.5rem] border-border bg-card shadow-sm transition-all">
-                  <div className="space-y-4">
-                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Titre de l'image ({l.code})</Label>
+              <TabsContent 
+                key={l.code} 
+                value={l.code} 
+                className="mt-8 space-y-8 outline-none animate-in fade-in slide-in-from-bottom-4 duration-700"
+              >
+                <Card className="p-8 md:p-12 space-y-10 rounded-[2.5rem] border-border/60 bg-card/60 backdrop-blur-sm shadow-2xl shadow-black/[0.02] transition-all hover:shadow-black/[0.04]">
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-px bg-primary/30" />
+                      <Label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50">Titre de l'image ({l.code})</Label>
+                    </div>
                     <Input 
-                      className="text-2xl font-serif font-black border-0 border-b border-border rounded-none px-0 focus-visible:ring-0 focus-visible:border-primary bg-transparent text-foreground placeholder:text-muted-foreground/20 italic"
-                      placeholder="Légende de l'image..."
+                      className="text-2xl md:text-3xl font-fraunces font-black border-0 border-b-2 border-border/30 rounded-none px-0 focus-visible:ring-0 focus-visible:border-primary transition-all bg-transparent text-foreground placeholder:text-muted-foreground/10 italic pb-4 h-auto"
+                      placeholder="Légende artistique de l'image..."
                       value={translations[l.code].title}
                       onChange={(e) => setTranslations({...translations, [l.code]: {...translations[l.code], title: e.target.value}})}
                     />
                   </div>
                   
-                  <ModernMarkdownEditor 
-                    label="Description (Markdown)"
-                    value={translations[l.code].description}
-                    onChange={(val) => setTranslations({...translations, [l.code]: {...translations[l.code], description: val}})}
-                  />
+                  <div className="pt-4 border-t border-border/20">
+                    <ModernMarkdownEditor 
+                      label={`Description détaillée (${l.label})`}
+                      value={translations[l.code].description}
+                      onChange={(val) => setTranslations({...translations, [l.code]: {...translations[l.code], description: val}})}
+                    />
+                  </div>
                 </Card>
               </TabsContent>
             ))}
           </Tabs>
         </div>
 
-        <div className="space-y-6">
-          <Card className="p-8 space-y-8 rounded-[2.5rem] border-border bg-card shadow-sm transition-all relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/2 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl pointer-events-none" />
-            <h3 className="font-black uppercase text-[10px] tracking-[0.3em] text-primary border-b border-border pb-6">Source & Organisation</h3>
+        <div className="space-y-8">
+          <Card className="p-8 md:p-10 space-y-10 rounded-[2.5rem] border-border/60 bg-card/60 backdrop-blur-sm shadow-2xl shadow-black/[0.02] transition-all relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-[80px] pointer-events-none" />
             
-            <SmartImageInput 
-              label="Sélection de l'image"
-              value={baseData.src}
-              onChange={(val) => setBaseData({...baseData, src: val})}
-              folder="gallery"
-            />
+            <div className="flex items-center gap-4">
+              <div className="w-1.5 h-6 bg-primary rounded-full" />
+              <h3 className="font-black uppercase text-[11px] tracking-[0.4em] text-primary">Configuration</h3>
+            </div>
+            
+            <div className="space-y-4">
+              <SmartImageInput 
+                label="Fichier Visuel"
+                value={baseData.src}
+                onChange={(val) => setBaseData({...baseData, src: val})}
+                folder="gallery"
+              />
+              <p className="text-[9px] font-bold text-muted-foreground/30 uppercase tracking-widest pl-2 italic">
+                Sera affichée dans la photothèque publique
+              </p>
+            </div>
 
-            <div className="space-y-3">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">Catégorie</Label>
+            <div className="space-y-5 pt-4 border-t border-border/20">
+              <Label className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground/50 flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full bg-primary" />
+                Catégorie thématique
+              </Label>
               <Input 
                 value={baseData.category}
                 onChange={(e) => setBaseData({...baseData, category: e.target.value})}
-                placeholder="EVENT, RESEARCH, CAMPUS..." 
-                className="rounded-xl bg-muted/20 border-border font-bold text-xs text-foreground focus:ring-primary/20 transition-all h-12"
+                placeholder="Ex: EVENT, RESEARCH, CLINIC..." 
+                className="rounded-2xl bg-muted/20 border-border/40 font-bold text-xs text-foreground focus:ring-primary/10 transition-all h-14 pl-6"
               />
             </div>
 
-            <div className="flex items-center justify-between p-6 bg-primary/[0.03] rounded-2xl border border-primary/10 transition-all group hover:bg-primary/[0.05]">
-              <Label className="text-[10px] font-black uppercase tracking-widest text-primary cursor-pointer" htmlFor="featured-switch">Mettre en vedette</Label>
+            <div className="flex items-center justify-between p-7 bg-primary/[0.04] dark:bg-primary/[0.08] rounded-[2rem] border border-primary/20 transition-all group hover:bg-primary/[0.06] shadow-sm">
+              <div className="space-y-1">
+                <Label className="text-[10px] font-black uppercase tracking-[0.25em] text-primary cursor-pointer leading-none" htmlFor="featured-switch">
+                  Mise en avant
+                </Label>
+                <p className="text-[9px] font-medium text-primary/40 leading-none">Carousel de la page d'accueil</p>
+              </div>
               <Switch 
                 id="featured-switch"
                 checked={baseData.featured}
@@ -157,6 +208,13 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
                 className="data-[state=checked]:bg-primary"
               />
             </div>
+          </Card>
+
+          <Card className="p-8 rounded-[2rem] border-dashed border-border/60 bg-muted/10 flex items-center justify-center text-center">
+            <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-[0.3em] leading-relaxed">
+              Dernière modification : {new Date().toLocaleDateString()}<br />
+              ID: {initialData?.id || "Nouveau"}
+            </p>
           </Card>
         </div>
       </div>

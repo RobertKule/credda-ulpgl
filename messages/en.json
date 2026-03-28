@@ -695,6 +695,31 @@
     "errors": {
       "invalid": "Invalid credentials",
       "connection": "Connection error"
+    },
+    "visual": {
+      "badge": "Secure Institutional Access",
+      "title": "Excellence in Service of {span} and Development.",
+      "span": "Research",
+      "description": "Log in to CREDDA's harmonized administration platform to manage your work, publications, and legal clinics.",
+      "slogan": "Research Excellence"
+    },
+    "form_header": {
+      "login_title": "Login",
+      "forgot_title": "Recovery",
+      "login_subtitle": "Harmonized Administration System",
+      "forgot_subtitle": "Institutional ID Required"
+    },
+    "navigation": {
+      "exit": "EXIT",
+      "back_to_portal": "Back to public portal",
+      "create_account": "Create an account"
+    },
+    "success_modal": {
+      "title": "Access Granted",
+      "message": "Verifying your access... You will be redirected to your dashboard."
+    },
+    "error_modal": {
+      "title": "Access Denied"
     }
   },
   "RegisterPage": {
@@ -1076,7 +1101,8 @@
       "title": "<italic>Central</italic> Desk",
       "unread": "{count} New messages waiting",
       "consult": "Consult",
-      "viewAll": "View all"
+      "viewAll": "View all",
+      "empty": "No recent messages."
     },
     "health": {
       "title": "System Integrity",
@@ -1138,6 +1164,54 @@
       "home": "Back Home",
       "reported": "Error Reported",
       "system": "System Error"
+    }
+  },
+  "AdminProfile": {
+    "header": {
+      "badge": "Account Management",
+      "title": "My <italic>Profile</italic>",
+      "subtitle": "\"The integrity of your data is the foundation of our institutional security.\"",
+      "protected": "Protected by Auth.js"
+    },
+    "card": {
+      "certified": "Certified Account",
+      "securityTitle": "Session Security",
+      "securityDesc": "Your admin session is protected by an SSL protocol. If you notice any suspicious activity, change your password immediately and log out."
+    },
+    "personal": {
+      "title": "Personal Information",
+      "name": "Full Name",
+      "email": "Professional Email",
+      "phone": "Contact Phone",
+      "bio": "Short Biography",
+      "bioPlaceholder": "Expertise, academic titles...",
+      "save": "Save Changes"
+    },
+    "security": {
+      "title": "Security & Access",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New",
+      "submit": "Reset Access Keys"
+    },
+    "messages": {
+      "loadingProfile": "Updating your profile...",
+      "successProfile": "Profile updated successfully",
+      "loadingPassword": "Securing your new password...",
+      "successPassword": "Password modified",
+      "errorUpdate": "An error occurred",
+      "errorConn": "Connection error",
+      "errorMatch": "Passwords do not match"
+    }
+  },
+  "AdminUsers": {
+    "new": {
+      "title": "Create Administrator",
+      "subtitle": "This account will have full access to the site management.",
+      "name": "Full Name",
+      "email": "Professional Email",
+      "password": "Temporary Password",
+      "submit": "Generate Access"
     }
   }
 }
