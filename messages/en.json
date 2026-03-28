@@ -1164,5 +1164,53 @@
       "reported": "Error Reported",
       "system": "System Error"
     }
+  },
+  "AdminProfile": {
+    "header": {
+      "badge": "Account Management",
+      "title": "My <italic>Profile</italic>",
+      "subtitle": "\"The integrity of your data is the foundation of our institutional security.\"",
+      "protected": "Protected by Auth.js"
+    },
+    "card": {
+      "certified": "Certified Account",
+      "securityTitle": "Session Security",
+      "securityDesc": "Your admin session is protected by an SSL protocol. If you notice any suspicious activity, change your password immediately and log out."
+    },
+    "personal": {
+      "title": "Personal Information",
+      "name": "Full Name",
+      "email": "Professional Email",
+      "phone": "Contact Phone",
+      "bio": "Short Biography",
+      "bioPlaceholder": "Expertise, academic titles...",
+      "save": "Save Changes"
+    },
+    "security": {
+      "title": "Security & Access",
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New",
+      "submit": "Reset Access Keys"
+    },
+    "messages": {
+      "loadingProfile": "Updating your profile...",
+      "successProfile": "Profile updated successfully",
+      "loadingPassword": "Securing your new password...",
+      "successPassword": "Password modified",
+      "errorUpdate": "An error occurred",
+      "errorConn": "Connection error",
+      "errorMatch": "Passwords do not match"
+    }
+  },
+  "AdminUsers": {
+    "new": {
+      "title": "Create Administrator",
+      "subtitle": "This account will have full access to the site management.",
+      "name": "Full Name",
+      "email": "Professional Email",
+      "password": "Temporary Password",
+      "submit": "Generate Access"
+    }
   }
 }

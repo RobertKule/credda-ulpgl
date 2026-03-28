@@ -4,10 +4,12 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import ProfileForm from "@/components/admin/ProfileForm";
 import { UserCircle, Shield } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
 export default async function ProfilePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const session = await auth();
+  const t = await getTranslations("AdminProfile");
 
   if (!session || !session.user) {
     redirect(`/${locale}/login`);
@@ -24,27 +26,27 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
   return (
     <div className="space-y-10 pb-10">
       {/* Header Exécutif */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 border-b border-slate-200 pb-8">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 border-b border-border pb-8">
         <div className="space-y-1">
           <div className="flex items-center gap-2 mb-2">
             <div className="bg-primary/10 p-1.5 rounded-lg">
               <UserCircle size={18} className="text-primary" />
             </div>
-            <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
-              Gestion de Compte
+            <span className="text-[10px] text-muted-foreground font-black uppercase tracking-widest">
+              {t('header.badge')}
             </span>
           </div>
-          <h1 className="text-4xl font-serif font-bold text-slate-900 tracking-tight">
-            Mon <span className="text-slate-400 font-light italic">Profil</span>
-          </h1>
-          <p className="text-sm text-slate-500 font-medium italic">
-            "L'intégrité de vos données est la fondation de notre sécurité institutionnelle."
+          <h1 className="text-4xl font-serif font-bold text-foreground tracking-tight"
+              dangerouslySetInnerHTML={{ __html: t('header.title').replace('<italic>', '<span class="text-muted-foreground font-light italic">').replace('</italic>', '</span>') }} 
+          />
+          <p className="text-sm text-muted-foreground font-medium italic">
+            {t('header.subtitle')}
           </p>
         </div>
         
-        <div className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-md border border-emerald-100 shadow-sm animate-pulse-slow">
+        <div className="flex items-center gap-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 px-4 py-2 rounded-md border border-emerald-500/20 shadow-sm animate-pulse-slow">
            <Shield size={16} />
-           <span className="text-[10px] font-black uppercase tracking-widest">Protégé par Auth.js</span>
+           <span className="text-[10px] font-black uppercase tracking-widest">{t('header.protected')}</span>
         </div>
       </div>
 

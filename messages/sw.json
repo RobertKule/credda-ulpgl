@@ -128,7 +128,8 @@
           "text": "Nilitembelea ULPGL mnamo 2015 kufanya utafiti wa udaktari wangu. Profesa Kennedy KIHANGI BINDU alikuwa mwenyeji mzuri ambaye alisaidia kuwasiliana na watafiti na mashirika mengine.",
           "image": "/images/testimonials/britta.webp"
         }
-      ]
+      ],
+      "title": "They <span>trust us</span>."
     },
     "library": {
       "badge": "Rasilimali",
@@ -1031,6 +1032,185 @@
       "title": "Unahitaji habari zaidi?",
       "description": "Kwa maswali yoyote kuhusu sera yetu ya faragha au kutumia haki zako, tafadhali usisite kuwasiliana nasi.",
       "cta": "Andika kwa sekretarieti"
+    }
+  },
+  "AdminProfile": {
+    "header": {
+      "badge": "Usimamizi wa Akaunti",
+      "title": "Wasifu <italic>Wangu</italic>",
+      "subtitle": "\"Uadilifu wa data yako ndio msingi wa usalama wa taasisi yetu.\"",
+      "protected": "Inalindwa na Auth.js"
+    },
+    "card": {
+      "certified": "Akaunti Iliyothibitishwa",
+      "securityTitle": "Usalama wa Kipindi",
+      "securityDesc": "Kipindi chako cha admin kinalindwa na itifaki ya SSL. Ukiona shughuli yoyote ya kutiliwa shaka, badilisha neno lako la siri mara moja na uondoke."
+    },
+    "personal": {
+      "title": "Habari za Kibinafsi",
+      "name": "Jina Kamili",
+      "email": "Barua pepe ya Kitaalamu",
+      "phone": "Simu ya Mawasiliano",
+      "bio": "Wasifu Mfupi",
+      "bioPlaceholder": "Utaalamu, vyeo vya kitaaluma...",
+      "save": "Hifadhi Mabadiliko"
+    },
+    "security": {
+      "title": "Usalama na Ufikiaji",
+      "currentPassword": "Neno la siri la sasa",
+      "newPassword": "Neno la siri jipya",
+      "confirmPassword": "Thibitisha jipya",
+      "submit": "Weka upya Funguo za Ufikiaji"
+    },
+    "messages": {
+      "loadingProfile": "Tunatayarisha wasifu wako...",
+      "successProfile": "Wasifu umesasishwa kikamilifu",
+      "loadingPassword": "Tunaimarisha neno lako la siri jipya...",
+      "successPassword": "Neno la siri limebadilishwa",
+      "errorUpdate": "Hitilafu imetokea",
+      "errorConn": "Hitilafu ya unganisho",
+      "errorMatch": "Maneno ya siri hayalingani"
+    }
+  },
+  "RegisterPage": {
+    "left": {
+      "badge": "Rejoindre le CREDDA",
+      "title": "Devenez acteur de la <span>Recherche</span>.",
+      "description": "Créez votre compte pour accéder aux ressources exclusives, contribuer aux travaux scientifiques ou suivre vos cas cliniques.",
+      "footer": "Inscription sécurisée et vérifiée"
+    },
+    "right": {
+      "back": "Retour",
+      "logo": "CREDDA<span>.ULPGL</span>",
+      "title": "Créer un compte",
+      "subtitle": "Suivez les étapes pour rejoindre notre réseau.",
+      "steps": {
+        "account": "Compte",
+        "profile": "Profil",
+        "details": "Détails"
+      },
+      "fields": {
+        "email": {
+          "label": "Email Professionnel",
+          "placeholder": "votre@email.com"
+        },
+        "password": {
+          "label": "Mot de passe",
+          "placeholder": "••••••••"
+        },
+        "confirmPassword": {
+          "label": "Confirmer",
+          "placeholder": "••••••••"
+        },
+        "name": {
+          "label": "Nom Complet",
+          "placeholder": "Pr. / Dr. / Nom"
+        },
+        "phone": {
+          "label": "Téléphone",
+          "placeholder": "+243..."
+        },
+        "organization": {
+          "label": "Organisation / Université",
+          "placeholder": "Ex: ULPGL Goma"
+        },
+        "requestedRole": {
+          "label": "Rôle Souhaité",
+          "placeholder": "Chercheur, Éditeur, Clinicien..."
+        },
+        "bio": {
+          "label": "Bio / Motivation",
+          "placeholder": "Décrivez brièvement votre parcours ou intérêt..."
+        }
+      },
+      "submit": "Terminer l'inscription",
+      "next": "Étape suivante",
+      "prev": "Précédent",
+      "submitting": "Traitement...",
+      "success": {
+        "title": "Demande Envoyée !",
+        "description": "Votre compte a été créé avec succès. Il est actuellement <strong>en attente d'approbation</strong> par l'administration du CREDDA. Vous recevrez un email dès validation.",
+        "button": "Retour à l'accueil"
+      },
+      "errors": {
+        "passwordsDontMatch": "Les mots de passe ne correspondent pas",
+        "missingFields": "Veuillez remplir tous les champs obligatoires",
+        "emailExists": "Cet email est déjà utilisé",
+        "generic": "Une erreur est survenue lors de l'inscription"
+      }
+    }
+  },
+  "ProfilePage": {
+    "title": "Mon Profil",
+    "subtitle": "Gérez vos informations personnelles et votre biographie scientifique.",
+    "fields": {
+      "name": "Nom Complet",
+      "email": "Email",
+      "phone": "Téléphone",
+      "organization": "Organisation / Université",
+      "bio": "Bio / Motivation",
+      "image": "Lien de la photo"
+    },
+    "actions": {
+      "save": "Enregistrer les modifications",
+      "upload": "Changer la photo",
+      "saving": "Enregistrement..."
+    },
+    "success": "Profil mis à jour avec succès !",
+    "error": "Erreur lors de la mise à jour du profil."
+  },
+  "SecurityPage": {
+    "title": "Sécurité",
+    "subtitle": "Protégez votre compte en changeant votre mot de passe.",
+    "fields": {
+      "current": "Mot de passe actuel",
+      "new": "Nouveau mot de passe",
+      "confirm": "Confirmer le nouveau mot de passe"
+    },
+    "actions": {
+      "update": "Mettre à jour le mot de passe",
+      "updating": "Mise à jour..."
+    },
+    "success": "Mot de passe modifié avec succès !",
+    "error": "Erreur lors du changement de mot de passe.",
+    "errors": {
+      "wrongCurrent": "Le mot de passe actuel est incorrect",
+      "dontMatch": "Les nouveaux mots de passe ne correspondent pas"
+    }
+  },
+  "LegalPage": {
+    "header": {
+      "badge": "Informations Officielles",
+      "title": "Mentions <span>Légales</span>",
+      "description": "Informations juridiques relatives à l'institution et aux conditions d'utilisation du site."
+    },
+    "sections": [
+      {
+        "title": "Éditeur du Site",
+        "content": "Centre de Recherche sur la Démocratie et le Développement en Afrique (CREDDA-ULPGL), une institution académique de l'Université Libre des Pays des Grands Lacs (ULPGL-Goma)."
+      },
+      {
+        "title": "Direction",
+        "content": "Directeur de la Publication : Prof. Dr. Kennedy Kihangi Bindu, Directeur du CREDDA."
+      },
+      {
+        "title": "Siège Social",
+        "content": "Campus Salomon, Avenue de la Corniche, Q. Himbi, Goma, Nord-Kivu, République Démocratique du Congo."
+      },
+      {
+        "title": "Propriété Intellectuelle",
+        "content": "Tous les rapports, articles et contenus multimédias sont la propriété exclusive du CREDDA-ULPGL, sauf mention contraire. Toute reproduction est soumise à autorisation préalable."
+      }
+    ]
+  },
+  "AdminUsers": {
+    "new": {
+      "title": "Unda Msimamizi",
+      "subtitle": "Akaunti hii itakuwa na ufikiaji kamili wa usimamizi wa tovuti.",
+      "name": "Jina Kamili",
+      "email": "Barua pepe ya Kitaalamu",
+      "password": "Neno la siri la muda",
+      "submit": "Tengeneza Ufikiaji"
     }
   }
 }
