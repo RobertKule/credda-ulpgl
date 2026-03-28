@@ -761,7 +761,9 @@
     "recentMessages": {
       "title": "Dawati Kuu",
       "unread": "{count} Ujumbe mpya unaongoja",
-      "viewAll": "Ona yote"
+      "consult": "Ona zaidi",
+      "viewAll": "Ona yote",
+      "empty": "Hakuna ujumbe mpya."
     },
     "health": {
       "title": "Uadilifu wa Mfumo",

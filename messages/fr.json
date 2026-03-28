@@ -1099,7 +1099,8 @@
       "title": "<italic>Bureau</italic> Central",
       "unread": "{count} Nouveaux messages en attente",
       "consult": "Consulter",
-      "viewAll": "Tout voir"
+      "viewAll": "Tout voir",
+      "empty": "Aucun message récent."
     },
     "health": {
       "title": "Intégrité Système",

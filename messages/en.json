@@ -1100,7 +1100,8 @@
       "title": "<italic>Central</italic> Desk",
       "unread": "{count} New messages waiting",
       "consult": "Consult",
-      "viewAll": "View all"
+      "viewAll": "View all",
+      "empty": "No recent messages."
     },
     "health": {
       "title": "System Integrity",

@@ -66,25 +66,27 @@ export default async function AdminPage({ params }: Props) {
     // Monthly growth (Last 7 months) - Split by Domain
     safeQuery(
       async () => {
-        const months = [];
-        for (let i = 6; i >= 0; i--) {
+        const monthPromises = Array.from({ length: 7 }, (_, i) => {
+          const index = 6 - i;
           const d = new Date();
-          d.setMonth(d.getMonth() - i);
+          d.setMonth(d.getMonth() - index);
           const startOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
           const endOfMonth = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59);
           
-          const [researchCount, clinicalCount] = await Promise.all([
-            db.article.count({ where: { domain: 'RESEARCH', createdAt: { gte: startOfMonth, lte: endOfMonth } } }),
-            db.article.count({ where: { domain: 'CLINICAL', createdAt: { gte: startOfMonth, lte: endOfMonth } } })
-          ]);
-
-          months.push({
-            name: d.toLocaleDateString(locale, { month: 'short' }),
-            research: researchCount,
-            clinical: clinicalCount
-          });
-        }
-        return months;
+          return (async () => {
+             const [research, clinical] = await Promise.all([
+               db.article.count({ where: { domain: 'RESEARCH', createdAt: { gte: startOfMonth, lte: endOfMonth } } }),
+               db.article.count({ where: { domain: 'CLINICAL', createdAt: { gte: startOfMonth, lte: endOfMonth } } })
+             ]);
+             return {
+               name: d.toLocaleDateString(locale, { month: 'short' }),
+               research,
+               clinical
+             };
+          })();
+        });
+        
+        return await Promise.all(monthPromises);
       },
       [],
       "admin:monthlyGrowth"
