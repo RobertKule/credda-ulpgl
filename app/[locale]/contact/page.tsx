@@ -96,7 +96,7 @@ export default function ContactPage() {
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="relative aspect-square bg-card border border-border p-10 lg:p-14 flex flex-col justify-center shadow-2xl overflow-hidden"
+              className="relative bg-card border border-border p-6 sm:p-10 lg:p-14 flex flex-col justify-center shadow-2xl overflow-hidden rounded-[2rem] min-h-[500px]"
             >
               <AnimatePresence mode="wait">
                 {status === "success" ? (
@@ -131,7 +131,7 @@ export default function ContactPage() {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid grid-cols-2 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
                         <Field label="Identité" name="name" placeholder="Pr. Robert Kule" required />
                         <Field label="Contact" name="email" type="email" placeholder="kule@ulpgl.ac.cd" required />
                       </div>

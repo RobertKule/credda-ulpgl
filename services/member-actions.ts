@@ -12,12 +12,22 @@ export async function createMember(formData: any): Promise<ActionResponse<any>> 
         name: formData.name,
         image: formData.image,
         email: formData.email,
+        facebook: formData.facebook,
+        linkedin: formData.linkedin,
+        twitter: formData.twitter,
+        whatsapp: formData.whatsapp,
+        youtube: formData.youtube,
+        tiktok: formData.tiktok,
+        website: formData.website,
         order: parseInt(formData.order) || 0,
         translations: { 
           create: formData.translations.map((t: any) => ({
             language: t.language,
             role: t.role,
-            bio: t.bio
+            bio: t.bio,
+            education: t.education,
+            researchAxes: t.researchAxes,
+            expertise: t.expertise
           })) 
         }
       }
@@ -44,13 +54,23 @@ export async function updateMember(id: string, formData: any): Promise<ActionRes
         name: formData.name,
         image: formData.image,
         email: formData.email,
+        facebook: formData.facebook,
+        linkedin: formData.linkedin,
+        twitter: formData.twitter,
+        whatsapp: formData.whatsapp,
+        youtube: formData.youtube,
+        tiktok: formData.tiktok,
+        website: formData.website,
         order: parseInt(formData.order) || 0,
         translations: {
           deleteMany: {},
           create: formData.translations.map((t: any) => ({
             language: t.language,
             role: t.role,
-            bio: t.bio
+            bio: t.bio,
+            education: t.education,
+            researchAxes: t.researchAxes,
+            expertise: t.expertise
           }))
         }
       }
