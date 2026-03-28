@@ -173,18 +173,28 @@ model Member {
   name         String              @default("")
   image        String?
   email        String?
+  facebook     String?
+  linkedin     String?
+  twitter      String?
+  whatsapp     String?
+  youtube      String?
+  tiktok       String?
+  website      String?
   order        Int                 @default(0)
   translations MemberTranslation[]
 }
 
 model MemberTranslation {
-  id       String  @id @default(cuid())
-  language String
-  name     String?
-  role     String // ex: Directeur de recherche
-  bio      String?
-  memberId String
-  member   Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  id           String  @id @default(cuid())
+  language     String
+  name         String?
+  role         String 
+  bio          String?
+  education    String? 
+  researchAxes String? 
+  expertise    String? 
+  memberId     String
+  member       Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
 
   @@unique([memberId, language])
 }

@@ -8,13 +8,15 @@ import {
   Mail, 
   Linkedin, 
   ChevronLeft, 
-  Award, 
-  BookOpen, 
-  Globe, 
   Users,
-  Backpack,
   GraduationCap,
-  Microscope
+  Microscope,
+  Facebook,
+  Twitter,
+  Youtube,
+  MessageCircle,
+  Globe,
+  Music
 } from "lucide-react";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
 import { Badge } from "@/components/ui/badge";
@@ -107,25 +109,96 @@ export default async function MemberDetailPage({ params }: Props) {
                         </a>
                      </div>
                    )}
-                   <div className="flex items-center gap-4 group">
-                      <div className="p-2 bg-primary/5 text-primary group-hover:bg-primary group-hover:text-white transition-all rounded-md">
-                         <Linkedin size={16} />
-                      </div>
-                      <a href="#" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
-                         LinkedIn Profile
-                      </a>
-                   </div>
+                   {member.linkedin && (
+                     <div className="flex items-center gap-4 group">
+                        <div className="p-2 bg-primary/5 text-primary group-hover:bg-[#0a66c2] group-hover:text-white transition-all rounded-md">
+                           <Linkedin size={16} />
+                        </div>
+                        <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+                           LinkedIn Profile
+                        </a>
+                     </div>
+                   )}
+                   {member.twitter && (
+                     <div className="flex items-center gap-4 group">
+                        <div className="p-2 bg-primary/5 text-primary group-hover:bg-foreground group-hover:text-background transition-all rounded-md">
+                           <Twitter size={16} />
+                        </div>
+                        <a href={member.twitter} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+                           Compte X (Twitter)
+                        </a>
+                     </div>
+                   )}
+                   {member.whatsapp && (
+                     <div className="flex items-center gap-4 group">
+                        <div className="p-2 bg-primary/5 text-primary group-hover:bg-[#25D366] group-hover:text-white transition-all rounded-md">
+                           <MessageCircle size={16} />
+                        </div>
+                        <a href={`https://wa.me/${member.whatsapp.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+                           WhatsApp Direct
+                        </a>
+                     </div>
+                   )}
+                   {member.facebook && (
+                     <div className="flex items-center gap-4 group">
+                        <div className="p-2 bg-primary/5 text-primary group-hover:bg-[#0866ff] group-hover:text-white transition-all rounded-md">
+                           <Facebook size={16} />
+                        </div>
+                        <a href={member.facebook} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+                           Page Facebook
+                        </a>
+                     </div>
+                   )}
+                   {member.youtube && (
+                     <div className="flex items-center gap-4 group">
+                        <div className="p-2 bg-primary/5 text-primary group-hover:bg-[#FF0000] group-hover:text-white transition-all rounded-md">
+                           <Youtube size={16} />
+                        </div>
+                        <a href={member.youtube} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+                           Chaîne YouTube
+                        </a>
+                     </div>
+                   )}
+                   {member.tiktok && (
+                     <div className="flex items-center gap-4 group">
+                        <div className="p-2 bg-primary/5 text-primary group-hover:bg-foreground group-hover:text-background transition-all rounded-md">
+                           <Music size={16} />
+                        </div>
+                        <a href={member.tiktok} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+                           Compte TikTok
+                        </a>
+                     </div>
+                   )}
+                   {member.website && (
+                     <div className="flex items-center gap-4 group">
+                        <div className="p-2 bg-primary/5 text-primary group-hover:bg-primary group-hover:text-white transition-all rounded-md">
+                           <Globe size={16} />
+                        </div>
+                        <a href={member.website} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">
+                           Site Personnel
+                        </a>
+                     </div>
+                   )}
                 </div>
 
                 <div className="space-y-4 pt-4">
                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary border-b border-border pb-4 italic">
                       {t('detail.expertiseTitle')}
                    </h3>
-                   <div className="flex flex-wrap gap-2">
-                       <Badge variant="outline" className="border-border px-3 py-1 font-outfit text-[9px] uppercase tracking-wider text-muted-foreground hover:bg-primary hover:text-white transition-colors cursor-default">Droit de l'Environnement</Badge>
-                       <Badge variant="outline" className="border-border px-3 py-1 font-outfit text-[9px] uppercase tracking-wider text-muted-foreground hover:bg-primary hover:text-white transition-colors cursor-default">Développement Durable</Badge>
-                       <Badge variant="outline" className="border-border px-3 py-1 font-outfit text-[9px] uppercase tracking-wider text-muted-foreground hover:bg-primary hover:text-white transition-colors cursor-default">Grands Lacs</Badge>
-                   </div>
+                   {content.expertise && content.expertise.length > 0 ? (
+                     <div className="flex flex-wrap gap-2">
+                       {content.expertise.split(',').map((exp: string, i: number) => {
+                         if (!exp.trim()) return null;
+                         return (
+                           <Badge key={i} variant="outline" className="border-border px-3 py-1 font-outfit text-[9px] uppercase tracking-wider text-muted-foreground hover:bg-primary hover:text-white transition-colors cursor-default">
+                             {exp.trim()}
+                           </Badge>
+                         );
+                       })}
+                     </div>
+                   ) : (
+                     <p className="text-xs text-muted-foreground/50 italic opacity-60">Non renseigné</p>
+                   )}
                 </div>
              </div>
           </ScrollReveal>
@@ -164,27 +237,33 @@ export default async function MemberDetailPage({ params }: Props) {
              </div>
 
              {/* BENTO GRID INFOS */}
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
-                <div className="p-8 bg-card border border-border space-y-4 hover:border-primary/30 transition-all group">
-                   <div className="w-12 h-12 bg-primary/10 text-primary flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform">
-                      <GraduationCap size={24} />
-                   </div>
-                   <h4 className="font-serif font-black uppercase text-xs tracking-widest text-foreground">Formation Académique</h4>
-                   <p className="text-sm text-muted-foreground font-light leading-relaxed">
-                      Expert en droit international avec une spécialisation sur les ressources naturelles en Afrique Centrale.
-                   </p>
-                </div>
-                
-                <div className="p-8 bg-card border border-border space-y-4 hover:border-primary/30 transition-all group">
-                   <div className="w-12 h-12 bg-primary/10 text-primary flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform">
-                      <Microscope size={24} />
-                   </div>
-                   <h4 className="font-serif font-black uppercase text-xs tracking-widest text-foreground">Axes de Recherche</h4>
-                   <p className="text-sm text-muted-foreground font-light leading-relaxed">
-                      Conflits fonciers, préservation environnementale et politiques climatiques régionales.
-                   </p>
-                </div>
-             </div>
+             {(content.education || content.researchAxes) && (
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                  {content.education && (
+                    <div className="p-8 bg-card border border-border space-y-4 hover:border-primary/30 transition-all group">
+                       <div className="w-12 h-12 bg-primary/10 text-primary flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform">
+                          <GraduationCap size={24} />
+                       </div>
+                       <h4 className="font-serif font-black uppercase text-xs tracking-widest text-foreground">Formation Académique</h4>
+                       <p className="text-sm text-muted-foreground font-light leading-relaxed whitespace-pre-line">
+                          {content.education}
+                       </p>
+                    </div>
+                  )}
+                  
+                  {content.researchAxes && (
+                    <div className="p-8 bg-card border border-border space-y-4 hover:border-primary/30 transition-all group">
+                       <div className="w-12 h-12 bg-primary/10 text-primary flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform">
+                          <Microscope size={24} />
+                       </div>
+                       <h4 className="font-serif font-black uppercase text-xs tracking-widest text-foreground">Axes de Recherche</h4>
+                       <p className="text-sm text-muted-foreground font-light leading-relaxed whitespace-pre-line">
+                          {content.researchAxes}
+                       </p>
+                    </div>
+                  )}
+               </div>
+             )}
           </ScrollReveal>
         </section>
 
