@@ -103,7 +103,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                     <div className="flex items-center justify-between text-[10px] md:text-xs">
                         <span className="text-muted-foreground font-medium uppercase tracking-wider">{formattedDate}</span>
                         <div className="flex items-center gap-2 text-primary font-black uppercase tracking-widest">
-                            {categories.slice(0, 2).map((cat, i) => (
+                            {categories.slice(0, 2).map((cat: string, i: number) => (
                                 <React.Fragment key={i}>
                                     {i > 0 && <span className="opacity-30">·</span>}
                                     <span>{cat}</span>
