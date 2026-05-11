@@ -148,7 +148,6 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
                 </div>
                 <div className="min-w-0">
                   <p className="font-serif font-black text-foreground leading-none tracking-tight transition-colors">CREDDA</p>
-                  <p className="text-[8px] font-black uppercase tracking-[0.3em] text-primary/80 mt-1">Admin v2.5</p>
                 </div>
               </div>
               <button

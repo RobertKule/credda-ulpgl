@@ -2,39 +2,49 @@
 
 import React from "react";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
 
-interface PartnerSectionProps {
-    partners: string[];
-}
-
-export default function PartnerSection({ partners = [] }: PartnerSectionProps) {
-    const t = useTranslations('HomePage');
-
-    if (!partners || partners.length === 0) return null;
+export default function PartnerSection({ partners = [] }: { partners?: string[] }) {
+    const allPartners = [
+        "logoulpgl.webp", 
+        ...partners
+    ];
 
     return (
-        <section className="py-12 sm:py-16 lg:py-20 bg-white">
-            <p className="text-center text-[8px] sm:text-[9px] lg:text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] sm:tracking-[0.45em] lg:tracking-[0.5em] mb-8 sm:mb-10 lg:mb-12">
-                {t('partners.title')}
-            </p>
-            <div className="relative flex overflow-hidden">
-                <div className="flex animate-infinite-scroll gap-8 sm:gap-12 lg:gap-16 xl:gap-20 items-center whitespace-nowrap">
-                    {[...partners, ...partners].map((logo, i) => (
-                        <div key={i} className="relative w-24 sm:w-32 lg:w-36 xl:w-44 h-8 sm:h-10 lg:h-12 xl:h-16 grayscale opacity-20 hover:opacity-100 hover:grayscale-0 transition-all duration-700 cursor-pointer">
-                            <Image src={`/images/partenaires/${logo}`} alt="Partner" fill className="object-contain" />
-                        </div>
-                    ))}
+        <section className="py-8 bg-background border-y border-border overflow-hidden w-full relative z-20 transition-colors duration-500">
+            <div className="container mx-auto px-6">
+                <div className="relative flex overflow-hidden">
+                    {/* Conteneur du défilement */}
+                    <div className="flex animate-infinite-scroll gap-8 lg:gap-16 items-center whitespace-nowrap py-4">
+                        {[...allPartners, ...allPartners, ...allPartners].map((logo, i) => {
+                            const srcPath = logo === "logoulpgl.webp" ? `/logoulpgl.webp` : `/images/partenaires/${logo}`;
+                            
+                            return (
+                                <div 
+                                    key={i} 
+                                    className="relative w-32 h-32 lg:w-32 lg:h-32 grayscale opacity-80 dark:opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-500 cursor-pointer shrink-0"
+                                >
+                                    <Image 
+                                        src={srcPath} 
+                                        alt={`Partner ${i}`} 
+                                        fill 
+                                        className="object-contain" 
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
+            
             <style jsx global>{`
-        @keyframes infinite-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .animate-infinite-scroll { animation: infinite-scroll 45s linear infinite; }
-        
-        @media (max-width: 640px) {
-          .animate-infinite-scroll { animation-duration: 35s; }
-        }
-      `}</style>
+              @keyframes infinite-scroll { 
+                from { transform: translateX(0); } 
+                to { transform: translateX(-33.33%); } 
+              }
+              .animate-infinite-scroll { 
+                animation: infinite-scroll 25s linear infinite; 
+              }
+            `}</style>
         </section>
     );
 }

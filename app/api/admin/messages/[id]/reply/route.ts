@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
-import { getResend } from "@/lib/resend";
+import { transporter, getMailSender } from "@/lib/mail";
 export const runtime = "nodejs";
 
 export async function POST(
@@ -47,12 +47,12 @@ export async function POST(
       }
     });
 
-    // 2. Envoyer l'email via Resend
+    // 2. Envoyer l'email via Nodemailer
     try {
-      const { data, error } = await getResend().emails.send({
-        from: 'CREDDA-ULPGL <onboarding@resend.dev>',
-        to: [originalMessage.email],
-        subject: `Re: ${originalMessage.subject}`,
+      await transporter.sendMail({
+        from: `CREDDA-ULPGL <${getMailSender()}>`,
+        to: originalMessage.email,
+        subject: `RE: ${originalMessage.subject || 'Votre message sur CREDDA-ULPGL'}`,
         html: `
           <!DOCTYPE html>
           <html>
@@ -108,21 +108,13 @@ export async function POST(
         `
       });
 
-      if (error) {
-        console.error("Erreur Resend:", error);
-        return NextResponse.json(
-          { error: "Erreur lors de l'envoi de l'email" },
-          { status: 500 }
-        );
-      }
-
       return NextResponse.json({ 
         success: true, 
         message: "Réponse envoyée avec succès" 
       });
 
     } catch (emailError) {
-      console.error("Erreur envoi email:", emailError);
+      console.error("Erreur Nodemailer:", emailError);
       return NextResponse.json(
         { error: "Erreur lors de l'envoi de l'email" },
         { status: 500 }

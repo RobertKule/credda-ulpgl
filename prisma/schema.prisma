@@ -7,7 +7,349 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
-// --- ÉNUMÉRATIONS ---
+
+model User {
+  id            String        @id @default(cuid())
+  name          String?
+  email         String        @unique
+  password      String
+  role          Role          @default(USER)
+  status        AccountStatus @default(PENDING)
+  phone         String?
+  organization  String?
+  bio           String?
+  image         String?
+  requestedRole String?
+  createdAt     DateTime      @default(now())
+}
+
+model Program {
+  id           String               @id @default(cuid())
+  slug         String               @unique
+  published    Boolean              @default(false)
+  featured     Boolean              @default(false)
+  mainImage    String?
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  translations ProgramTranslation[]
+
+  @@index([slug])
+}
+
+model ProgramTranslation {
+  id          String  @id @default(cuid())
+  language    String
+  title       String
+  description String
+  content     String?
+  programId   String
+  program     Program @relation(fields: [programId], references: [id], onDelete: Cascade)
+
+  @@unique([programId, language])
+}
+
+model Media {
+  id             String        @id @default(cuid())
+  type           MediaType     @default(IMAGE)
+  url            String
+  title          String?
+  articleId      String?
+  clinicalCaseId String?
+  createdAt      DateTime      @default(now())
+  article        Article?      @relation(fields: [articleId], references: [id])
+  clinicalCase   ClinicalCase? @relation(fields: [clinicalCaseId], references: [id])
+}
+
+model Category {
+  id           String                @id @default(cuid())
+  slug         String                @unique
+  articles     Article[]
+  translations CategoryTranslation[]
+}
+
+model CategoryTranslation {
+  id         String   @id @default(cuid())
+  language   String
+  name       String
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([categoryId, language])
+}
+
+model Article {
+  id           String               @id @default(cuid())
+  slug         String               @unique
+  domain       Domain               @default(RESEARCH)
+  published    Boolean              @default(false)
+  featured     Boolean              @default(false)
+  mainImage    String?
+  videoUrl     String?
+  categoryId   String
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  category     Category             @relation(fields: [categoryId], references: [id])
+  translations ArticleTranslation[]
+  medias       Media[]
+
+  @@index([slug])
+}
+
+model ArticleTranslation {
+  id        String  @id @default(cuid())
+  language  String
+  title     String
+  content   String
+  excerpt   String?
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, language])
+}
+
+model Publication {
+  id           String                   @id @default(cuid())
+  slug         String                   @unique
+  year         Int
+  doi          String?                  @unique
+  pdfUrl       String
+  domain       Domain                   @default(RESEARCH)
+  createdAt    DateTime                 @default(now())
+  translations PublicationTranslation[]
+}
+
+model PublicationTranslation {
+  id            String      @id @default(cuid())
+  language      String
+  title         String
+  authors       String
+  description   String
+  content       String?
+  publicationId String
+  publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+
+  @@unique([publicationId, language])
+}
+
+model Member {
+  id           String              @id @default(cuid())
+  image        String?
+  email        String?
+  order        Int                 @default(0)
+  name         String              @default("")
+  slug         String              @unique @default("")
+  facebook     String?
+  linkedin     String?
+  tiktok       String?
+  twitter      String?
+  website      String?
+  whatsapp     String?
+  youtube      String?
+  translations MemberTranslation[]
+}
+
+model MemberTranslation {
+  id           String  @id @default(cuid())
+  language     String
+  name         String?
+  role         String
+  bio          String?
+  memberId     String
+  education    String?
+  expertise    String?
+  researchAxes String?
+  member       Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([memberId, language])
+}
+
+model ContactMessage {
+  id           String        @id @default(cuid())
+  name         String
+  email        String
+  subject      String
+  message      String
+  status       ContactStatus @default(UNREAD)
+  replyContent String?
+  repliedAt    DateTime?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([email])
+}
+
+model Beneficiary {
+  id        String          @id @default(cuid())
+  name      String
+  email     String?
+  phone     String
+  location  String
+  type      BeneficiaryType @default(LOCAL_COMMUNITY)
+  userId    String?         @unique
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  cases     ClinicalCase[]
+}
+
+model ClinicalCase {
+  id            String       @id @default(cuid())
+  title         String
+  description   String
+  problemType   String
+  location      String
+  incidentDate  DateTime?
+  status        CaseStatus   @default(NEW)
+  urgency       UrgencyLevel @default(MEDIUM)
+  actionsTaken  String?
+  expectations  String?
+  beneficiaryId String
+  clinicianId   String?
+  trackingCode  String?      @unique
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  notes         CaseNote[]
+  beneficiary   Beneficiary  @relation(fields: [beneficiaryId], references: [id])
+  documents     Media[]
+
+  @@index([status])
+  @@index([urgency])
+}
+
+model CaseNote {
+  id           String       @id @default(cuid())
+  content      String
+  authorId     String
+  caseId       String
+  createdAt    DateTime     @default(now())
+  clinicalCase ClinicalCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}
+
+model LegalResource {
+  id           String                     @id @default(cuid())
+  category     String
+  slug         String                     @unique
+  featured     Boolean                    @default(false)
+  published    Boolean                    @default(false)
+  createdAt    DateTime                   @default(now())
+  updatedAt    DateTime                   @updatedAt
+  translations LegalResourceTranslation[]
+}
+
+model LegalResourceTranslation {
+  id          String        @id @default(cuid())
+  language    String
+  title       String
+  description String?
+  content     String?
+  fileUrl     String?
+  resourceId  String
+  resource    LegalResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@unique([resourceId, language])
+}
+
+model ClinicSession {
+  id              String   @id @default(cuid())
+  title           String
+  location        String
+  lat             Float?
+  lng             Float?
+  date            DateTime
+  description     String?
+  isMobile        Boolean  @default(true)
+  capacity        Int      @default(50)
+  registeredCount Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model GalleryImage {
+  id           String                    @id @default(cuid())
+  src          String
+  category     String
+  order        Int                       @default(0)
+  featured     Boolean                   @default(false)
+  eventId      String?
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+  event        Event?                    @relation(fields: [eventId], references: [id])
+  translations GalleryImageTranslation[]
+
+  @@index([order])
+  @@index([featured])
+}
+
+model GalleryImageTranslation {
+  id             String       @id @default(cuid())
+  language       String
+  title          String
+  description    String?
+  galleryImageId String
+  galleryImage   GalleryImage @relation(fields: [galleryImageId], references: [id], onDelete: Cascade)
+
+  @@unique([galleryImageId, language])
+}
+
+model Event {
+  id            String             @id @default(cuid())
+  slug          String             @unique
+  date          DateTime
+  location      String
+  type          String
+  coverImageUrl String?
+  isPublished   Boolean            @default(false)
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  translations  EventTranslation[]
+  galleryImages GalleryImage[]
+
+  @@index([slug])
+  @@index([date])
+}
+
+model EventTranslation {
+  id          String  @id @default(cuid())
+  language    String
+  title       String
+  description String
+  content     String?
+  eventId     String
+  event       Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, language])
+}
+
+model Testimonial {
+  id             String                   @id @default(cuid())
+  authorName     String
+  authorRole     String
+  avatarInitials String?
+  photoUrl       String?
+  isPublished    Boolean                  @default(false)
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+  translations   TestimonialTranslation[]
+}
+
+model TestimonialTranslation {
+  id            String      @id @default(cuid())
+  language      String
+  quote         String
+  testimonialId String
+  testimonial   Testimonial @relation(fields: [testimonialId], references: [id], onDelete: Cascade)
+
+  @@unique([testimonialId, language])
+}
+
+model Announcement {
+  id        String   @id @default(cuid())
+  content   String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
 enum Role {
   SUPER_ADMIN
@@ -29,211 +371,15 @@ enum Domain {
 
 enum MediaType {
   IMAGE
-  VIDEO_LINK // YouTube, Vimeo
-  DOCUMENT // PDF, DOCX annexes
+  VIDEO_LINK
+  DOCUMENT
 }
 
-// --- UTILISATEURS ---
-
-model User {
-  id            String        @id @default(cuid())
-  name          String?
-  email         String        @unique
-  password      String
-  role          Role          @default(USER)
-  status        AccountStatus @default(PENDING)
-  phone         String?
-  organization  String?
-  bio           String?
-  image         String? // Profile picture
-  requestedRole String? // e.g., "Researcher", "Editor"
-  createdAt     DateTime      @default(now())
-}
-
-// --- PROGRAMMES ---
-
-model Program {
-  id           String               @id @default(cuid())
-  slug         String               @unique
-  published    Boolean              @default(false)
-  featured     Boolean              @default(false)
-  mainImage    String?
-  translations ProgramTranslation[]
-  createdAt    DateTime             @default(now())
-  updatedAt    DateTime             @updatedAt
-
-  @@index([slug])
-}
-
-model ProgramTranslation {
-  id          String  @id @default(cuid())
-  language    String // fr, en, sw
-  title       String
-  description String
-  content     String?
-  programId   String
-  program     Program @relation(fields: [programId], references: [id], onDelete: Cascade)
-
-  @@unique([programId, language])
-}
-
-// --- SYSTÈME DE MÉDIAS ---
-// Centraliser les médias permet de les réutiliser
-model Media {
-  id             String        @id @default(cuid())
-  type           MediaType     @default(IMAGE)
-  url            String // URL Cloudinary, S3 ou Lien Vidéo
-  title          String? // Légende ou titre du média
-  articleId      String?
-  article        Article?      @relation(fields: [articleId], references: [id])
-  clinicalCaseId String?
-  clinicalCase   ClinicalCase? @relation(fields: [clinicalCaseId], references: [id])
-  createdAt      DateTime      @default(now())
-}
-
-// --- ARTICLES & ACTUALITÉS ---
-
-model Category {
-  id           String                @id @default(cuid())
-  slug         String                @unique
-  translations CategoryTranslation[]
-  articles     Article[]
-}
-
-model CategoryTranslation {
-  id         String   @id @default(cuid())
-  language   String // fr, en, sw
-  name       String
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-
-  @@unique([categoryId, language])
-}
-
-model Article {
-  id           String               @id @default(cuid())
-  slug         String               @unique
-  domain       Domain               @default(RESEARCH)
-  published    Boolean              @default(false)
-  featured     Boolean              @default(false) // Pour mettre en avant sur l'accueil
-  mainImage    String? // Image principale
-  videoUrl     String? // Optionnel : Vidéo principale de l'article
-  categoryId   String
-  category     Category             @relation(fields: [categoryId], references: [id])
-  medias       Media[] // Galerie d'images ou documents annexes
-  translations ArticleTranslation[]
-  createdAt    DateTime             @default(now())
-  updatedAt    DateTime             @updatedAt
-
-  @@index([slug])
-}
-
-model ArticleTranslation {
-  id        String  @id @default(cuid())
-  language  String // fr, en, sw
-  title     String
-  content   String
-  excerpt   String?
-  articleId String
-  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
-
-  @@unique([articleId, language])
-}
-
-model Publication {
-  id           String                   @id @default(cuid())
-  slug         String                   @unique // ✅ AJOUTEZ CETTE LIGNE
-  year         Int
-  doi          String?                  @unique
-  pdfUrl       String
-  domain       Domain                   @default(RESEARCH)
-  translations PublicationTranslation[]
-  createdAt    DateTime                 @default(now())
-}
-
-// prisma/schema.prisma - AJOUTEZ LE CHAMP content
-model PublicationTranslation {
-  id            String      @id @default(cuid())
-  language      String
-  title         String
-  authors       String
-  description   String
-  content       String?
-  publicationId String
-  publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
-
-  @@unique([publicationId, language])
-}
-
-// --- ÉQUIPE & PARTENAIRES ---
-
-model Member {
-  id           String              @id @default(cuid())
-  slug         String              @unique @default("")
-  name         String              @default("")
-  image        String?
-  email        String?
-  facebook     String?
-  linkedin     String?
-  twitter      String?
-  whatsapp     String?
-  youtube      String?
-  tiktok       String?
-  website      String?
-  order        Int                 @default(0)
-  translations MemberTranslation[]
-}
-
-model MemberTranslation {
-  id           String  @id @default(cuid())
-  language     String
-  name         String?
-  role         String 
-  bio          String?
-  education    String? 
-  researchAxes String? 
-  expertise    String? 
-  memberId     String
-  member       Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
-
-  @@unique([memberId, language])
-}
-
-// --- MESSAGES DE CONTACT ---
-// prisma/schema.prisma - Modèle ContactMessage mis à jour
-
-model ContactMessage {
-  id      String @id @default(cuid())
-  name    String
-  email   String
-  subject String
-  message String
-
-  // STATUTS (utilisation d'enum au lieu de boolean)
-  status ContactStatus @default(UNREAD) // UNREAD, READ, ARCHIVED
-
-  // POUR LES RÉPONSES
-  replyContent String?
-  repliedAt    DateTime?
-
-  // METADATA
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // INDEX pour les recherches
-  @@index([status])
-  @@index([createdAt])
-  @@index([email])
-}
-
-// ÉNUMÉRATION POUR LE STATUT
 enum ContactStatus {
   UNREAD
   READ
   ARCHIVED
 }
-
-// --- CLINIQUE DE DROIT DE L'ENVIRONNEMENT (CDE) ---
 
 enum CaseStatus {
   NEW
@@ -255,181 +401,4 @@ enum UrgencyLevel {
   MEDIUM
   HIGH
   CRITICAL
-}
-
-model Beneficiary {
-  id        String          @id @default(cuid())
-  name      String
-  email     String?
-  phone     String
-  location  String // Territoire, village
-  type      BeneficiaryType @default(LOCAL_COMMUNITY)
-  cases     ClinicalCase[]
-  userId    String?         @unique // Optionnel si lié à un compte User
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
-}
-
-model ClinicalCase {
-  id            String       @id @default(cuid())
-  title         String
-  description   String
-  problemType   String // Pollution, foncier, déforestation, etc.
-  location      String
-  incidentDate  DateTime?
-  status        CaseStatus   @default(NEW)
-  urgency       UrgencyLevel @default(MEDIUM)
-  actionsTaken  String?
-  expectations  String?
-  beneficiaryId String
-  beneficiary   Beneficiary  @relation(fields: [beneficiaryId], references: [id])
-  clinicianId   String? // Attribué à un clinicien (User avec rôle spécifique)
-  documents     Media[] // Lié aux médias existants
-  notes         CaseNote[]
-  trackingCode  String?      @unique // Format: CDE-YYYY-XXXXX
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-
-  @@index([status])
-  @@index([urgency])
-}
-
-model CaseNote {
-  id           String       @id @default(cuid())
-  content      String
-  authorId     String
-  caseId       String
-  clinicalCase ClinicalCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  createdAt    DateTime     @default(now())
-}
-
-model LegalResource {
-  id           String                     @id @default(cuid())
-  category     String // Guide, Loi, Fiche pratique
-  slug         String                     @unique
-  featured     Boolean                    @default(false)
-  published    Boolean                    @default(false)
-  translations LegalResourceTranslation[]
-  createdAt    DateTime                   @default(now())
-  updatedAt    DateTime                   @updatedAt
-}
-
-model LegalResourceTranslation {
-  id          String        @id @default(cuid())
-  language    String // fr, en, sw
-  title       String
-  description String?
-  content     String?
-  fileUrl     String? // Lien vers le PDF
-  resourceId  String
-  resource    LegalResource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
-
-  @@unique([resourceId, language])
-}
-
-model ClinicSession {
-  id              String   @id @default(cuid())
-  title           String
-  location        String
-  lat             Float? // Coordinate Latitude
-  lng             Float? // Coordinate Longitude
-  date            DateTime
-  description     String?
-  isMobile        Boolean  @default(true)
-  capacity        Int      @default(50)
-  registeredCount Int      @default(0)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-}
-
-model GalleryImage {
-  id          String   @id @default(cuid())
-  src         String // Chemin de l'image (Cloudinary URL)
-  category    String // Catégorie (Événement, Terrain, etc.)
-  order       Int      @default(0) // Ordre d'affichage
-  featured    Boolean  @default(false) // Mettre en avant
-  translations GalleryImageTranslation[]
-  eventId     String?
-  event       Event?   @relation(fields: [eventId], references: [id])
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([order])
-  @@index([featured])
-}
-
-model GalleryImageTranslation {
-  id             String       @id @default(cuid())
-  language       String // fr, en, sw
-  title          String
-  description    String?
-  galleryImageId String
-  galleryImage   GalleryImage @relation(fields: [galleryImageId], references: [id], onDelete: Cascade)
-
-  @@unique([galleryImageId, language])
-}
-
-// --- ÉVÉNEMENTS ---
-
-model Event {
-  id             String             @id @default(cuid())
-  slug           String             @unique
-  date           DateTime
-  location       String
-  type           String // Conférence, Atelier, Descente sur terrain, etc.
-  coverImageUrl  String?
-  isPublished    Boolean            @default(false)
-  translations   EventTranslation[]
-  galleryImages  GalleryImage[]
-  createdAt      DateTime           @default(now())
-  updatedAt      DateTime           @updatedAt
-
-  @@index([slug])
-  @@index([date])
-}
-
-model EventTranslation {
-  id            String  @id @default(cuid())
-  language      String // fr, en, sw
-  title         String
-  description   String
-  content       String?
-  eventId       String
-  event         Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  @@unique([eventId, language])
-}
-
-// --- TÉMOIGNAGES ---
-
-model Testimonial {
-  id             String                   @id @default(cuid())
-  authorName     String
-  authorRole     String
-  avatarInitials String?
-  photoUrl       String?
-  isPublished    Boolean                  @default(false)
-  translations   TestimonialTranslation[]
-  createdAt      DateTime                 @default(now())
-  updatedAt      DateTime                 @updatedAt
-}
-
-model TestimonialTranslation {
-  id            String      @id @default(cuid())
-  language      String // fr, en, sw
-  quote         String
-  testimonialId String
-  testimonial   Testimonial @relation(fields: [testimonialId], references: [id], onDelete: Cascade)
-
-  @@unique([testimonialId, language])
-}
-
-// --- ANNONCES SYSTÈME ---
-
-model Announcement {
-  id        String   @id @default(cuid())
-  content   String
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }

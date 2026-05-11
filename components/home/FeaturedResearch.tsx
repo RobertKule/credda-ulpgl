@@ -1,14 +1,13 @@
 // components/home/FeaturedResearch.tsx
 "use client";
 
-import { motion } from "framer-motion";
+import React from "react";
+import { motion, Variants } from "framer-motion";
 import { Link } from "@/navigation";
-import { ArrowRight, Clock, User } from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import GSAPReveal from "@/components/shared/GSAPReveal";
-import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
-import { Badge } from "@/components/ui/badge";
 
 interface FeaturedResearchProps {
   research: any[];
@@ -16,114 +15,137 @@ interface FeaturedResearchProps {
 
 export default function FeaturedResearch({ research }: FeaturedResearchProps) {
   const t = useTranslations('HomePage');
-  
+
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+  };
+
+  const cardVariants: Variants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
+  };
+
   return (
-    <section className="relative overflow-hidden bg-transparent py-12 lg:py-20">
-      <SectionDecorNumber value="02" className="-top-6 right-0 sm:-right-2 md:top-0" />
-      {/* GRID BACKGROUND */}
-      <div className="pointer-events-none absolute inset-0 bg-grid-move opacity-[0.02]" />
-      
-      <div className="relative z-10 w-full">
-        <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-8 lg:gap-12 mb-16 lg:mb-24">
-          <div className="max-w-3xl w-full">
-            <GSAPReveal direction="right">
-              <div className="flex items-center gap-4 mb-6 lg:mb-8">
-                <div className="h-[1px] w-12 bg-primary/50" />
-                <span className="text-[10px] uppercase tracking-[0.5em] font-medium text-primary">{t('research.badge')}</span>
-              </div>
-            </GSAPReveal>
-            <GSAPReveal direction="up" delay={0.2}>
-              <h2 className="text-5xl md:text-6xl xl:text-7xl font-fraunces font-extrabold text-foreground leading-[1.05] tracking-tighter break-words hyphens-auto">
-                {t('research.title')} <br /> 
-                <span className="italic-accent block mt-3 lg:mt-4 text-primary">{t('research.subtitle')}</span>
-              </h2>
-            </GSAPReveal>
-          </div>
-          <GSAPReveal direction="left" delay={0.4}>
-            <Link 
-              href="/research" 
-              className="group flex items-center gap-4 text-[11px] font-outfit font-bold uppercase tracking-[0.3em] text-foreground hover:text-primary transition-all duration-500"
-            >
-              <span className="relative">
-                {t('research.cta')}
-                <div className="absolute -bottom-2 left-0 w-full h-[1px] bg-[#C9A84C]/30 scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
+    <div className="w-full relative transition-colors duration-500">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+        {/* HEADER SECTION */}
+        <div className="flex flex-col items-center text-center mx-auto mb-20 lg:mb-24 space-y-6">
+          <GSAPReveal direction="up">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20">
+              <BookOpen size={14} className="text-primary" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">
+                {t('research.badge') || "OUR RESEARCH"}
               </span>
-              <div className="w-10 h-10 rounded-md border border-border flex items-center justify-center group-hover:bg-[#C9A84C] group-hover:border-[#C9A84C] group-hover:text-[#0C0C0A] transition-all duration-500">
-                <ArrowRight size={16} />
-              </div>
-            </Link>
+            </div>
+          </GSAPReveal>
+
+          <GSAPReveal direction="up" delay={0.2}>
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-fraunces font-black tracking-tighter leading-[1.1] text-foreground">
+              {t.rich('research.title_insight', {
+                  span: (chunks) => <span className="text-primary italic font-light">{chunks}</span>
+              }) || (
+                  <>
+                      Explorez notre <span className="text-primary italic font-light">Recherche</span>
+                  </>
+              )}
+            </h2>
+          </GSAPReveal>
+
+          <GSAPReveal direction="up" delay={0.3}>
+            <p className="text-muted-foreground text-lg md:text-xl font-light max-w-2xl leading-relaxed">
+              {t('research.description') || "Explore our latest scientific contributions and legal investigations across the African continent."}
+            </p>
           </GSAPReveal>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {research?.slice(0, 3).map((item, idx) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ 
-                rotateY: 5, 
-                rotateX: -5, 
-                scale: 1.02,
-                transition: { duration: 0.4 }
-              }}
-              viewport={{ once: true }}
-              className="group flex flex-col h-full bg-card/40 backdrop-blur-md border border-border/50 overflow-hidden transition-all duration-700 hover:border-primary/40 rounded-md shadow-sm hover:shadow-[0_30px_60px_-12px_rgba(201,168,76,0.12)]"
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              <div className="relative aspect-[16/10] overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-1000">
-                <Image 
-                  src={item.mainImage || "/images/hero-poster.webp"} 
-                  alt={item.translations?.[0]?.title || "Research"} 
-                  fill 
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-[2000ms] group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-80" />
-                <div className="absolute top-6 left-6">
-                  <Badge variant="emerald" className="bg-emerald/90 backdrop-blur-md text-white text-[9px] font-black uppercase tracking-widest px-5 py-2.5 shadow-2xl rounded-md border-none">
-                    {item.category?.translations?.[0]?.name || t('research.journal')}
-                  </Badge>
-                </div>
-              </div>
+        {/* RESEARCH GRID */}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"
+        >
+          {research?.slice(0, 3).map((item, idx) => {
+            const categories = item.categories?.map((c: any) => c.translations?.[0]?.name) || ["Investigation"];
+            const formattedDate = new Date(item.createdAt).toLocaleDateString("fr-FR", {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            
+            return (
+              <motion.div
+                key={item.id || idx}
+                variants={cardVariants}
+                className="group relative bg-card p-6 md:p-8 overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.05)] dark:shadow-none border border-border/5 transition-all duration-500 hover:shadow-[0_40px_80px_-15px_rgba(0,0,0,0.1)]"
+              >
+                {/* Border Animation Lines */}
+                <span className="absolute top-0 left-1/2 h-0.5 w-0 bg-primary group-hover:w-full group-hover:left-0 transition-all duration-500 ease-out z-10" />
+                <span className="absolute bottom-0 left-1/2 h-0.5 w-0 bg-primary group-hover:w-full group-hover:left-0 transition-all duration-500 ease-out z-10" />
+                <span className="absolute left-0 top-1/2 w-0.5 h-0 bg-primary group-hover:h-full group-hover:top-0 transition-all duration-500 ease-out z-10" />
+                <span className="absolute right-0 top-1/2 w-0.5 h-0 bg-primary group-hover:h-full group-hover:top-0 transition-all duration-500 ease-out z-10" />
 
-              <div className="p-12 flex flex-col flex-grow relative">
-                <div className="flex items-center gap-6 text-[9px] font-outfit font-bold uppercase tracking-widest text-muted-foreground mb-8">
-                  <div className="flex items-center gap-2">
-                    <Clock size={12} className="text-[#C9A84C]" />
-                    <span>March 2026</span>
+                <Link href={`/research/${item.slug}`} className="block space-y-4">
+                  {/* Image Area */}
+                  <div className="relative aspect-video w-full overflow-hidden">
+                    <Image 
+                      src={item.mainImage || "/images/recheche.webp"} 
+                      alt={item.translations?.[0]?.title || "Research"} 
+                      fill 
+                      className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                    />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <User size={12} className="text-[#C9A84C]" />
-                    <span>{t('research.lab')}</span>
-                  </div>
-                </div>
 
-                <h3 className="text-2xl lg:text-3xl font-fraunces font-bold text-foreground mb-6 leading-tight group-hover:text-primary transition-colors duration-500 line-clamp-2">
-                  {item.translations?.[0]?.title}
-                </h3>
-
-                <p className="text-muted-foreground text-sm lg:text-base font-outfit font-light leading-relaxed mb-10 line-clamp-3 opacity-80">
-                  {item.translations?.[0]?.excerpt || "Detailed analysis of legal frameworks and environmental challenges in the Great Lakes region..."}
-                </p>
-
-                <div className="mt-auto pt-8 border-t border-border/40">
-                  <Link 
-                    href={`/research/${item.slug}`} 
-                    className="flex items-center justify-between group/link"
-                  >
-                    <span className="text-[11px] font-outfit font-bold uppercase tracking-[0.2em] text-muted-foreground group-hover/link:text-primary transition-colors">{t('research.read_more')}</span>
-                    <div className="w-10 h-10 rounded-md border border-border flex items-center justify-center group-hover/link:bg-primary group-hover/link:border-primary group-hover/link:text-primary-foreground transition-all duration-700">
-                      <ArrowRight size={16} />
+                  {/* Meta Area */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between text-[10px] md:text-xs">
+                        <span className="text-muted-foreground font-medium uppercase tracking-wider">{formattedDate}</span>
+                        <div className="flex items-center gap-2 text-primary font-black uppercase tracking-widest">
+                            {categories.slice(0, 2).map((cat, i) => (
+                                <React.Fragment key={i}>
+                                    {i > 0 && <span className="opacity-30">·</span>}
+                                    <span>{cat}</span>
+                                </React.Fragment>
+                            ))}
+                        </div>
                     </div>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+
+                    <div className="space-y-2">
+                      <h3 className="text-xl md:text-2xl font-fraunces font-black text-foreground leading-[1.2] tracking-tight group-hover:text-primary transition-colors duration-500 line-clamp-2">
+                         {item.translations?.[0]?.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
+                         {item.translations?.[0]?.excerpt || "Investigating the intersection of legal architecture and humanitarian imperatives."}
+                         {" "}
+                         <span className="text-primary font-bold hover:underline ml-1">
+                            {t('research.read_more') || "Lire plus"}
+                         </span>
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
+        </motion.div>
+        
+        {/* BOTTOM CTA */}
+        <GSAPReveal direction="up" delay={0.5}>
+          <div className="mt-20 flex justify-center">
+              <Link 
+                  href="/publications" 
+                  className="group flex items-center gap-6 px-12 py-5 bg-foreground text-background rounded-full transition-all duration-500 hover:scale-105 shadow-xl"
+              >
+                  <span className="text-[10px] font-bold uppercase tracking-widest leading-none">
+                      {t('research.cta_view_all') || "Explore all research"}
+                  </span>
+                  <ArrowRight size={18} className="transition-transform duration-500 group-hover:translate-x-2" />
+              </Link>
+          </div>
+        </GSAPReveal>
       </div>
-    </section>
+    </div>
   );
 }

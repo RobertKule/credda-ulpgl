@@ -1,79 +1,120 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
-import { Landmark, FileText, Globe, Users, LucideIcon } from "lucide-react";
+import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useTheme } from "@/components/shared/ThemeProvider";
 
-const Counter = ({ value, duration = 2 }: { value: number | string; duration?: number }) => {
-    const ref = useRef(null);
-    const isInView = useInView(ref, { once: true });
-    const [displayValue, setDisplayValue] = useState("0");
+interface StatItem {
+  label: string;
+  value: number;
+  suffix?: string;
+}
 
-    useEffect(() => {
-        if (isInView) {
-            const numericValue = typeof value === "string" ? parseInt(value.replace(/\D/g, "")) : value;
-            const hasPlus = value.toString().includes("+");
+interface StatsSectionProps {
+  data?: StatItem[];
+}
 
-            let start = 0;
-            const increment = numericValue / (duration * 60);
-            const timer = setInterval(() => {
-                start += increment;
-                if (start >= numericValue) {
-                    setDisplayValue(numericValue + (hasPlus ? "+" : ""));
-                    clearInterval(timer);
-                } else {
-                    setDisplayValue(Math.round(start) + (hasPlus ? "+" : ""));
-                }
-            }, 1000 / 60);
+const CountUp = ({ value, suffix = "" }: { value: number; suffix?: string }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => Math.round(latest));
+  const [displayValue, setDisplayValue] = useState(0);
 
-            return () => clearInterval(timer);
-        }
-    }, [isInView, value, duration]);
+  useEffect(() => {
+    if (isInView) {
+      const controls = animate(count, value, { duration: 2, ease: "easeOut" });
+      return controls.stop;
+    }
+  }, [isInView, value, count]);
 
-    return <span ref={ref}>{displayValue}</span>;
+  useEffect(() => {
+    return rounded.onChange((latest) => setDisplayValue(latest));
+  }, [rounded]);
+
+  return <span ref={ref}>{displayValue}{suffix}</span>;
 };
 
-const StatIcon = ({ icon: Icon, className = "w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8" }: { icon: LucideIcon; className?: string }) => {
-    return <Icon className={className} strokeWidth={1.2} />;
-};
+export default function StatsSection({ data }: StatsSectionProps) {
+  const t = useTranslations('HomePage.stats');
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
-export default function StatsSection({ stats }: { stats: any }) {
-    const t = useTranslations('HomePage');
+  // fallback data if none provided
+  const stats = data || [
+    { label: t('years'), value: 18, suffix: "" },
+    { label: t('pubs'), value: 7, suffix: "+" },
+    { label: t('partners'), value: 15, suffix: "" },
+    { label: t('cases'), value: 120, suffix: "+" },
+  ];
 
-    return (
-        <section className="bg-slate-50/50 py-8 sm:py-12 lg:py-16 xl:py-20 border-y border-slate-100 relative z-20">
-            <div className="container mx-auto px-4 sm:px-6">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-                    {[
-                        { v: new Date().getFullYear() - 2008, l: t('stats.years'), icon: Landmark },
-                        { v: stats?.totalResources || 0, l: t('stats.pubs'), icon: FileText },
-                        { v: 15, l: t('stats.partners'), icon: Globe },
-                        { v: 12000, l: t('stats.cases'), icon: Users },
-                    ].map((s, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 15 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: i * 0.1 }}
-                            className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-4 lg:gap-6 text-center sm:text-left group"
-                        >
-                            <div className="text-primary transition-transform duration-500 group-hover:scale-110 shrink-0 mb-2 sm:mb-0">
-                                <StatIcon icon={s.icon} />
-                            </div>
-                            <div className="flex flex-col">
-                                <div className="text-xl sm:text-2xl lg:text-3xl xl:text-4xl font-bold text-primary leading-none mb-1 sm:mb-2">
-                                    <Counter value={s.v} />
-                                </div>
-                                <div className="text-[10px] sm:text-[11px] lg:text-xs font-medium text-slate-500 leading-snug max-w-[120px] sm:max-w-[140px] lg:max-w-[150px]">
-                                    {s.l}
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
-            </div>
-        </section>
-    );
+  return (
+    <section className={`relative shadow-2xl py-24 lg:py-32 m-10 lg:m-20 rounded-xl overflow-hidden transition-colors duration-500 ${
+      isDark ? 'bg-[#0D1645]' : 'bg-white'
+    }`}>
+      {/* SUBTLE DOT GLODE BACKGROUND */}
+      <div className={`absolute right-[-10%] top-[-10%] w-[800px] h-[800px] transition-opacity duration-500 pointer-events-none select-none ${
+        isDark ? 'opacity-[0.07] text-white' : 'opacity-[0.03] text-slate-900'
+      }`}>
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+          <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="0.1" strokeDasharray="0.5 1" />
+          <ellipse cx="50" cy="50" rx="48" ry="20" fill="none" stroke="currentColor" strokeWidth="0.1" strokeDasharray="0.5 1" />
+          <ellipse cx="50" cy="50" rx="20" ry="48" fill="none" stroke="currentColor" strokeWidth="0.1" strokeDasharray="0.5 1" />
+          <path d="M2,50 L98,50" fill="none" stroke="currentColor" strokeWidth="0.1" strokeDasharray="0.5 1" />
+          <path d="M50,2 L50,98" fill="none" stroke="currentColor" strokeWidth="0.1" strokeDasharray="0.5 1" />
+        </svg>
+      </div>
+
+      <div className="container mx-auto px-6 lg:px-12 relative z-10">
+        <div className="max-w-4xl mb-20 lg:mb-24">
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className={`font-bold tracking-widest uppercase text-xs mb-4 ${
+              isDark ? 'text-[#E1F247]' : 'text-primary'
+            }`}
+          >
+            {t('badge') || "Impact & Excellence"}
+          </motion.p>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className={`text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight ${
+              isDark ? 'text-white' : 'text-slate-900'
+            }`}
+          >
+            {t('titleLine1') || "L'impact du CREDDA"} <br /> {t('titleLine2') || "en chiffres"}
+          </motion.h2>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
+          {stats.map((stat, idx) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 + idx * 0.1 }}
+              className="relative pl-8 border-l-[3px] border-[#C4A45C]"
+            >
+              <div className={`text-5xl lg:text-6xl font-bold mb-3 tracking-tighter ${
+                isDark ? 'text-white' : 'text-slate-900'
+              }`}>
+                <CountUp value={stat.value} suffix={stat.suffix} />
+              </div>
+              <p className={`text-sm font-medium leading-relaxed max-w-[180px] ${
+                isDark ? 'text-white/60' : 'text-slate-500'
+              }`}>
+                {stat.label}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

@@ -181,7 +181,7 @@ export default function RegisterWizard() {
       </div>
 
       {/* RIGHT SIDE - FORM (Adapté Light/Dark) */}
-      <div className="flex-1 flex items-center justify-center p-6 md:p-12 lg:p-24 relative overflow-y-auto bg-background">
+      <div className="flex-1 flex items-center justify-center p-6 md:p-12 lg:p-24 relative overflow-y-auto overflow-x-hidden bg-background">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-md blur-3xl -mr-64 -mt-64 pointer-events-none" />
 
         <motion.div 

@@ -1,122 +1,125 @@
 'use client'
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
-import { Play, Info } from "lucide-react";
+import { ArrowRight, Play, Pause, Volume2, VolumeX } from "lucide-react";
+import { Link } from "@/navigation";
 
 export default function AboutVideoSection() {
-  const [showVideo, setShowVideo] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
   const t = useTranslations('HomePage');
 
+  const togglePlay = () => setIsPlaying(!isPlaying);
+  const toggleMute = () => setIsMuted(!isMuted);
+
   return (
-    <section className="relative py-16 md:py-24 lg:py-40 overflow-hidden">
-      <div className="container mx-auto px-5 sm:px-8 lg:px-12 xl:px-16">
-        <div className="flex flex-col lg:flex-row items-center gap-12 md:gap-16 lg:gap-24">
+    <section className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden bg-black flex items-center">
+      
+      {/* Background Video */}
+      <div className="absolute inset-0 z-0">
+        <video 
+          autoPlay 
+          loop 
+          muted={isMuted}
+          playsInline
+          className={`w-full h-full object-cover transition-opacity duration-1000 ${isPlaying ? 'opacity-40' : 'opacity-20'}`}
+        >
+          <source src="/video/hero-bg.mp4" type="video/mp4" />
+        </video>
+        
+        {/* Gradient Overlay for Readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent z-10" />
+      </div>
+
+      {/* Content Overlay */}
+      <div className="container mx-auto px-6 relative z-20">
+        <div className="max-w-4xl space-y-8 md:space-y-12">
           
-          {/* Left: Content */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
+          {/* Badge/Title */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="w-full lg:w-1/2 space-y-6 md:space-y-8"
-          >
-            <div className="flex items-center gap-4">
-              <div className="h-[1px] w-12 bg-primary" />
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary">
-                {t('video.badge')}
-              </span>
-            </div>
-            
-            <h2 className="font-fraunces text-3xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tighter">
-              {t.rich('video.title', {
-                primary: (chunks) => <span className="text-primary italic font-light">{chunks}</span>
-              })}
-            </h2>
-            
-            <p className="text-muted-foreground text-base md:text-lg font-light leading-relaxed max-w-xl border-l border-primary/20 pl-6">
-              {t('video.description')}
-            </p>
-            
-            <div className="flex items-center gap-8 pt-4">
-              <div className="flex flex-col">
-                <span className="text-xl md:text-2xl font-bold font-fraunces text-primary">2008</span>
-                <span className="text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground opacity-60">
-                  {t('video.since')}
-                </span>
-              </div>
-              <div className="w-px h-8 md:h-10 bg-border/50" />
-              <div className="flex flex-col">
-                <span className="text-xl md:text-2xl font-bold font-fraunces text-primary">ULPGL</span>
-                <span className="text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground opacity-60">
-                  {t('video.institution')}
-                </span>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right: Video Cabinet */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="w-full lg:w-1/2 relative group"
-            style={{ perspective: "1500px" }}
+            className="space-y-2"
           >
-            {/* Decorative background glow - Hidden on mobile for performance */}
-            <div className="absolute -inset-4 bg-primary/10 rounded-[2rem] blur-2xl hidden sm:block opacity-50" />
-            
-            {/* Video Container */}
-            <div className="relative z-10 p-2 rounded-[1.5rem] md:rounded-[2rem] bg-card/40 backdrop-blur-xl border border-border/10 shadow-3xl overflow-hidden transition-all duration-700">
-              <div className="relative aspect-video rounded-lg md:rounded-xl overflow-hidden bg-black flex items-center justify-center">
-                {!showVideo ? (
-                  <button 
-                    className="absolute inset-0 w-full h-full cursor-pointer group/vid border-none bg-transparent p-0"
-                    onClick={() => setShowVideo(true)}
-                    aria-label={t('video.watch')}
-                  >
-                    <img 
-                      src="https://img.youtube.com/vi/V-MVLqjQMIc/maxresdefault.jpg" 
-                      alt="Video Thumbnail"
-                      className="w-full h-full object-cover opacity-60 group-hover/vid:opacity-80 transition-opacity duration-500"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-14 h-14 md:w-20 md:h-20 rounded-md bg-primary flex items-center justify-center text-primary-foreground shadow-2xl group-hover/vid:scale-110 transition-transform duration-500">
-                        <Play size={28} fill="currentColor" className="ml-1" />
-                      </div>
-                    </div>
-                  </button>
-                ) : (
-                  <iframe 
-                    className="absolute inset-0 w-full h-full"
-                    src="https://www.youtube.com/embed/V-MVLqjQMIc?si=JqKvqg3gxTAFmRsw&start=4&autoplay=1" 
-                    title="YouTube video player" 
-                    frameBorder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    referrerPolicy="strict-origin-when-cross-origin" 
-                    allowFullScreen
-                  ></iframe>
-                )}
-              </div>
-            </div>
-
-            {/* Floating elements - Scaled down for mobile */}
-            <motion.div 
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-5 -right-5 w-16 h-16 md:w-24 md:h-24 bg-primary/5 rounded-md blur-xl border border-primary/10"
-            />
-            <motion.div 
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -bottom-5 -left-5 w-12 h-12 md:w-16 md:h-16 bg-primary/10 rounded-md blur-lg border border-primary/20"
-            />
+            <h2 className="text-6xl md:text-8xl lg:text-9xl font-bold leading-none tracking-tighter text-white uppercase font-sans">
+              {t.rich('video.title_alt', {
+                line1: (chunks) => <span className="block">{chunks}</span>,
+                line2: (chunks) => <span className="block text-[#C4A45C]">{chunks}</span>,
+                default: "UBORA WA KIAKADEMIA"
+              }) || (
+                <>
+                  <span className="block">UBORA WA</span>
+                  <span className="block text-[#C4A45C]">KIAKADEMIA</span>
+                </>
+              )}
+            </h2>
           </motion.div>
 
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-white/80 text-lg md:text-xl font-light leading-relaxed max-w-xl"
+          >
+            {t('video.description')}
+          </motion.p>
+
+          {/* CTA Button Item Style from Ref */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            <Link 
+              href="/about" 
+              className="inline-flex items-center group bg-[#0D1645] hover:bg-[#C4A45C] transition-colors duration-500 rounded-lg overflow-hidden border border-white/10"
+            >
+              <span className="px-8 py-4 text-white group-hover:text-black font-bold uppercase tracking-widest text-sm">
+                {t('research.read_more')}
+              </span>
+              <div className="bg-white/10 px-5 py-4 border-l border-white/5 group-hover:bg-black/10">
+                <ArrowRight className="text-white group-hover:text-black transition-transform group-hover:translate-x-1" size={20} />
+              </div>
+            </Link>
+          </motion.div>
         </div>
       </div>
+
+      {/* Pagination Style Dots */}
+      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
+        {[...Array(5)].map((_, i) => (
+          <div 
+            key={i} 
+            className={`h-[2px] transition-all duration-700 ${i === 2 ? 'w-12 bg-[#C4A45C]' : 'w-6 bg-white/20'}`} 
+          />
+        ))}
+      </div>
+
+      {/* Video Control Toggles (Bottom Right) */}
+      <div className="absolute bottom-12 right-12 z-30 flex items-center gap-6">
+        <button 
+          onClick={toggleMute} 
+          className="text-white/40 hover:text-[#C4A45C] transition-colors"
+          aria-label={isMuted ? "Unmute" : "Mute"}
+        >
+          {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+        </button>
+        <button 
+          onClick={togglePlay} 
+          className="text-white/40 hover:text-[#C4A45C] transition-colors"
+          aria-label={isPlaying ? "Pause" : "Play"}
+        >
+          {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+        </button>
+      </div>
+
     </section>
   );
 }

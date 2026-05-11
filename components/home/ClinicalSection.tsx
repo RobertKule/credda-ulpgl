@@ -3,7 +3,7 @@
 
 import { motion } from "framer-motion";
 import { Link } from "@/navigation";
-import { TreePine, Scale, MapPin, ArrowRight } from "lucide-react";
+import { Gavel, Scale, ArrowRight, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import GSAPReveal from "@/components/shared/GSAPReveal";
@@ -13,94 +13,105 @@ export default function ClinicalSection() {
   const t = useTranslations('HomePage');
   
   return (
-    <section className="relative overflow-hidden bg-transparent py-12 lg:py-20 text-foreground">
-      <SectionDecorNumber value="03" className="-left-2 top-4 sm:left-0 md:top-12" />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#C9A84C]/5 rounded-md blur-[150px] pointer-events-none" />
-      
-      <div className="relative z-10 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            viewport={{ once: true }}
-            className="order-2 lg:order-1 flex flex-col min-w-0"
-          >
-            <GSAPReveal direction="right">
-              <div className="flex items-center gap-4 mb-10">
-                <div className="h-[1px] w-12 bg-[#C9A84C]" />
-                <span className="text-[10px] uppercase tracking-[0.5em] font-medium text-[#C9A84C]">{t('clinical.badge')}</span>
-              </div>
-            </GSAPReveal>
+    <section className="relative w-full py-12 md:py-20 flex items-center justify-center overflow-hidden rounded bg-background group">
+      {/* MINIMALIST BACKGROUND PATTERN */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-grid-credda opacity-[0.2] dark:opacity-[0.1]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gradient-to-b from-transparent via-primary/[0.03] to-transparent" />
+      </div>
+
+      {/* CENTERED CONTENT */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 flex flex-col items-center text-center">
+        <GSAPReveal direction="up" delay={0}>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0D1645]/5 dark:bg-primary/10 border border-[#0D1645]/10 dark:border-primary/20 mb-10 transition-colors">
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#0D1645] dark:text-primary">
+              {t('clinical.badge')}
+            </span>
+          </div>
+        </GSAPReveal>
+
+        <GSAPReveal direction="up" delay={0}>
+          <div className="relative mb-12">
+            <h2 className="text-6xl md:text-8xl lg:text-[110px] font-fraunces font-black leading-[0.85] tracking-tighter text-foreground relative z-10">
+              {t('clinical.title')} <br />
+              <span className="text-primary italic font-light mt-4">{t('clinical.subtitle')}</span>
+            </h2>
+            {/* Soft Branding Glow behind title */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-primary/[0.08] dark:bg-primary/[0.05] blur-[100px] -z-10" />
+          </div>
+          <p className="text-foreground/70 dark:text-white/50 text-xl font-light max-w-2xl mb-20 leading-relaxed italic">
+            {t('clinical.description')}
+          </p>
+        </GSAPReveal>
+
+        {/* HORIZONTAL ACTION BAR (Minimalist Style) */}
+        <GSAPReveal direction="up" delay={0}>
+          <div className="bg-secondary rounded-3xl md:rounded-full p-2 md:pl-10 md:pr-3 md:py-3 flex flex-col md:flex-row items-stretch md:items-center gap-6 md:gap-0 shadow-[0_40px_100px_rgba(0,0,0,0.12)] dark:shadow-[0_40px_100px_rgba(0,0,0,0.5)] w-full max-w-5xl border border-slate-100 dark:border-white/10 transition-all">
             
-            <GSAPReveal direction="up" delay={0.2}>
-              <h2 className="text-5xl md:text-6xl xl:text-7xl font-fraunces font-extrabold text-foreground mb-8 lg:mb-12 leading-[1.05] tracking-tighter break-words hyphens-auto">
-                {t('clinical.title')} <br /> 
-                <span className="italic-accent block mt-3 lg:mt-4 text-primary">{t('clinical.subtitle')}</span>
-              </h2>
-            </GSAPReveal>
-
-            <GSAPReveal direction="up" delay={0.4}>
-              <p className="text-muted-foreground text-lg lg:text-xl font-outfit font-light leading-relaxed mb-12 lg:mb-16 border-l-2 border-primary/40 pl-6 ml-1 max-w-xl">
-                {t('clinical.description')}
-              </p>
-            </GSAPReveal>
-
-            <div className="grid sm:grid-cols-2 gap-12 mb-16">
-              <GSAPReveal direction="up" delay={0.6}>
-                <div className="space-y-6 group">
-                  <div className="w-14 h-14 bg-card/50 backdrop-blur-md border border-border/40 flex items-center justify-center hover-emerald-glow transition-all duration-700 rounded-md">
-                    <TreePine size={24} className="text-emerald" />
-                  </div>
-                  <h3 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.land.title')}</h3>
-                  <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border/20 pt-6">{t('clinical.actions.land.desc')}</p>
-                </div>
-              </GSAPReveal>
-              <GSAPReveal direction="up" delay={0.8}>
-                <div className="space-y-6 group">
-                  <div className="w-14 h-14 bg-card/50 backdrop-blur-md border border-border/40 flex items-center justify-center hover-emerald-glow transition-all duration-700 rounded-md">
-                    <Scale size={24} className="text-emerald" />
-                  </div>
-                  <h3 className="font-outfit font-bold text-xs uppercase tracking-[0.3em] text-foreground">{t('clinical.actions.mobile.title')}</h3>
-                  <p className="text-base text-muted-foreground leading-relaxed font-outfit italic border-t border-border/20 pt-6">{t('clinical.actions.mobile.desc')}</p>
-                </div>
-              </GSAPReveal>
+            {/* Field 1: Land Rights */}
+            <div className="flex-1 flex items-center gap-5 py-4 md:py-0 px-6 md:px-0 group/item cursor-pointer">
+              <div className="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-primary shrink-0 transition-all group-hover/item:bg-primary group-hover/item:text-white group-hover/item:scale-110">
+                <Gavel size={26} strokeWidth={1.5} />
+              </div>
+              <div className="flex flex-col text-left">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0D1645] dark:text-white mb-1">
+                  {t('clinical.actions.land.title')}
+                </span>
+                <span className="text-xs text-[#0D1645]/50 dark:text-white/40 font-medium line-clamp-1 italic">
+                  {t('clinical.actions.land.desc')}
+                </span>
+              </div>
             </div>
 
-            <GSAPReveal direction="up" delay={1.0}>
-              <Link 
-                href="/clinical" 
-                className="group relative inline-flex items-center gap-6 px-12 py-6 bg-primary text-primary-foreground font-outfit font-bold uppercase tracking-widest text-xs overflow-hidden transition-all hover:scale-105 rounded-md"
-              >
-                <span className="relative z-10 flex items-center gap-3">
-                  {t('clinical.cta')} <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-500" />
-                </span>
-              </Link>
-            </GSAPReveal>
-          </motion.div>
+            <div className="hidden md:block w-px h-12 bg-slate-100 dark:bg-white/10 mx-8" />
 
-          <div className="relative w-full max-w-md mx-auto lg:max-w-none aspect-square lg:aspect-[4/5] overflow-hidden order-1 lg:order-2 rounded-[2.5rem] ring-1 ring-border group shadow-2xl">
-             <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10 opacity-60" />
-             <div className="h-full w-full">
-               <Image 
-                  src="/images/clinical-hero.webp" 
-                  alt="Clinical Field Work" 
-                  fill 
-                  className="object-cover grayscale transition-all duration-[2000ms] group-hover:grayscale-0 group-hover:scale-110"
-                />
-             </div>
-            
-            {/* Impact Badge */}
-            <GSAPReveal direction="left" delay={0.5} className="absolute bottom-12 left-0 bg-primary/95 backdrop-blur-xl p-10 z-20 max-w-[280px] shadow-2xl rounded-tr-[2rem] rounded-bl-[2.5rem] border-t border-r border-white/20">
-              <div className="flex items-center gap-4 mb-6">
-                <MapPin size={24} className="text-primary-foreground" />
-                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary-foreground/80">{t('clinical.impact')}</span>
+            {/* Field 2: Mobile Justice */}
+            <div className="flex-1 flex items-center gap-5 py-4 md:py-0 px-6 md:px-0 group/item cursor-pointer">
+              <div className="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-white/5 flex items-center justify-center text-primary shrink-0 transition-all group-hover/item:bg-primary group-hover/item:text-white group-hover/item:scale-110">
+                <Scale size={26} strokeWidth={1.5} />
               </div>
-              <p className="text-3xl font-fraunces font-extrabold text-primary-foreground leading-tight tracking-tight">{t('clinical.families', { count: 2400 })}</p>
-            </GSAPReveal>
+              <div className="flex flex-col text-left">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0D1645] dark:text-white mb-1">
+                  {t('clinical.actions.mobile.title')}
+                </span>
+                <span className="text-xs text-[#0D1645]/50 dark:text-white/40 font-medium line-clamp-1 italic">
+                  {t('clinical.actions.mobile.desc')}
+                </span>
+              </div>
+            </div>
+
+            <div className="hidden md:block w-px h-12 bg-slate-100 dark:bg-white/10 mx-8" />
+
+            {/* Field 3: Impact Stat */}
+            <div className="flex-1 flex items-center gap-5 py-4 md:py-0 px-6 md:px-0">
+              <div className="w-14 h-14 rounded-2xl bg-primary/10 dark:bg-primary/20 flex items-center justify-center text-primary shrink-0">
+                <ShieldCheck size={28} strokeWidth={1.5} />
+              </div>
+              <div className="flex flex-col text-left pr-6">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#0D1645] dark:text-white mb-1">
+                  {t('clinical.impact')}
+                </span>
+                <span className="text-xl font-fraunces font-black text-primary leading-none">
+                  {t('clinical.families', { count: 2400 })}
+                </span>
+              </div>
+            </div>
+
+            {/* Final Action Button */}
+            <Link 
+              href="/clinical" 
+              className="bg-primary hover:bg-[#B4934B] text-primary-foreground px-12 py-5 rounded-2xl md:rounded-full font-black uppercase tracking-[0.3em] text-[11px] transition-all hover:scale-[1.02] flex items-center justify-center gap-4 shadow-xl shadow-primary/20"
+            >
+              <span>{t('clinical.cta')}</span>
+              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
           </div>
-        </div>
+        </GSAPReveal>
       </div>
+
+      {/* Subtle Background Glow Lower */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-t from-primary/[0.05] dark:from-primary/[0.02] to-transparent -z-10" />
     </section>
   );
 }

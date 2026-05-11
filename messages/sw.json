@@ -28,34 +28,51 @@
   },
   "HomePage": {
     "hero": {
-      "badge": "Ubora wa CREDDA - ULPGL",
-      "title_part1": "Kituo cha Utafiti na",
-      "title_part2": "Haki ya Mazingira",
-      "subtitle": "CREDDA na Kliniki yake ya Sheria ya Mazingira zinafanya kazi kwa upatikanaji wa haki, demokrasia na maendeleo endelevu barani Afrika — kutoka Goma, kwa RDC nzima.",
-      "slides": [
+      "badge": "#1 Utafiti na Ubora 2025",
+      "title": "Kuendesha Mabadiliko kwa Maarifa ya Afrika",
+      "subtitle": "Jiunge na maelfu ya watafiti na watendaji wa maendeleo duniani kote kwa kupata rasilimali zilizoundwa kwa akili za kisasa.",
+      "discover": "Gundua tafiti zetu",
+      "carousel": [
         {
-          "title": "Ubora kwa huduma ya Demokrasia.",
-          "description": "CREDDA inazalisha utafiti wa hali ya juu ili kubadilisha taasisi za Afrika."
+          "text": "CREDDA inazalisha utafiti wa hali ya juu ili kubadilisha taasisi za Afrika na kukuza ubora.",
+          "number": "5000+",
+          "label": "Machapisho ya Kisayansi"
         },
         {
-          "title": "Kliniki ya Sheria ya Mazingira.",
-          "description": "Tunalinda haki za jamii na bioanuwai kupitia sheria."
+          "text": "Kwa miaka 16, tumekuwa tukijenga urithi wa kitalaamu wa ubora katikati mwa eneo la Maziwa Makuu.",
+          "number": "16",
+          "label": "Miaka ya Utaalamu"
         },
         {
-          "title": "Hub ya Ushirikiano wa Kimataifa.",
-          "description": "Ushirikiano na vyuo vikuu vikuu kwa maendeleo endelevu."
+          "text": "Kliniki yetu ya kisheria inahakikisha ulinzi wa mazingira na upatikanaji wa haki kwa watu walio hatarini zaidi.",
+          "number": "2000+",
+          "label": "Wanufaika waliosaidiwa"
         }
-      ],
-      "cta_publications": "Machapisho Yetu",
-      "cta_contact": "Jifunze Zaidi"
+      ]
     },
     "stats": {
-      "years": "Miaka ya Utaalamu katika utafiti",
-      "pubs": "Nyaraka za Kisayansi na Ripoti",
+      "badge": "Athari na Ubora",
+      "titleLine1": "Athari za CREDDA",
+      "titleLine2": "katika takwimu",
+      "years": "Miaka ya uzoefu",
+      "pubs": "Machapisho ya Kisayansi",
       "partners": "Washirika wa Kimataifa",
-      "cases": "Wanufaika wa Kliniki",
+      "cases": "Wafaidika wa Kliniki",
       "articles": "Makala ya Utafiti",
-      "members": "Wajumbe wa Timu"
+      "members": "Wanachama wa Timu"
+    },
+    "vision": {
+      "badge": "URITHI WA KIAKADEMIA",
+      "title": "Kufafanua Upya Mustakabali wa <highlight>Utafiti</highlight> na <highlight>Haki</highlight> katika RDC.",
+      "main_description": "CREDDA inajipanga kama maabara ya mawazo na kichocheo cha mageuzi, ikichanganya ubora wa kisayansi na ushiriki wa nyanjani.",
+      "card_vision_badge": "Maono Yetu",
+      "card_vision_text": "Kuunganisha ubora wa kitaaluma na athari za kijamii kwa Afrika ya kesho.",
+      "card_readiness_title": "Ubora na Ushiriki",
+      "card_readiness_text": "CREDDA inafunza viongozi wenye uwezo wa kuchanganya ukali wa kisayansi na kutatua changamoto za ulimwengu wa kweli.",
+      "pillar1_title": "Utafiti wa Sheria",
+      "pillar1_text": "Uzalishaji wa maarifa ya kiwango cha juu na machapisho ya kisayansi yenye ushawishi.",
+      "pillar2_title": "Kliniki ya Sheria",
+      "pillar2_text": "Ulinzi wa haki za binadamu na upatikanaji wa moja kwa moja wa haki kwa jamii zilizo hatarini."
     },
     "about": {
       "badge": "Urithi wa Kiakademia",
@@ -64,49 +81,56 @@
       "description_p2": "Inashirikiana na ULPGL-Goma, tunachanganya utaalamu wa kiakademia na hatua nyanjani ili kukuza haki ya usawa na endelevu barani kote."
     },
     "research": {
-      "badge": "Akili na Uchambuzi",
-      "title": "Utafiti Ulioangaziwa",
+      "badge": "Maabara ya Ubunifu",
+      "badge_insight": "— Gundua Maarifa Muhimu",
+      "title": "Machapisho Yetu",
+      "title_insight": "Tuangalie <span>Utafiti</span> wetu",
       "subtitle": "& Machapisho ya Kisayansi",
-      "description": "Nyanja zetu za utafiti zinashughulikia changamoto za utawala barani Afrika.",
-      "cta": "Pata Kumbukumbu Kamili",
-      "read_more": "Soma Jarida Kamili",
-      "journal": "Utafiti wa Kesi",
-      "lab": "Maabara ya CREDDA"
+      "description": "Gundua michango yetu ya hivi punde ya kisayansi na uchunguzi wa kisheria barani Afrika.",
+      "cta": "Fikia Kumbukumbu Kamili",
+      "cta_view_all": "Gundua utafiti wote",
+      "cta_insight": "Tazama Maarifa Yote",
+      "lab": "Labu ya CREDDA",
+      "journal": "Majonali ya CREDDA",
+      "read_more": "Soma makala"
     },
     "clinical": {
-      "badge": "Hatua Nyanjani na Haki",
-      "title": "Kliniki ya Sheria kwa ajili ya",
-      "subtitle": "Ulinzi wa Mazingira",
-      "description": "Tunabeba sauti ya jamii na asili mbele ya vyombo vya kisheria. Kliniki zetu zinazotembea zinahakikisha uwepo wa kuendelea nyanjani.",
+      "badge": "Athari na Haki",
+      "title": "Kliniki ya Sheria",
+      "subtitle": "ya CREDDA",
+      "description": "Daraja kati ya nadharia ya kisheria na hatua za kijamii, kutoa msaada wa moja kwa moja kwa walio hatarini zaidi.",
+      "cta": "Omba msaada wa kisheria",
+      "impact": "Athari ya Moja kwa Moja",
+      "families": "{count}+ Familia Zilizosaidiwa",
       "actions": {
-        "legal": {
-          "title": "Msaada wa Kisheria",
-          "desc": "Upatanishi na utetezi wa haki za watu walio hatarini."
-        },
         "land": {
-          "title": "Haki ya Ardhi",
-          "desc": "Kulinda haki za jamii za mitaa na asili."
+          "title": "Haki za Ardhi",
+          "desc": "Kulinda ardhi na kusuluhisha migogoro ya jamii."
         },
         "mobile": {
-          "title": "Kliniki Zinazotembea",
-          "desc": "Msaada wa kisheria wa bure katikati mwa maeneo hatarishi."
+          "title": "Haki Inayotembea",
+          "desc": "Upatikanaji wa sheria katika maeneo ya mbali ya mkoa."
         }
-      },
-      "cta": "Wasilisha Kesi ya Kisheria",
-      "impact": "Athari Nyanjani",
-      "families": "Zaidi ya familia {count} zimesaidiwa"
+      }
     },
     "team": {
-      "title": "Uongozi wa Kisayansi",
-      "title_alt": "Uongozi wa Kisayansi",
+      "title": "Timu yetu",
+      "title_main": "Timu Yetu",
+      "title_sub": "ya Ubora",
       "subtitle": "Timu ya Utafiti",
-      "badge": "Timu Yetu",
+      "badge": "KIDOKEZO CHA KIAKADEMIA",
+      "description": "Timu ya wataalamu waliojitolea kwa utafiti na ubora.",
+      "read_more": "Tazama timu",
       "prev": "Iliyopita",
       "next": "Inayofuata"
     },
     "testimonials": {
       "badge": "Imani ya Kimataifa",
-      "title_alt": "Utambuzi wa Kimataifa",
+      "title_center": "Wanatuaamini",
+      "title_main": "Wanachosema",
+      "title_sub": "Kuhusu Sisi",
+      "play_video": "Cheza Video",
+      "subtitle_center": "Sikiliza kutoka kwa watafiti na washirika duniani kote kuhusu uzoefu wao na CREDDA-ULPGL.",
       "prev": "Iliyopita",
       "next": "Inayofuata",
       "items": [
@@ -128,8 +152,7 @@
           "text": "Nilitembelea ULPGL mnamo 2015 kufanya utafiti wa udaktari wangu. Profesa Kennedy KIHANGI BINDU alikuwa mwenyeji mzuri ambaye alisaidia kuwasiliana na watafiti na mashirika mengine.",
           "image": "/images/testimonials/britta.webp"
         }
-      ],
-      "title": "They <span>trust us</span>."
+      ]
     },
     "library": {
       "badge": "Rasilimali",
@@ -171,10 +194,13 @@
       "portal": "Portal ya Mtafiti"
     },
     "Gallery": {
-      "badge": "Katika Picha",
-      "title": "CREDDA katika <span>Hatua</span>",
-      "description": "Gundua shughuli zetu za utafiti, kazi zetu za kliniki na ushirikiano wetu kupitia uteuzi wa picha.",
-      "cta": "Angalia nyumba yote",
+      "badge": "KATIKA PICHA",
+      "title": "Vipindi na <span>Makala</span> ya hivi karibuni",
+      "description": "Gundua maendeleo yetu ya hivi punde ya kisheria na uchambuzi wa nyanjani kupitia maudhui yetu ya media titika.",
+      "cta": "Uchunguzi kamili",
+      "load_more": "Pakia zaidi",
+      "total_images": "Picha katika maktaba ya media",
+      "cta_view_all": "Tazama nyumba kamili",
       "modal": {
         "close": "Funga",
         "prev": "Iliyopita",
@@ -186,10 +212,33 @@
     "video": {
       "badge": "Uwakilishi wa Video",
       "title": "Gundua <primary>Athari</primary> ya CREDDA",
+      "title_alt": "<line1>UBORA WA</line1> <line2>KIAKADEMIA</line2>",
       "description": "Zama ndani ya mipango yetu kupitia uwakilishi huu. Tunafanya kazi kwa ustadi wa kitaaluma na uvumbuzi wa kijamii katika Jamhuri ya Kidemokrasia ya Kongo.",
       "since": "Tangu",
       "institution": "Taasisi",
       "watch": "Tazama utangulizi"
+    },
+    "faq": {
+      "title": "Maswali Yanayoulizwa Mara kwa Mara",
+      "subtitle": "Kila kitu unachohitaji kujua kuhusu CREDDA, utafiti wetu na huduma zetu za kliniki.",
+      "items": [
+        {
+          "q": "CREDDA ni nini?",
+          "a": "CREDDA (Kituo cha Utafiti juu ya Demokrasia na Maendeleo barani Afrika) ni taasisi ya ubora ya taaluma mbalimbali iliyojitolea kwa uchambuzi wa changamoto za kisheria na kijamii, inayoshirikiana na ULPGL-Goma."
+        },
+        {
+          "q": "Ninawezaje kufaidika na kliniki ya kisheria?",
+          "a": "Kliniki yetu inatoa msaada wa bure kwa watu walio hatarini. Unaweza kuwasiliana nasi moja kwa moja kupitia fomu yetu au kutembelea ofisi zetu katika Kampasi ya Salomon."
+        },
+        {
+          "q": "Ninawezaje kupata machapisho?",
+          "a": "Mengi ya machapisho yetu ya kisayansi na ripoti za kliniki zinapatikana kwa ufikiaji huru (Open Access) katika maktaba yetu ya kidijitali kwenye tovuti hii."
+        },
+        {
+          "q": "Je, unatoa ushirikiano wa utafiti?",
+          "a": "Ndiyo, CREDDA inashirikiana na vyuo vikuu vingi vya kimataifa (Oxford, Northwestern, LSE, n.k.). Wasiliana na sekretarieti yetu ya kisayansi kwa pendekezo lolote."
+        }
+      ]
     }
   },
   "metadata": {
@@ -698,8 +747,7 @@
     },
     "visual": {
       "badge": "Ufikiaji wa Kitaasisi Salama",
-      "title": "Ubora katika Huduma ya {span} na Maendeleo.",
-      "span": "Utafiti",
+      "title": "Ubora katika Huduma ya <span>Utafiti</span> na Maendeleo.",
       "description": "Ingia kwenye jukwaa la utawala lililolinganishwa la CREDDA ili kudhibiti kazi zako, machapisho na kliniki za kisheria.",
       "slogan": "Research Excellence"
     },

@@ -1,222 +1,347 @@
-'use client'
-import { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
-import { Link } from "@/navigation";
-import { ArrowRight, Play } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useTheme } from "@/components/shared/ThemeProvider";
-import { cn } from "@/lib/utils";
+"use client";
 
-export default function Hero() {
+import dynamic from "next/dynamic";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { Link } from "@/navigation";
+import { ArrowUpRight, Star, ArrowRight, ArrowLeft, BookOpen, ShieldCheck, Award } from "lucide-react";
+import Image from "next/image";
+import { useTheme } from "@/components/shared/ThemeProvider";
+import { useTranslations, useLocale } from "next-intl";
+
+const AfricaGlobe = dynamic(() => import("@/components/home/AfricaGlobe"), {
+  ssr: false,
+  loading: () => null,
+});
+
+export default function Hero({ testimonials = [], team = [] }: { testimonials?: any[], team?: any[] }) {
   const t = useTranslations('HomePage');
+  const locale = useLocale();
   const { theme } = useTheme();
-  const isLight = theme === "light";
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [reduceMotion, setReduceMotion] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const { scrollY } = useScroll();
-  const titleY = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : -100]);
-  const descY = useTransform(scrollY, [0, 500], [0, reduceMotion ? 0 : -50]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [leftIndex, setLeftIndex] = useState(0);
+  const [centerIndex, setCenterIndex] = useState(0);
+
+  // Raw items from translation files
+  const leftItems = t.raw('hero.carousel') || [];
 
   useEffect(() => {
-    setMounted(true);
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const isMobileDevice = window.matchMedia('(max-width: 768px)').matches;
-    setReduceMotion(prefersReducedMotion || isMobileDevice);
-
-    // Force hide loading screen after 0.8s
-    const timer = setTimeout(() => {
-      setIsLoaded(true);
-    }, 800);
-
-    return () => clearTimeout(timer);
+    const leftInterval = setInterval(() => {
+      setLeftIndex((prev) => (prev + 1) % leftItems.length);
+    }, 5000);
+    return () => clearInterval(leftInterval);
   }, []);
 
-  // OPTIMIZED 3D TILT EFFECT using MotionValues
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  
-  const springX = useSpring(mouseX, { stiffness: 100, damping: 30 });
-  const springY = useSpring(mouseY, { stiffness: 100, damping: 30 });
+  useEffect(() => {
+    if (!testimonials || testimonials.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+    return () => clearInterval(interval);
+  }, [testimonials]);
 
-  const rotateX = useTransform(springY, [-0.5, 0.5], [15, -15]);
-  const rotateY = useTransform(springX, [-0.5, 0.5], [-15, 15]);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current || reduceMotion) return;
-    const { left, top, width, height } = containerRef.current.getBoundingClientRect();
-    mouseX.set((e.clientX - left) / width - 0.5);
-    mouseY.set((e.clientY - top) / height - 0.5);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
+  useEffect(() => {
+    if (!team || team.length <= 1) return;
+    const interval = setInterval(() => {
+      setCenterIndex((prev) => (prev + 1) % team.length);
+    }, 7000);
+    return () => clearInterval(interval);
+  }, [team]);
 
   return (
-    <section 
-      ref={containerRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative min-h-[110vh] w-full overflow-hidden bg-background flex items-center justify-center perspective-[2000px] [clip-path:url(#heroWavyClip)]"
-    >
-      {/* ... (Loading and Background sections remain the same) */}
-      
-      {/* MAIN CONTENT - CENTERED */}
-      <div className="relative z-30 w-full px-5 sm:px-8 lg:px-12 xl:px-16 container mx-auto">
-        <div className="flex w-full flex-col items-center justify-center py-24 lg:py-32 text-center">
-          <motion.div
-            style={{ 
-              rotateX: reduceMotion ? 0 : rotateX,
-              rotateY: reduceMotion ? 0 : rotateY,
-              transformStyle: "preserve-3d"
-            }}
-            className="w-full max-w-4xl xl:max-w-5xl z-10 flex flex-col items-center"
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: [0.19, 1, 0.22, 1] }}
-              className="flex flex-col items-center w-full"
+    <section className="relative min-h-[100vh] w-full flex flex-col items-center justify-start overflow-hidden pt-32 lg:pt-40 pb-0 transition-colors duration-500 bg-transparent">
+      {/* GRID FRAME BACKGROUND */}
+      <div 
+        className="absolute inset-0 z-0 pointer-events-none opacity-50 dark:opacity-100"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)`,
+          backgroundSize: '120px 120px',
+          backgroundPosition: 'center center'
+        }}
+      />
+
+      <div className="container mx-auto px-6 relative z-10 w-full mb-10 flex flex-col items-center flex-1">
+        
+        {/* BADGE */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="bg-[#16256B] dark:bg-[#0D1645] rounded-full px-5 py-2 mb-8 inline-block shadow-lg border border-white/10"
+        >
+          <span className="text-white text-[11px] font-bold tracking-widest uppercase">
+            {t('hero.badge')}
+          </span>
+        </motion.div>
+
+        {/* TITLE - STAGGERED WORD REVEAL */}
+        <motion.h1
+          className="text-center font-bricolage text-5xl md:text-7xl lg:text-[85px] 2xl:text-[100px] font-bold text-white leading-[1.05] tracking-tight max-w-5xl mb-6 relative z-20"
+        >
+          {t('hero.title').split(" ").map((word, i) => (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: 0.6, 
+                delay: 0.1 + (i * 0.1),
+                ease: [0.2, 0.65, 0.3, 0.9]
+              }}
+              className="inline-block mr-[0.25em] last:mr-0"
             >
-              {/* BADGE - CENTERED */}
-              <div className="flex items-center gap-6 mb-12 lg:mb-16 justify-center" style={{ transform: "translateZ(50px)" }}>
-                <div className="h-[1px] w-12 bg-primary/50" />
-                <span className="text-[10px] uppercase tracking-[0.8em] font-black text-primary">
-                  {t('hero.badge')}
-                </span>
-                <div className="h-[1px] w-12 bg-primary/50" />
-              </div>
+              {word}
+            </motion.span>
+          ))}
+        </motion.h1>
 
-              {/* MAIN TITLE - DIRECT & IMPACTFUL */}
-              <motion.h1 
-                style={{ y: titleY, z: 100 }}
-                className={cn(
-                  "mb-10 font-fraunces text-[clamp(2.2rem,7vw,8rem)] xl:text-7xl font-black leading-[1.1] tracking-tighter text-foreground sm:mb-14 md:mb-16 uppercase",
-                  isLight
-                    ? "[text-shadow:0_2px_4px_rgba(0,0,0,0.05)]"
-                    : "[text-shadow:0_4px_32px_rgba(201,168,76,0.15)]"
-                )}
-              >
-                <motion.span 
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1, delay: 0.2, ease: [0.215, 0.61, 0.355, 1] }}
-                  className={cn("block italic mb-2 tracking-normal lowercase first-letter:uppercase", isLight ? "opacity-60 text-foreground" : "opacity-70 text-primary/70")}
+        {/* SUBTITLE */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-center text-white/70 text-sm md:text-base lg:text-lg max-w-2xl font-medium mb-10 relative z-20"
+        >
+          {t('hero.subtitle')}
+        </motion.p>
+
+        {/* CTA BUTTONS EXACTLY AS IN SCREENSHOT */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex items-center gap-3 relative z-30"
+        >
+          <Link 
+            href="/research"
+            className="bg-[#E1F247] hover:bg-[#D4E53B] text-black px-8 py-4 rounded-full font-black tracking-tight text-sm transition-transform hover:scale-105 active:scale-95 flex items-center justify-center shadow-2xl"
+          >
+            {t('hero.discover')}
+          </Link>
+          <Link 
+            href="/research"
+            className="w-14 h-14 bg-[#E1F247] hover:bg-[#D4E53B] rounded-full flex items-center justify-center text-black transition-transform hover:scale-105 active:scale-95 shadow-2xl"
+          >
+            <ArrowUpRight strokeWidth={2.5} size={20} />
+          </Link>
+        </motion.div>
+
+        {/* MIDDLE SECTION: FLOATING ELEMENTS + HALF CIRCLE HERO IMAGE */}
+        <div className="relative w-full flex-1 flex items-end justify-center mt-12 lg:mt-0 min-h-[400px]">
+           {/* LEFT FLOATING TEXT - STATS CAROUSEL */}
+           <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="hidden xl:flex flex-col absolute left-10 top-[18%] text-left w-64 z-20"
+           >
+              <div className="text-white font-serif text-5xl mb-2 font-black">"</div>
+              
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={leftIndex}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.5 }}
                 >
-                  {t('hero.title_part1')}
-                </motion.span>
-                <motion.span 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.2, delay: 0.4, ease: [0.215, 0.61, 0.355, 1] }}
-                  className="block text-primary relative filter drop-shadow-[0_0_30px_rgba(201,168,76,0.2)]"
-                >
-                  {t('hero.title_part2')}
-                  <motion.span 
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 1.2, duration: 1.5, ease: "circOut" }}
-                    className="absolute -bottom-4 left-1/4 w-1/2 h-[2px] bg-primary/40 shadow-[0_0_15px_rgba(201,168,76,0.4)]" 
+                  <p className="text-white text-sm font-medium leading-relaxed mb-6 opacity-90 min-h-[80px]">
+                    {leftItems[leftIndex].text}
+                  </p>
+                  <div className="mb-6">
+                    <h3 className="text-white text-4xl font-bold mb-1 tracking-tighter">{leftItems[leftIndex].number}</h3>
+                    <p className="text-white/70 text-xs font-semibold">{leftItems[leftIndex].label}</p>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+
+              {/* OWL DOTS FOR LEFT CAROUSEL */}
+              <div className="flex gap-2">
+                {leftItems.map((_: any, i: number) => (
+                  <button 
+                    key={i}
+                    onClick={() => setLeftIndex(i)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${leftIndex === i ? 'bg-[#E1F247] w-6' : 'bg-white/30'}`}
                   />
-                </motion.span>
-              </motion.h1>
+                ))}
+              </div>
+           </motion.div>
 
-              {/* DESCRIPTION - PREMIUM SCROLL REVEAL */}
-              <motion.p 
-                style={{ y: descY, z: 60 }}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, delay: 0.8 }}
-                className={cn(
-                  "mb-14 max-w-4xl font-outfit text-sm font-medium leading-relaxed text-foreground/80 sm:mb-16 sm:text-base md:mb-20 md:text-lg lg:text-xl glass-card py-10 px-12 border border-primary/10 bg-background/40 backdrop-blur-2xl shadow-2xl relative overflow-hidden group",
-                  isLight
-                    ? "border-slate-200"
-                    : "border-white/5"
-                )}
-              >
-                <span className="relative z-10">{t('hero.subtitle')}</span>
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              </motion.p>
+           {/* RIGHT FLOATING TEXT - TESTIMONIALS CAROUSEL */}
+           {testimonials && testimonials.length > 0 ? (
+             <motion.div
+               initial={{ opacity: 0, x: 50 }}
+               animate={{ opacity: 1, x: 0 }}
+               transition={{ duration: 0.8, delay: 0.6 }}
+               className="hidden xl:flex flex-col absolute right-10 top-[18%] text-left w-72 z-20"
+             >
+               <div className="flex gap-1 mb-4">
+                 {[1,2,3,4,5].map((i) => (
+                   <Star key={i} size={16} fill="#E1F247" className="text-[#E1F247]" />
+                 ))}
+               </div>
+               
+               <AnimatePresence mode="wait">
+                 <motion.div
+                   key={currentIndex}
+                   initial={{ opacity: 0, y: 10 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   exit={{ opacity: 0, y: -10 }}
+                   transition={{ duration: 0.5 }}
+                 >
+                   <p className="text-white text-sm font-medium leading-relaxed mb-6 opacity-90 line-clamp-5">
+                      "{testimonials[currentIndex]?.text}"
+                   </p>
+                   <div className="flex items-center gap-3">
+                     <div className="w-10 h-10 rounded-full overflow-hidden relative grayscale">
+                       <Image 
+                         src={testimonials[currentIndex]?.image || "/images/testimonials/Peyton.webp"} 
+                         alt={testimonials[currentIndex]?.name} 
+                         fill 
+                         className="object-cover" 
+                       />
+                     </div>
+                     <div className="flex flex-col">
+                       <span className="text-white text-xs font-bold line-clamp-1">{testimonials[currentIndex]?.name}</span>
+                       <span className="text-white/50 text-[10px] uppercase font-bold tracking-widest line-clamp-1">{testimonials[currentIndex]?.role}</span>
+                     </div>
+                   </div>
+                 </motion.div>
+               </AnimatePresence>
 
-               {/* ACTIONS - CENTERED */}
-              <motion.div 
-                style={{ y: descY, z: 40 }}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 1 }}
-                className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8"
-              >
-                <Link
-                  href="/contact"
-                  className="group relative px-12 py-5 bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-[0.4em] overflow-hidden rounded-md transition-all hover:scale-105 active:scale-95 shadow-2xl hover:shadow-primary/20 border border-transparent hover:border-emerald/40"
-                >
-                  <span className="relative z-10 flex items-center gap-3">
-                    {t('cta.partner')}
-                    <ArrowRight size={14} strokeWidth={3} className="group-hover:translate-x-1 transition-transform" />
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                </Link>
-                
-                <Link 
-                  href="/about" 
-                  className="group flex items-center gap-6 text-foreground hover:text-primary transition-all duration-700"
-                >
-                  <div className="w-20 h-20 rounded-full border border-border flex items-center justify-center group-hover:border-primary group-hover:bg-primary/5 transition-all duration-1000 relative" aria-label="Play Introduction Video">
-                    <div className="absolute inset-0 rounded-full border border-primary/0 group-hover:border-primary/20 group-hover:scale-150 transition-all duration-1000" />
-                    <Play size={20} fill="currentColor" className="ml-1" />
-                  </div>
-                  <div className="flex flex-col items-start">
-                    <span className="text-[10px] font-black uppercase tracking-[0.4em] mb-1">Introduction</span>
-                    <span className="text-[12px] font-outfit font-bold uppercase tracking-[0.1em] opacity-40 group-hover:opacity-100 transition-opacity">Découvrir le CREDDA</span>
-                  </div>
-                </Link>
-              </motion.div>
-            </motion.div>
-          </motion.div>
+               {/* OWL DOTS FOR RIGHT CAROUSEL */}
+               <div className="flex gap-2 mt-8">
+                 {testimonials.map((_: any, i: number) => (
+                   <button 
+                     key={i}
+                     onClick={() => setCurrentIndex(i)}
+                     className={`w-2 h-2 rounded-full transition-all duration-300 ${currentIndex === i ? 'bg-[#E1F247] w-6' : 'bg-white/30'}`}
+                   />
+                 ))}
+               </div>
+             </motion.div>
+           ) : (
+             <motion.div
+               initial={{ opacity: 0, x: 50 }}
+               animate={{ opacity: 1, x: 0 }}
+               transition={{ duration: 0.8, delay: 0.6 }}
+               className="hidden xl:flex flex-col absolute right-0 top-[20%] text-left w-72 z-20"
+             >
+               <div className="flex gap-1 mb-4">
+                 {[1,2,3,4,5].map((i) => (
+                   <Star key={i} size={16} fill="#E1F247" className="text-[#E1F247]" />
+                 ))}
+               </div>
+               <p className="text-white text-sm font-medium leading-relaxed mb-6 opacity-90">
+                  "Moderne, élégant, et concentré sur les vrais défis. J'ai adoré l'approche des projets pratiques et le système d'experts."
+               </p>
+               <div className="flex items-center gap-3">
+                 <div className="w-10 h-10 rounded-full overflow-hidden relative grayscale">
+                   <Image src="/images/testimonials/Peyton.webp" alt="User" fill className="object-cover" />
+                 </div>
+                 <div className="flex flex-col">
+                   <span className="text-white text-xs font-bold">Peyton Michael</span>
+                   <span className="text-white/50 text-[10px] uppercase font-bold tracking-widest">PhD Candidate</span>
+                 </div>
+               </div>
+             </motion.div>
+           )}
+
+           {/* FLOATING LOGOS WITH ARROWS INWARD */}
+           <div className="absolute inset-0 pointer-events-none z-10">
+               {/* LEFT SIDE ULPGL LOGO -> ARROW */}
+               <motion.div 
+                 initial={{ opacity: 0, scale: 0.8 }}
+                 animate={{ 
+                   opacity: 1, 
+                   scale: [1, 1.08, 1],
+                 }}
+                 transition={{ 
+                    opacity: { duration: 0.8, delay: 0.7 },
+                    scale: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                 }}
+                 className="absolute left-[25%] top-[2%] flex items-center gap-4"
+               >
+                 <motion.div 
+                    animate={{ boxShadow: ["0 0 20px rgba(255,255,255,0.1)", "0 0 35px rgba(225,242,71,0.2)", "0 0 20px rgba(255,255,255,0.1)"] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full p-2 flex items-center justify-center border border-white/20"
+                 >
+                   <Image src="/logoulpgl.webp" alt="ULPGL" width={40} height={40} className="object-contain" />
+                 </motion.div>
+                 <ArrowRight className="text-[#E1F247]" size={32} strokeWidth={2} />
+               </motion.div>
+
+               {/* RIGHT SIDE ARROW <- CREDDA LOGO */}
+               <motion.div 
+                 initial={{ opacity: 0, scale: 0.8 }}
+                 animate={{ 
+                   opacity: 1, 
+                   scale: [1, 1.08, 1],
+                 }}
+                 transition={{ 
+                    opacity: { duration: 0.8, delay: 0.8 },
+                    scale: { duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }
+                 }}
+                 className="absolute right-[25%] top-[2%] flex items-center gap-4"
+               >
+                 <ArrowLeft className="text-[#E1F247]" size={32} strokeWidth={2} />
+                 <motion.div 
+                    animate={{ 
+                      boxShadow: ["0 0 20px rgba(255,255,255,0.1)", "0 0 35px rgba(225,242,71,0.2)", "0 0 20px rgba(255,255,255,0.1)"]
+                    }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                    className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-full p-2 flex items-center justify-center border border-white/20"
+                 >
+                   <Image src="/logocredda.png" alt="CREDDA" width={40} height={40} className="object-contain" />
+                 </motion.div>
+               </motion.div>
+           </div>
+
+           <motion.div 
+             initial={{ y: 200, opacity: 0 }}
+             animate={{ y: 0, opacity: 1 }}
+             transition={{ duration: 1, delay: 0.2 }}
+             className={`relative z-10 rounded-t-full w-[350px] md:w-[450px] h-[400px] md:h-[480px] flex items-end justify-center overflow-hidden transition-colors duration-500 pb-0 shadow-[0_-20px_50px_rgba(0,0,0,0.3)] ${
+               theme === 'dark' ? 'bg-[#0D1645]' : 'bg-[#16256B]'
+             }`}
+           >
+              {/* PERSON IMAGE CAROUSEL */}
+              <div className="relative w-full h-[95%] z-20 flex items-end justify-center">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={centerIndex}
+                    initial={{ opacity: 0, scale: 1.1, y: 30 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: -20 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="relative w-full h-full"
+                  >
+                    <Image 
+                      src={team[centerIndex]?.image || "/images/director3.webp"} 
+                      alt={team[centerIndex]?.name || "Hero Person"} 
+                      fill 
+                      className="object-cover object-top drop-shadow-2xl grayscale hover:grayscale-0 transition-all duration-700" 
+                      priority
+                    />
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* OWL DOTS FOR CENTER CAROUSEL */}
+                <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-2 z-30">
+                  {team.length > 0 && team.map((_: any, i: number) => (
+                    <button 
+                      key={i}
+                      onClick={() => setCenterIndex(i)}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${centerIndex === i ? 'bg-[#E1F247] w-6' : 'bg-white/20 hover:bg-white/40'}`}
+                    />
+                  ))}
+                </div>
+              </div>
+           </motion.div>
         </div>
       </div>
-
-      {/* DECORATIVE LOCATION */}
-      <div className="absolute bottom-16 right-16 z-20 hidden lg:block">
-        <div className="flex flex-col items-end gap-2 text-right">
-          <p className="text-[10px] uppercase tracking-[0.3em] font-outfit font-medium text-foreground/20">Location</p>
-          <p className="text-xs font-fraunces italic text-[#C9A84C]">ULPGL University, Goma, DRC</p>
-        </div>
-      </div>
-
-      {/* SCROLL INDICATOR */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
-        <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-[#C9A84C]/50 to-[#C9A84C] animate-scroll-line" />
-      </div>
-
-      {/* ── BOTTOM ROPE CORD ── */}
-      <div className="absolute bottom-0 left-0 w-full z-20 pointer-events-none translate-y-[50%]">
-        <svg viewBox="0 0 1440 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" className="w-full h-[50px] md:h-[100px] block overflow-visible">
-          <path d="M0,50 C200,0 400,100 600,50 C800,0 1000,100 1200,50 C1300,35 1380,65 1440,50" fill="none" stroke="currentColor" strokeOpacity="0.5" strokeWidth="4" className="text-primary hidden md:block" filter="url(#ropeShadow)" />
-          <path d="M0,55 C200,5 400,105 600,55 C800,5 1000,105 1200,55 C1300,40 1380,70 1440,55" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2.5" className="text-primary hidden md:block" />
-          <path d="M0,45 C200,-5 400,95 600,45 C800,-5 1000,95 1200,45 C1300,30 1380,60 1440,45" fill="none" stroke="currentColor" strokeOpacity="0.15" strokeWidth="1.5" className="text-primary" />
-        </svg>
-      </div>
-
-      {/* ── CLIP PATH DEFINITION ── */}
-      <svg width="0" height="0" className="absolute pointer-events-none">
-        <defs>
-          <clipPath id="heroWavyClip" clipPathUnits="objectBoundingBox">
-            <path d="M 0,0.05 C 0.14,0 0.28,0.1 0.42,0.05 C 0.56,0 0.7,0.1 0.84,0.05 C 0.9,0.035 0.96,0.065 1,0.05 L 1,0.95 C 0.96,0.935 0.9,0.965 0.84,0.95 C 0.7,0.9 0.56,1 0.42,0.95 C 0.28,0.9 0.14,1 0,0.95 Z" />
-          </clipPath>
-        </defs>
-      </svg>
     </section>
   );
 }
+
