@@ -28,34 +28,51 @@
   },
   "HomePage": {
     "hero": {
-      "badge": "Excellence CREDDA - ULPGL",
-      "title_part1": "Centre de Recherche &",
-      "title_part2": "Justice Environnementale",
-      "subtitle": "Le CREDDA et sa Clinique de Droit de l'Environnement œuvrent pour l'accès à la justice, la démocratie et le développement durable en Afrique — depuis Goma, pour toute la RDC.",
-      "slides": [
+      "badge": "#1 Recherche & Excellence 2025",
+      "title": "Propulser le Changement avec le Savoir Africain",
+      "subtitle": "Rejoignez des milliers de chercheurs et acteurs du développement à travers le monde en accédant aux ressources conçues pour les esprits modernes.",
+      "discover": "Découvrir nos recherches",
+      "carousel": [
         {
-          "title": "L'Excellence au service de la Démocratie.",
-          "description": "Le CREDDA produit une recherche de haut niveau pour transformer les institutions africaines."
+          "text": "Le CREDDA produit une recherche de haut niveau pour transformer les institutions africaines et promouvoir l'excellence.",
+          "number": "5000+",
+          "label": "Publications Scientifiques"
         },
         {
-          "title": "Clinique Juridique Environnementale.",
-          "description": "Nous protégeons les droits des communautés et la biodiversité par le droit."
+          "text": "Depuis 16 ans, nous bâtissons un héritage académique d'excellence au cœur de la région des Grands Lacs.",
+          "number": "16",
+          "label": "Années d'Expertise"
         },
         {
-          "title": "Hub de Collaboration Internationale.",
-          "description": "Partenariat avec les grandes universités pour un développement durable."
+          "text": "Notre clinique juridique assure une protection environnementale et un accès à la justice pour les plus vulnérables.",
+          "number": "2000+",
+          "label": "Bénéficiaires Assistés"
         }
-      ],
-      "cta_publications": "Nos Publications",
-      "cta_contact": "En savoir plus"
+      ]
     },
     "stats": {
-      "years": "Années d'Expertise en recherche",
-      "pubs": "Documents Scientifiques & Rapports",
+      "badge": "Impact & Excellence",
+      "titleLine1": "L'impact du CREDDA",
+      "titleLine2": "en chiffres",
+      "years": "Années d'expertise",
+      "pubs": "Publications Scientifiques",
       "partners": "Partenaires Internationaux",
       "cases": "Bénéficiaires de la Clinique",
       "articles": "Articles de Recherche",
       "members": "Membres de l'Équipe"
+    },
+    "vision": {
+      "badge": "HÉRITAGE ACADÉMIQUE",
+      "title": "Redéfinir l'Avenir de la <highlight>Recherche</highlight> et de la <highlight>Justice</highlight> en RDC.",
+      "main_description": "Le CREDDA se positionne comme un laboratoire d'idées et un catalyseur de réformes, alliant excellence scientifique et engagement sur le terrain.",
+      "card_vision_badge": "Notre Vision",
+      "card_vision_text": "Unir l'excellence académique à l'impact social pour l'Afrique de demain.",
+      "card_readiness_title": "Excellence & Engagement",
+      "card_readiness_text": "Le CREDDA forme des leaders capables d'allier rigueur scientifique et résolution des défis du monde réel.",
+      "pillar1_title": "Recherche Juridique",
+      "pillar1_text": "Production de connaissances de haut niveau et de publications scientifiques influentes.",
+      "pillar2_title": "Clinique de Droit",
+      "pillar2_text": "Défense des droits humains et accès direct à la justice pour les communautés vulnérables."
     },
     "about": {
       "badge": "Héritage Académique",
@@ -64,49 +81,56 @@
       "description_p2": "Affilié à l'ULPGL-Goma, nous combinons expertise académique et action de terrain pour promouvoir une justice équitable et durable à travers le continent."
     },
     "research": {
-      "badge": "Intelligence & Analyse",
+      "badge": "NOTRE RECHERCHE",
+      "badge_insight": "— Découvrez des Perspectives Clés",
       "title": "Recherche Vedette",
+      "title_insight": "Explorez notre <span>Recherche</span>",
       "subtitle": "& Publications Scientifiques",
-      "description": "Nos axes de recherche adressent les défis de la gouvernance en Afrique.",
+      "description": "Explorez nos dernières contributions scientifiques et investigations juridiques à travers le continent africain.",
       "cta": "Accéder aux Archives Complètes",
-      "read_more": "Lire le Journal Complet",
+      "cta_view_all": "Explorer toute la recherche",
+      "cta_insight": "Voir tous les aperçus",
+      "read_more": "Lire plus",
       "journal": "Étude de Cas",
       "lab": "Labo CREDDA"
     },
     "clinical": {
-      "badge": "Action Terrain & Justice",
-      "title": "Clinique Juridique pour la",
-      "subtitle": "Protection Environnementale",
-      "description": "Nous portons la voix des communautés et de la nature devant les instances juridiques. Nos cliniques mobiles assurent une présence continue sur le terrain.",
+      "badge": "Impact & Justice",
+      "title": "La Clinique",
+      "subtitle": "de Droit du CREDDA",
+      "description": "Un pont entre la théorie juridique et l'action sociale, offrant une assistance directe aux plus vulnérables.",
+      "cta": "Demander une assistance",
+      "impact": "Impact Direct",
+      "families": "{count}+ Familles Accompagnées",
       "actions": {
-        "legal": {
-          "title": "Aide Juridique",
-          "desc": "Médiation et défense des droits des vulnérables."
-        },
         "land": {
-          "title": "Justice Foncière",
-          "desc": "Sécurisation des droits des communautés locales et autochtones."
+          "title": "Droits Fonciers",
+          "desc": "Sécurisation des terres et médiation de conflits communautaires."
         },
         "mobile": {
-          "title": "Cliniques Mobiles",
-          "desc": "Assistance juridique gratuite au cœur des zones vulnérables."
+          "title": "Justice Mobile",
+          "desc": "Accès au droit dans les zones reculées de la région."
         }
-      },
-      "cta": "Soumettre un Cas Juridique",
-      "impact": "Impact Terrain",
-      "families": "Plus de {count} familles assistées"
+      }
     },
     "team": {
-      "title": "Leadership Scientifique",
-      "title_alt": "Leadership Scientifique",
+      "title": "Notre équipe",
+      "title_main": "Notre Équipe",
+      "title_sub": "D'Excellence",
       "subtitle": "L'Équipe de Recherche",
-      "badge": "Notre Équipe",
+      "badge": "CORPS ACADÉMIQUE",
+      "description": "Une équipe d'experts dévoués à la recherche et à l'excellence.",
+      "read_more": "Aller voir l'équipe",
       "prev": "Précédent",
       "next": "Suivant"
     },
     "testimonials": {
-      "badge": "Confiance Internationale",
-      "title_alt": "Reconnaissance Internationale",
+      "badge": "TÉMOIGNAGES",
+      "title_center": "Ils nous font confiance",
+      "title_main": "Ce que nos partenaires",
+      "title_sub": "disent de nous",
+      "play_video": "Lire la vidéo",
+      "subtitle_center": "Nos partenaires et chercheurs viennent de divers horizons académiques et industriels mondiaux.",
       "prev": "Précédent",
       "next": "Suivant",
       "items": [
@@ -125,12 +149,12 @@
         {
           "name": "Britta Sjöstedt",
           "role": "Candidate au PhD, Université de Lund",
-          "text": "J'ai visité l'ULPGL en 2015 pour mener des recherches pour mon doctorat. Le professeur Kennedy KIHANGI BINDU a été un excellent hôte qui a aidé à entrer en contact avec d'autres chercheurs et organisations.",
+          "text": "Le CREDDA est un partenaire inestimable en RDC. Leur expertise sur le terrain et la rigueur de leur recherche académique sont exceptionnelles.",
           "image": "/images/testimonials/britta.webp"
         }
-      ],
-      "title": "They <span>trust us</span>."
+      ]
     },
+
     "library": {
       "badge": "Ressources",
       "title": "Bibliothèque <span>Numérique</span>",
@@ -171,10 +195,13 @@
       "portal": "Portail Chercheur"
     },
     "Gallery": {
-      "badge": "En Images",
-      "title": "Le CREDDA en <span>Action</span>",
-      "description": "Découvrez nos activités de recherche, nos travaux de clinique et nos collaborations à travers une sélection de photos.",
-      "cta": "Voir toute la galerie",
+      "badge": "MÉDIATHÈQUE",
+      "title": "Derniers <span class=\"text-primary\">Épisodes & Articles</span>",
+      "description": "Découvrez nos dernières avancées et analyses juridiques sur le terrain à travers nos contenus multimédias.",
+      "cta": "Exploration complète",
+      "load_more": "Charger plus",
+      "total_images": "Images dans la médiathèque",
+      "cta_view_all": "Voir toute la galerie",
       "modal": {
         "close": "Fermer",
         "prev": "Précédent",
@@ -186,10 +213,33 @@
     "video": {
       "badge": "Présentation Vidéo",
       "title": "Découvrez <primary>l'Impact</primary> du CREDDA",
+      "title_alt": "<line1>EXCELLENCE</line1> <line2>ACADÉMIQUE</line2>",
       "description": "Plongez au cœur de nos initiatives à travers cette présentation. Nous œuvrons pour l'excellence académique et l'innovation sociale en République Démocratique du Congo.",
       "since": "Depuis",
       "institution": "Institution",
       "watch": "Regarder l'introduction"
+    },
+    "faq": {
+      "title": "Questions Fréquentes",
+      "subtitle": "Tout ce que vous devez savoir sur le CREDDA, nos recherches et nos services cliniques.",
+      "items": [
+        {
+          "q": "Qu'est-ce que le CREDDA ?",
+          "a": "Le CREDDA (Centre de Recherche sur la Démocratie et le Développement en Afrique) est une institution d'excellence interdisciplinaire dédiée à l'analyse des défis juridiques et sociaux, affiliée à l'ULPGL-Goma."
+        },
+        {
+          "q": "Comment bénéficier de la clinique juridique ?",
+          "a": "Notre clinique offre une assistance gratuite aux populations vulnérables. Vous pouvez nous contacter directement via notre formulaire ou vous présenter à nos permanences au Campus Salomon."
+        },
+        {
+          "q": "Comment puis-je accéder aux publications ?",
+          "a": "La majorité de nos publications scientifiques et rapports cliniques sont disponibles en libre accès (Open Access) dans notre bibliothèque numérique sur ce site."
+        },
+        {
+          "q": "Proposez-vous des collaborations de recherche ?",
+          "a": "Oui, le CREDDA collabore avec de nombreuses universités internationales (Oxford, Northwestern, LSE, etc.). Contactez notre secrétariat scientifique pour toute proposition."
+        }
+      ]
     }
   },
   "metadata": {
@@ -698,8 +748,7 @@
     },
     "visual": {
       "badge": "Accès Institutionnel Sécurisé",
-      "title": "L'Excellence au Service de la {span} et du Développement.",
-      "span": "Recherche",
+      "title": "L'Excellence au Service de la <span>Recherche</span> et du Développement.",
       "description": "Connectez-vous à la plateforme d'administration harmonisée du CREDDA pour gérer vos travaux, publications et cliniques juridiques.",
       "slogan": "Research Excellence"
     },
@@ -1098,7 +1147,7 @@
       "viewAll": "Voir tout"
     },
     "recentMessages": {
-      "title": "<italic>Bureau</italic> Central",
+      "title": "Bureau Central",
       "unread": "{count} Nouveaux messages en attente",
       "consult": "Consulter",
       "viewAll": "Tout voir",

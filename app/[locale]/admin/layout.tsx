@@ -39,8 +39,6 @@ export default async function AdminLayout({
     { href: "/admin/gallery", label: t("gallery"), icon: "BookOpen" },
     { href: "/admin/members", label: t("team"), icon: "UserCircle" },
     { href: "/admin/clinical", label: t("clinical"), icon: "Scale" },
-    { href: "/admin/resources", label: t("resources"), icon: "BookOpen" },
-    { href: "/admin/sessions", label: t("sessions"), icon: "Calendar" },
     { href: "/admin/messages", label: t("messages"), icon: "MessageSquare" },
     { href: "/admin/announcements", label: t("announcements"), icon: "Megaphone" },
     { href: "/admin/users", label: t("users"), icon: "Users" },
@@ -48,7 +46,7 @@ export default async function AdminLayout({
 
   if (userRole === "EDITOR") {
     menuItems = menuItems.filter(item => 
-      ['/admin', '/admin/articles', '/admin/gallery', '/admin/resources'].includes(item.href)
+      ['/admin', '/admin/articles', '/admin/gallery'].includes(item.href)
     );
   }
 

@@ -47,6 +47,8 @@ export default async function RootLayout({
     <html lang={locale} suppressHydrationWarning className={`${fraunces.variable} ${bricolage.variable} ${outfit.variable} scroll-smooth`}>
       <head>
         <script
+          id="theme-script"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: `
               try {
@@ -60,7 +62,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="font-outfit antialiased bg-background text-foreground">
+      <body className="font-outfit antialiased bg-gray-400 text-foreground w-screen overflow-x-hidden">
         <Providers locale={locale} messages={messages}>
           <MainLayoutWrapper>
             {children}

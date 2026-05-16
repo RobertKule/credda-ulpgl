@@ -1,7 +1,7 @@
 // services/mail-service.ts
-import { resend } from "@/lib/resend";
+import { transporter, getMailSender } from "@/lib/mail";
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "contact@credda-ulpgl.org";
+const FROM_EMAIL = getMailSender();
 
 /** Inbound contact notifications (defaults to official CREDDA inbox) */
 const CONTACT_TO_EMAIL =
@@ -12,9 +12,9 @@ const CONTACT_TO_EMAIL =
  */
 export async function sendNewRequestAlert(userName: string, userEmail: string) {
   try {
-    await resend.emails.send({
+    await transporter.sendMail({
       from: `CREDDA-ULPGL <${FROM_EMAIL}>`,
-      to: [FROM_EMAIL],
+      to: FROM_EMAIL,
       subject: "🔔 Nouvelle demande d'inscription - CREDDA",
       html: `
         <div style="font-family: serif; max-width: 600px; margin: 0 auto; color: #0f172a;">
@@ -45,9 +45,9 @@ export async function sendNewRequestAlert(userName: string, userEmail: string) {
  */
 export async function sendApprovalNotification(userEmail: string, userName: string) {
   try {
-    await resend.emails.send({
+    await transporter.sendMail({
       from: `CREDDA-ULPGL <${FROM_EMAIL}>`,
-      to: [userEmail],
+      to: userEmail,
       subject: "✅ Votre compte CREDDA-ULPGL a été approuvé",
       html: `
         <div style="font-family: serif; max-width: 600px; margin: 0 auto; color: #0f172a;">
@@ -77,9 +77,9 @@ export async function sendApprovalNotification(userEmail: string, userName: stri
  */
 export async function sendRejectionNotification(userEmail: string, userName: string) {
   try {
-    await resend.emails.send({
+    await transporter.sendMail({
       from: `CREDDA-ULPGL <${FROM_EMAIL}>`,
-      to: [userEmail],
+      to: userEmail,
       subject: "ℹ️ Concernant votre demande d'inscription - CREDDA",
       html: `
         <div style="font-family: serif; max-width: 600px; margin: 0 auto; color: #0f172a;">
@@ -106,9 +106,9 @@ export async function sendRejectionNotification(userEmail: string, userName: str
 export async function sendContactNotification(senderName: string, senderEmail: string, message: string) {
   try {
      // Notify Admin
-     await resend.emails.send({
+     await transporter.sendMail({
         from: `Nouveau Message <${FROM_EMAIL}>`,
-        to: [CONTACT_TO_EMAIL],
+        to: CONTACT_TO_EMAIL,
         subject: `📬 Nouveau message de ${senderName}`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; color: #334155;">
@@ -140,9 +140,9 @@ export async function sendReplyNotification(
   originalMessage: string
 ) {
   try {
-    await resend.emails.send({
+    await transporter.sendMail({
       from: `CREDDA-ULPGL <${FROM_EMAIL}>`,
-      to: [userEmail],
+      to: userEmail,
       subject: `RE: ${originalSubject}`,
       html: `
         <div style="font-family: serif; max-width: 600px; margin: 0 auto; color: #0f172a;">

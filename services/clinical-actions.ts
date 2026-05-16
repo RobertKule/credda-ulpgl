@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/lib/db";
 import { withSafeAction, ActionResponse } from "@/lib/safe-action";
 

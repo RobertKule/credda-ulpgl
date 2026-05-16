@@ -262,7 +262,9 @@ export default async function AdminPage({ params }: Props) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <MessageSquare size={20} className="text-primary" />
-              <h2 className="text-xl font-serif font-black uppercase tracking-tight text-foreground">{t('recentMessages.title')}</h2>
+              <h2 className="text-xl font-serif font-black uppercase tracking-tight text-foreground">
+                {t('recentMessages.title')}
+              </h2>
             </div>
             <Link href="/admin/messages" className="text-[10px] font-black uppercase tracking-widest text-primary hover:tracking-[0.2em] transition-all">
               {t('recentMessages.viewAll')}

@@ -6,6 +6,8 @@ import HomeClient from "./HomeClient";
 import fs from "fs";
 import path from "path";
 
+import { getTranslations } from "next-intl/server";
+
 export async function generateMetadata({
   params
 }: {
@@ -17,27 +19,9 @@ export async function generateMetadata({
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const t = await getTranslations('HomePage');
 
-  const TESTIMONIALS = [
-    {
-      name: "David MICHAEL PEYTON",
-      role: "PhD Candidate, Northwestern University",
-      image: "/images/testimonials/Peyton.webp",
-      text: "I could not have asked for more ideal research partners than the faculty and staff at CREDDA-ULPGL. They were not only able to support multiple types of data collection but also provided opportunities for feedback from Congolese academics."
-    },
-    {
-      name: "Heather LYNNE ZIMMERMAN",
-      role: "Masters student, London School of Economics (LSE)",
-      image: "/images/testimonials/heather.webp",
-      text: "Dear Professor Kennedy Kihangi, thank you very much for generously welcoming me into the community! I am grateful for the ideas and feedback offered on my research. I am eager to return to Goma."
-    },
-    {
-      name: "Britta Sjöstedt",
-      role: "PhD candidate, Lund University",
-      image: "/images/testimonials/britta.webp",
-      text: "I visited ULPGL in 2015 to conduct research for my PhD. Professor Kennedy KIHANGI BINDU was an excellent host that helped to get in contact with other researchers and organisations."
-    }
-  ];
+  const TESTIMONIALS = t.raw('testimonials.items') || [];
 
   let PARTNERS: string[] = [];
   try {
@@ -62,7 +46,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       totalMembersResult,
       researchCountResult,
       clinicalCountResult,
-      clinicalCaseCountResult
+      clinicalCaseCountResult,
+      totalGalleryImagesResult
     ] = (await Promise.all([
       // featuredResearch
       sql`
@@ -87,13 +72,12 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         FROM "Member" m
         ORDER BY m."order" ASC
       `,
-      // gallery
+      // gallery (Institutional Hero Carousel)
       sql`
-        SELECT gi.id, gi.src, gi.category, gi.featured, gi."order",
+        SELECT gi.id, gi.src, gi.category, gi.featured, gi."order", gi."createdAt",
           (SELECT json_agg(t) FROM "GalleryImageTranslation" t WHERE t."galleryImageId" = gi.id AND t.language = ${locale}) as translations
         FROM "GalleryImage" gi
-        WHERE gi.featured = true
-        ORDER BY gi."order" ASC LIMIT 8
+        ORDER BY gi."createdAt" DESC LIMIT 15
       `,
       // counts
       sql`SELECT count(*) FROM "Article" WHERE published = true`,
@@ -101,7 +85,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       sql`SELECT count(*) FROM "Member"`,
       sql`SELECT count(*) FROM "Article" WHERE domain = 'RESEARCH' AND published = true`,
       sql`SELECT count(*) FROM "Article" WHERE domain = 'CLINICAL' AND published = true`,
-      sql`SELECT count(*) FROM "ClinicalCase"`
+      sql`SELECT count(*) FROM "ClinicalCase"`,
+      sql`SELECT count(*) FROM "GalleryImage"`
     ])) as any[];
 
     const totalArticles = parseInt(totalArticlesResult[0].count, 10);
@@ -110,6 +95,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
     const researchCount = parseInt(researchCountResult[0].count, 10);
     const clinicalCount = parseInt(clinicalCountResult[0].count, 10);
     const clinicalCaseCount = parseInt(clinicalCaseCountResult[0].count, 10);
+    const totalGalleryImages = parseInt(totalGalleryImagesResult[0].count, 10);
 
     const stats = {
       totalResources: totalArticles + totalPubs,
@@ -120,18 +106,50 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       clinicalCases: clinicalCaseCount
     };
 
-    const sanitizedTeam = team.map((member: any) => ({
-      ...member,
-      image: member.image ? member.image.replace(/\\/g, '/').replace(/^public\//, '/') : null,
-      translations: member.translations || []
-    }));
+    const sanitizedTeam = team.map((member: any) => {
+      let image = member.image ? member.image.replace(/\\/g, '/') : null;
+      if (image && !image.startsWith('http')) {
+        image = image.replace(/^\/?public\//, '/').replace(/^\/?/, '/');
+      }
+      return {
+        ...member,
+        image,
+        translations: member.translations || []
+      };
+    });
 
-    const sanitizedGalleryImages = galleryImages.map((img: any) => ({
-      ...img,
-      src: img.src ? img.src.replace(/\\/g, '/').replace(/^public\//, '/') : '',
-      title: img.translations?.[0]?.title || "",
-      description: img.translations?.[0]?.description || ""
-    }));
+    let sanitizedGalleryImages = galleryImages.map((img: any) => {
+      let src = img.src ? img.src.replace(/\\/g, '/') : '';
+      if (src && !src.startsWith('http')) {
+        src = src.replace(/^\/?public\//, '/').replace(/^\/?/, '/');
+      }
+      return {
+        ...img,
+        src,
+        title: img.translations?.[0]?.title || "",
+        description: img.translations?.[0]?.description || "",
+        category: img.category || "Gallery"
+      };
+    }).filter((img: any) => img.src !== '');
+
+    // Fallback to local filesystem images if DB is empty (Real images from public/images/gallery)
+    if (sanitizedGalleryImages.length === 0) {
+      try {
+        const galleryDir = path.join(process.cwd(), 'public', 'images', 'gallery');
+        if (fs.existsSync(galleryDir)) {
+          const files = fs.readdirSync(galleryDir).filter(file => /\.(png|webp|jpe?g|svg)$/i.test(file));
+          sanitizedGalleryImages = files.map((file, idx) => ({
+            id: `fs-${idx}`,
+            src: `/images/gallery/${file}`,
+            title: file.split('.')[0].charAt(0).toUpperCase() + file.split('.')[0].slice(1),
+            description: "Archive CREDDA-ULPGL",
+            category: "Archive"
+          }));
+        }
+      } catch (err) {
+        console.error("Error reading gallery directory:", err);
+      }
+    }
 
     const formattedFeaturedResearch = featuredResearch.map((item: any) => ({
       ...item,
@@ -146,6 +164,11 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       translations: p.translations || []
     }));
 
+    let totalCountToDisplay = totalGalleryImages;
+    if (totalGalleryImages === 0 && sanitizedGalleryImages.length > 0) {
+      totalCountToDisplay = sanitizedGalleryImages.length;
+    }
+
     return (
       <HomeClient
         locale={locale}
@@ -153,6 +176,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         latestReports={formattedLatestReports}
         team={sanitizedTeam}
         galleryImages={sanitizedGalleryImages}
+        totalGalleryImages={totalCountToDisplay}
         testimonials={TESTIMONIALS}
         partners={PARTNERS}
         dbStats={stats}

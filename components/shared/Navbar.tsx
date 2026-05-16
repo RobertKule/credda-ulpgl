@@ -3,10 +3,9 @@
 import Image from "next/image";
 import { Link, usePathname } from "./../../navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { Menu, X, ArrowRight, Search, Sun, Moon, ChevronDown } from "lucide-react";
+import { Menu, X, ArrowUpRight, Search, Sun, Moon, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import SearchModal from "./SearchModal";
 import { useSession } from "next-auth/react";
 import { useTheme } from "./ThemeProvider";
 
@@ -16,335 +15,204 @@ export default function Navbar() {
   const t = useTranslations("Navigation");
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { data: session } = useSession();
   const { theme, toggleTheme } = useTheme();
-  const [activeSection, setActiveSection] = useState("");
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-      
-      const sections = ["about", "research", "clinical", "publications", "team"];
-      let currentSection = "";
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= window.innerHeight / 3 && rect.bottom >= window.innerHeight / 3) {
-            currentSection = section;
-            break;
-          }
-        }
-      }
-      setActiveSection(currentSection);
+      setIsScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const tickerItems = Object.values(t.raw("ticker") || {});
-  const expertiseLinks = [
-    { href: "/research", label: t("research"), id: "research" },
-    { href: "/clinical", label: t("clinical"), id: "clinical" },
-    { href: "/publications", label: t("publications"), id: "publications" },
-    { href: "/programmes", label: t("programmes"), id: "programmes" },
+  const navLinks = [
+    { href: "/about", label: t("about", { fallback: "Qui nous sommes" }) },
+    { href: "/research", label: t("research", { fallback: "Recherche" }) },
+    { href: "/clinical", label: t("clinical", { fallback: "Agir" }) },
+    { href: "/publications", label: t("publications", { fallback: "Publications" }) },
+    { href: "/contact", label: t("contact", { fallback: "Contact" }) },
   ];
-
-  const institutionLinks = [
-    { href: "/about", label: t("about"), id: "about" },
-    { href: "/team", label: t("team"), id: "team" },
-    { href: "/events", label: t("events"), id: "events" },
-    { href: "/gallery", label: t("gallery"), id: "gallery" }
-  ];
-
-  const LanguageSwitcher = () => (
-    <div className="flex items-center gap-1 rounded-md border border-border bg-muted/30 p-1 shadow-inner">
-      {["fr", "en", "sw"].map((l) => (
-        <Link
-          key={l}
-          href={pathname}
-          locale={l}
-          aria-label={`Switch language to ${l.toUpperCase()}`}
-          className={`text-[9px] font-bold w-8 h-8 flex items-center justify-center transition-all rounded-md ${
-            locale === l ? "bg-[#C9A84C] text-[#0C0C0A] shadow-md" : "text-foreground/60 hover:text-foreground"
-          }`}
-        >
-          {l.toUpperCase()}
-        </Link>
-      ))}
-    </div>
-  );
 
   return (
     <>
-      {/* 1. TOP TICKER */}
-      <div className="fixed top-0 w-full z-[100] bg-[#0C0C0A] border-b border-white/5 py-1.5 overflow-hidden">
-        <div className="flex whitespace-nowrap animate-ticker">
-          {[...tickerItems, ...tickerItems].map((item: any, i) => (
-            <span key={i} className="mx-12 text-[10px] font-outfit font-medium uppercase tracking-[0.4em] text-[#F5F2EC]/60 flex items-center gap-4">
-              <span className="w-1.5 h-1.5 bg-[#C9A84C] rounded-md shadow-[0_0_10px_rgba(201,168,76,0.8)]" />
-              {item}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* 2. MAIN NAVIGATION - FLOATING & CENTERED ON SCROLL */}
-      <header 
-        className={`fixed left-0 right-0 z-[90] transition-all duration-500 ease-in-out px-4 lg:px-0 mt-4 ${
-          isScrolled 
-          ? "top-4 lg:top-6" 
-          : "top-8 lg:top-10"
+      <header
+        className={`fixed top-0 left-0 right-0 z-[100] transition-colors duration-300 ease-in-out ${
+          isScrolled
+            ? "bg-transparent backdrop-blur-xl shadow-sm py-4 border-b border-white/10"
+            : "bg-transparent py-5 lg:py-8"
         }`}
       >
-        <div
-          className={`container mx-auto transition-all duration-500 ease-in-out relative flex items-center justify-between ${
-            isScrolled 
-            ? "max-w-6xl h-16 bg-background/80 backdrop-blur-xl border border-border/50 rounded-md px-8 shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)]" 
-            : "max-w-full h-20 bg-transparent px-6"
-          }`}
-        >
+        <div className="container mx-auto px-6 lg:px-12 flex items-center justify-between">
           {/* LOGO */}
-          <Link href="/" className="flex items-center gap-3 group py-1" aria-label="CREDDA CDE Home">
-            <div className="relative w-8 h-8 lg:w-10 lg:h-10 transition-transform duration-500 group-hover:scale-110">
-              <Image 
-                src="/logocredda.png" 
-                alt="CREDDA Logo" 
-                fill 
+          <Link href="/" className="flex items-center gap-3">
+            <div className="relative w-8 h-8 lg:w-10 lg:h-10">
+              <Image
+                src="/logocredda.png"
+                alt="CREDDA Logo"
+                fill
                 className="object-contain"
                 priority
               />
             </div>
-            <div className="flex flex-col">
-              <span className="font-bricolage font-black text-lg lg:text-xl tracking-tighter text-foreground leading-none">
-                CREDDA<span className="text-[#C9A84C] animate-pulse">·</span>CDE
-              </span>
-              {!isScrolled && (
-                <span className="text-[7px] uppercase tracking-[0.6em] font-bold text-[#C9A84C]/60 mt-0.5">Legal Excellence</span>
-              )}
-            </div>
+            <span className={`font-bricolage font-black text-xl lg:text-2xl tracking-tighter ${
+              !isScrolled && pathname === "/" ? "text-white" : "text-foreground"
+            }`}>
+              CREDDA
+            </span>
           </Link>
 
-          {/* DESKTOP MENU */}
-          <nav className="hidden lg:flex items-center gap-2">
-            <NavDropdown label="Expertise" links={expertiseLinks} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} pathname={pathname} activeSection={activeSection} isScrolled={isScrolled} />
-            <div className="w-[1px] h-4 bg-border/40 mx-2" />
-            <NavDropdown label="L'Institution" links={institutionLinks} activeDropdown={activeDropdown} setActiveDropdown={setActiveDropdown} pathname={pathname} activeSection={activeSection} isScrolled={isScrolled} />
-          </nav>
-
-          {/* ACTIONS & TOOLS */}
-          <div className="hidden lg:flex items-center gap-5">
-            <button 
-              onClick={() => setIsSearchOpen(true)} 
-              className="p-2 text-foreground/40 hover:text-[#C9A84C] transition-all hover:scale-110"
-              aria-label="Open search"
-            >
-              <Search size={18} strokeWidth={1.5} />
-            </button>
-            
-            <LanguageSwitcher />
-
-            <button 
-              onClick={toggleTheme} 
-              className="w-9 h-9 flex items-center justify-center rounded-full border border-border bg-background/50 text-foreground/60 hover:text-[#C9A84C] transition-all"
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            >
-              {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
-            </button>
-
-            {session ? (
-              <Link href="/admin" className="flex items-center gap-3 group border border-border/50 bg-muted/20 px-4 py-1.5 rounded-md hover:bg-[#C9A84C]/10 transition-all">
-                 <div className="w-6 h-6 rounded-full bg-[#C9A84C] text-[10px] font-black flex items-center justify-center text-[#0C0C0A]">
-                   {session.user?.name?.[0] || 'A'}
-                 </div>
-                 <span className="text-[9px] font-black uppercase tracking-widest text-foreground/70 group-hover:text-foreground">
-                   Dashboard
-                 </span>
-              </Link>
-            ) : (
+          {/* DESKTOP NAV */}
+          <nav className="hidden lg:flex items-center gap-10">
+            {navLinks.map((link) => (
               <Link
-                href="/login"
-                className={`text-[9px] font-black uppercase tracking-[0.2em] transition-all hover:text-[#C9A84C] ${
-                  isScrolled ? "text-foreground/50" : "text-foreground/40"
+                key={link.href}
+                href={link.href}
+                className={`text-[13px] font-medium transition-colors duration-200 ${
+                  !isScrolled && pathname === "/" 
+                    ? "text-white/70 hover:text-white" 
+                    : "text-foreground/70 hover:text-foreground"
                 }`}
               >
-                {t("login")}
+                {link.label}
               </Link>
-            )}
+            ))}
+          </nav>
 
-            <Link
-              href="/contact"
-              aria-label={t("contact")}
-              className={`px-6 py-2.5 bg-[#C9A84C] text-[#0C0C0A] text-[9px] font-black uppercase tracking-[0.2em] rounded-md hover:scale-105 active:scale-95 transition-all flex items-center gap-2 shadow-lg hover:shadow-[#C9A84C]/20`}
+          {/* ACTIONS (Theme, Lang, Login) */}
+          <div className="hidden lg:flex items-center gap-4">
+            {/* Lang Dropdown Simulation or Theme Toggle */}
+            <div className="flex items-center gap-1 bg-white/5 rounded-full p-1 border border-white/10">
+                {["fr", "en", "sw"].map((l) => (
+                    <Link
+                    key={l}
+                    href={pathname}
+                    locale={l}
+                    className={`text-[10px] font-bold uppercase w-7 h-7 flex items-center justify-center rounded-full transition-colors ${
+                        locale === l 
+                        ? "bg-white text-black" 
+                        : "text-white/60 hover:text-white"
+                    }`}
+                    >
+                    {l}
+                    </Link>
+                ))}
+            </div>
+
+            <button
+               onClick={toggleTheme}
+               className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors ${
+                 !isScrolled && pathname === "/" 
+                  ? "bg-white/5 text-white/80 hover:bg-white/10" 
+                  : "bg-muted text-foreground/80 hover:bg-muted/80"
+               }`}
+               aria-label="Toggle Theme"
             >
-              {t("contact")}
-              <ArrowRight size={12} strokeWidth={3} />
-            </Link>
+               {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
+            </button>
+
+            <div className="flex items-center gap-2">
+              <Link
+                href={session ? "/admin" : "/login"}
+                className={`px-6 py-2.5 rounded-full text-[13px] font-bold transition-all flex items-center gap-2 ${
+                  !isScrolled && pathname === "/"
+                    ? "bg-[#0A0C10] text-white hover:bg-black"
+                    : "bg-foreground text-background hover:bg-foreground/90"
+                }`}
+              >
+                {session ? "Dashboard" : "Connexion"}
+              </Link>
+              <Link
+                href={session ? "/admin" : "/login"}
+                className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-105 active:scale-95 ${
+                  !isScrolled && pathname === "/"
+                    ? "bg-[#0A0C10] text-white hover:bg-black"
+                    : "bg-foreground text-background"
+                }`}
+              >
+                <ArrowUpRight size={16} />
+              </Link>
+            </div>
           </div>
 
-          {/* MOBILE TOGGLE */}
-          <button 
-            className="lg:hidden p-2 text-foreground" 
+          {/* MOBILE MENU TOGGLE */}
+          <button
             onClick={() => setIsOpen(true)}
-            aria-label="Open mobile menu"
+            className={`lg:hidden p-2 rounded-full ${
+              !isScrolled && pathname === "/" ? "bg-white/10 text-white" : "bg-muted text-foreground"
+            }`}
           >
-            <Menu size={28} />
+            <Menu size={20} />
           </button>
         </div>
       </header>
 
-      {/* 3. MOBILE MENU OVERLAY */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed inset-0 z-[200] flex h-[100dvh] flex-col bg-background text-foreground overflow-hidden"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="fixed inset-0 z-[200] bg-background lg:hidden flex flex-col p-6"
           >
-            <div className="shrink-0 flex items-center justify-between border-b border-border bg-card/40 p-6 backdrop-blur-md">
-              <span className="font-bricolage text-xl font-black tracking-tighter flex items-center gap-2">
-                <Image src="/logocredda.png" alt="Logo" width={24} height={24} className="object-contain" />
-                CREDDA<span className="text-[#C9A84C]">·</span>CDE
-              </span>
+            <div className="flex items-center justify-between border-b border-border pb-4">
+               <Link href="/" className="font-bricolage text-2xl font-black">
+                CREDDA
+              </Link>
               <button 
-                onClick={() => setIsOpen(false)} 
-                className="w-12 h-12 flex items-center justify-center bg-white/5 border border-white/10 rounded-md"
-                aria-label="Close mobile menu"
+                onClick={() => setIsOpen(false)}
+                className="w-10 h-10 flex items-center justify-center border border-border rounded-full"
               >
-                <X size={24} />
+                <X size={20} />
               </button>
             </div>
-
-            <nav className="flex-1 overflow-y-auto px-6 py-8 space-y-12 overscroll-contain scrollbar-hide">
-              <MobileGroup label="Expertise" links={expertiseLinks} pathname={pathname} activeSection={activeSection} setIsOpen={setIsOpen} />
-              <MobileGroup label="L'Institution" links={institutionLinks} pathname={pathname} activeSection={activeSection} setIsOpen={setIsOpen} />
+            
+            <nav className="flex-1 py-10 flex flex-col gap-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="text-2xl font-semibold opacity-80 hover:opacity-100"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </nav>
 
-            <div className="shrink-0 border-t border-border bg-card/95 p-6 pb-[env(safe-area-inset-bottom,24px)] space-y-4">
-              <div className="flex items-center justify-between gap-4">
-                <button
-                  onClick={toggleTheme}
-                  className="flex items-center gap-3 flex-1 p-3 rounded-xl border border-border bg-background/60 text-foreground/70 hover:text-primary hover:border-primary/40 transition-all"
-                  aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-                >
-                  {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em]">
-                    {theme === "dark" ? "Mode Clair" : "Mode Sombre"}
-                  </span>
-                </button>
-                <div className="flex items-center gap-1 rounded-xl border border-border bg-background/60 p-2">
-                  {["fr", "en", "sw"].map((l) => (
-                    <Link
-                      key={l}
-                      href={pathname}
-                      locale={l}
-                      onClick={() => setIsOpen(false)}
-                      aria-label={`Switch language to ${l.toUpperCase()}`}
-                      className={`text-[9px] font-black w-9 h-9 flex items-center justify-center rounded-lg transition-all ${
-                        locale === l ? "bg-[#C9A84C] text-[#0C0C0A] shadow-md" : "text-foreground/50 hover:text-foreground"
-                      }`}
-                    >
-                      {l.toUpperCase()}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <Link 
-                href={session ? "/admin" : "/login"} 
-                onClick={() => setIsOpen(false)} 
-                className={`flex items-center justify-between w-full p-4 rounded-xl border transition-all ${
-                  session ? "border-blue-500/30 bg-primary/50/5 text-foreground" : "border-[#C9A84C]/20 bg-[#C9A84C]/5 text-foreground"
-                }`}
-              >
-                 <div className="flex flex-col">
-                    <span className={`text-[10px] font-black uppercase tracking-[0.2em] ${session ? "text-blue-500/60" : "text-[#C9A84C]/60"}`}>
-                      {session ? "Session Active" : "Accès Membre"}
-                    </span>
-                    <span className="text-sm font-bold uppercase tracking-widest">
-                      {session ? "Accéder au Dashboard" : t("login")}
-                    </span>
-                 </div>
-                 {session ? (
-                   <div className="w-10 h-10 rounded-md bg-primary flex items-center justify-center text-white font-black text-xs">
-                     {session.user?.name?.[0] || 'A'}
-                   </div>
-                 ) : (
-                   <ArrowRight size={18} className="text-[#C9A84C]" />
-                 )}
-              </Link>
-
-              <Link href="/contact" onClick={() => setIsOpen(false)} className="group relative block w-full py-5 bg-[#C9A84C] text-[#0C0C0A] text-center font-bold uppercase tracking-[0.4em] text-[10px] rounded-xl overflow-hidden active:scale-95 transition-all">
-                <span className="relative z-10 flex items-center justify-center gap-3">{t("contact")} <ArrowRight size={16} /></span>
-                <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} locale={locale} />
-    </>
-  );
-}
-
-function NavDropdown({ label, links, activeDropdown, setActiveDropdown, pathname, activeSection, isScrolled }: any) {
-  const isOpen = activeDropdown === label;
-  return (
-    <div className="relative group" onMouseEnter={() => setActiveDropdown(label)} onMouseLeave={() => setActiveDropdown(null)}>
-      <button className={`flex items-center gap-1.5 px-3 py-2 text-[10px] font-black uppercase tracking-[0.15em] transition-all ${
-        isOpen ? "text-[#C9A84C]" : "text-foreground/60 hover:text-foreground"
-      }`}>
-        {label} <ChevronDown size={12} className={`transition-transform duration-500 ${isOpen ? "rotate-180" : "opacity-30"}`} />
-      </button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: 10, scale: 0.95 }} 
-            animate={{ opacity: 1, y: 0, scale: 1 }} 
-            exit={{ opacity: 0, y: 5, scale: 0.98 }} 
-            className={`absolute top-full left-0 w-60 bg-background/95 backdrop-blur-2xl border border-border shadow-2xl p-2 z-[110] ${isScrolled ? "mt-2 rounded-2xl" : "rounded-sm"}`}
-          >
-            <div className="flex flex-col gap-1">
-              {links.map((link: any) => {
-                const isActive = pathname === link.href || (pathname === "/" && activeSection === link.id);
-                return (
-                  <Link key={link.href} href={link.href} className={`px-4 py-2.5 text-[9px] font-bold uppercase tracking-widest transition-all rounded-xl flex items-center justify-between ${isActive ? "bg-[#C9A84C] text-[#0C0C0A]" : "hover:bg-foreground/5 text-foreground/70"}`}>
-                    {link.label} <ArrowRight size={12} className={isActive ? "opacity-100" : "opacity-0"} />
+            <div className="pt-6 border-t border-border flex flex-col gap-4">
+              <div className="flex gap-2">
+                {["fr", "en", "sw"].map((l) => (
+                  <Link
+                    key={l}
+                    href={pathname}
+                    locale={l}
+                    className={`flex-1 py-3 text-center rounded-xl text-xs font-bold uppercase transition-colors ${
+                      locale === l ? "bg-foreground text-background" : "bg-muted text-foreground"
+                    }`}
+                  >
+                    {l}
                   </Link>
-                );
-              })}
+                ))}
+              </div>
+              <button
+                onClick={toggleTheme}
+                className="w-full py-4 bg-muted text-foreground rounded-xl flex items-center justify-center gap-2 font-bold text-sm"
+              >
+                {theme === "dark" ? <><Sun size={16}/> Mode Clair</> : <><Moon size={16}/> Mode Sombre</>}
+              </button>
+              <Link
+                href="/login"
+                onClick={() => setIsOpen(false)}
+                className="w-full py-4 bg-primary text-primary-foreground rounded-xl flex items-center justify-center gap-3 font-bold text-sm uppercase tracking-widest"
+              >
+                {t("login", { fallback: "Connexion" })} <ArrowRight size={16} />
+              </Link>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
-  );
-}
-
-function MobileGroup({ label, links, pathname, activeSection, setIsOpen }: any) {
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-4">
-        <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#C9A84C]">{label}</span>
-        <div className="h-[1px] w-full bg-border/50" />
-      </div>
-      <div className="grid grid-cols-1 gap-2">
-        {links.map((link: any, i: number) => {
-          const isActive = pathname === link.href || (pathname === "/" && activeSection === link.id);
-          return (
-            <Link key={link.href} href={link.href} onClick={() => setIsOpen(false)} className={`flex items-center justify-between rounded-xl border p-4 transition-all ${isActive ? "border-[#C9A84C]/40 bg-[#C9A84C]/10 text-[#C9A84C]" : "border-border bg-card/50"}`}>
-              <span className="text-lg font-bold font-fraunces">{link.label}</span>
-              <ArrowRight size={14} className={isActive ? "text-[#C9A84C]" : "opacity-20"} />
-            </Link>
-          );
-        })}
-      </div>
-    </div>
+    </>
   );
 }

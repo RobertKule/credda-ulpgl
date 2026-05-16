@@ -28,34 +28,51 @@
   },
   "HomePage": {
     "hero": {
-      "badge": "CREDDA - ULPGL Excellence",
-      "title_part1": "Environmental Research &",
-      "title_part2": "Justice Center",
-      "subtitle": "CREDDA and its Environmental Law Clinic work for access to justice, democracy and sustainable development in Africa — from Goma, for the entire DRC.",
-      "slides": [
+      "badge": "#1 Research & Excellence 2025",
+      "title": "Driving Change with African Knowledge",
+      "subtitle": "Join thousands of researchers and development actors worldwide by accessing resources designed for modern minds.",
+      "discover": "Discover our research",
+      "carousel": [
         {
-          "title": "Excellence for Democracy.",
-          "description": "CREDDA produces high-level research to transform African institutions."
+          "text": "CREDDA produces high-level research to transform African institutions and promote excellence.",
+          "number": "5000+",
+          "label": "Scientific Publications"
         },
         {
-          "title": "Environmental Law Clinic.",
-          "description": "We protect community rights and biodiversity through law."
+          "text": "For 16 years, we have been building an academic legacy of excellence in the heart of the Great Lakes region.",
+          "number": "16",
+          "label": "Years of Expertise"
         },
         {
-          "title": "International Collaboration Hub.",
-          "description": "Partnering with major universities for sustainable development."
+          "text": "Our legal clinic ensures environmental protection and access to justice for the most vulnerable.",
+          "number": "2000+",
+          "label": "Assisted Beneficiaries"
         }
-      ],
-      "cta_publications": "Our Publications",
-      "cta_contact": "Discover more"
+      ]
     },
     "stats": {
+      "badge": "Impact & Excellence",
+      "titleLine1": "CREDDA's Impact",
+      "titleLine2": "in figures",
       "years": "Years of Research Expertise",
       "pubs": "Scientific Documents & Reports",
       "partners": "International Partners",
       "cases": "Clinic Beneficiaries",
       "articles": "Research Articles",
       "members": "Team Members"
+    },
+    "vision": {
+      "badge": "ACADEMIC HERITAGE",
+      "title": "Redefining the Future of <highlight>Research</highlight> and <highlight>Justice</highlight> in DRC.",
+      "main_description": "CREDDA positions itself as a think tank and a catalyst for reform, combining scientific excellence with on-the-ground engagement.",
+      "card_vision_badge": "Our Vision",
+      "card_vision_text": "Uniting academic excellence with social impact for tomorrow's Africa.",
+      "card_readiness_title": "Excellence & Engagement",
+      "card_readiness_text": "CREDDA trains leaders capable of combining scientific rigor with solving real-world challenges.",
+      "pillar1_title": "Legal Research",
+      "pillar1_text": "Production of high-level knowledge and influential scientific publications.",
+      "pillar2_title": "Legal Clinic",
+      "pillar2_text": "Defense of human rights and direct access to justice for vulnerable communities."
     },
     "about": {
       "badge": "Academic Heritage",
@@ -64,50 +81,56 @@
       "description_p2": "Affiliated with ULPGL-Goma, we combine academic expertise and field action to promote equitable and sustainable justice across the continent."
     },
     "research": {
-      "badge": "Intelligence & Analysis",
+      "badge": "OUR RESEARCH",
+      "badge_insight": "— Uncover Key Insights",
       "title": "Featured Research",
+      "title_insight": "Let's Check Our <span>Research</span>",
       "subtitle": "& Scientific Publications",
-      "description": "Our research axes address governance challenges in Africa.",
+      "description": "Explore our latest scientific contributions and legal investigations across the African continent.",
       "cta": "Access Full Archive",
-      "read_more": "Read Full Journal",
+      "cta_view_all": "Explore all research",
+      "cta_insight": "View All Insights",
+      "read_more": "Read more",
       "journal": "Case Study",
       "lab": "CREDDA Lab"
     },
     "clinical": {
-      "badge": "Ground Action & Justice",
-      "title": "Legal Clinic for",
-      "subtitle": "Environmental Protection",
-      "description": "We carry the voice of communities and nature before legal authorities. Our mobile clinics ensure a continuous field presence.",
+      "badge": "Impact & Justice",
+      "title": "The Legal",
+      "subtitle": "Clinic of CREDDA",
+      "description": "A bridge between legal theory and social action, offering direct assistance to the most vulnerable.",
+      "cta": "Request assistance",
+      "impact": "Direct Impact",
+      "families": "{count}+ Families Assisted",
       "actions": {
-        "legal": {
-          "title": "Legal Aid",
-          "desc": "Mediation and defense of the rights of the vulnerable."
-        },
         "land": {
-          "title": "Land Justice",
-          "desc": "Securing the rights of local and indigenous communities."
+          "title": "Land Rights",
+          "desc": "Securing land and mediating community conflicts."
         },
         "mobile": {
-          "title": "Mobile Clinics",
-          "desc": "Free legal assistance in the heart of vulnerable areas."
+          "title": "Mobile Justice",
+          "desc": "Access to law in remote areas of the region."
         }
-      },
-      "cta": "Submit a Legal Case",
-      "impact": "Field Impact",
-      "families": "Over {count} Families Assisted"
+      }
     },
     "team": {
-      "title": "Scientific Leadership",
-      "title_alt": "Scientific Leadership",
+      "title": "Our team",
+      "title_main": "Our Team",
+      "title_sub": "of Excellence",
       "subtitle": "The Research Team",
-      "badge": "Our Team",
+      "badge": "ACADEMIC BODY",
+      "description": "A team of experts dedicated to research and excellence.",
+      "read_more": "See the team",
       "prev": "Previous",
       "next": "Next"
     },
     "testimonials": {
       "badge": "International Trust",
-      "title": "They <span>trust us</span>.",
-      "title_alt": "International Recognition",
+      "title_center": "They trust us.",
+      "title_main": "What They Say",
+      "title_sub": "About Us",
+      "play_video": "Play Video",
+      "subtitle_center": "Hear from researchers and partners worldwide about their experience with CREDDA-ULPGL.",
       "prev": "Previous",
       "next": "Next",
       "items": [
@@ -171,10 +194,13 @@
       "portal": "Researcher Portal"
     },
     "Gallery": {
-      "badge": "In Images",
-      "title": "CREDDA in <span>Action</span>",
-      "description": "Discover our research activities, clinic works and collaborations through a selection of photos.",
-      "cta": "See full gallery",
+      "badge": "MEDIA LIBRARY",
+      "title": "Latest <span class=\"text-primary\">Episodes & Articles</span>",
+      "description": "Discover our latest legal advances and field analyses through our multimedia content.",
+      "cta": "Full exploration",
+      "load_more": "Load more",
+      "total_images": "Images in the media library",
+      "cta_view_all": "View full gallery",
       "modal": {
         "close": "Close",
         "prev": "Previous",
@@ -186,10 +212,33 @@
     "video": {
       "badge": "Video Presentation",
       "title": "Discover the <primary>Impact</primary> of CREDDA",
+      "title_alt": "<line1>ACADEMIC</line1> <line2>EXCELLENCE</line2>",
       "description": "Dive into the heart of our initiatives through this presentation. We work for academic excellence and social innovation in the Democratic Republic of Congo.",
       "since": "Since",
       "institution": "Institution",
       "watch": "Watch the introduction"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about CREDDA, our research, and our clinical services.",
+      "items": [
+        {
+          "q": "What is CREDDA?",
+          "a": "CREDDA (Center for Research on Democracy and Development in Africa) is an interdisciplinary center of excellence dedicated to the analysis of legal and social challenges, affiliated with ULPGL-Goma."
+        },
+        {
+          "q": "How can I benefit from the legal clinic?",
+          "a": "Our clinic offers free assistance to vulnerable populations. You can contact us directly via our form or visit our offices at the Salomon Campus."
+        },
+        {
+          "q": "How can I access publications?",
+          "a": "Most of our scientific publications and clinical reports are available in Open Access in our digital library on this site."
+        },
+        {
+          "q": "Do you offer research collaborations?",
+          "a": "Yes, CREDDA collaborates with many international universities (Oxford, Northwestern, LSE, etc.). Contact our scientific secretariat for any proposal."
+        }
+      ]
     }
   },
   "metadata": {
@@ -698,8 +747,7 @@
     },
     "visual": {
       "badge": "Secure Institutional Access",
-      "title": "Excellence in Service of {span} and Development.",
-      "span": "Research",
+      "title": "Excellence in Service of <span>Research</span> and Development.",
       "description": "Log in to CREDDA's harmonized administration platform to manage your work, publications, and legal clinics.",
       "slogan": "Research Excellence"
     },
@@ -1098,7 +1146,7 @@
       "viewAll": "View all"
     },
     "recentMessages": {
-      "title": "<italic>Central</italic> Desk",
+      "title": "Central Desk",
       "unread": "{count} New messages waiting",
       "consult": "Consult",
       "viewAll": "View all",

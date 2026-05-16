@@ -24,7 +24,7 @@ export default function MainLayoutWrapper({
     <>
       <SystemBanner />
       <Navbar />
-      <div className="m-0 p-0 pt-24 mt-12 min-h-[calc(100vh-6rem)] bg-background text-foreground overflow-x-hidden transition-all duration-500">
+      <div className="m-0 p-0 min-h-screen bg-background text-foreground overflow-x-hidden transition-all duration-500">
         {children}
       </div>
       <Footer />

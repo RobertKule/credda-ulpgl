@@ -16,6 +16,11 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
+  // Handle old /admin/login route globally to prevent 404s
+  if (pathname === '/admin/login') {
+    return NextResponse.redirect(new URL('/fr/login', req.url))
+  }
+
   // Protect sensitive admin routes from EDITOR
   if (pathname.includes('/admin')) {
     const token = await getToken({ req });

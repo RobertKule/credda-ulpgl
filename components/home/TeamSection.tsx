@@ -1,94 +1,94 @@
+// components/home/TeamSection.tsx
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
-import { Badge } from "@/components/ui/badge";
 import { Link } from "@/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { FormattedHTML } from "@/components/ui/FormattedHTML";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-} from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
+import GSAPReveal from "@/components/shared/GSAPReveal";
 
 export default function TeamSection({ team }: { team: any[] }) {
-    const t = useTranslations('HomePage');
-    const carouselRef = useRef<any>(null);
+  const t = useTranslations('HomePage');
 
-    if (!team || team.length === 0) return null;
+  if (!team || team.length === 0) return null;
+  const displayTeam = team.slice(0, 6); // Up to 6 members like in the screenshot
 
-    return (
-        <section className="relative overflow-hidden border-b border-border bg-transparent py-12 lg:py-24">
-            <SectionDecorNumber value="04" className="left-0 top-6 sm:left-2" />
-            <div className="relative z-10 w-full">
-                <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 sm:mb-12 lg:mb-16 gap-6">
-                    <div className="max-w-xl lg:max-w-2xl">
-                        <Badge className="bg-[#C9A84C]/10 text-[#C9A84C] border border-[#C9A84C]/20 rounded-md uppercase text-[10px] tracking-[0.4em] font-outfit font-bold px-4 py-1.5 mb-6">
-                            {t('team.badge')}
-                        </Badge>
-                        <h2 className="text-3xl md:text-4xl font-fraunces font-extrabold text-foreground leading-[1] tracking-tighter">
-                            {t('team.title_alt') || t('team.title')}
-                        </h2>
-                    </div>
-                    <div className="flex gap-2 sm:gap-4">
-                        <button
-                            onClick={() => carouselRef.current?.scrollPrev()}
-                            aria-label={t('team.prev') || "Précédent"}
-                            className="w-14 h-14 rounded-md border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all duration-500"
-                        >
-                            <ArrowLeft size={20} />
-                        </button>
-                        <button
-                            onClick={() => carouselRef.current?.scrollNext()}
-                            aria-label={t('team.next') || "Suivant"}
-                            className="w-14 h-14 rounded-md border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-all duration-500"
-                        >
-                            <ArrowRight size={20} />
-                        </button>
-                    </div>
-                </div>
-
-                <Carousel
-                    opts={{ align: "start", loop: true, skipSnaps: false }}
-                    plugins={[Autoplay({ delay: 4000, stopOnInteraction: true })]}
-                    setApi={(api) => { carouselRef.current = api; }}
-                    className="w-full"
-                >
-                    <CarouselContent className="-ml-4 sm:-ml-6 lg:-ml-8">
-                        {team.map((member: any, idx: number) => (
-                            <CarouselItem key={idx} className="pl-4 sm:pl-6 lg:pl-8 sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                                <Link href={`/team/${member.slug}`} className="group block">
-                                    <div className="relative aspect-[3/4] overflow-hidden bg-muted border border-border mb-8">
-                                        <Image
-                                            src={member.image || "/images/director3.webp"}
-                                            alt={member.name}
-                                            fill
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                                            className="object-cover grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60" />
-                                        <div className="absolute bottom-6 right-6 w-12 h-12 bg-primary rounded-md flex items-center justify-center text-primary-foreground opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                                            <ArrowRight size={20} />
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-xl font-fraunces font-extrabold text-foreground group-hover:text-primary transition-colors uppercase tracking-tight">
-                                            {member.name}
-                                        </h3>
-                                        <p className="text-[10px] text-primary/60 font-outfit font-bold uppercase tracking-widest mt-2">
-                                            {member.translations[0]?.role}
-                                        </p>
-                                    </div>
-                                </Link>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                </Carousel>
+  return (
+    <div className="w-full mx-auto bg-background transition-colors duration-500">
+      {/* HEADER ROW */}
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10 mb-20 lg:mb-24">
+        <div className="max-w-2xl space-y-4">
+          <GSAPReveal direction="right">
+            <div className="flex items-center gap-3">
+              <div className="h-px w-8 bg-primary/40" />
+              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary font-sans">
+                {t('team.badge') || "Academic Body"}
+              </span>
             </div>
-        </section>
-    );
+          </GSAPReveal>
+          <GSAPReveal direction="up" delay={0.2}>
+            <h2 className="text-5xl md:text-6xl font-fraunces font-black tracking-tighter leading-[1] text-foreground">
+              {t('team.title_main') || "Notre Équipe"}
+              <br />
+              <span className="text-primary italic font-light">{t('team.title_sub') || "D'Excellence"}</span>
+            </h2>
+          </GSAPReveal>
+        </div>
+
+        <GSAPReveal direction="left" delay={0.4}>
+          <Link
+            href="/team"
+            className="group flex items-center gap-4 px-8 py-4 bg-primary text-primary-foreground rounded-xl font-bold transition-all duration-500 hover:scale-105 shadow-lg shadow-primary/20"
+          >
+            <span className="text-xs uppercase tracking-widest">
+              {t('team.read_more') || "Aller voir l'équipe"}
+            </span>
+            <ArrowRight size={18} className="transition-transform duration-500 group-hover:translate-x-2" />
+          </Link>
+        </GSAPReveal>
+      </div>
+
+      {/* TEAM GRID — Overlapping Layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16 md:gap-y-20 p-4 md:p-0">
+        {displayTeam.map((member: any, idx: number) => (
+          <GSAPReveal key={idx} direction="up" delay={idx * 0.1}>
+            <div className="relative group flex flex-col md:block">
+              {/* Text Card (Behind/Left on Desktop, Below Image on Mobile) */}
+              <Link href={`/team/${member.slug}`} className="order-2 md:order-1 block">
+                <div className="bg-card text-card-foreground p-6 pt-16 md:pt-10 pb-8 md:pb-10 rounded-2xl shadow-xl border border-border/5 md:pr-32 transition-all duration-500 group-hover:border-primary/20">
+                  <h3 className="font-fraunces font-black text-2xl leading-tight mb-2 group-hover:text-primary transition-colors">
+                    {member.name}
+                  </h3>
+                  <div className="flex items-center gap-2">
+                    <p className="text-[10px] font-bold uppercase font-sans text-muted-foreground tracking-widest">
+                      {member.translations?.[0]?.role || "Expert"}
+                    </p>
+                  </div>
+                  
+                  {/* Small Action Icon */}
+                  <div className="mt-6 flex">
+                    <div className="p-2.5 rounded-full bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                      <ArrowRight size={16} />
+                    </div>
+                  </div>
+                </div>
+              </Link>
+
+              {/* Portrait (Floating Right on Desktop, Top on Mobile) */}
+              <div className="relative md:absolute order-1 md:order-2 -mb-12 md:mb-0 md:-top-10 md:-right-4 w-full md:w-36 h-64 md:h-52 lg:w-40 lg:h-56 rounded-2xl overflow-hidden shadow-2xl border-4 border-background transition-all duration-700 md:group-hover:-translate-y-2 md:group-hover:scale-105 z-10 mx-auto max-w-[200px] md:max-w-none">
+                <Image
+                  src={member.image || "/images/director3.webp"}
+                  alt={member.name}
+                  fill
+                  sizes="(max-width: 768px) 200px, 200px"
+                  className="object-cover object-top transition-transform duration-1000 group-hover:scale-110"
+                />
+              </div>
+            </div>
+          </GSAPReveal>
+        ))}
+      </div>
+    </div>
+  );
 }
