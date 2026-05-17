@@ -802,6 +802,9 @@
       "email_placeholder": "name@ulpgl.ac.cd",
       "password_label": "Secure Access Key",
       "password_placeholder": "••••••••",
+      "show_password": "Show",
+      "hide_password": "Hide",
+      "remember_me": "Remember access",
       "forgot_link": "Forgot?"
     },
     "submit": {
@@ -810,7 +813,10 @@
     },
     "footer": {
       "university": "ULPGL GOMA",
-      "copyright": "CREDDA © {year}"
+      "copyright": "CREDDA © {year}",
+      "secure_access": "Encrypted Access",
+      "data_protection": "Protected Data",
+      "institution": "Academic Institution"
     },
     "forgot_view": {
       "back": "BACK TO LOGIN",
@@ -838,13 +844,15 @@
     "form_header": {
       "login_title": "Login",
       "forgot_title": "Recovery",
-      "login_subtitle": "Harmonized Administration System",
+      "login_subtitle": "Access your institutional space",
       "forgot_subtitle": "Institutional ID Required"
     },
     "navigation": {
       "exit": "EXIT",
       "back_to_portal": "Back to public portal",
-      "create_account": "Create an account"
+      "create_account": "Create an account",
+      "request_access": "Request institutional access",
+      "request_access_desc": "Professional or Researcher?"
     },
     "success_modal": {
       "title": "Access Granted",

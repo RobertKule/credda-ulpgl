@@ -800,6 +800,9 @@
       "email_placeholder": "jina@ulpgl.ac.cd",
       "password_label": "Ufunguo wa Ufikiaji Salama",
       "password_placeholder": "••••••••",
+      "show_password": "Onyesha",
+      "hide_password": "Ficha",
+      "remember_me": "Kumbuka ufikiaji",
       "forgot_link": "Imesahaulika?"
     },
     "submit": {
@@ -808,7 +811,10 @@
     },
     "footer": {
       "university": "ULPGL GOMA",
-      "copyright": "CREDDA © {year}"
+      "copyright": "CREDDA © {year}",
+      "secure_access": "Ufikiaji Uliosimbwa",
+      "data_protection": "Data Iliyolindwa",
+      "institution": "Taasisi ya Kiakademia"
     },
     "forgot_view": {
       "back": "RUDI KWENYE LOGIN",
@@ -836,13 +842,15 @@
     "form_header": {
       "login_title": "Ingia",
       "forgot_title": "Urejeshaji",
-      "login_subtitle": "Mfumo Uliorekebishwa wa Utawala",
+      "login_subtitle": "Fikia nafasi yako ya kitaasisi",
       "forgot_subtitle": "Kitambulisho cha Kitaasisi Kinahitajika"
     },
     "navigation": {
       "exit": "ONDOKA",
       "back_to_portal": "Rudi kwenye portal ya umma",
-      "create_account": "Fungua akaunti"
+      "create_account": "Fungua akaunti",
+      "request_access": "Omba ufikiaji wa kitaasisi",
+      "request_access_desc": "Mtaalamu au Mtafiti?"
     },
     "success_modal": {
       "title": "Ufikiaji Umekubaliwa",

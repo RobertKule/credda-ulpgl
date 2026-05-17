@@ -660,6 +660,9 @@
       "email_placeholder": "nom@ulpgl.ac.cd",
       "password_label": "Clé d'Accès Sécurisée",
       "password_placeholder": "••••••••",
+      "show_password": "Voir",
+      "hide_password": "Cacher",
+      "remember_me": "Mémoriser l'accès",
       "forgot_link": "Oubliée ?"
     },
     "submit": {
@@ -668,7 +671,10 @@
     },
     "footer": {
       "university": "ULPGL GOMA",
-      "copyright": "CREDDA © {year}"
+      "copyright": "CREDDA © {year}",
+      "secure_access": "Accès Chiffré",
+      "data_protection": "Données Protégées",
+      "institution": "Institution Académique"
     },
     "forgot_view": {
       "back": "RETOUR AU LOGIN",
@@ -696,13 +702,15 @@
     "form_header": {
       "login_title": "Connexion",
       "forgot_title": "Récupération",
-      "login_subtitle": "Système Harmonisé d'Administration",
+      "login_subtitle": "Accédez à votre espace institutionnel",
       "forgot_subtitle": "Identifiant Institutionnel Requis"
     },
     "navigation": {
       "exit": "QUITTER",
       "back_to_portal": "Retour au portail public",
-      "create_account": "Créer un compte"
+      "create_account": "Créer un compte",
+      "request_access": "Demander un accès institutionnel",
+      "request_access_desc": "Professionnel ou Chercheur ?"
     },
     "success_modal": {
       "title": "Accès Accordé",
