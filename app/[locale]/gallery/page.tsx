@@ -21,12 +21,21 @@ export default async function GalleryPage({
 }) {
   const { locale } = await params;
   
-  const images = (await sql`
+  interface GalleryImageWithTranslations {
+    id: string;
+    src: string;
+    order: number;
+    category?: string | null;
+    translations: { title: string; description: string; language: string }[];
+  }
+
+  const imagesData = await sql`
     SELECT gi.*, 
       (SELECT json_agg(t) FROM "GalleryImageTranslation" t WHERE t."galleryImageId" = gi.id AND t.language = ${locale}) as translations
     FROM "GalleryImage" gi
     ORDER BY gi."order" ASC
-  `.catch(() => [])) as any[];
+  `.catch(() => []);
+  const images = (imagesData || []) as GalleryImageWithTranslations[];
 
   return (
     <main className="min-h-screen bg-background py-24 px-6 lg:px-12">

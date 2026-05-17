@@ -1,7 +1,7 @@
 // app/[locale]/programmes/page.tsx
 import type { Metadata } from "next";
 import { localePageMetadata } from "@/lib/page-metadata";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { 
   Scale, 
   ShieldCheck, 

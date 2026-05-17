@@ -23,12 +23,13 @@ import {
   ChevronRight
 } from "lucide-react";
 import { getCasesByPhone } from "@/services/clinical-actions";
+import { FullClinicalCase } from "@/types/clinical";
 import { Link } from "@/navigation";
 
 export default function BeneficiaryDashboard() {
   const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
-  const [cases, setCases] = useState<any[] | null>(null);
+  const [cases, setCases] = useState<FullClinicalCase[] | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   async function handleSearch(e: React.FormEvent) {
@@ -40,7 +41,7 @@ export default function BeneficiaryDashboard() {
     try {
       const result = await getCasesByPhone(phone);
       if (result.success) {
-        setCases(result.data);
+        setCases(result.data ?? []);
       } else {
         setError(result.error ?? "Erreur lors de la recherche.");
       }

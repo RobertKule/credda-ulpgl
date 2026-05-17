@@ -10,12 +10,17 @@ type Props = { params: Promise<{ locale: string; slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   try {
+    interface EventMetadataResult {
+      id: string;
+      isPublished: boolean;
+      translations: { title: string; description: string }[];
+    }
     const [event] = (await sql`
-      SELECT e.*, 
+      SELECT e.id, e."isPublished", 
         (SELECT json_agg(t) FROM "EventTranslation" t WHERE t."eventId" = e.id AND t.language = ${locale}) as translations
       FROM "Event" e
       WHERE e.slug = ${slug}
-    `) as any[];
+    `) as EventMetadataResult[];
     
     if (!event || !event.isPublished) {
       return { title: "Événement | CREDDA-ULPGL" };
@@ -33,17 +38,42 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function EventDetailPage({ params }: Props) {
   const { locale, slug } = await params;
 
-  let event: any = null;
+  interface EventTranslation {
+    title: string;
+    description: string;
+    language: string;
+    content: string;
+  }
+  interface EventWithTranslations {
+    id: string;
+    slug: string;
+    date: Date | string;
+    location: string;
+    type: string;
+    isPublished: boolean;
+    coverImageUrl?: string | null;
+    translations: EventTranslation[];
+    galleryImages: any[];
+  }
+
+  let event: EventWithTranslations | null = null;
   try {
     const [eventResult] = (await sql`
       SELECT e.*, 
         (SELECT json_agg(t) FROM "EventTranslation" t WHERE t."eventId" = e.id AND t.language = ${locale}) as translations
       FROM "Event" e
       WHERE e.slug = ${slug}
-    `) as any[];
+    `) as EventWithTranslations[];
 
     if (!eventResult) {
-      notFound(); // Or handle as per your application's error strategy
+      notFound();
+    }
+
+    interface GalleryImageSqlResult {
+      id: string;
+      src: string;
+      order: number;
+      translations: any[];
     }
 
     const galleryImages = await sql`
@@ -52,12 +82,12 @@ export default async function EventDetailPage({ params }: Props) {
       FROM "GalleryImage" gi
       WHERE gi."eventId" = ${eventResult.id}
       ORDER BY gi."order" ASC
-    `.catch(() => []);
+    `.catch(() => []) as GalleryImageSqlResult[];
 
     event = {
         ...eventResult,
         translations: eventResult.translations || [],
-        galleryImages: galleryImages || []
+        galleryImages: galleryImages
     };
   } catch (error) {
     console.error("⚠️ Database connection failed in EventDetailPage", error);

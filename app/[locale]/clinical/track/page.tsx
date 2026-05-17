@@ -1,5 +1,6 @@
 // app/[locale]/clinical/track/page.tsx
 import { getCasesByPhone } from "@/services/clinical-actions";
+import { FullClinicalCase } from "@/types/clinical";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,14 +27,14 @@ export default async function TrackCasePage({
   const { phone } = await searchParams;
   const t = await getTranslations({ locale, namespace: 'Track' });
 
-  let cases: any[] = [];
+  let cases: FullClinicalCase[] = [];
   let searched = false;
 
   if (phone) {
     searched = true;
     const result = await getCasesByPhone(phone);
     if (result.success) {
-      cases = result.data;
+      cases = result.data ?? [];
     }
   }
 

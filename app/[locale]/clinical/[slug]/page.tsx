@@ -10,6 +10,8 @@ import Image from "next/image";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
+import { ArticleWithTranslations } from "@/types/content";
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string, slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
   try {
@@ -18,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations
       FROM "Article" a
       WHERE a.slug = ${slug}
-    `) as any[];
+    `) as ArticleWithTranslations[];
     return { title: `${article?.translations?.[0]?.title || "Clinique"} | CREDDA-ULPGL` };
   } catch (error) {
     return { title: "Clinique | CREDDA-ULPGL" };
@@ -31,6 +33,11 @@ export default async function ClinicalArticlePage({ params }: { params: Promise<
   
   let article = null;
   try {
+    type ClinicalSqlResult = ArticleWithTranslations & { 
+      category_translations: any[]; 
+      medias: any[];
+    };
+
     const [articleResult] = (await sql`
       SELECT a.*, 
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
@@ -38,10 +45,13 @@ export default async function ClinicalArticlePage({ params }: { params: Promise<
         (SELECT json_agg(m) FROM "Media" m WHERE m."articleId" = a.id) as medias
       FROM "Article" a
       WHERE a.slug = ${slug}
-    `) as any[];
+    `) as ClinicalSqlResult[];
+
     article = articleResult;
     if (article) {
        article.category = {
+          id: article.categoryId,
+          slug: "", // Not needed for display
           translations: article.category_translations || []
        };
        article.medias = article.medias || [];
@@ -74,7 +84,7 @@ export default async function ClinicalArticlePage({ params }: { params: Promise<
             {/* Header de l'Expertise */}
             <header className="space-y-6 text-center">
               <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-100 rounded-md px-4 py-1 uppercase text-[10px] font-black border-none">
-                {article.category.translations[0]?.name}
+                {article.category?.translations?.[0]?.name}
               </Badge>
               <h1 className="text-4xl md:text-6xl font-serif font-bold text-slate-900 leading-tight tracking-tight">
                 {content.title}

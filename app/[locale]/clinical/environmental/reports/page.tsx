@@ -1,5 +1,5 @@
-// app/[locale]/clinical/environmental/reports/page.tsx
 import { getPublicationsByDomain } from "@/services/publication-actions";
+import { PublicationWithTranslations } from "@/types/publication";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
@@ -16,7 +16,7 @@ import { Link } from "@/navigation";
 export default async function ActivityReportsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const result = await getPublicationsByDomain("CLINICAL", locale);
-  const reports = result.success ? result.data : [];
+  const reports: PublicationWithTranslations[] = result.success ? (result.data ?? []) : [];
 
   return (
     <main className="min-h-screen bg-slate-50 py-12 sm:py-20">

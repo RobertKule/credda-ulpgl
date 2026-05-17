@@ -17,12 +17,15 @@ import ParallaxWrapper from "@/components/shared/ParallaxWrapper";
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
   const { locale, slug } = await params;
   try {
+    interface ResearchMetadataResult {
+      translations: { title: string; excerpt: string }[];
+    }
     const [article] = (await sql`
-      SELECT a.*, 
+      SELECT a.id, 
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations
       FROM "Article" a
       WHERE a.slug = ${slug}
-    `) as any[];
+    `) as ResearchMetadataResult[];
 
     if (!article || !article.translations || article.translations.length === 0) return { title: "Not Found | CREDDA" };
     const translation = article.translations[0];
@@ -66,13 +69,24 @@ export default async function ResearchDetailPage({
   
   let article = null;
   try {
+    interface ArticleSqlResult {
+      id: string;
+      slug: string;
+      domain: string;
+      createdAt: Date;
+      mainImage?: string | null;
+      categoryId?: string | null;
+      translations: { title: string; excerpt: string; content: string }[];
+      category_translations: { name: string }[];
+      category?: { translations: { name: string }[] };
+    }
     const [articleResult] = (await sql`
       SELECT a.*, 
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
         (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations
       FROM "Article" a
       WHERE a.slug = ${slug}
-    `) as any[];
+    `) as ArticleSqlResult[];
     article = articleResult;
     if (article) {
        article.category = {

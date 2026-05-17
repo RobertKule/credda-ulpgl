@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { Button } from "@/components/ui/button";
 
+import { ArticleWithTranslations } from "@/types/content";
+
 export async function generateMetadata({ 
   params 
 }: { 
@@ -17,7 +19,7 @@ export async function generateMetadata({
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations
       FROM "Article" a
       WHERE a.slug = ${slug}
-    `) as any[];
+    `) as ArticleWithTranslations[];
 
     if (!article) return { title: "Publication - CREDDA" };
     const t = article.translations?.[0];
@@ -37,17 +39,21 @@ export default async function PublicationDetailPage({
   params: Promise<{ locale: string; slug: string }> 
 }) {
   const { locale, slug } = await params;
+  type PublicationSqlResult = ArticleWithTranslations & { category_translations: any[] };
+
   const [articleResult] = (await sql`
     SELECT a.*, 
       (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
       (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations
     FROM "Article" a
     WHERE a.slug = ${slug}
-  `.catch(() => [null])) as any[];
+  `.catch(() => [null])) as PublicationSqlResult[];
 
   const article = articleResult;
   if (article) {
     article.category = {
+      id: article.categoryId,
+      slug: "", // Internal use only
       translations: article.category_translations || []
     };
   }
@@ -73,7 +79,7 @@ export default async function PublicationDetailPage({
           <header className="mb-20">
              <div className="flex items-center gap-4 mb-8">
                 <span className="px-3 py-1 border border-[#C9A84C]/20 text-[#C9A84C] text-[9px] uppercase tracking-widest font-bold">
-                  {(article as any).category?.translations?.[0]?.name || "Research Paper"}
+                  {article.category?.translations?.[0]?.name || "Research Paper"}
                 </span>
                 <div className="h-[1px] flex-1 bg-white/5" />
              </div>

@@ -28,7 +28,18 @@ export default async function EventsPage({
     FROM "Event" e
     ORDER BY e.date ASC
   `.catch(() => []);
-  const events = (eventsData || []) as any[];
+
+  interface EventWithTranslations {
+    id: string;
+    slug: string;
+    date: Date | string;
+    location: string;
+    time: string;
+    type: string;
+    translations: { title: string; description: string; language: string; content: string }[];
+  }
+
+  const events = (eventsData || []) as EventWithTranslations[];
 
   const now = new Date();
   const upcomingEvents = events.filter((e: any) => new Date(e.date) >= now);

@@ -25,6 +25,16 @@ export default async function TeamPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'TeamPage' });
 
+  interface MemberPageSqlResult {
+    id: string;
+    name: string;
+    slug: string;
+    image?: string | null;
+    email?: string | null;
+    order: number;
+    translations: { role: string; bio: string }[];
+  }
+
   // Optimization: catch error to avoid total page crash
   const members = (await sql`
     SELECT m.*, 
@@ -34,7 +44,7 @@ export default async function TeamPage({ params }: Props) {
   `.catch((err) => {
     console.error("Team DB Fetch Error:", err);
     return [];
-  })) as any[];
+  })) as MemberPageSqlResult[];
 
   return (
     <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
@@ -68,7 +78,7 @@ export default async function TeamPage({ params }: Props) {
       <section className="max-w-7xl mx-auto">
         {members.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24 px-6">
-            {members.map((member: any, i: number) => {
+            {members.map((member, i: number) => {
               const content = member.translations?.[0] || { role: "Chercheur", bio: "" };
 
               return (
