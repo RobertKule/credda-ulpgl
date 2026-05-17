@@ -8,6 +8,7 @@
     "system": "CREDDA CORE"
   },
   "Navigation": {
+    "home": "Home",
     "research": "Research",
     "clinical": "Legal Clinic",
     "publications": "Publications",
