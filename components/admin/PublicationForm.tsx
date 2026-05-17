@@ -11,6 +11,7 @@ import { FileText, Upload, CheckCircle2, X } from "lucide-react";
 import axios from "axios";
 import { showLoading, hideLoading } from "@/components/admin/LoadingModal";
 import { toast } from "react-hot-toast";
+import { PublicationWithTranslations, Domain } from "@/types/publication";
 
 import { ModernMarkdownEditor } from "./shared/ModernMarkdownEditor"
 
@@ -20,7 +21,7 @@ const LANGUAGES = [
   { code: "sw", label: "Kiswahili" }
 ];
 
-export function PublicationForm({ initialData, locale }: { initialData?: any, locale: string }) {
+export function PublicationForm({ initialData, locale }: { initialData?: PublicationWithTranslations, locale: string }) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -30,13 +31,13 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
     year: initialData?.year || new Date().getFullYear(),
     doi: initialData?.doi || "",
     pdfUrl: initialData?.pdfUrl || "",
-    domain: initialData?.domain || "RESEARCH",
+    domain: (initialData?.domain || "RESEARCH") as "RESEARCH" | "CLINICAL",
   });
 
-  const [translations, setTranslations] = useState<any>(() => {
-    const t: any = {};
+  const [translations, setTranslations] = useState<Record<string, { title: string; authors: string; description: string }>>(() => {
+    const t: Record<string, { title: string; authors: string; description: string }> = {};
     LANGUAGES.forEach(lang => {
-      const existing = initialData?.translations?.find((ex: any) => ex.language === lang.code);
+      const existing = initialData?.translations?.find((ex) => ex.language === lang.code);
       t[lang.code] = { 
         title: existing?.title || "", 
         authors: existing?.authors || "", 
@@ -76,15 +77,29 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
     }
   };
 
+  const slugify = (text: string) => {
+    return text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w-]+/g, '')
+      .replace(/--+/g, '-');
+  };
+
   const handleSubmit = async () => {
     if (!baseData.pdfUrl) {
       toast.error("Veuillez uploader le document PDF");
       return;
     }
 
+    const titleForSlug = translations[locale]?.title || translations["fr"]?.title || Object.values(translations)[0]?.title || "publication";
+    const slug = initialData?.slug || `${slugify(titleForSlug)}-${Date.now()}`;
+
     showLoading(initialData ? "Mise à jour de la publication..." : "Publication du document scientifique...");
     const payload = {
       ...baseData,
+      slug,
       translations: LANGUAGES.map(lang => ({
         language: lang.code,
         ...translations[lang.code]
@@ -182,7 +197,7 @@ export function PublicationForm({ initialData, locale }: { initialData?: any, lo
                 </div>
                 <div className="space-y-3 group">
                   <label className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-widest group-focus-within:text-primary transition-colors">Domaine</label>
-                  <select className="w-full h-14 bg-muted/40 border border-border px-4 text-xs font-black uppercase tracking-widest rounded-xl text-foreground outline-none focus:border-primary transition-all" value={baseData.domain} onChange={(e) => setBaseData({ ...baseData, domain: e.target.value })}>
+                  <select className="w-full h-14 bg-muted/40 border border-border px-4 text-xs font-black uppercase tracking-widest rounded-xl text-foreground outline-none focus:border-primary transition-all" value={baseData.domain} onChange={(e) => setBaseData({ ...baseData, domain: e.target.value as Domain })}>
                     <option value="RESEARCH" className="bg-card text-foreground">RECHERCHE</option>
                     <option value="CLINICAL" className="bg-card text-foreground">CLINIQUE</option>
                   </select>

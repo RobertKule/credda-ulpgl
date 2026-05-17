@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Link } from "@/navigation";
 import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { 
   LayoutDashboard, 
   FileText, 
@@ -199,7 +199,7 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
                     {isActive && (
                       <motion.div
                         layoutId="active-pill"
-                        className="absolute inset-0 bg-primary/5 rounded-md border border-primary/20 shadow-[0_0_20px_rgba(var(--primary-rgb),0.1)]"
+                        className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent rounded-md border-l-2 border-primary/20 shadow-sm"
                         transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                       />
                     )}
@@ -236,10 +236,10 @@ export default function AdminSidebar({ locale, menuItems }: AdminSidebarProps) {
                       <div className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-md ring-2 ring-background animate-pulse z-30" />
                     )}
 
-                    {isActive && (
+                     {isActive && (
                        <motion.div 
                          layoutId="active-bar"
-                         className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full shadow-[0_0_15px_rgba(var(--primary-rgb),0.5)] z-30" 
+                         className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-gradient-to-b from-primary to-emerald rounded-r-md shadow-md shadow-emerald/40 z-30" 
                        />
                     )}
                   </Link>

@@ -82,7 +82,10 @@ export default function ProfileForm({ user }: ProfileFormProps) {
   async function onPasswordSubmit(values: z.infer<typeof passwordSchema>) {
     showLoading(t('messages.loadingPassword'));
     try {
-      const res = await updateUserPassword(user.id, values.currentPassword, values.newPassword);
+      const res = await updateUserPassword(user.id, {
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword
+      });
       if (res.success) {
         toast.success(t('messages.successPassword'));
         passwordForm.reset();

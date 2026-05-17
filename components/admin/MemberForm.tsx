@@ -42,9 +42,17 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
     website: initialData?.website || ""
   });
 
-  const [translations, setTranslations] = useState(
+  interface MemberTranslation {
+    role: string;
+    bio: string;
+    education: string;
+    researchAxes: string;
+    expertise: string;
+  }
+
+  const [translations, setTranslations] = useState<Record<string, MemberTranslation>>(
     LANGUAGES.reduce((acc, lang) => {
-      const existing = initialData?.translations?.find((t: any) => t.language === lang.code);
+      const existing = initialData?.translations?.find((t: { language: string }) => t.language === lang.code);
       return {
         ...acc,
         [lang.code]: {
@@ -55,7 +63,7 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
           expertise: existing?.expertise || ""
         }
       };
-    }, {})
+    }, {} as Record<string, MemberTranslation>)
   );
 
   const slugify = (text: string) => {
@@ -128,7 +136,7 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
       ...baseData,
       translations: LANGUAGES.map(lang => ({
         language: lang.code,
-        ...(translations as any)[lang.code]
+        ...(translations[lang.code])
       }))
     };
 
@@ -287,8 +295,8 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
                         <Input
                           placeholder="Ex: Professeur Ordinaire et Directeur"
                           className="rounded-xl h-14 bg-muted/20 border-border font-bold text-sm text-foreground"
-                          value={(translations as any)[lang.code].role}
-                          onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], role: e.target.value } })}
+                          value={translations[lang.code].role}
+                          onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...translations[lang.code], role: e.target.value } })}
                         />
                       </div>
                       <div className="space-y-4">
@@ -296,8 +304,8 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
                         <Input
                           placeholder="Ex: Doctorat (PhD) en Droit, spécialité Droits de l'Homme"
                           className="rounded-xl h-14 bg-muted/20 border-border font-medium text-sm text-foreground"
-                          value={(translations as any)[lang.code].education}
-                          onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], education: e.target.value } })}
+                          value={translations[lang.code].education}
+                          onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...translations[lang.code], education: e.target.value } })}
                         />
                       </div>
                       <div className="space-y-4">
@@ -305,8 +313,8 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
                         <Input
                           placeholder="Ex: Droit de l'Environnement, Justice Pénale..."
                           className="rounded-xl h-14 bg-muted/20 border-border font-medium text-sm text-foreground"
-                          value={(translations as any)[lang.code].expertise}
-                          onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], expertise: e.target.value } })}
+                          value={translations[lang.code].expertise}
+                          onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...translations[lang.code], expertise: e.target.value } })}
                         />
                       </div>
                     </div>
@@ -317,8 +325,8 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
                         <Textarea
                           placeholder="Décrivez les sujets de recherche principaux..."
                           className="min-h-[100px] rounded-2xl border-border bg-muted/30 font-medium p-6 focus:border-primary text-foreground"
-                          value={(translations as any)[lang.code].researchAxes}
-                          onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], researchAxes: e.target.value } })}
+                          value={translations[lang.code].researchAxes}
+                          onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...translations[lang.code], researchAxes: e.target.value } })}
                         />
                       </div>
                       <div className="space-y-4">
@@ -326,8 +334,8 @@ export function MemberForm({ initialData, locale }: { initialData?: any, locale:
                         <Textarea
                           placeholder="Décrivez l'historique de carrière, les réalisations et publications..."
                           className="min-h-[180px] rounded-2xl border-border bg-muted/30 font-medium p-6 focus:border-primary text-foreground"
-                          value={(translations as any)[lang.code].bio}
-                          onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...(translations as any)[lang.code], bio: e.target.value } })}
+                          value={translations[lang.code].bio}
+                          onChange={(e) => setTranslations({ ...translations, [lang.code]: { ...translations[lang.code], bio: e.target.value } })}
                         />
                       </div>
                     </div>

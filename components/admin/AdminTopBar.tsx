@@ -6,7 +6,7 @@ import { useTheme } from "@/components/shared/ThemeProvider";
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Link, useRouter, usePathname } from "@/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 
 const LOCALES = [
@@ -14,6 +14,9 @@ const LOCALES = [
   { code: "en", label: "English",  flag: "🇬🇧" },
   { code: "sw", label: "Kiswahili", flag: "🇨🇩" },
 ];
+
+import { Locale } from "@/i18n/routing";
+import { SearchResult } from "@/types/search";
 
 export default function AdminTopBar({ locale }: { locale: string }) {
   const { data: session } = useSession();
@@ -26,7 +29,7 @@ export default function AdminTopBar({ locale }: { locale: string }) {
   
   // Search State
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
@@ -266,7 +269,7 @@ export default function AdminTopBar({ locale }: { locale: string }) {
                        key={lang.code}
                        onClick={() => {
                          setIsLangOpen(false);
-                         router.replace(pathname, { locale: lang.code as any });
+                         router.replace(pathname, { locale: lang.code as Locale });
                        }}
                        className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-muted/50 transition-colors ${
                          locale === lang.code ? 'text-primary' : 'text-foreground/70'
@@ -307,7 +310,7 @@ export default function AdminTopBar({ locale }: { locale: string }) {
                    {session?.user?.name || 'Administrateur'}
                  </p>
                  <p className="text-[8px] font-black uppercase tracking-[0.2em] text-primary/60 leading-none">
-                   {(session?.user as any)?.role || 'Super Admin'}
+                   {session?.user?.role || 'Super Admin'}
                  </p>
               </div>
               <div className="w-10 h-10 bg-primary/10 text-primary border border-primary/20 rounded-xl flex items-center justify-center text-xs font-black shadow-lg shadow-primary/5 group-hover:scale-105 transition-transform">

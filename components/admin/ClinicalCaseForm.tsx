@@ -11,7 +11,28 @@ import { toast } from "react-hot-toast"
 import { Save, Scale, User, MapPin, Calendar, AlertTriangle, ArrowLeft } from "lucide-react"
 import { showLoading, hideLoading } from "@/components/admin/LoadingModal";
 
-export function ClinicalCaseForm({ initialData, isEditing = false }: any) {
+interface Beneficiary {
+  id: string;
+  name: string;
+  email?: string | null;
+  phone: string;
+  type: "LOCAL_COMMUNITY" | "INDIGENOUS_PEOPLE" | "OTHER";
+}
+
+interface ClinicalCaseData {
+  id: string;
+  location: string;
+  problemType: string;
+  description: string;
+  urgency: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+  expectations?: string | null;
+  incidentDate?: Date | string | null;
+  status: "NEW" | "IN_ANALYSIS" | "MEETING_SCHEDULED" | "ACTION_ENGAGED" | "RESOLVED" | "CLOSED";
+  beneficiaryId: string;
+  beneficiary?: Beneficiary | null;
+}
+
+export function ClinicalCaseForm({ initialData, isEditing = false }: { initialData?: ClinicalCaseData | null, isEditing?: boolean }) {
   const router = useRouter()
   
   const [formData, setFormData] = useState({
@@ -35,7 +56,7 @@ export function ClinicalCaseForm({ initialData, isEditing = false }: any) {
 
     try {
       const res = isEditing 
-        ? await updateClinicalCase(initialData.id, formData) 
+        ? await updateClinicalCase(initialData?.id || "", formData) 
         : await submitClinicalCase(formData)
       
       if (res.success) {
@@ -152,7 +173,7 @@ export function ClinicalCaseForm({ initialData, isEditing = false }: any) {
                 <select 
                   className="w-full h-14 bg-card border border-border rounded-2xl px-6 text-sm font-medium focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none cursor-pointer text-foreground"
                   value={formData.urgency}
-                  onChange={(e) => setFormData({...formData, urgency: e.target.value as any})}
+                  onChange={(e) => setFormData({...formData, urgency: e.target.value as ClinicalCaseData['urgency']})}
                 >
                   <option value="LOW" className="bg-card">Basse</option>
                   <option value="MEDIUM" className="bg-card">Moyenne</option>
@@ -166,7 +187,7 @@ export function ClinicalCaseForm({ initialData, isEditing = false }: any) {
                   <select 
                     className="w-full h-14 bg-card border border-border rounded-2xl px-6 text-sm font-medium focus:ring-primary/10 focus:border-primary outline-none transition-all appearance-none cursor-pointer text-foreground"
                     value={formData.status}
-                    onChange={(e) => setFormData({...formData, status: e.target.value as any})}
+                    onChange={(e) => setFormData({...formData, status: e.target.value as typeof formData.status})}
                   >
                     <option value="NEW" className="bg-card">Nouveau</option>
                     <option value="IN_ANALYSIS" className="bg-card">En Analyse</option>
@@ -241,7 +262,7 @@ export function ClinicalCaseForm({ initialData, isEditing = false }: any) {
                   <select 
                     className="w-full h-12 bg-white/5 dark:bg-muted/20 border border-white/10 dark:border-border px-5 text-sm font-medium rounded-xl focus:bg-white/10 dark:focus:bg-muted/40 outline-none transition-all appearance-none cursor-pointer text-white dark:text-foreground"
                     value={formData.beneficiaryType}
-                    onChange={(e) => setFormData({...formData, beneficiaryType: e.target.value as any})}
+                    onChange={(e) => setFormData({...formData, beneficiaryType: e.target.value as typeof formData.beneficiaryType})}
                   >
                     <option value="LOCAL_COMMUNITY" className="text-slate-900 bg-white">Communauté Locale</option>
                     <option value="INDIGENOUS_PEOPLE" className="text-slate-900 bg-white">Peuples Autochtones</option>
