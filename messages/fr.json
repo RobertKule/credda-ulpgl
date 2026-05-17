@@ -29,8 +29,17 @@
   "HomePage": {
     "hero": {
       "badge": "#1 Recherche & Excellence 2025",
-      "title": "Propulser le Changement avec le Savoir Africain",
+      "title_prefix": "Propulser le Changement avec",
+      "title_carousel": [
+        "le Savoir Africain",
+        "l'Excellence",
+        "l'Innovation",
+        "le Développement",
+        "la Justice"
+      ],
       "subtitle": "Rejoignez des milliers de chercheurs et acteurs du développement à travers le monde en accédant aux ressources conçues pour les esprits modernes.",
+      "subtitle_credda": "Rejoignez des milliers de chercheurs et acteurs du développement à travers le monde en accédant aux ressources conçues pour les esprits modernes.",
+      "subtitle_ulpgl": "L'Université Libre des Pays des Grands Lacs, pilier de l'excellence académique et de la recherche en RDC.",
       "discover": "Découvrir nos recherches",
       "carousel": [
         {
@@ -64,15 +73,15 @@
     "vision": {
       "badge": "HÉRITAGE ACADÉMIQUE",
       "title": "Redéfinir l'Avenir de la <highlight>Recherche</highlight> et de la <highlight>Justice</highlight> en RDC.",
-      "main_description": "Le CREDDA se positionne comme un laboratoire d'idées et un catalyseur de réformes, alliant excellence scientifique et engagement sur le terrain.",
+      "main_description": "Laboratoire d'idées et catalyseur de réformes, alliant excellence scientifique et engagement social.",
       "card_vision_badge": "Notre Vision",
       "card_vision_text": "Unir l'excellence académique à l'impact social pour l'Afrique de demain.",
       "card_readiness_title": "Excellence & Engagement",
-      "card_readiness_text": "Le CREDDA forme des leaders capables d'allier rigueur scientifique et résolution des défis du monde réel.",
+      "card_readiness_text": "Le CREDDA forme des leaders alliant rigueur scientifique et résolution des défis réels.",
       "pillar1_title": "Recherche Juridique",
-      "pillar1_text": "Production de connaissances de haut niveau et de publications scientifiques influentes.",
+      "pillar1_text": "Production de connaissances de haut niveau et publications influentes.",
       "pillar2_title": "Clinique de Droit",
-      "pillar2_text": "Défense des droits humains et accès direct à la justice pour les communautés vulnérables."
+      "pillar2_text": "Défense des droits humains et accès direct à la justice pour tous."
     },
     "about": {
       "badge": "Héritage Académique",
@@ -154,7 +163,6 @@
         }
       ]
     },
-
     "library": {
       "badge": "Ressources",
       "title": "Bibliothèque <span>Numérique</span>",
@@ -196,7 +204,7 @@
     },
     "Gallery": {
       "badge": "MÉDIATHÈQUE",
-      "title": "Derniers <span class=\"text-primary\">Épisodes & Articles</span>",
+      "title": "Notre",
       "description": "Découvrez nos dernières avancées et analyses juridiques sur le terrain à travers nos contenus multimédias.",
       "cta": "Exploration complète",
       "load_more": "Charger plus",
@@ -206,7 +214,8 @@
         "close": "Fermer",
         "prev": "Précédent",
         "next": "Suivant"
-      }
+      },
+      "title_highlight": "Galerie Institutionnelle"
     },
     "intro_subtitle": "Recherche & Excellence",
     "about_caption": "Penser l'État de Droit.",
@@ -240,6 +249,36 @@
           "a": "Oui, le CREDDA collabore avec de nombreuses universités internationales (Oxford, Northwestern, LSE, etc.). Contactez notre secrétariat scientifique pour toute proposition."
         }
       ]
+    },
+    "Timeline": {
+      "badge": "Notre Parcours",
+      "title": "Historique & Évolution",
+      "items": {
+        "2008": {
+          "title": "Création du centre",
+          "description": "Fondation du Centre de Recherche et d’Études pour le Développement (CREDDA) avec pour vision de promouvoir la recherche académique en Afrique."
+        },
+        "2012": {
+          "title": "Structuration académique",
+          "description": "Renforcement des axes de recherche et mise en place des premiers programmes scientifiques structurés."
+        },
+        "2016": {
+          "title": "Expansion des activités",
+          "description": "Extension des domaines de recherche et intégration de projets interdisciplinaires avec des partenaires régionaux."
+        },
+        "2020": {
+          "title": "Digitalisation du centre",
+          "description": "Introduction des outils numériques dans la recherche et archivage digital complet des publications."
+        },
+        "2023": {
+          "title": "Transformation moderne",
+          "description": "Modernisation de l’infrastructure de recherche et structuration vers une plateforme digitale."
+        },
+        "2026": {
+          "title": "CREDDA ULPGL (Actuel)",
+          "description": "Lancement de la plateforme unifiée, digitalisation complète des services et vision internationale."
+        }
+      }
     }
   },
   "metadata": {

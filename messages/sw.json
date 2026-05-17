@@ -29,8 +29,17 @@
   "HomePage": {
     "hero": {
       "badge": "#1 Utafiti na Ubora 2025",
-      "title": "Kuendesha Mabadiliko kwa Maarifa ya Afrika",
+      "title_prefix": "Kuendesha Mabadiliko kwa",
+      "title_carousel": [
+        "Maarifa ya Afrika",
+        "Ubora",
+        "Ubunifu",
+        "Maendeleo",
+        "Haki"
+      ],
       "subtitle": "Jiunge na maelfu ya watafiti na watendaji wa maendeleo duniani kote kwa kupata rasilimali zilizoundwa kwa akili za kisasa.",
+      "subtitle_credda": "Jiunge na maelfu ya watafiti na watendaji wa maendeleo duniani kote kwa kupata rasilimali zilizoundwa kwa akili za kisasa.",
+      "subtitle_ulpgl": "Chuo Kikuu Huria cha Nchi za Maziwa Makuu, nguzo ya ubora wa kitaaluma katika RDC.",
       "discover": "Gundua tafiti zetu",
       "carousel": [
         {
@@ -64,15 +73,15 @@
     "vision": {
       "badge": "URITHI WA KIAKADEMIA",
       "title": "Kufafanua Upya Mustakabali wa <highlight>Utafiti</highlight> na <highlight>Haki</highlight> katika RDC.",
-      "main_description": "CREDDA inajipanga kama maabara ya mawazo na kichocheo cha mageuzi, ikichanganya ubora wa kisayansi na ushiriki wa nyanjani.",
+      "main_description": "Maabara ya mawazo na kichocheo cha mageuzi, inayochanganya ubora wa kisayansi na ushirikiano wa kijamii.",
       "card_vision_badge": "Maono Yetu",
       "card_vision_text": "Kuunganisha ubora wa kitaaluma na athari za kijamii kwa Afrika ya kesho.",
       "card_readiness_title": "Ubora na Ushiriki",
-      "card_readiness_text": "CREDDA inafunza viongozi wenye uwezo wa kuchanganya ukali wa kisayansi na kutatua changamoto za ulimwengu wa kweli.",
+      "card_readiness_text": "CREDDA inafunza viongozi wanaochanganya ukamilifu wa kisayansi na kutatua changamoto za kweli.",
       "pillar1_title": "Utafiti wa Sheria",
-      "pillar1_text": "Uzalishaji wa maarifa ya kiwango cha juu na machapisho ya kisayansi yenye ushawishi.",
+      "pillar1_text": "Uzalishaji wa maarifa ya hali ya juu na machapisho mashuhuri.",
       "pillar2_title": "Kliniki ya Sheria",
-      "pillar2_text": "Ulinzi wa haki za binadamu na upatikanaji wa moja kwa moja wa haki kwa jamii zilizo hatarini."
+      "pillar2_text": "Ulinzi wa haki za binadamu na upatikanaji wa haki kwa wote."
     },
     "about": {
       "badge": "Urithi wa Kiakademia",
@@ -195,7 +204,7 @@
     },
     "Gallery": {
       "badge": "KATIKA PICHA",
-      "title": "Vipindi na <span>Makala</span> ya hivi karibuni",
+      "title": "Nyumba ya",
       "description": "Gundua maendeleo yetu ya hivi punde ya kisheria na uchambuzi wa nyanjani kupitia maudhui yetu ya media titika.",
       "cta": "Uchunguzi kamili",
       "load_more": "Pakia zaidi",
@@ -205,7 +214,8 @@
         "close": "Funga",
         "prev": "Iliyopita",
         "next": "Inayofuata"
-      }
+      },
+      "title_highlight": "Sanaa ya CREDDA"
     },
     "intro_subtitle": "Utafiti na Ubora",
     "about_caption": "Kufikiria Utawala wa Sheria.",
@@ -239,6 +249,36 @@
           "a": "Ndiyo, CREDDA inashirikiana na vyuo vikuu vingi vya kimataifa (Oxford, Northwestern, LSE, n.k.). Wasiliana na sekretarieti yetu ya kisayansi kwa pendekezo lolote."
         }
       ]
+    },
+    "Timeline": {
+      "badge": "Safari Yetu",
+      "title": "Historia na Maendeleo",
+      "items": {
+        "2008": {
+          "title": "Kuanzishwa kwa Kituo",
+          "description": "Msingi wa Kituo cha Utafiti na Masomo ya Maendeleo (CREDDA)."
+        },
+        "2012": {
+          "title": "Muundo wa Kiakademia",
+          "description": "Kuimarisha nyanja za utafiti na kuanzisha programu za kwanza za kisayansi."
+        },
+        "2016": {
+          "title": "Upanuzi wa Shughuli",
+          "description": "Upanuzi wa nyanja za utafiti na ushirikiano wa miradi ya fani mbalimbali."
+        },
+        "2020": {
+          "title": "Kidijitali Kituoni",
+          "description": "Kuanzishwa kwa zana za kidijitali katika utafiti na uhifadhi kamili wa machapisho."
+        },
+        "2023": {
+          "title": "Mageuzi ya Kisasa",
+          "description": "Kuboresha miundombinu ya utafiti na kuunda jukwaa la kidijitali."
+        },
+        "2026": {
+          "title": "CREDDA ULPGL (Sasa)",
+          "description": "Uzinduzi wa jukwaa moja, huduma kamilifu za kidijitali na maono ya kimataifa."
+        }
+      }
     }
   },
   "metadata": {

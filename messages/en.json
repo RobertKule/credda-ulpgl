@@ -29,8 +29,17 @@
   "HomePage": {
     "hero": {
       "badge": "#1 Research & Excellence 2025",
-      "title": "Driving Change with African Knowledge",
+      "title_prefix": "Driving Change with",
+      "title_carousel": [
+        "African Knowledge",
+        "Excellence",
+        "Innovation",
+        "Development",
+        "Justice"
+      ],
       "subtitle": "Join thousands of researchers and development actors worldwide by accessing resources designed for modern minds.",
+      "subtitle_credda": "Join thousands of researchers and development actors worldwide by accessing resources designed for modern minds.",
+      "subtitle_ulpgl": "The Free University of the Great Lakes Countries, a pillar of academic excellence in the DRC.",
       "discover": "Discover our research",
       "carousel": [
         {
@@ -64,15 +73,15 @@
     "vision": {
       "badge": "ACADEMIC HERITAGE",
       "title": "Redefining the Future of <highlight>Research</highlight> and <highlight>Justice</highlight> in DRC.",
-      "main_description": "CREDDA positions itself as a think tank and a catalyst for reform, combining scientific excellence with on-the-ground engagement.",
+      "main_description": "A think tank and catalyst for reform, combining scientific excellence with social engagement.",
       "card_vision_badge": "Our Vision",
       "card_vision_text": "Uniting academic excellence with social impact for tomorrow's Africa.",
       "card_readiness_title": "Excellence & Engagement",
-      "card_readiness_text": "CREDDA trains leaders capable of combining scientific rigor with solving real-world challenges.",
+      "card_readiness_text": "CREDDA trains leaders combining scientific rigor with solving real-world challenges.",
       "pillar1_title": "Legal Research",
-      "pillar1_text": "Production of high-level knowledge and influential scientific publications.",
+      "pillar1_text": "Production of high-level knowledge and influential publications.",
       "pillar2_title": "Legal Clinic",
-      "pillar2_text": "Defense of human rights and direct access to justice for vulnerable communities."
+      "pillar2_text": "Defense of human rights and direct access to justice for all."
     },
     "about": {
       "badge": "Academic Heritage",
@@ -195,7 +204,7 @@
     },
     "Gallery": {
       "badge": "MEDIA LIBRARY",
-      "title": "Latest <span class=\"text-primary\">Episodes & Articles</span>",
+      "title": "Our",
       "description": "Discover our latest legal advances and field analyses through our multimedia content.",
       "cta": "Full exploration",
       "load_more": "Load more",
@@ -205,7 +214,8 @@
         "close": "Close",
         "prev": "Previous",
         "next": "Next"
-      }
+      },
+      "title_highlight": "Institutional Gallery"
     },
     "intro_subtitle": "Research & Excellence",
     "about_caption": "Thinking the Rule of Law.",
@@ -239,6 +249,36 @@
           "a": "Yes, CREDDA collaborates with many international universities (Oxford, Northwestern, LSE, etc.). Contact our scientific secretariat for any proposal."
         }
       ]
+    },
+    "Timeline": {
+      "badge": "Our Journey",
+      "title": "History & Evolution",
+      "items": {
+        "2008": {
+          "title": "Center Creation",
+          "description": "Foundation of the Center for Research and Studies for Development (CREDDA)."
+        },
+        "2012": {
+          "title": "Academic Structuring",
+          "description": "Strengthening research areas and establishing early structured scientific programs."
+        },
+        "2016": {
+          "title": "Activity Expansion",
+          "description": "Extension of research fields and integration of interdisciplinary projects."
+        },
+        "2020": {
+          "title": "Digitalization",
+          "description": "Introduction of digital tools in research and full digital archiving of publications."
+        },
+        "2023": {
+          "title": "Modern Transformation",
+          "description": "Modernization of research infrastructure and structuring towards a digital platform."
+        },
+        "2026": {
+          "title": "CREDDA ULPGL (Now)",
+          "description": "Launch of the unified platform, full digitalization of services and global research vision."
+        }
+      }
     }
   },
   "metadata": {
