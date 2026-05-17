@@ -42,16 +42,20 @@ export default function AboutStory() {
 
                 {/* IMAGE SIDE */}
                 <div className="flex justify-center lg:justify-end">
-                  <div className="relative aspect-[16/10] w-full max-w-lg rounded-md overflow-hidden shadow-2xl group">
+                  <div className="relative aspect-[16/10] w-full max-w-lg rounded-md overflow-hidden shadow-2xl group
+                                  hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.25)] hover:-translate-y-2 transition-all duration-500">
                     <Image
                       src="/images/recheche.webp"
                       alt="Institutional Story"
                       fill
                       priority
-                      className="object-cover transition-all duration-300"
+                      className="object-cover transition-transform duration-[1500ms] group-hover:scale-110"
                     />
+                    {/* DARK OVERLAY ON HOVER */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 pointer-events-none" />
                     {/* GLASS OVERLAY */}
-                    <div className="absolute inset-x-4 bottom-4 p-4 bg-background/40 backdrop-blur-md border border-white/10 rounded shadow-lg">
+                    <div className="absolute inset-x-4 bottom-4 p-4 bg-background/40 backdrop-blur-md border border-white/10 rounded shadow-lg
+                                    translate-y-1 group-hover:translate-y-0 transition-transform duration-500">
                       <p className="text-white text-[10px] font-bold tracking-widest uppercase text-center">
                         {t("image_label")}
                       </p>
