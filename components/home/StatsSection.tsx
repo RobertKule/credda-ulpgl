@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
+import { m as motion, useMotionValue, useTransform, animate, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "@/components/shared/ThemeProvider";
@@ -50,13 +50,9 @@ export default function StatsSection({ data }: StatsSectionProps) {
   ];
 
   return (
-    <section className={`relative shadow-2xl py-24 lg:py-32 m-10 lg:m-20 rounded-xl overflow-hidden transition-colors duration-500 ${
-      isDark ? 'bg-[#0D1645]' : 'bg-white'
-    }`}>
+    <section className="relative shadow-2xl py-24 lg:py-32 m-10 lg:m-20 rounded-[2rem] overflow-hidden transition-colors duration-500 bg-card border border-border/5">
       {/* SUBTLE DOT GLODE BACKGROUND */}
-      <div className={`absolute right-[-10%] top-[-10%] w-[800px] h-[800px] transition-opacity duration-500 pointer-events-none select-none ${
-        isDark ? 'opacity-[0.07] text-white' : 'opacity-[0.03] text-slate-900'
-      }`}>
+      <div className="absolute right-[-10%] top-[-10%] w-[800px] h-[800px] transition-opacity duration-500 pointer-events-none select-none opacity-[0.05] dark:opacity-[0.03] text-foreground">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
           <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="0.1" strokeDasharray="0.5 1" />
           <ellipse cx="50" cy="50" rx="48" ry="20" fill="none" stroke="currentColor" strokeWidth="0.1" strokeDasharray="0.5 1" />
@@ -72,9 +68,7 @@ export default function StatsSection({ data }: StatsSectionProps) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className={`font-bold tracking-widest uppercase text-xs mb-4 ${
-              isDark ? 'text-[#E1F247]' : 'text-primary'
-            }`}
+            className="font-bold tracking-[0.3em] uppercase text-[10px] mb-4 text-primary"
           >
             {t('badge') || "Impact & Excellence"}
           </motion.p>
@@ -83,9 +77,7 @@ export default function StatsSection({ data }: StatsSectionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className={`text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight ${
-              isDark ? 'text-white' : 'text-slate-900'
-            }`}
+            className="text-4xl md:text-5xl lg:text-7xl font-serif font-black leading-tight text-foreground transition-colors"
           >
             {t('titleLine1') || "L'impact du CREDDA"} <br /> {t('titleLine2') || "en chiffres"}
           </motion.h2>
@@ -99,16 +91,12 @@ export default function StatsSection({ data }: StatsSectionProps) {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 + idx * 0.1 }}
-              className="relative pl-8 border-l-[3px] border-[#C4A45C]"
+              className="relative pl-8 border-l-[3px] border-primary/30"
             >
-              <div className={`text-5xl lg:text-6xl font-bold mb-3 tracking-tighter ${
-                isDark ? 'text-white' : 'text-slate-900'
-              }`}>
+              <div className="text-5xl lg:text-7xl font-serif font-black mb-3 tracking-tighter tabular-nums text-foreground">
                 <CountUp value={stat.value} suffix={stat.suffix} />
               </div>
-              <p className={`text-sm font-medium leading-relaxed max-w-[180px] ${
-                isDark ? 'text-white/60' : 'text-slate-500'
-              }`}>
+              <p className="text-[10px] font-bold uppercase tracking-widest leading-relaxed max-w-[180px] text-muted-foreground">
                 {stat.label}
               </p>
             </motion.div>
