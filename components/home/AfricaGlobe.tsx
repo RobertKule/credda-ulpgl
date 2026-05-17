@@ -82,19 +82,19 @@ const paletteDark: Palette = {
   gomaGlow: '201,168,76',
 }
 
-/** Mode clair : silhouette en noir / gris foncé sur océan très clair */
+/** Mode clair : silhouette en vert sombre sur océan transparent */
 const paletteLight: Palette = {
-  ocean: '#EDEAE4',
-  rim: 'rgba(18,16,14,0.28)',
-  gridLat: 'rgba(18,16,14,0.11)',
-  gridLon: 'rgba(18,16,14,0.085)',
-  particle: '35,35,38',
-  africa: '18,16,14',
-  africaLine: '18,16,14',
-  lineAnim: '55,50,45',
-  cityMuted: '55,52,48',
-  gomaCore: '#121210',
-  gomaGlow: '40,38,36',
+  ocean: 'transparent',
+  rim: 'rgba(22,101,52,0.3)',
+  gridLat: 'rgba(22,101,52,0.15)',
+  gridLon: 'rgba(22,101,52,0.1)',
+  particle: '22,101,52',
+  africa: '4,17,8',
+  africaLine: '22,101,52',
+  lineAnim: '26,122,59',
+  cityMuted: '22,101,52',
+  gomaCore: '#041108',
+  gomaGlow: '22,101,52',
 }
 
 export default function AfricaGlobe() {

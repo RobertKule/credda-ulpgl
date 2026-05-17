@@ -2,7 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { LoginForm } from "@/components/auth/LoginForm";
-import { m as motion } from "framer-motion";
+import dynamic from "next/dynamic";
+
+const AfricaGlobe = dynamic(() => import("@/components/home/AfricaGlobe"), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function LoginPage() {
   const [mounted, setMounted] = useState(false);
@@ -14,14 +19,18 @@ export default function LoginPage() {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-background md:bg-muted/10 relative overflow-hidden selection:bg-primary/30 font-outfit transition-colors duration-700">
+    <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden font-outfit transition-colors duration-700
+      bg-gradient-to-br from-white to-primary/10 
+      dark:from-[#040D06] dark:to-background"
+    >
       
-      {/* Extremely subtle minimal background glow */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20 flex items-center justify-center">
-        <div className="w-[80vw] h-[80vw] max-w-[800px] max-h-[800px] rounded-full bg-gradient-radial from-primary/5 to-transparent blur-3xl opacity-50" />
+      {/* Integrated Globe Background */}
+      <div className="absolute top-0 -right-[20%] md:-right-[10%] lg:-right-[5%] z-0 opacity-80 dark:opacity-25 pointer-events-none w-[1000px] h-[1000px] md:w-[1200px] md:h-[1200px]">
+         <AfricaGlobe />
       </div>
 
-      <div className="relative z-10 w-full flex justify-center px-4 py-8">
+      {/* Form Overlay Area */}
+      <div className="relative z-10 w-full px-4 sm:px-6 py-12 flex justify-center mt-12 sm:mt-0">
         <LoginForm />
       </div>
       
