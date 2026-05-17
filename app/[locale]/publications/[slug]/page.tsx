@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { ArticleWithTranslations } from "@/types/content";
 import WordReveal from "@/components/about/WordReveal";
 import { getTranslations } from "next-intl/server";
+import ShareButton from "@/components/ui/ShareButton";
 
 export async function generateMetadata({ 
   params 
@@ -197,9 +198,11 @@ export default async function PublicationDetailPage({
                         <Download size={18} /> {t_ui("actions.download")}
                       </a>
                     </Button>
-                    <Button variant="outline" className="w-full border-border rounded-md py-7 font-bold uppercase tracking-widest text-[11px] flex gap-3 hover:bg-foreground hover:text-background transition-all">
-                      <Share2 size={18} /> {t_res("actions.share")}
-                    </Button>
+                    <ShareButton 
+                      title={content?.title || ""} 
+                      label={t_res("actions.share")} 
+                      copiedLabel={t_res("actions.copied")} 
+                    />
                   </div>
                 </div>
 
