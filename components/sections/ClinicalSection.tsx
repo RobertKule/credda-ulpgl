@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion, Variants } from "framer-motion";
+import { m as motion, Variants } from "framer-motion";
 import { Scale, TreePine, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";

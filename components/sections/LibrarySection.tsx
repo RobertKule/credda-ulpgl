@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import PublicationCard from "@/components/ui/PublicationCard";
 import Link from "next/link";
 import { ArrowRight, BookMarked, Layers } from "lucide-react";
