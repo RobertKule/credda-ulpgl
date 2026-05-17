@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Link } from "@/navigation";
 import { ArrowRight, BookOpen, Calendar, User } from "lucide-react";
 import Image from "next/image";
@@ -82,6 +82,7 @@ export default function ResearchHero({ featuredArticle, locale }: ResearchHeroPr
               src={featuredArticle.mainImage || "/images/hero-poster.webp"} 
               alt={translation?.title || "Featured Research"} 
               fill 
+              sizes="(max-width: 1024px) 100vw, 50vw"
               priority
               className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
             />

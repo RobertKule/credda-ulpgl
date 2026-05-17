@@ -5,7 +5,7 @@ import { Link, usePathname } from "./../../navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Menu, X, ArrowUpRight, Search, Sun, Moon, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useTheme } from "./ThemeProvider";
 
@@ -37,9 +37,9 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-[100] transition-colors duration-300 ease-in-out ${
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ease-in-out ${
           isScrolled
-            ? "bg-transparent backdrop-blur-xl shadow-sm py-4 border-b border-white/10"
+            ? "bg-background/80 backdrop-blur-xl shadow-sm py-4 border-b border-border"
             : "bg-transparent py-5 lg:py-8"
         }`}
       >
@@ -55,9 +55,7 @@ export default function Navbar() {
                 priority
               />
             </div>
-            <span className={`font-bricolage font-black text-xl lg:text-2xl tracking-tighter ${
-              !isScrolled && pathname === "/" ? "text-white" : "text-foreground"
-            }`}>
+            <span className="font-serif font-black text-xl lg:text-2xl tracking-tighter text-foreground">
               CREDDA
             </span>
           </Link>
@@ -68,11 +66,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-[13px] font-medium transition-colors duration-200 ${
-                  !isScrolled && pathname === "/" 
-                    ? "text-white/70 hover:text-white" 
-                    : "text-foreground/70 hover:text-foreground"
-                }`}
+                className="text-[13px] font-medium transition-colors duration-200 text-foreground/70 hover:text-foreground"
               >
                 {link.label}
               </Link>
@@ -81,8 +75,8 @@ export default function Navbar() {
 
           {/* ACTIONS (Theme, Lang, Login) */}
           <div className="hidden lg:flex items-center gap-4">
-            {/* Lang Dropdown Simulation or Theme Toggle */}
-            <div className="flex items-center gap-1 bg-white/5 rounded-full p-1 border border-white/10">
+            {/* Lang Toggle */}
+            <div className="flex items-center gap-1 bg-muted rounded-full p-1 border border-border">
                 {["fr", "en", "sw"].map((l) => (
                     <Link
                     key={l}
@@ -90,8 +84,8 @@ export default function Navbar() {
                     locale={l}
                     className={`text-[10px] font-bold uppercase w-7 h-7 flex items-center justify-center rounded-full transition-colors ${
                         locale === l 
-                        ? "bg-white text-black" 
-                        : "text-white/60 hover:text-white"
+                        ? "bg-primary text-primary-foreground" 
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                     >
                     {l}
@@ -101,11 +95,7 @@ export default function Navbar() {
 
             <button
                onClick={toggleTheme}
-               className={`w-9 h-9 flex items-center justify-center rounded-full transition-colors ${
-                 !isScrolled && pathname === "/" 
-                  ? "bg-white/5 text-white/80 hover:bg-white/10" 
-                  : "bg-muted text-foreground/80 hover:bg-muted/80"
-               }`}
+               className="w-9 h-9 flex items-center justify-center rounded-full transition-colors bg-muted text-foreground/80 hover:bg-muted/80 border border-border"
                aria-label="Toggle Theme"
             >
                {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
@@ -114,21 +104,13 @@ export default function Navbar() {
             <div className="flex items-center gap-2">
               <Link
                 href={session ? "/admin" : "/login"}
-                className={`px-6 py-2.5 rounded-full text-[13px] font-bold transition-all flex items-center gap-2 ${
-                  !isScrolled && pathname === "/"
-                    ? "bg-[#0A0C10] text-white hover:bg-black"
-                    : "bg-foreground text-background hover:bg-foreground/90"
-                }`}
+                className="px-6 py-2.5 rounded-full text-[13px] font-bold transition-all flex items-center gap-2 bg-primary text-primary-foreground hover:opacity-90 shadow-sm"
               >
                 {session ? "Dashboard" : "Connexion"}
               </Link>
               <Link
                 href={session ? "/admin" : "/login"}
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-105 active:scale-95 ${
-                  !isScrolled && pathname === "/"
-                    ? "bg-[#0A0C10] text-white hover:bg-black"
-                    : "bg-foreground text-background"
-                }`}
+                className="w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-105 active:scale-95 bg-primary text-primary-foreground shadow-sm"
               >
                 <ArrowUpRight size={16} />
               </Link>
@@ -138,9 +120,7 @@ export default function Navbar() {
           {/* MOBILE MENU TOGGLE */}
           <button
             onClick={() => setIsOpen(true)}
-            className={`lg:hidden p-2 rounded-full ${
-              !isScrolled && pathname === "/" ? "bg-white/10 text-white" : "bg-muted text-foreground"
-            }`}
+            className="lg:hidden p-2 rounded-full bg-muted text-foreground"
           >
             <Menu size={20} />
           </button>

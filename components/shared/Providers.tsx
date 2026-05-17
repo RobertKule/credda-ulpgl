@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { NextIntlClientProvider } from "next-intl";
 import SmoothScroll from "./SmoothScroll";
 import { ThemeProvider } from "./ThemeProvider";
+import { LazyMotion, domAnimation } from "framer-motion";
 
 export default function Providers({ 
   children, 
@@ -19,7 +20,9 @@ export default function Providers({
       <ThemeProvider>
         <NextIntlClientProvider locale={locale} messages={messages} timeZone="Africa/Lubumbashi">
           <SmoothScroll>
-            {children}
+            <LazyMotion features={domAnimation}>
+              {children}
+            </LazyMotion>
           </SmoothScroll>
         </NextIntlClientProvider>
       </ThemeProvider>

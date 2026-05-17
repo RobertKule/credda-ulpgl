@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { m as motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 interface ParallaxWrapperProps {
   children: React.ReactNode;

@@ -5,6 +5,7 @@ import { usePathname as useNextPathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import dynamic from "next/dynamic";
+import PersistentGlobeBackground from "@/components/home/PersistentGlobeBackground";
 
 const SystemBanner = dynamic(() => import("./SystemBanner"), { ssr: false });
 
@@ -15,6 +16,7 @@ export default function MainLayoutWrapper({
 }) {
   const pathname = useNextPathname();
   const isAdmin = pathname?.includes("/admin") || pathname?.split('/').includes("admin");
+  const isHome = pathname === '/' || /^\/[a-z]{2}$/.test(pathname || '');
 
   if (isAdmin) {
     return <>{children}</>;
@@ -24,7 +26,8 @@ export default function MainLayoutWrapper({
     <>
       <SystemBanner />
       <Navbar />
-      <div className="m-0 p-0 min-h-screen bg-background text-foreground overflow-x-hidden transition-all duration-500">
+      {!isHome && <PersistentGlobeBackground />}
+      <div className="relative z-10 m-0 p-0 min-h-screen bg-transparent text-foreground overflow-x-hidden transition-all duration-500">
         {children}
       </div>
       <Footer />
