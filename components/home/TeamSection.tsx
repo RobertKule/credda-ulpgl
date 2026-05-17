@@ -28,7 +28,7 @@ export default function TeamSection({ team }: { team: any[] }) {
             </div>
           </GSAPReveal>
           <GSAPReveal direction="up" delay={0.2}>
-            <h2 className="text-5xl md:text-6xl font-fraunces font-black tracking-tighter leading-[1] text-foreground">
+            <h2 className="text-5xl md:text-6xl font-serif font-black tracking-tighter leading-[1] text-foreground">
               {t('team.title_main') || "Notre Équipe"}
               <br />
               <span className="text-primary italic font-light">{t('team.title_sub') || "D'Excellence"}</span>
@@ -57,7 +57,7 @@ export default function TeamSection({ team }: { team: any[] }) {
               {/* Text Card (Behind/Left on Desktop, Below Image on Mobile) */}
               <Link href={`/team/${member.slug}`} className="order-2 md:order-1 block">
                 <div className="bg-card text-card-foreground p-6 pt-16 md:pt-10 pb-8 md:pb-10 rounded-2xl shadow-xl border border-border/5 md:pr-32 transition-all duration-500 group-hover:border-primary/20">
-                  <h3 className="font-fraunces font-black text-2xl leading-tight mb-2 group-hover:text-primary transition-colors">
+                  <h3 className="font-serif font-black text-2xl leading-tight mb-2 group-hover:text-primary transition-colors">
                     {member.name}
                   </h3>
                   <div className="flex items-center gap-2">

@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import GSAPReveal from "@/components/shared/GSAPReveal";
