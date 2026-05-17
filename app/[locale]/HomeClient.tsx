@@ -2,7 +2,11 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import dynamic from "next/dynamic";
-const Hero = dynamic(() => import("@/components/home/Hero"), { ssr: false });
+const Hero = dynamic(() => import("@/components/home/Hero"), { 
+  ssr: false, 
+  loading: () => <HeroSkeleton />
+});
+import HeroSkeleton from "@/components/home/HeroSkeleton";
 import Stats from "@/components/home/Stats";
 import FeaturedResearch from "@/components/home/FeaturedResearch";
 import Timeline from "@/components/home/Timeline";
