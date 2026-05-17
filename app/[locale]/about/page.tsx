@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { 
   Play, Pause, Volume2, VolumeX,
   ArrowRight, Landmark, Globe2, ShieldCheck, Scale, BookOpen, Quote
