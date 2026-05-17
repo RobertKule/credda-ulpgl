@@ -1,5 +1,6 @@
 // app/api/auth/register/route.ts
 import { NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
 import { db as prisma } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { sendNewRequestAlert } from "@/services/mail-service";
@@ -55,9 +56,9 @@ export async function POST(req: Request) {
     const isConnError = error.code === 'P1017' || error.message?.includes('closed the connection');
 
     if (isConnError) {
-      console.warn("⚠️ Database connection closed gracefully in registration API.");
+      logger.warn({ err: error }, "⚠️ Database connection closed gracefully in registration API.");
     } else {
-      console.error("Registration error:", error);
+      logger.error({ err: error }, "Registration error");
     }
 
     // Resilience: Handle database connection drops gracefully

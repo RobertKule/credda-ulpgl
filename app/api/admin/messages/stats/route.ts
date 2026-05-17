@@ -1,38 +1,25 @@
 // app/api/admin/messages/stats/route.ts
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { safeQuery } from "@/lib/db-safe";
 import { auth } from "@/lib/auth";
+import { getMessageStats } from "@/services/contact-actions";
+import { Role } from "@/types/user";
 
 export async function GET() {
   try {
     const session = await auth();
-    if (!session) {
+    if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
-    const [total, unread, read, archived, replied] = await Promise.all([
-      safeQuery(() => db.contactMessage.count(), 0, "admin/messages/stats:total"),
-      safeQuery(() => db.contactMessage.count({ where: { status: "UNREAD" } }), 0, "admin/messages/stats:unread"),
-      safeQuery(() => db.contactMessage.count({ where: { status: "READ" } }), 0, "admin/messages/stats:read"),
-      safeQuery(() => db.contactMessage.count({ where: { status: "ARCHIVED" } }), 0, "admin/messages/stats:archived"),
-      safeQuery(
-        () => db.contactMessage.count({ where: { NOT: { repliedAt: null } } }),
-        0,
-        "admin/messages/stats:replied"
-      )
-    ]);
+    const result = await getMessageStats();
 
-    return NextResponse.json({
-      total,
-      unread,
-      read,
-      archived,
-      replied,
-      responseRate: total > 0 ? Math.round((replied / total) * 100) : 0
-    });
+    if (result.success) {
+      return NextResponse.json(result.data);
+    } else {
+      return NextResponse.json({ error: result.error }, { status: 500 });
+    }
   } catch (error) {
-    console.error("Erreur stats:", error);
+    console.error("Erreur stats API:", error);
     return NextResponse.json(
       { error: "Erreur serveur" },
       { status: 500 }

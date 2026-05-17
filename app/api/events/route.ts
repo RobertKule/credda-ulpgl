@@ -36,9 +36,20 @@ export async function GET(req: NextRequest) {
       `;
     }
 
-    const events = (await query) as any[];
+    interface EventSqlResult {
+      id: string;
+      slug: string;
+      date: Date;
+      location: string;
+      type: string;
+      coverImageUrl?: string | null;
+      isPublished: boolean;
+      translations: any[]; // will be formatted later
+    }
+
+    const events = (await query) as EventSqlResult[];
     
-    const formattedEvents = events.map((e: any) => ({
+    const formattedEvents = events.map((e) => ({
       ...e,
       translations: e.translations || []
     }));

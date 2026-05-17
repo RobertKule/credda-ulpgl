@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { Prisma } from "@prisma/client";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -34,7 +35,7 @@ export async function PUT(req: Request, { params }: Props) {
     const body = await req.json();
     const { slug, date, location, type, coverImageUrl, isPublished, translations } = body;
 
-    const data: Record<string, unknown> = {
+    const data: Prisma.EventUpdateInput = {
       slug,
       location,
       type,
@@ -50,7 +51,7 @@ export async function PUT(req: Request, { params }: Props) {
 
     const event = await db.event.update({
       where: { id },
-      data: data as any,
+      data,
       include: { translations: true }
     });
 
@@ -58,9 +59,10 @@ export async function PUT(req: Request, { params }: Props) {
     revalidatePath("/[locale]/admin", "layout");
 
     return NextResponse.json(event);
-  } catch (e: any) {
-    console.error("PUT /api/admin/events/[id]", e);
-    return NextResponse.json({ error: e.message || "Erreur serveur" }, { status: 500 });
+  } catch (e: unknown) {
+    const error = e as Error;
+    console.error("PUT /api/admin/events/[id]", error);
+    return NextResponse.json({ error: error.message || "Erreur serveur" }, { status: 500 });
   }
 }
 
@@ -78,8 +80,9 @@ export async function DELETE(_req: Request, { params }: Props) {
     revalidatePath("/[locale]/admin", "layout");
 
     return NextResponse.json({ success: true });
-  } catch (e: any) {
-    console.error("DELETE /api/admin/events/[id]", e);
-    return NextResponse.json({ error: e.message || "Erreur serveur" }, { status: 500 });
+  } catch (e: unknown) {
+    const error = e as Error;
+    console.error("DELETE /api/admin/events/[id]", error);
+    return NextResponse.json({ error: error.message || "Erreur serveur" }, { status: 500 });
   }
 }

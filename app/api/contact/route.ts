@@ -1,27 +1,19 @@
 // app/api/contact/route.ts
 import { NextResponse } from "next/server";
-import { sendContactNotification } from "@/services/mail-service";
+import { sendContactMessageSchema } from "@/schemas/contact";
+import { sendContactMessage } from "@/services/contact-actions";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, subject, message } = await req.json();
-
-    if (!name || !email || !message) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
-
-    const fullMessage = `Objet: ${subject}\n\n${message}`;
-    const result = await sendContactNotification(name, email, fullMessage);
+    const rawData = await req.json();
+    const result = await sendContactMessage(rawData);
 
     if (result.success) {
-      return NextResponse.json({ success: true });
+      return NextResponse.json({ success: true, data: result.data });
     } else {
       return NextResponse.json(
-        { error: "Failed to send email" },
-        { status: 500 }
+        { error: result.error || "Failed to send message" },
+        { status: result.error === "Non autorisé" ? 403 : 500 }
       );
     }
   } catch (error) {

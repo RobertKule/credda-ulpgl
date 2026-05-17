@@ -1,8 +1,9 @@
 // app/api/user/security/route.ts
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { db as prisma } from "@/lib/db";
+import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { updateUserPasswordSchema } from "@/schemas/user";
 
 export async function PATCH(req: Request) {
   try {
@@ -13,16 +14,9 @@ export async function PATCH(req: Request) {
     }
 
     const body = await req.json();
-    const { currentPassword, newPassword } = body;
+    const { currentPassword, newPassword } = updateUserPasswordSchema.parse(body);
 
-    if (!currentPassword || !newPassword) {
-      return NextResponse.json(
-        { message: "Missing required fields" },
-        { status: 400 }
-      );
-    }
-
-    const user = await prisma.user.findUnique({
+    const user = await db.user.findUnique({
       where: { email: session.user.email as string },
     });
 
@@ -34,14 +28,14 @@ export async function PATCH(req: Request) {
 
     if (!isPasswordValid) {
       return NextResponse.json(
-        { message: "Invalid current password" },
+        { message: "Mot de passe actuel incorrect" },
         { status: 400 }
       );
     }
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 12);
 
-    await prisma.user.update({
+    await db.user.update({
       where: { email: session.user.email as string },
       data: { password: hashedNewPassword },
     });
@@ -50,7 +44,7 @@ export async function PATCH(req: Request) {
   } catch (error) {
     console.error("Security update error:", error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { message: "Une erreur interne est survenue." },
       { status: 500 }
     );
   }

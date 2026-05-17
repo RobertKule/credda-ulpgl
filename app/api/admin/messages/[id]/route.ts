@@ -2,36 +2,41 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
+import { Role } from "@/types/user";
+import { contactStatusSchema } from "@/schemas/contact";
+import { z } from "zod";
+
 export const runtime = 'nodejs';
+
+const updateMessageSchema = z.object({
+  status: contactStatusSchema.optional(),
+  replyContent: z.string().optional(),
+  repliedAt: z.coerce.date().optional(),
+});
+
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> } // ✅ CORRIGÉ: Promise
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
-    if (!session) {
+    if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
-    const { id } = await params; // ✅ CORRIGÉ: await params
+    const { id } = await params;
     const body = await req.json();
-    
-    const allowedFields = ["status", "replyContent", "repliedAt"];
-    const data: any = {};
-    
-    for (const field of allowedFields) {
-      if (body[field] !== undefined) {
-        data[field] = body[field];
-      }
-    }
+    const data = updateMessageSchema.parse(body);
 
-    if (body.replyContent && !body.repliedAt) {
-      data.repliedAt = new Date();
+    const updatePayload: any = { ...data };
+
+    if (data.replyContent && !data.repliedAt) {
+      updatePayload.repliedAt = new Date();
     }
 
     const message = await db.contactMessage.update({
       where: { id },
-      data
+      data: updatePayload
     });
 
     return NextResponse.json(message);
@@ -46,15 +51,15 @@ export async function PATCH(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> } // ✅ CORRIGÉ: Promise
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
-    if (!session) {
+    if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
-    const { id } = await params; // ✅ CORRIGÉ: await params
+    const { id } = await params;
     
     await db.contactMessage.delete({
       where: { id }
