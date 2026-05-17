@@ -4,6 +4,14 @@ import { getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db as prisma } from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { z } from "zod";
+
+import { rateLimit, resetRateLimit } from "@/lib/rate-limit";
+
+const loginSchema = z.object({
+  email: z.string().email("Format d'email invalide"),
+  password: z.string().min(1, "Le mot de passe est requis"),
+});
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -14,30 +22,24 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Mot de passe", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email et mot de passe requis");
+        // 1. Validation avec Zod
+        const parsed = loginSchema.safeParse(credentials);
+        
+        if (!parsed.success) {
+          throw new Error(parsed.error.issues[0].message);
         }
 
-        // 1. Vérifier les comptes admin "seed" / hardcoded
-        const adminFromSeed = [
-          { email: "masteradmin@credda.org", password: process.env.MASTER_ADMIN_PASSWORD || "CreddaMaster2026!", role: "SUPER_ADMIN" as const },
-          { email: "admin@credda-ulpgl.org", password: "Admin123!", role: "ADMIN" as const },
-          { email: "editor@credda-ulpgl.org", password: "Editor123!", role: "EDITOR" as const },
-          { email: "kulewakangitsirobert@gmail.com", password: "credda@2026", role: "ADMIN" as const }
-        ].find(a => a.email === credentials.email && a.password === credentials.password);
+        const { email, password } = parsed.data;
 
-        if (adminFromSeed) {
-          return {
-            id: adminFromSeed.email,
-            email: adminFromSeed.email,
-            name: adminFromSeed.email.split('@')[0],
-            role: adminFromSeed.role,
-          };
+        // 2. Rate Limiting
+        const limit = await rateLimit(email);
+        if (!limit.success) {
+          throw new Error("Trop de tentatives de connexion. Veuillez réessayer dans 15 minutes.");
         }
 
-        // 2. Recherche en base de données
+        // 2. Recherche en base de données uniquement
         const user = await prisma.user.findUnique({
-          where: { email: credentials.email },
+          where: { email },
           select: {
             id: true,
             email: true,
@@ -45,13 +47,16 @@ export const authOptions: NextAuthOptions = {
             role: true,
             name: true,
             status: true,
+            image: true,
           }
         });
 
         if (!user) {
+          // Message générique pour éviter le user enumeration
           throw new Error("Email ou mot de passe incorrect");
         }
 
+        // 3. Vérification du statut du compte
         if (user.status === "PENDING") {
           throw new Error("Votre compte est en attente de validation par un administrateur.");
         }
@@ -59,39 +64,44 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Votre demande de compte a été rejetée.");
         }
 
-        const isValid = await bcrypt.compare(credentials.password, user.password);
+        // 4. Comparaison du hash bcrypt
+        const isValid = await bcrypt.compare(password, user.password);
 
         if (!isValid) {
           throw new Error("Email ou mot de passe incorrect");
         }
+
+        // Reset rate limit on success
+        resetRateLimit(email);
 
         return {
           id: user.id,
           email: user.email,
           name: user.name,
           role: user.role,
+          image: user.image,
         };
       }
     })
   ],
   session: {
     strategy: "jwt",
-    maxAge: 8 * 60 * 60
+    maxAge: 8 * 60 * 60 // 8 heures
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = (user as any).role;
+        token.role = user.role;
         token.image = user.image;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = token.id as string;
-        (session.user as any).role = token.role as any;
-        (session.user as any).image = token.image as string;
+        session.user.id = token.id;
+        session.user.role = token.role;
+        session.user.image = token.image as string | null | undefined;
       }
       return session;
     }
@@ -99,7 +109,8 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/login",
     error: "/login"
-  }
+  },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 /** Server-side session (next-auth v4); use in API routes and RSC. */
