@@ -622,6 +622,11 @@
     "notFound": {
       "title": "Chapisho halijapatikana",
       "description": "Chapisho unayotafuta haipo au imehamishwa."
+    },
+    "hub": {
+      "title": "Kituo cha Utafiti cha CREDDA",
+      "description": "Chapisho hili ni sehemu ya mkusanyiko wa kudumu wa kituo cha utafiti cha taaluma mbalimbali cha ULPGL.",
+      "link": "Maelezo zaidi"
     }
   },
   "TeamPage": {

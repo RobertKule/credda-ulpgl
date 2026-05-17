@@ -208,12 +208,12 @@ export default async function PublicationDetailPage({
 
                 {/* RELATED / INSTITUTIONAL BOX */}
                 <div className="p-8 border-l-2 border-primary/20 bg-primary/3 rounded-r-md">
-                  <h5 className="text-xs font-bold text-foreground mb-4 uppercase tracking-widest">CREDDA Research Hub</h5>
+                  <h5 className="text-xs font-bold text-foreground mb-4 uppercase tracking-widest">{t_ui("hub.title")}</h5>
                   <p className="text-xs text-muted-foreground leading-relaxed font-light mb-6">
-                    Cette publication fait partie de la collection permanente du centre de recherche interdisciplinaire de l'ULPGL.
+                    {t_ui("hub.description")}
                   </p>
                   <Link href="/about" className="text-[10px] font-bold text-primary uppercase tracking-widest hover:underline">
-                    Plus d'infos →
+                    {t_ui("hub.link")} →
                   </Link>
                 </div>
               </div>

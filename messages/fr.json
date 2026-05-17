@@ -527,6 +527,11 @@
     "notFound": {
       "title": "Publication non trouvée",
       "description": "La publication que vous recherchez n'existe pas ou a été déplacée."
+    },
+    "hub": {
+      "title": "CREDDA Research Hub",
+      "description": "Cette publication fait partie de la collection permanente du centre de recherche interdisciplinaire de l'ULPGL.",
+      "link": "Plus d'infos"
     }
   },
   "TeamPage": {

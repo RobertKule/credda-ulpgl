@@ -622,6 +622,11 @@
     "notFound": {
       "title": "Publication not found",
       "description": "The publication you are looking for does not exist or has been moved."
+    },
+    "hub": {
+      "title": "CREDDA Research Hub",
+      "description": "This publication is part of the permanent collection of the ULPGL Interdisciplinary Research Center.",
+      "link": "More info"
     }
   },
   "TeamPage": {
