@@ -105,7 +105,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
       <section className="py-32 bg-primary/5 border-t border-primary/10 relative overflow-hidden">
         <div className="container mx-auto px-6 text-center space-y-10 relative z-10">
           <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif font-black text-foreground max-w-4xl mx-auto leading-[1.1] tracking-tight">
-            {t('cta.title', { primary: (chunks) => <span className="text-primary italic inline-block hover:scale-105 transition-transform cursor-default">{chunks}</span> })}
+            {t('cta.title', { span: (chunks) => <span className="text-primary italic inline-block hover:scale-105 transition-transform cursor-default">{chunks}</span> })}
           </h2>
           <Button asChild className="h-14 lg:h-16 px-8 lg:px-12 rounded-full bg-primary text-primary-foreground text-[10px] lg:text-xs font-black tracking-[0.2em] uppercase hover:scale-[1.02] transition-transform shadow-2xl shadow-primary/20 group">
              <a href="#form-section">
