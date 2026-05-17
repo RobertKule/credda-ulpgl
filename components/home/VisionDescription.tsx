@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { BookOpen, Scale } from "lucide-react";
 
@@ -24,8 +24,8 @@ export default function VisionDescription() {
       x: 0,
       transition: {
         duration: 0.8,
-        ease: [0.22, 1, 0.36, 1],
-      } as any,
+        ease: [0.22, 1, 0.36, 1] as const,
+      },
     },
   };
 
@@ -57,8 +57,8 @@ export default function VisionDescription() {
       </motion.h2>
 
       {/* DESCRIPTION */}
-      <motion.p variants={itemVariants} className="text-muted-foreground text-lg font-light leading-relaxed mb-16 max-w-2xl">
-        {t("main_description") || "Le CREDDA se positionne comme un laboratoire d'idées et un catalyseur de réformes, alliant excellence scientifique et engagement sur le terrain."}
+      <motion.p variants={itemVariants} className="text-muted-foreground text-lg font-light leading-relaxed mb-10 max-w-2xl">
+        {t("main_description") || "Laboratoire d'idées et catalyseur de réformes, alliant excellence scientifique et engagement social."}
       </motion.p>
 
       {/* PILLARS GRID */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
@@ -15,8 +15,8 @@ export default function VisionBento() {
       transition: {
         delay: i * 0.2,
         duration: 0.8,
-        ease: [0.22, 1, 0.36, 1],
-      } as any,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      },
     }),
   };
 
@@ -31,7 +31,7 @@ export default function VisionBento() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={cardVariants}
-          className="relative aspect-[3/4] md:aspect-[4/5] rounded-[2rem] overflow-hidden group border border-white/5"
+          className="relative aspect-[3/4] md:aspect-[4/5] rounded-md overflow-hidden group border border-white/5"
         >
           <Image
             src="/images/bg-credda.jpg"
@@ -49,7 +49,7 @@ export default function VisionBento() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={cardVariants}
-          className="bg-card/50 backdrop-blur-xl border border-border p-8 rounded-[2rem] flex flex-col justify-end min-h-[220px]"
+          className="bg-card/50 backdrop-blur-xl border border-border p-8 rounded-md flex flex-col justify-end min-h-[220px]"
         >
           <span className="text-primary font-bold text-xs uppercase tracking-widest mb-4">
             {t("card_vision_badge") || "Notre Vision"}
@@ -69,7 +69,7 @@ export default function VisionBento() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={cardVariants}
-          className="bg-card/50 backdrop-blur-xl border border-border p-8 rounded-[2rem] min-h-[200px]"
+          className="bg-card/50 backdrop-blur-xl border border-border p-8 rounded-md min-h-[200px]"
         >
           <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-6">
             <svg
@@ -87,7 +87,7 @@ export default function VisionBento() {
             </svg>
           </div>
           <h3 className="text-foreground text-xl font-bold mb-3">
-             {t("card_readiness_title") || "Excellence & Engagement"}
+            {t("card_readiness_title") || "Excellence & Engagement"}
           </h3>
           <p className="text-muted-foreground text-sm leading-relaxed">
             {t("card_readiness_text") || "Le CREDDA forme des leaders capables d'allier rigueur scientifique et résolution des défis du monde réel."}
@@ -101,7 +101,7 @@ export default function VisionBento() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={cardVariants}
-          className="relative aspect-square rounded-[2rem] overflow-hidden group border border-white/5"
+          className="relative aspect-square rounded-md overflow-hidden group border border-white/5"
         >
           <Image
             src="/images/recheche.webp"

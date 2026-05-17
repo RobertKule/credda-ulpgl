@@ -17,8 +17,8 @@ export default function VisionSection() {
            }} 
       />
       
-      {/* Accent de lumière en mode sombre */}
-      <div className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none hidden dark:block" />
+      {/* Accent de lumière en mode sombre - Institutional Green */}
+      <div className="absolute -top-24 -left-24 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full pointer-events-none hidden dark:block" />
       
       <div className={SECTION_PAD}>
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20 relative z-10">
