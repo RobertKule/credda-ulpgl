@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { Link } from "@/navigation";
 import { 
   Lock, Mail, ArrowRight, Loader2, Eye, EyeOff, 
