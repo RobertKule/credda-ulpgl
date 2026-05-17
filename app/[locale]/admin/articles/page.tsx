@@ -1,9 +1,9 @@
-// app/[locale]/admin/articles/page.tsx
 import { db } from "@/lib/db";
 import { Link } from "@/navigation";
 import { Button } from "@/components/ui/button";
 import { Plus, Newspaper } from "lucide-react";
 import ArticlesClient from "./ArticlesClient";
+import { UnifiedContent } from "@/types/content";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -30,9 +30,9 @@ export default async function ArticlesPage({ params }: Props) {
   ]);
 
   // Normaliser pour le client
-  const unifiedContent = [
-    ...articles.map(a => ({ ...a, __type: 'ARTICLE' })),
-    ...publications.map(p => ({ ...p, __type: 'PUBLICATION', published: true })) // Publications considered always live for now or add flag
+  const unifiedContent: UnifiedContent[] = [
+    ...articles.map((a) => ({ ...a, __type: 'ARTICLE' as const })),
+    ...publications.map((p) => ({ ...p, __type: 'PUBLICATION' as const, published: true })) 
   ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   // ✅ ON PASSE LES DONNÉES AU COMPOSANT CLIENT
@@ -66,7 +66,7 @@ export default async function ArticlesPage({ params }: Props) {
         </div>
       </div>
 
-      <ArticlesClient content={unifiedContent as any} locale={locale} />
+      <ArticlesClient content={unifiedContent} locale={locale} />
     </div>
   );
 }

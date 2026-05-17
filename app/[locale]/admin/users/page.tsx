@@ -9,7 +9,7 @@ import UserManagementTable from "./UserManagementTable";
 
 export default async function AdminUsersPage() {
   const session = await auth();
-  if ((session?.user as any)?.role === "EDITOR") {
+  if (session?.user?.role === "EDITOR") {
     redirect("/admin");
   }
 

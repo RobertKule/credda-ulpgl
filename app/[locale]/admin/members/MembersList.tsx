@@ -15,24 +15,13 @@ import { Link } from "@/navigation";
 import DeleteButton from "@/components/admin/DeleteButton";
 import { toast } from "react-hot-toast";
 
-interface Member {
-  id: string;
-  slug: string;
-  name: string;
-  image: string | null;
-  email: string | null;
-  order: number;
-  translations: {
-    role: string;
-    bio: string | null;
-  }[];
-}
+import { MemberWithTranslations } from "@/types/member";
 
 export default function MembersList({ 
   members: initialMembers,
   locale 
 }: { 
-  members: Member[],
+  members: MemberWithTranslations[],
   locale: string
 }) {
   const [members, setMembers] = useState(initialMembers);

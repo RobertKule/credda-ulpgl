@@ -9,10 +9,12 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+import { ProgramWithTranslations } from "@/types/program";
+
 export default async function AdminProgramsPage({ params }: Props) {
   const { locale } = await params;
 
-  const programs = await db.program.findMany({
+  const programs: ProgramWithTranslations[] = await db.program.findMany({
     include: { translations: { where: { language: locale } } },
     orderBy: { createdAt: "desc" },
   });
@@ -46,7 +48,7 @@ export default async function AdminProgramsPage({ params }: Props) {
         </div>
       </div>
 
-      <ProgramManagementTable initialPrograms={programs as any} locale={locale} />
+      <ProgramManagementTable initialPrograms={programs} locale={locale} />
     </div>
   );
 }

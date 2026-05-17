@@ -1,7 +1,7 @@
 // components/admin/MessageItem.tsx - VERSION CORRIGÉE
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition, memo } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { 
@@ -26,18 +26,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
+import { ContactMessage } from "@/types/contact";
+import { markMessageAsRead, archiveMessage, replyToContactMessage } from "@/services/contact-actions";
+import { toast } from "react-hot-toast";
 
 interface MessageItemProps {
-  msg: any;
+  msg: ContactMessage;
   isSelected?: boolean;
   onSelect?: (id: string) => void;
 }
 
-export function MessageItem({ msg, isSelected, onSelect }: MessageItemProps) {
+export const MessageItem = memo(function MessageItem({ msg, isSelected, onSelect }: MessageItemProps) {
   const [expanded, setExpanded] = useState(false);
   const [showReplyDialog, setShowReplyDialog] = useState(false);
   const [replyMessage, setReplyMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -65,69 +68,62 @@ export function MessageItem({ msg, isSelected, onSelect }: MessageItemProps) {
   };
 
   const handleMarkAsRead = async () => {
-    try {
-      const res = await fetch(`/api/admin/messages/${msg.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "READ" })
-      });
-      if (res.ok) window.location.reload();
-    } catch (error) {
-      console.error("Erreur:", error);
-    }
+    startTransition(async () => {
+      const result = await markMessageAsRead(msg.id);
+      if (result.success) {
+        toast.success("Marqué comme lu");
+        window.location.reload();
+      } else {
+        toast.error(result.error || "Erreur");
+      }
+    });
   };
 
   const handleArchive = async () => {
-    try {
-      const res = await fetch(`/api/admin/messages/${msg.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "ARCHIVED" })
-      });
-      if (res.ok) window.location.reload();
-    } catch (error) {
-      console.error("Erreur:", error);
-    }
+    startTransition(async () => {
+      const result = await archiveMessage(msg.id);
+      if (result.success) {
+        toast.success("Message archivé");
+        window.location.reload();
+      } else {
+        toast.error(result.error || "Erreur");
+      }
+    });
   };
 
   const handleDelete = async () => {
     if (confirm("Êtes-vous sûr de vouloir supprimer ce message ?")) {
-      try {
-        const res = await fetch(`/api/admin/messages/${msg.id}`, {
-          method: "DELETE"
-        });
-        if (res.ok) window.location.reload();
-      } catch (error) {
-        console.error("Erreur:", error);
-      }
+      startTransition(async () => {
+        // Assuming delete functionality in future or using direct API for now if no action exists yet
+        try {
+          const res = await fetch(`/api/admin/messages/${msg.id}`, {
+            method: "DELETE"
+          });
+          if (res.ok) {
+            toast.success("Message supprimé");
+            window.location.reload();
+          }
+        } catch (error) {
+          toast.error("Erreur réseau");
+        }
+      });
     }
   };
 
   const handleSendReply = async () => {
     if (!replyMessage.trim()) return;
-    setIsLoading(true);
     
-    try {
-      const res = await fetch(`/api/admin/messages/${msg.id}/reply`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ replyMessage })
-      });
-      
-      if (res.ok) {
+    startTransition(async () => {
+      const result = await replyToContactMessage(msg.id, replyMessage);
+      if (result.success) {
+        toast.success("Réponse envoyée");
         setShowReplyDialog(false);
         setReplyMessage("");
         window.location.reload();
       } else {
-        const data = await res.json();
-        alert(data.error || "Erreur lors de l'envoi");
+        toast.error(result.error || "Échec de l'envoi");
       }
-    } catch (error) {
-      console.error("Erreur:", error);
-      alert("Erreur de connexion");
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
   return (
@@ -265,12 +261,12 @@ export function MessageItem({ msg, isSelected, onSelect }: MessageItemProps) {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowReplyDialog(false)}>Annuler</Button>
-            <Button onClick={handleSendReply} disabled={!replyMessage.trim() || isLoading}>
-              {isLoading ? "Envoi..." : "Envoyer la réponse"}
+            <Button onClick={handleSendReply} disabled={!replyMessage.trim() || isPending}>
+              {isPending ? "Envoi..." : "Envoyer la réponse"}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
     </>
   );
-}
+});

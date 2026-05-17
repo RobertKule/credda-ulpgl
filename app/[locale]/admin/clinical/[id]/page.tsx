@@ -1,5 +1,5 @@
-// app/[locale]/admin/clinical/[id]/page.tsx
 import { getClinicalCaseById, updateClinicalCaseStatus, addCaseNote } from "@/services/clinical-actions";
+import { CaseStatus } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
@@ -40,7 +40,7 @@ export default async function CaseDetailPage({ params }: Props) {
   // Action pour changer le statut
   async function updateStatusAction(formData: FormData) {
     "use server";
-    const status = formData.get("status") as string;
+    const status = formData.get("status") as CaseStatus;
     await updateClinicalCaseStatus(id, status);
   }
 

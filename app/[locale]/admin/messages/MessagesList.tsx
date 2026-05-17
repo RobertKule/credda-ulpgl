@@ -1,7 +1,7 @@
 // app/admin/messages/MessagesList.tsx
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { MessageItem } from "./MessageItem";
 import { 
   Inbox, 
@@ -35,8 +35,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+import { ContactMessage } from "@/types/contact";
+
 interface MessagesListProps {
-  messages: any[];
+  messages: ContactMessage[];
 }
 
 type FilterType = "all" | "unread" | "read" | "archived";
@@ -97,13 +99,19 @@ export function MessagesList({ messages }: MessagesListProps) {
     archived: messages.filter(m => m.status === "ARCHIVED").length
   };
 
-  const toggleSelectAll = () => {
+  const toggleSelectAll = useCallback(() => {
     if (selectedMessages.length === filteredMessages.length) {
       setSelectedMessages([]);
     } else {
       setSelectedMessages(filteredMessages.map(m => m.id));
     }
-  };
+  }, [selectedMessages.length, filteredMessages]);
+
+  const handleSelect = useCallback((id: string) => {
+    setSelectedMessages(prev =>
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    );
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -213,13 +221,7 @@ export function MessagesList({ messages }: MessagesListProps) {
                 key={msg.id} 
                 msg={msg} 
                 isSelected={selectedMessages.includes(msg.id)}
-                onSelect={(id) => {
-                  setSelectedMessages(prev =>
-                    prev.includes(id)
-                      ? prev.filter(i => i !== id)
-                      : [...prev, id]
-                  );
-                }}
+                onSelect={handleSelect}
               />
             ))}
           </div>

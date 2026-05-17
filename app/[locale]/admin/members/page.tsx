@@ -9,10 +9,12 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+import { MemberWithTranslations } from "@/types/member";
+
 export default async function AdminMembersPage({ params }: Props) {
   const { locale } = await params;
 
-  const members = await db.member.findMany({
+  const members: MemberWithTranslations[] = await db.member.findMany({
     include: { translations: { where: { language: locale } } },
     orderBy: { order: "asc" },
   });
@@ -47,7 +49,7 @@ export default async function AdminMembersPage({ params }: Props) {
         </div>
       </div>
 
-      <MembersList members={members as any} locale={locale} />
+      <MembersList members={members} locale={locale} />
     </div>
   );
 }

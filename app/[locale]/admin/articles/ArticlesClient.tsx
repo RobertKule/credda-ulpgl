@@ -13,11 +13,13 @@ import { deletePublication } from "@/services/publication-actions";
 import { Link } from "@/navigation";
 import { toast } from "react-hot-toast";
 
+import { UnifiedContent } from "@/types/content";
+
 export default function ArticlesClient({ 
   content: initialContent,
   locale 
 }: { 
-  content: any[],
+  content: UnifiedContent[],
   locale: string
 }) {
   const [content, setContent] = useState(initialContent);
@@ -35,7 +37,7 @@ export default function ArticlesClient({
     return matchesSearch && matchesDomain && matchesType;
   });
 
-  const handleDelete = async (item: any) => {
+  const handleDelete = async (item: UnifiedContent) => {
     if (!confirm(`Confirmer la suppression de cet élément (${item.__type}) ? Action irréversible.`)) return;
     
     startTransition(async () => {
@@ -45,20 +47,24 @@ export default function ArticlesClient({
 
       if (result.success) {
         toast.success("Élément supprimé avec succès");
-        setContent(prev => prev.filter(i => i.id !== item.id));
+        setContent(prev => (prev as UnifiedContent[]).filter(i => i.id !== item.id));
       } else {
         toast.error("Échec de la suppression");
       }
     });
   };
 
-  const handleToggleStatus = async (item: any) => {
+  const handleToggleStatus = async (item: UnifiedContent) => {
     if (item.__type !== 'ARTICLE') return;
     
     startTransition(async () => {
       const result = await toggleArticleStatus(item.id, item.published);
       if (result.success) {
-        setContent(prev => prev.map(i => i.id === item.id ? { ...i, published: !item.published } : i));
+        setContent(prev => (prev as UnifiedContent[]).map(i => 
+          i.id === item.id && i.__type === 'ARTICLE' 
+            ? { ...i, published: !i.published } 
+            : i
+        ));
         toast.success(item.published ? "Passé en brouillon" : "Publié avec succès");
       } else {
         toast.error("Échec de la mise à jour");
@@ -114,7 +120,11 @@ export default function ArticlesClient({
       <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6">
         {filteredContent.map((item) => {
           const translation = item.translations[0] || { title: "Sans titre" };
-          const category = item.category?.translations[0]?.name || (item.__type === 'PUBLICATION' ? 'Archive' : 'Non classé');
+          const category = item.__type === 'ARTICLE' 
+            ? (item.category?.translations[0]?.name || 'Non classé')
+            : 'Archive';
+          
+          const mainImage = item.__type === 'ARTICLE' ? item.mainImage : null;
           
           return (
             <div key={item.id} className="bg-card border border-border p-6 rounded-[2rem] flex flex-col gap-6 hover:shadow-2xl hover:shadow-primary/5 transition-all group relative overflow-hidden">
@@ -122,11 +132,11 @@ export default function ArticlesClient({
                <div className={`absolute top-0 right-10 px-4 py-1.5 text-[8px] font-black uppercase tracking-widest rounded-b-xl ${item.__type === 'ARTICLE' ? 'bg-primary text-primary-foreground' : 'bg-indigo-600 text-white'}`}>
                   {item.__type}
                </div>
-
+ 
               <div className="flex gap-6">
                  <div className="w-20 h-24 bg-muted/30 flex flex-col items-center justify-center border border-border shrink-0 group-hover:bg-primary/5 transition-colors relative overflow-hidden rounded-2xl">
-                   {item.mainImage ? (
-                     <img src={item.mainImage} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity" />
+                   {mainImage ? (
+                     <img src={mainImage} alt="" className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity" />
                    ) : (
                      <div className="text-muted-foreground/10">
                         {item.__type === 'ARTICLE' ? <Newspaper size={32} /> : <BookOpen size={32} />}
