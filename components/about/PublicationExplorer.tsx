@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { m as motion, AnimatePresence, LayoutGroup } from "framer-motion";
-import { Search, SlidersHorizontal, ChevronDown, X } from "lucide-react";
+import { Search, ChevronDown, X, ChevronLeft, ChevronRight } from "lucide-react";
 import PublicationCard from "@/components/ui/PublicationCard";
 
 interface Category {
@@ -17,6 +17,7 @@ interface PublicationExplorerProps {
 }
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+const ITEMS_PER_PAGE = 6;
 
 export default function PublicationExplorer({
   initialArticles,
@@ -26,6 +27,12 @@ export default function PublicationExplorer({
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "title">("newest");
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Reset to page 1 on filter change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [search, selectedCategory, sortBy]);
 
   // Filtering & Sorting Logic
   const filteredArticles = useMemo(() => {
@@ -64,10 +71,17 @@ export default function PublicationExplorer({
     return result;
   }, [initialArticles, search, selectedCategory, sortBy]);
 
+  // Pagination Logic
+  const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE);
+  const currentItems = useMemo(() => {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredArticles.slice(start, start + ITEMS_PER_PAGE);
+  }, [filteredArticles, currentPage]);
+
   return (
     <div className="space-y-12">
       {/* TOOLBAR */}
-      <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-card/30 backdrop-blur-xl p-4 lg:p-6 rounded-[2rem] border border-border/50 sticky top-24 z-30 shadow-xl shadow-black/5">
+      <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-card/30 backdrop-blur-xl p-4 lg:p-6 rounded-md border border-border/50 sticky top-24 z-30 shadow-xl shadow-black/5">
         
         {/* SEARCH */}
         <div className="relative w-full lg:max-w-md group">
@@ -77,7 +91,7 @@ export default function PublicationExplorer({
             placeholder="Search publications..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background/50 border border-border/60 rounded-xl py-3 pl-12 pr-10 outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all font-light text-sm"
+            className="w-full bg-background/50 border border-border/60 rounded-md py-3 pl-12 pr-10 outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all font-light text-sm"
           />
           {search && (
             <button
@@ -96,7 +110,7 @@ export default function PublicationExplorer({
              <select
                value={selectedCategory}
                onChange={(e) => setSelectedCategory(e.target.value)}
-               className="appearance-none bg-background/50 border border-border/60 rounded-xl py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
+               className="appearance-none bg-background/50 border border-border/60 rounded-md py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
              >
                <option value="all">All Categories</option>
                {categories.map(cat => (
@@ -111,7 +125,7 @@ export default function PublicationExplorer({
              <select
                value={sortBy}
                onChange={(e) => setSortBy(e.target.value as any)}
-               className="appearance-none bg-background/50 border border-border/60 rounded-xl py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
+               className="appearance-none bg-background/50 border border-border/60 rounded-md py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
              >
                <option value="newest">Newest First</option>
                <option value="oldest">Oldest First</option>
@@ -158,13 +172,13 @@ export default function PublicationExplorer({
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           <AnimatePresence mode="popLayout">
-            {filteredArticles.length > 0 ? (
-              filteredArticles.map((doc, i) => (
+            {currentItems.length > 0 ? (
+              currentItems.map((doc, i) => (
                 <PublicationCard
                   key={doc.id}
                   doc={doc}
                   locale={locale}
-                  delay={0} // Stagger handles by Presence
+                  delay={0}
                 />
               ))
             ) : (
@@ -172,7 +186,7 @@ export default function PublicationExplorer({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="col-span-full py-40 flex flex-col items-center justify-center space-y-6 bg-card/20 rounded-[2rem] border border-dashed border-border/50"
+                className="col-span-full py-40 flex flex-col items-center justify-center space-y-6 bg-card/20 rounded-md border border-dashed border-border/50"
               >
                 <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
                   <Search size={32} />
@@ -195,10 +209,47 @@ export default function PublicationExplorer({
         </motion.div>
       </LayoutGroup>
 
+      {/* PAGINATION */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-4 pt-12">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+            className="w-10 h-10 rounded-md border border-border flex items-center justify-center text-muted-foreground hover:border-primary hover:text-primary disabled:opacity-20 disabled:cursor-not-allowed transition-all"
+          >
+            <ChevronLeft size={20} />
+          </button>
+          
+          <div className="flex items-center gap-2">
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`w-10 h-10 rounded-md text-[10px] font-bold uppercase tracking-widest transition-all ${
+                  currentPage === i + 1
+                    ? "bg-primary text-primary-foreground"
+                    : "border border-border text-muted-foreground hover:border-primary hover:text-primary"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+          </div>
+
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            className="w-10 h-10 rounded-md border border-border flex items-center justify-center text-muted-foreground hover:border-primary hover:text-primary disabled:opacity-20 disabled:cursor-not-allowed transition-all"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </div>
+      )}
+
       {/* RESULTS COUNT */}
-      <div className="flex justify-center pt-12">
+      <div className="flex justify-center pt-8">
         <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground/30">
-          Showing {filteredArticles.length} / {initialArticles.length} Publications
+          Showing {currentItems.length} of {filteredArticles.length} / Global: {initialArticles.length}
         </span>
       </div>
     </div>

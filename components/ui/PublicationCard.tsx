@@ -32,7 +32,7 @@ export default function PublicationCard({ doc, locale, delay = 0 }: PublicationC
       className="group relative"
     >
       <Link href={`/publications/${doc.slug || doc.id}`} className="block">
-        <div className="relative overflow-hidden bg-card/40 backdrop-blur-md border border-border/50 rounded-[2rem] p-8 md:p-10 
+        <div className="relative overflow-hidden bg-card/40 backdrop-blur-md border border-border/50 rounded-md p-8 md:p-10 
                         transition-all duration-500 hover:border-primary/40 hover:bg-card/80 
                         hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] hover:-translate-y-2">
           
