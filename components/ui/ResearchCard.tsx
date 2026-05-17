@@ -60,7 +60,7 @@ export default function ResearchCard({ article, delay = 0 }: ResearchCardProps) 
 
                 <div className="mt-auto pt-8 border-t border-border/30">
                     <Link
-                        href={`/research/${slug}`}
+                        href={`/publications/${slug}`}
                         className="inline-flex items-center gap-3 text-primary font-bold text-[11px] uppercase tracking-widest group/link"
                     >
                         Lire l'article

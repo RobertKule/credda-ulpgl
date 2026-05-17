@@ -53,7 +53,7 @@ export default function AboutMission() {
       <div className="container mx-auto px-6">
 
         {/* HEADER */}
-        <div className="max-w-3xl mb-20">
+        <div className="max-w-3xl mx-auto flex flex-col items-center text-center mb-20">
           <motion.span
             {...SECTION_HEADER.badge}
             viewport={{ once: true }}

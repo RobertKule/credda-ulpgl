@@ -176,7 +176,7 @@ export default function GalleryGrid({
         className="mt-12 flex justify-center"
       >
         <Link
-          href="/gallery"
+          href="/media-center"
           className="group inline-flex items-center gap-3 px-8 py-4 bg-primary text-primary-foreground rounded-full font-black text-sm uppercase tracking-widest transition-all duration-500 hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
         >
           <span>{t("Gallery.cta_view_all") ?? "Voir toute la galerie"}</span>

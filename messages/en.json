@@ -12,6 +12,8 @@
     "research": "Research",
     "clinical": "Legal Clinic",
     "publications": "Publications",
+    "mediaCenter": "Media Center",
+    "announcements": "Announcements",
     "about": "The Institution",
     "programmes": "Programmes",
     "events": "Events",
@@ -194,15 +196,6 @@
         "ulpgl.webp"
       ]
     },
-    "cta": {
-      "badge": "Join the Movement",
-      "title": "Building the future through <span>Science</span>.",
-      "partner": "Become a Partner",
-      "about": "The CREDDA Project",
-      "mission": "Read our Mission",
-      "collaboration": "Collaborating with the World's Finest",
-      "portal": "Researcher Portal"
-    },
     "Gallery": {
       "badge": "MEDIA LIBRARY",
       "title": "Our",
@@ -280,6 +273,13 @@
           "description": "Launch of the unified platform, full digitalization of services and global research vision."
         }
       }
+    },
+    "cta": {
+      "badge": "JOIN US",
+      "title": "Let's Build the <span>Future</span> Together.",
+      "collaboration": "Explore our academic and institutional collaboration opportunities.",
+      "partner": "Become a Partner",
+      "about": "Discover CREDDA"
     }
   },
   "metadata": {
@@ -339,93 +339,138 @@
     "contact": "Contact",
     "help": "Need help?"
   },
-  "about": {
-    "since": "Since",
-    "watch_video": "Watch institutional film",
+  "AboutPage": {
     "hero": {
-      "badge": "Founded in 2008 • Academic Excellence",
-      "title": "Thinking <italic>Law</italic>, Building the Future.",
-      "desc": "CREDDA is the epicenter of legal research in the DRC, merging scientific rigor and social engagement."
+      "badge": "FOUNDED IN 2008 • ACADEMIC EXCELLENCE",
+      "title": "Thinking the <italic>Law</italic>, Building the Future.",
+      "subtitle": "CREDDA is the epicenter of legal research in the DRC, merging scientific rigor with social engagement.",
+      "breadcrumb": "Institution > About"
     },
-    "who_we_are": "Who are we?",
-    "mission_title": "An academic institution dedicated to",
-    "mission_italic": "Societal Progress",
-    "mission_description": "CREDDA is not just a think tank. It is the scientific arm of ULPGL that materializes the link between legal theories and field realities in the DRC.",
-    "achievements": [
-      "Internationally certified scientific production",
-      "Free legal aid for the vulnerable",
-      "Democracy observatory in the Great Lakes",
-      "Unique land and environmental expertise"
-    ],
-    "years_excellence": "Years of Excellence",
-    "contact_us": "Contact Us",
-    "compass": "Our Compass",
-    "mission_vision_title": "A clear mission for a resilient Africa.",
+    "story": {
+      "badge": "Who are we?",
+      "title": "Narrating African Excellence through Research.",
+      "p1": "CREDDA is a pillar of academic intelligence in the DRC. Affilié à l'ULPGL-Goma, we transform research into direct social action.",
+      "p2": "Strategically located in the Great Lakes, we provide an independent scientific voice on justice and sustainable development issues.",
+      "image_label": "Academic Body & Excellence",
+      "highlights": {
+        "title": "Our Impact in Numbers",
+        "items": [
+          "Internationally certified scientific production",
+          "Free legal aid for the vulnerable",
+          "Democracy observatory in the Great Lakes",
+          "Unique expertise in land and environment"
+        ]
+      }
+    },
     "mission": {
-      "badge": "Our Manifesto",
-      "title": "A <italic>transformative</italic> vision of law.",
-      "desc": "Beyond texts, we believe in living law. A law that protects the Congo Basin ecosystems and guarantees the dignity of indigenous peoples. CREDDA is not just a laboratory, it is a legal shield.",
-      "cta": "Discover our publications"
+      "badge": "Our Mission",
+      "title": "Impact Rooted in Science.",
+      "desc": "We channel our expertise through three fundamental axes to transform challenges into opportunities.",
+      "cards": {
+        "research": {
+          "title": "Cutting-edge Research",
+          "desc": "Producing original and rigorous knowledge to inform public policy."
+        },
+        "innovation": {
+          "title": "Social Innovation",
+          "desc": "Designing legal and social solutions adapted to the continent's transitions."
+        },
+        "impact": {
+          "title": "Community Impact",
+          "desc": "Ensuring a bridge between academia and populations for accessible justice."
+        }
+      }
     },
-    "mission_text": "Produce high-quality research to guide public policies and strengthen the rule of law in the DRC.",
-    "vision": "Our Vision",
-    "vision_text": "Become the main interdisciplinary hub for conflict transformation in Central Africa.",
-    "values": "Our Values",
-    "values_text": "Academic integrity, political neutrality, and commitment to the rights of vulnerable communities.",
-    "values_list": {
-      "excellence": "Excellence",
-      "neutrality": "Neutrality",
-      "engagement": "Engagement",
-      "innovation": "Innovation"
-    },
-    "location": "Location",
-    "find_us": "Find us in Goma.",
-    "location_description": "CREDDA's headquarters is located within the Salomon Campus of ULPGL, a privileged academic setting in the heart of Goma.",
-    "address": "Physical Address",
-    "full_address": [
-      "Université Libre des Pays des Grands Lacs (ULPGL),",
-      "Salomon Campus, Avenue de la Corniche,",
-      "Himbi District, Goma, DRC."
-    ],
-    "stats": {
-      "y": "Years of research",
-      "p": "Published articles",
-      "g": "Global partnerships",
-      "l": "Local engagement"
-    },
-    "cta_title": "Ready to collaborate for change?",
-    "become_partner": "Become a Partner",
-    "meet_team": "Our Team",
-    "quote": "Law must not only be spoken, it must be lived in the service of climate and social justice.",
-    "pillars": {
-      "title": "The Legal Pillars",
-      "desc": "Our actions are strictly in line with national and international normative frameworks.",
-      "items": [
+    "history": {
+      "badge": "Our Journey",
+      "title": "A journey of rigor and commitment.",
+      "timeline": [
         {
-          "t": "DRC Constitution",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2008",
+          "title": "Center Creation",
+          "desc": "Foundation of the Center for Research and Studies for Development (CREDDA) with a vision to promote academic research in Africa."
         },
         {
-          "t": "Law 22/030 (Indigenous)",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2012",
+          "title": "Academic Structuring",
+          "desc": "Strengthening research axes and establishing the first structured scientific programs."
         },
         {
-          "t": "African Charter",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2016",
+          "title": "Expansion of Activities",
+          "desc": "Extension of research areas and integration of interdisciplinary projects with regional partners."
         },
         {
-          "t": "Bio Diversity Convention",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2020",
+          "title": "Digitalization of the Center",
+          "desc": "Introduction of digital tools in research and complete digital archiving of publications."
         },
         {
-          "t": "UN Declaration",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2023",
+          "title": "Modern Transformation",
+          "desc": "Modernization of research infrastructure and structuring towards a digital platform."
         },
         {
-          "t": "Environmental Law",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2026",
+          "title": "CREDDA ULPGL",
+          "desc": "Launch of the unified platform, complete digitalization of services, and international vision."
         }
       ]
+    },
+    "values": {
+      "badge": "Our Values",
+      "title": "The principles guiding our actions.",
+      "items": {
+        "excellence": {
+          "title": "Excellence",
+          "desc": "Scientific rigor as an absolute standard."
+        },
+        "ethics": {
+          "title": "Ethics",
+          "desc": "Total integrity in all our research."
+        },
+        "independence": {
+          "title": "Independence",
+          "desc": "Academic freedom at the service of truth."
+        },
+        "impact": {
+          "title": "Impact",
+          "desc": "Useable science for social transformation."
+        },
+        "vision": {
+          "title": "African Vision",
+          "desc": "Holding high the continent's intelligence."
+        }
+      }
+    },
+    "impact": {
+      "title": "A global influence without boundaries.",
+      "stats": [
+        {
+          "value": "16",
+          "label": "Years of Expertise"
+        },
+        {
+          "value": "200+",
+          "label": "Certified Publications"
+        },
+        {
+          "value": "15",
+          "label": "Global Partners"
+        },
+        {
+          "value": "1200+",
+          "label": "Clinical Cases Treated"
+        }
+      ]
+    },
+    "vision": {
+      "title": "Building Modern African Intelligence.",
+      "text": "CREDDA does not just observe world changes; we prepare minds to anticipate them. Our vision is that of an Africa capable of producing its own science to solve its own challenges, in permanent dialogue with the world."
+    },
+    "cta": {
+      "title": "Join a new generation of researchers and changemakers.",
+      "button": "Become a Partner"
     }
   },
   "ResearchPage": {
@@ -1308,87 +1353,69 @@
       "submit": "Generate Access"
     }
   },
-  "AboutPage": {
+  "ProgrammesPage": {
+    "header": {
+      "badge": "Expertise & Action",
+      "title": "Strategic Focus Areas",
+      "description": "The Environmental Law Clinic (CDE) of CREDDA deploys its expertise through seven strategic axes for social and sustainable justice."
+    }
+  },
+  "EventsPage": {
+    "header": {
+      "badge": "Scientific Agenda",
+      "title": "Events & Conferences",
+      "description": "Participate in our symposiums, clinical workshops and annual report presentations to stay at the heart of legal innovation."
+    },
+    "upcoming": "Upcoming",
+    "archives": "Archives",
+    "no_events": "No upcoming events scheduled"
+  },
+  "GlobalCTA": {
+    "badge": "Join the Movement",
+    "title": "Building the future through <span>Science</span>.",
+    "partner": "Become a Partner",
+    "about": "The CREDDA Project",
+    "mission": "Read our Mission",
+    "collaboration": "Collaborating with the World's Finest",
+    "portal": "Researcher Portal"
+  },
+  "MediaCenter": {
     "hero": {
-      "badge": "FOUNDED IN 2008 • ACADEMIC EXCELLENCE",
-      "title": "Thinking the <italic>Law</italic>, Building the Future.",
-      "subtitle": "CREDDA is the epicenter of legal research in the DRC, merging scientific rigor with social engagement.",
-      "breadcrumb": "Institution > About"
-    },
-    "story": {
-      "badge": "Who are we?",
-      "title": "Narrating African Excellence through Research.",
-      "p1": "CREDDA is a pillar of academic intelligence in the DRC. Affilié à l'ULPGL-Goma, we transform research into direct social action.",
-      "p2": "Strategically located in the Great Lakes, we provide an independent scientific voice on justice and sustainable development issues.",
-      "image_label": "Academic Body & Excellence",
-      "highlights": {
-        "title": "Our Impact in Numbers",
-        "items": [
-          "Internationally certified scientific production",
-          "Free legal aid for the vulnerable",
-          "Democracy observatory in the Great Lakes",
-          "Unique expertise in land and environment"
-        ]
+      "badge": "Multimedia",
+      "title": "Gallery & Events",
+      "subtitle": "A visual journey through CREDDA's impact in DRC and internationally.",
+      "stats": {
+        "events": "Documented Events",
+        "media": "Multimedia Content",
+        "videos": "Video Reports"
       }
     },
-    "mission": {
-      "badge": "Our Mission",
-      "title": "Impact Rooted in Science.",
-      "desc": "We channel our expertise through three fundamental axes to transform challenges into opportunities.",
-      "cards": {
-        "research": {
-          "title": "Cutting-edge Research",
-          "desc": "Producing original and rigorous knowledge to inform public policy."
-        },
-        "innovation": {
-          "title": "Social Innovation",
-          "desc": "Designing legal and social solutions adapted to the continent's transitions."
-        },
-        "impact": {
-          "title": "Community Impact",
-          "desc": "Ensuring a bridge between academia and populations for accessible justice."
-        }
-      }
+    "filters": {
+      "all": "All",
+      "events": "Events",
+      "videos": "Videos",
+      "gallery": "Gallery"
     },
-    "history": {
-      "badge": "Our Journey",
-      "title": "A journey of rigor and commitment.",
-      "timeline": [
-        { "year": "2008", "title": "Center Creation", "desc": "Foundation of the Center for Research and Studies for Development (CREDDA) with a vision to promote academic research in Africa." },
-        { "year": "2012", "title": "Academic Structuring", "desc": "Strengthening research axes and establishing the first structured scientific programs." },
-        { "year": "2016", "title": "Expansion of Activities", "desc": "Extension of research areas and integration of interdisciplinary projects with regional partners." },
-        { "year": "2020", "title": "Digitalization of the Center", "desc": "Introduction of digital tools in research and complete digital archiving of publications." },
-        { "year": "2023", "title": "Modern Transformation", "desc": "Modernization of research infrastructure and structuring towards a digital platform." },
-        { "year": "2026", "title": "CREDDA ULPGL", "desc": "Launch of the unified platform, complete digitalization of services, and international vision." }
-      ]
+    "explorer": {
+      "itemsPerPage": "Show:",
+      "back": "Back to Gallery",
+      "events_title": "Academic Events",
+      "videos_title": "Video Reports",
+      "gallery_title": "Institutional Gallery",
+      "narrative_events": "More than {count} documented academic events and scientific activities.",
+      "narrative_videos": "{count} reports and documentaries on CREDDA's impact.",
+      "narrative_gallery": "A living visual archive of CREDDA's activities."
     },
-    "values": {
-      "badge": "Our Values",
-      "title": "The principles guiding our actions.",
-      "items": {
-        "excellence": { "title": "Excellence", "desc": "Scientific rigor as an absolute standard." },
-        "ethics": { "title": "Ethics", "desc": "Total integrity in all our research." },
-        "independence": { "title": "Independence", "desc": "Academic freedom at the service of truth." },
-        "impact": { "title": "Impact", "desc": "Useable science for social transformation." },
-        "vision": { "title": "African Vision", "desc": "Holding high the continent's intelligence." }
-      }
+    "eventCard": {
+      "viewMore": "View Details",
+      "location": "Location",
+      "organizer": "Organized by"
     },
-    "impact": {
-      "title": "A global influence without boundaries.",
-      "stats": [
-        { "value": "16", "label": "Years of Expertise" },
-        { "value": "200+", "label": "Certified Publications" },
-        { "value": "15", "label": "Global Partners" },
-        { "value": "1200+", "label": "Clinical Cases Treated" }
-      ]
-    },
-    "vision": {
-      "title": "Building Modern African Intelligence.",
-      "text": "CREDDA does not just observe world changes; we prepare minds to anticipate them. Our vision is that of an Africa capable of producing its own science to solve its own challenges, in permanent dialogue with the world."
-    },
-    "cta": {
-      "title": "Join a new generation of researchers and changemakers.",
-      "button": "Become a Partner"
+    "modal": {
+      "next": "Next",
+      "prev": "Previous",
+      "close": "Close",
+      "info": "Image Details"
     }
   }
 }

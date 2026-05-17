@@ -91,11 +91,11 @@ export default function HomeClient({
         </section>
 
         {/* ═══════════════════════════════════════════
-            5. RESEARCH — Glassmorphism Layer 2
+            5. PUBLICATIONS / INSIGHTS — Glassmorphism Layer 2
             Light surface, warm backdrop.
         ════════════════════════════════════════════ */}
         <section
-          id="research"
+          id="publications"
           className="relative z-20 w-full py-24 lg:py-32 bg-background/80 dark:bg-background/70 backdrop-blur-sm border-b border-border dark:border-border/15"
         >
           <FeaturedResearch research={featuredResearch} />

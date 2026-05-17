@@ -37,7 +37,7 @@ export default function ResearchSection({ articles = [] }: ResearchSectionProps)
                         transition={{ duration: 0.6 }}
                     >
                         <Link
-                            href="/research"
+                            href="/publications"
                             className="inline-flex items-center gap-2 text-slate-600 hover:text-primary font-medium transition-colors group"
                         >
                             Voir toutes les recherches

@@ -222,13 +222,13 @@ export default function Hero({ testimonials = [], team = [] }: { testimonials?: 
           className="flex items-center gap-6 relative z-30"
         >
           <Link 
-            href="/research"
+            href="/publications"
             className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-full font-black tracking-tight text-sm transition-transform hover:scale-105 active:scale-95 flex items-center justify-center shadow-lg"
           >
             {t('hero.discover')}
           </Link>
           <Link 
-            href="/research"
+            href="/publications"
             className="w-14 h-14 bg-primary/10 hover:bg-primary/20 rounded-full flex items-center justify-center text-primary transition-transform hover:scale-105 active:scale-95 shadow-sm"
           >
             <ArrowUpRight strokeWidth={2.5} size={20} />

@@ -5,19 +5,21 @@ import { m as motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Search, ChevronDown, X, ChevronLeft, ChevronRight } from "lucide-react";
 import PublicationCard from "@/components/ui/PublicationCard";
 
+import { EditorialItem } from "@/types/editorial";
+
 interface Category {
   id: string;
   name: string;
 }
 
 interface PublicationExplorerProps {
-  initialArticles: any[];
+  initialArticles: EditorialItem[];
   categories: Category[];
   locale: string;
 }
 
 const EASE = [0.22, 1, 0.36, 1] as const;
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 9;
 
 export default function PublicationExplorer({
   initialArticles,
@@ -42,18 +44,17 @@ export default function PublicationExplorer({
     if (search) {
       const q = search.toLowerCase();
       result = result.filter(art => {
-        const t = art.translations?.[0];
         return (
-          t?.title?.toLowerCase().includes(q) ||
-          t?.excerpt?.toLowerCase().includes(q) ||
-          t?.content?.toLowerCase().includes(q)
+          art.title?.toLowerCase().includes(q) ||
+          art.excerpt?.toLowerCase().includes(q) ||
+          art.content?.toLowerCase().includes(q)
         );
       });
     }
 
     // Category
     if (selectedCategory !== "all") {
-      result = result.filter(art => art.categoryId === selectedCategory);
+      result = result.filter(art => art.category === categories.find(c => c.id === selectedCategory)?.name);
     }
 
     // Sort
@@ -61,15 +62,13 @@ export default function PublicationExplorer({
       if (sortBy === "newest") return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       if (sortBy === "oldest") return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
       if (sortBy === "title") {
-        const titleA = a.translations?.[0]?.title || "";
-        const titleB = b.translations?.[0]?.title || "";
-        return titleA.localeCompare(titleB);
+        return (a.title || "").localeCompare(b.title || "");
       }
       return 0;
     });
 
     return result;
-  }, [initialArticles, search, selectedCategory, sortBy]);
+  }, [initialArticles, search, selectedCategory, sortBy, categories]);
 
   // Pagination Logic
   const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE);
@@ -82,7 +81,7 @@ export default function PublicationExplorer({
     <div className="space-y-12">
       {/* TOOLBAR */}
       <div className="sticky top-28 z-30 mx-auto max-w-5xl w-full">
-        <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-card/40 backdrop-blur-xl p-4 lg:p-6 rounded-md border border-border/50 shadow-xl shadow-black/10">
+        <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-card/40 backdrop-blur-xl px-10 py-6 rounded-full border border-border/50 shadow-xl shadow-black/10">
         
         {/* SEARCH */}
         <div className="relative w-full lg:max-w-md group">
@@ -92,7 +91,7 @@ export default function PublicationExplorer({
             placeholder="Search publications..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background/50 border border-border/60 rounded-md py-3 pl-12 pr-10 outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all font-light text-sm"
+            className="w-full bg-background/50 border border-border/60 rounded-full py-3 pl-12 pr-10 outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all font-light text-sm"
           />
           {search && (
             <button
@@ -111,7 +110,7 @@ export default function PublicationExplorer({
              <select
                value={selectedCategory}
                onChange={(e) => setSelectedCategory(e.target.value)}
-               className="appearance-none bg-background/50 border border-border/60 rounded-md py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
+               className="appearance-none bg-background/50 border border-border/60 rounded-full py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
              >
                <option value="all">All Categories</option>
                {categories.map(cat => (
@@ -126,7 +125,7 @@ export default function PublicationExplorer({
              <select
                value={sortBy}
                onChange={(e) => setSortBy(e.target.value as any)}
-               className="appearance-none bg-background/50 border border-border/60 rounded-md py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
+               className="appearance-none bg-background/50 border border-border/60 rounded-full py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
              >
                <option value="newest">Newest First</option>
                <option value="oldest">Oldest First</option>

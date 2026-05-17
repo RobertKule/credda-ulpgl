@@ -100,7 +100,7 @@ export default function ClinicalSection() {
 
             {/* Final Action Button */}
             <Link 
-              href="/clinical" 
+              href="/publications" 
               className="bg-primary hover:bg-[#B4934B] text-primary-foreground px-12 py-5 rounded-2xl md:rounded-full font-black uppercase tracking-[0.3em] text-[11px] transition-all hover:scale-[1.02] flex items-center justify-center gap-4 shadow-xl shadow-primary/20"
             >
               <span>{t('clinical.cta')}</span>

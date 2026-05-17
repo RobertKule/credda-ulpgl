@@ -38,7 +38,7 @@ export default function MainLayoutWrapper({
       <SystemBanner />
       <Navbar />
       {!isHome && <PersistentGlobeBackground />}
-      <div className="relative z-10 m-0 p-0 min-h-screen bg-transparent text-foreground overflow-x-hidden transition-all duration-500">
+      <div className="relative z-10 m-0 p-0 min-h-screen bg-transparent text-foreground transition-all duration-500">
         {children}
       </div>
       <Footer />

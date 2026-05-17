@@ -2,6 +2,8 @@ import { getMessages } from "next-intl/server";
 import { Lora, Inter } from 'next/font/google'
 import Providers from "@/components/shared/Providers";
 import MainLayoutWrapper from "@/components/shared/MainLayoutWrapper";
+import AnnouncementBar from "@/components/layout/AnnouncementBar";
+import { sql } from "@/lib/db";
 import "../globals.css";
 
 const lora = Lora({
@@ -32,8 +34,15 @@ export default async function RootLayout({
 }) {
   const { locale } = (await params) as { locale: string };
 
-  // ✅ getMessages attend un objet { locale: string }
   const messages = await getMessages({ locale });
+
+  // Fetch active announcements
+  const announcements = (await sql`
+    SELECT id, content, "isActive"
+    FROM "Announcement"
+    WHERE "isActive" = true
+    ORDER BY "createdAt" DESC
+  `.catch(() => [])) as { id: string; content: string; isActive: boolean }[];
 
   return (
     <html lang={locale} suppressHydrationWarning className={`${lora.variable} ${inter.variable} scroll-smooth`}>
@@ -54,7 +63,8 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased text-foreground bg-background w-screen overflow-x-hidden">
+      <body className="font-sans antialiased text-foreground bg-background relative">
+        {announcements && announcements.length > 0 && <AnnouncementBar announcements={announcements} />}
         <Providers locale={locale} messages={messages}>
           <MainLayoutWrapper>
             {children}

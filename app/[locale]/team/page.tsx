@@ -2,14 +2,12 @@
 import type { Metadata } from "next";
 import { localePageMetadata } from "@/lib/page-metadata";
 import { sql } from "@/lib/db";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import {
-  Mail, Linkedin, Users, GraduationCap,
-  SearchX, Globe, ChevronRight, Award
-} from "lucide-react";
+import { Users, Mail, Linkedin, ChevronRight, SearchX } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
+import EditorialPageHero from "@/components/shared/EditorialPageHero";
+import StandardGlobalCTA from "@/components/shared/StandardGlobalCTA";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
 
 interface Props {
@@ -24,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function TeamPage({ params }: Props) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'TeamPage' });
+  const t_cta = await getTranslations({ locale, namespace: 'HomePage.cta' });
 
   interface MemberPageSqlResult {
     id: string;
@@ -35,138 +34,130 @@ export default async function TeamPage({ params }: Props) {
     translations: { role: string; bio: string }[];
   }
 
-  // Optimization: catch error to avoid total page crash
   const members = (await sql`
     SELECT m.*, 
       (SELECT json_agg(t) FROM "MemberTranslation" t WHERE t."memberId" = m.id AND t.language = ${locale}) as translations
     FROM "Member" m
     ORDER BY m."order" ASC
-  `.catch((err) => {
-    console.error("Team DB Fetch Error:", err);
-    return [];
-  })) as MemberPageSqlResult[];
+  `.catch(() => [])) as MemberPageSqlResult[];
 
   return (
-    <main className="min-h-screen bg-background py-24 px-6 lg:px-12">
-      {/* --- HEADER --- */}
-      <section style={{ padding: '80px 40px 64px', borderBottom: '1px solid rgba(245,242,236,0.07)', marginBottom: '80px' }}>
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-12 pb-16">
-          <ScrollReveal>
-            <p style={{ fontFamily: 'var(--font-outfit)', fontSize: '9px', letterSpacing: '0.2em', color: '#C9A84C', textTransform: 'uppercase', fontWeight: 600, marginBottom: 16 }}>
-              CREDDA · Équipe
-            </p>
-            <h1 style={{ fontFamily: 'var(--font-fraunces)', fontSize: 'clamp(36px, 5vw, 56px)', fontWeight: 700, color: 'var(--color-text)', lineHeight: 1.1 }}>
-              Nos Chercheurs <em style={{ fontStyle: 'italic', color: '#C9A84C' }}>& Experts</em>
-            </h1>
-          </ScrollReveal>
-          
-          <div className="hidden lg:flex items-center gap-8">
-             <div className="text-center">
-                <p className="text-3xl font-fraunces font-extrabold text-[#C9A84C]">{members.length}</p>
-                <p className="text-[9px] uppercase font-outfit font-bold tracking-widest text-muted-foreground/30">Chercheurs</p>
-             </div>
-             <div className="w-[1px] h-12 bg-border/40" />
-             <div className="text-center">
-                <p className="text-3xl font-fraunces font-extrabold text-[#C9A84C]">24</p>
-                <p className="text-[9px] uppercase font-outfit font-bold tracking-widest text-muted-foreground/30">Expertises</p>
-             </div>
+    <main className="min-h-screen bg-background pb-0 selection:bg-primary selection:text-primary-foreground">
+      {/* 1. STANDARDIZED HERO */}
+      <EditorialPageHero 
+        title={(t.raw('header.title') as string).replace(/<span>|<\/span>/g, '')}
+        subtitle={t('header.description')}
+        badge={t('header.badge')}
+      />
+
+      {/* 2. STATS BAR (SUBTLE) */}
+      <div className="border-b border-border/50 bg-muted/20">
+        <div className="container mx-auto px-6 py-8 flex justify-center lg:justify-start gap-12">
+          <div className="flex flex-col">
+            <span className="text-2xl font-serif font-bold text-primary leading-none">{members.length}</span>
+            <span className="text-[9px] uppercase font-bold tracking-widest text-muted-foreground/50">Chercheurs</span>
           </div>
+          <div className="w-[1px] h-10 bg-border/50" />
+          <div className="flex flex-col">
+            <span className="text-2xl font-serif font-bold text-primary leading-none">24+</span>
+            <span className="text-[9px] uppercase font-bold tracking-widest text-muted-foreground/50">Expertises</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. TEAM GRID */}
+      <section className="py-24 lg:py-32 px-6">
+        <div className="container mx-auto">
+          {members.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24">
+              {members.map((member, i) => {
+                const content = member.translations?.[0] || { role: "Chercheur", bio: "" };
+                return (
+                  <ScrollReveal key={member.id} delay={i * 0.08}>
+                    <MemberCard member={member} content={content} locale={locale} />
+                  </ScrollReveal>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="py-40 text-center border border-dashed border-border/50 rounded-md bg-muted/10">
+               <SearchX size={64} className="mx-auto text-muted-foreground/20 mb-8" />
+               <h3 className="text-2xl font-serif font-bold text-foreground mb-4">{t('empty.title')}</h3>
+               <p className="text-muted-foreground font-light max-w-sm mx-auto">{t('empty.description')}</p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* --- GRID ÉQUIPE --- */}
-      <section className="max-w-7xl mx-auto">
-        {members.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-24 px-6">
-            {members.map((member, i: number) => {
-              const content = member.translations?.[0] || { role: "Chercheur", bio: "" };
-
-              return (
-                <ScrollReveal key={member.id} delay={i * 0.08}>
-                <div className="group">
-                  {/* Photo Profile */}
-                  <Link href={`/${locale}/team/${member.slug}`}>
-                    <div className="relative aspect-[3/4] overflow-hidden bg-card border border-border mb-8 shadow-2xl">
-                      {member.image ? (
-                        <Image
-                          src={member.image.replace(/\\/g, '/').replace(/^public\//, '/')}
-                          alt={member.name}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-white/5">
-                          <Users size={120} strokeWidth={0.5} />
-                        </div>
-                      )}
-                      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background to-transparent opacity-60" />
-                    </div>
-                  </Link>
-
-                  {/* Infos */}
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                       <span className="text-[10px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
-                        {content.role}
-                      </span>
-                      <Link href={`/${locale}/team/${member.slug}`}>
-                        <h2 className="text-3xl font-bricolage font-bold text-foreground group-hover:text-primary transition-colors">
-                          {member.name}
-                        </h2>
-                      </Link>
-                    </div>
-
-                    <div className="h-[1px] w-12 bg-primary transition-all group-hover:w-full duration-700" />
-
-                    {content.bio && (
-                      <p className="text-muted-foreground text-sm font-outfit font-light leading-relaxed line-clamp-3">
-                        {content.bio}
-                      </p>
-                    )}
-
-                    {/* Action & Social links */}
-                    <div className="flex items-center justify-between pt-4">
-                      <div className="flex gap-6">
-                        {member.email && (
-                          <a
-                            href={`mailto:${member.email}`}
-                            className="text-muted-foreground/40 hover:text-primary transition-colors"
-                            title="Contact Email"
-                          >
-                            <Mail size={16} />
-                          </a>
-                        )}
-                        <a
-                          href="#"
-                          className="text-muted-foreground/40 hover:text-primary transition-colors"
-                          title="LinkedIn Profile"
-                        >
-                          <Linkedin size={16} />
-                        </a>
-                      </div>
-                      
-                      <Link 
-                        href={`/${locale}/team/${member.slug}`}
-                        className="text-[9px] font-bold uppercase tracking-[0.2em] text-primary flex items-center gap-2 group/link"
-                      >
-                        Voir profil <ChevronRight size={12} className="group-hover/link:translate-x-1 transition-transform" />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-                </ScrollReveal>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="py-40 text-center border border-dashed border-border">
-             <SearchX size={64} className="mx-auto text-foreground/10 mb-8" />
-             <h3 className="text-2xl font-fraunces font-bold text-foreground mb-4">Annuaire en cours d'actualisation</h3>
-             <p className="text-muted-foreground font-outfit font-light max-w-sm mx-auto">L'équipe du CREDDA s'agrandit. Les profils de nos nouveaux chercheurs seront bientôt disponibles.</p>
-          </div>
-        )}
-      </section>
+      {/* 4. STANDARDIZED GLOBAL CTA */}
+      <StandardGlobalCTA 
+        title={(t_cta.raw('title') as string).replace(/<span>|<\/span>/g, '')}
+        subtitle={t_cta('collaboration')}
+        buttonText={t_cta('partner')}
+        href="/contact"
+      />
     </main>
+  );
+}
+
+function MemberCard({ member, content, locale }: { member: any; content: any; locale: string }) {
+  return (
+    <div className="group relative p-4 sm:p-5 rounded-md bg-card/40 shadow-sm border border-border/10 transition-all duration-700 hover:shadow-lg hover:shadow-primary/10 hover:bg-card hover:border-border/40 z-0 flex flex-col gap-5">
+      {/* Animated Expanding Borders */}
+      <div className="absolute inset-0 z-20 pointer-events-none rounded-md overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[2px] w-0 bg-primary/60 transition-all duration-500 ease-out group-hover:w-full" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] w-0 bg-primary/60 transition-all duration-500 ease-out group-hover:w-full" />
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[2px] h-0 bg-primary/60 transition-all duration-500 ease-out group-hover:h-full" />
+        <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[2px] h-0 bg-primary/60 transition-all duration-500 ease-out group-hover:h-full" />
+      </div>
+
+      <Link href={`/${locale}/team/${member.slug}`} className="block relative z-10 w-full shrink-0">
+        <div className="relative aspect-[3/2] overflow-hidden bg-muted/20 border border-border/50 rounded-md shadow-sm group-hover:shadow-none transition-shadow duration-500">
+          {member.image ? (
+            <Image
+              src={member.image.replace(/\\/g, '/').replace(/^public\//, '/')}
+              alt={member.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover object-[center_15%] grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-muted/30">
+              <Users size={60} strokeWidth={0.5} className="text-muted-foreground/20" />
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </div>
+      </Link>
+
+      <div className="flex flex-col gap-3 px-2 flex-grow relative z-10">
+        <div className="space-y-1">
+          <p className="text-[8px] uppercase tracking-wider text-primary/70 line-clamp-1 truncate w-full" title={content.role}>
+            {content.role}
+          </p>
+          <Link href={`/${locale}/team/${member.slug}`}>
+            <h2 className="text-xl md:text-2xl font-serif font-bold text-foreground group-hover:text-primary transition-colors leading-tight truncate w-full" title={member.name}>
+              {member.name}
+            </h2>
+          </Link>
+        </div>
+
+        <div className="h-[1px] w-8 bg-primary/30 transition-all group-hover:w-full duration-700 my-1" />
+
+        {/* Links Only */}
+        <div className="flex items-center gap-4 mt-auto pt-2">
+          {member.email && (
+            <a href={`mailto:${member.email}`} className="text-muted-foreground/50 hover:text-primary transition-colors">
+              <Mail size={16} />
+            </a>
+          )}
+          {member.linkedin && (
+             <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground/50 hover:text-primary transition-colors">
+               <Linkedin size={16} />
+             </a>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }

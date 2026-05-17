@@ -130,7 +130,7 @@ export default function HeroSection() {
 
                     <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
                         <Link
-                            href="/research"
+                            href="/publications"
                             className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-primary to-emerald hover:from-primary/90 hover:to-emerald/90 text-white px-8 py-4 rounded-md shadow-lg shadow-emerald/20 font-medium transition-all duration-300 overflow-hidden"
                         >
                             <span className="relative z-10">Explorer nos recherches</span>

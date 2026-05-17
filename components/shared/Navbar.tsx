@@ -32,17 +32,14 @@ export default function Navbar() {
   const primaryLinks = [
     { href: "/", label: t("home", { fallback: "Accueil" }) },
     { href: "/about", label: t("about", { fallback: "L'Institution" }) },
-    { href: "/research", label: t("research", { fallback: "Recherche" }) },
+    { href: "/publications", label: t("publications", { fallback: "Publications" }) },
   ];
 
   // Secondary Links (Dropdown)
   const secondaryLinks = [
-    { href: "/programmes", label: t("programmes", { fallback: "Programmes" }) },
-    { href: "/clinical", label: t("clinical", { fallback: "Clinique Juridique" }) },
-    { href: "/publications", label: t("publications", { fallback: "Publications" }) },
-    { href: "/events", label: t("events", { fallback: "Événements" }) },
+    { href: "/media-center", label: t("mediaCenter", { fallback: "Media Center" }) },
+    { href: "/announcements", label: t("announcements", { fallback: "Annonces" }) },
     { href: "/team", label: t("team", { fallback: "Équipe" }) },
-    { href: "/gallery", label: t("gallery", { fallback: "Galerie" }) },
     { href: "/contact", label: t("contact", { fallback: "Contact" }) },
   ];
 

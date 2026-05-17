@@ -9,17 +9,17 @@
   },
   "Navigation": {
     "home": "Accueil",
-    "research": "Recherche",
-    "clinical": "Clinique Juridique",
     "publications": "Publications",
+    "mediaCenter": "Media Center",
+    "announcements": "Annonces",
     "about": "L'Institution",
-    "programmes": "Programmes",
     "events": "Événements",
     "gallery": "Galerie",
     "team": "L'Équipe",
     "contact": "Contact",
     "login": "Se connecter",
     "dashboard": "Dashboard",
+    "research": "Domaine de recherche",
     "ticker": {
       "item1": "Nouvelle publication sur la justice climatique en RDC",
       "item2": "Clinique mobile prévue à Kalehe le 25 mars",
@@ -188,15 +188,6 @@
         "ulpgl.webp"
       ]
     },
-    "cta": {
-      "badge": "Rejoignez le Mouvement",
-      "title": "Construire l'avenir par la <span>Science</span>.",
-      "partner": "Devenir Partenaire",
-      "about": "Le Projet CREDDA",
-      "mission": "Lire notre Mission",
-      "collaboration": "Collaborer avec les meilleurs au monde",
-      "portal": "Portail Chercheur"
-    },
     "Gallery": {
       "badge": "MÉDIATHÈQUE",
       "title": "Notre",
@@ -274,6 +265,13 @@
           "description": "Lancement de la plateforme unifiée, digitalisation complète des services et vision internationale."
         }
       }
+    },
+    "cta": {
+      "badge": "REJOIGNEZ-NOUS",
+      "title": "Bâtissons le <span>Futur</span> Ensemble.",
+      "collaboration": "Explorez nos opportunités de collaboration académique et institutionnelle.",
+      "partner": "Devenir Partenaire",
+      "about": "Découvrir le CREDDA"
     }
   },
   "metadata": {
@@ -1314,6 +1312,71 @@
     "cta": {
       "title": "Rejoignez une nouvelle génération de chercheurs et d’acteurs du changement.",
       "button": "Devenir Partenaire"
+    }
+  },
+  "ProgrammesPage": {
+    "header": {
+      "badge": "Expertise & Action",
+      "title": "Domaines d'Intervention",
+      "description": "La Clinique de Droit Environnemental (CDE) du CREDDA déploie ses compétences à travers sept axes stratégiques pour une justice sociale et durable."
+    }
+  },
+  "EventsPage": {
+    "header": {
+      "badge": "Agenda Scientifique",
+      "title": "Événements & Conférences",
+      "description": "Participez à nos symposiums, ateliers cliniques et présentations de rapports annuels pour rester au cœur de l'innovation juridique."
+    },
+    "upcoming": "À Venir",
+    "archives": "Archives",
+    "no_events": "Aucun événement prévu prochainement"
+  },
+  "GlobalCTA": {
+    "badge": "Rejoignez le Mouvement",
+    "title": "Construire l'avenir par la <span>Science</span>.",
+    "partner": "Devenir Partenaire",
+    "about": "Le Projet CREDDA",
+    "mission": "Lire notre Mission",
+    "collaboration": "Collaborer avec les meilleurs au monde",
+    "portal": "Portail Chercheur"
+  },
+  "MediaCenter": {
+    "hero": {
+      "badge": "Multimédia",
+      "title": "Galerie & Événements",
+      "subtitle": "Un voyage visuel à travers l'impact du CREDDA en RDC et à l'international.",
+      "stats": {
+        "events": "Événements Documentés",
+        "media": "Contenus Multimédias",
+        "videos": "Reportages Vidéo"
+      }
+    },
+    "filters": {
+      "all": "Tout",
+      "events": "Événements",
+      "videos": "Vidéos",
+      "gallery": "Galerie"
+    },
+    "explorer": {
+      "itemsPerPage": "Afficher :",
+      "back": "Retour à la Galerie",
+      "events_title": "Événements Académiques",
+      "videos_title": "Reportages Vidéo",
+      "gallery_title": "Galerie Institutionnelle",
+      "narrative_events": "Plus de {count} événements académiques et activités scientifiques documentés.",
+      "narrative_videos": "{count} reportages et documentaires sur l'impact du CREDDA.",
+      "narrative_gallery": "Une archive visuelle vivante des activités du CREDDA."
+    },
+    "eventCard": {
+      "viewMore": "Voir les détails",
+      "location": "Lieu",
+      "organizer": "Organisé par"
+    },
+    "modal": {
+      "next": "Suivant",
+      "prev": "Précédent",
+      "close": "Fermer",
+      "info": "Détails de l'image"
     }
   }
 }

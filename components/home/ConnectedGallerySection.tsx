@@ -106,7 +106,7 @@ export default function ConnectedGallerySection({ images, totalCount = 0 }: { im
 
                         {/* CTA Button */}
                         <Link 
-                            href="/gallery"
+                            href="/media-center"
                             className="w-full md:w-auto px-12 py-6 bg-white text-[#0A192F] text-xs font-black uppercase tracking-widest hover:bg-primary hover:text-white transition-all duration-500 rounded-2xl flex items-center justify-center gap-4 group shadow-xl hover:-translate-y-1"
                         >
                             <span>{t('Gallery.cta_view_all') || "Aller voir la galerie"}</span>

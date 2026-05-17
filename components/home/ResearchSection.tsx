@@ -52,7 +52,7 @@ export default function ResearchSection({ articles = [] }: { articles: any[] }) 
 
                     <GSAPReveal direction="right">
                         <Link
-                            href="/research"
+                            href="/publications"
                             className="group flex items-center gap-8 text-[10px] font-black uppercase tracking-[0.4em] text-foreground hover:text-primary transition-all"
                         >
                             <span className="border-b border-border group-hover:border-primary pb-3 transition-all">
@@ -116,7 +116,7 @@ export default function ResearchSection({ articles = [] }: { articles: any[] }) 
                                     </div>
                                     
                                     <Link
-                                        href={`/research/${article?.slug || article?.id || '#'}`}
+                                        href={`/publications/${article?.slug || article?.id || '#'}`}
                                         className="relative overflow-hidden group/link px-4 py-2"
                                     >
                                         <span className="text-[10px] font-black uppercase tracking-tighter text-foreground block transition-transform duration-500 group-hover/link:-translate-y-full">

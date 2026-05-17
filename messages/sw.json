@@ -9,17 +9,17 @@
   },
   "Navigation": {
     "home": "Nyumbani",
-    "research": "Utafiti",
-    "clinical": "Kliniki ya Sheria",
     "publications": "Machapisho",
+    "mediaCenter": "Media Center",
+    "announcements": "Matangazo",
     "about": "Taasisi",
-    "programmes": "Mipango",
     "events": "Matukio",
     "gallery": "Nyumba ya Sanaa",
     "team": "Timu",
     "contact": "Wasiliana",
     "login": "Ingia",
     "dashboard": "Dashboard",
+    "research": "Utafiti",
     "ticker": {
       "item1": "Machapisho mpya juu ya haki ya hali ya hewa katika RDC",
       "item2": "Kliniki inayotembea imepangwa Kalehe mnamo Machi 25",
@@ -194,15 +194,6 @@
         "ulpgl.webp"
       ]
     },
-    "cta": {
-      "badge": "Jiunge na Harakati",
-      "title": "Kujenga mustakabali kupitia <span>Sayansi</span>.",
-      "partner": "Kuwa Mshirika",
-      "about": "Mradi wa CREDDA",
-      "mission": "Soma Mission yetu",
-      "collaboration": "Shirikiana na walio bora duniani",
-      "portal": "Portal ya Mtafiti"
-    },
     "Gallery": {
       "badge": "KATIKA PICHA",
       "title": "Nyumba ya",
@@ -280,6 +271,13 @@
           "description": "Uzinduzi wa jukwaa moja, huduma kamilifu za kidijitali na maono ya kimataifa."
         }
       }
+    },
+    "cta": {
+      "badge": "JIUNGE NASI",
+      "title": "Wacha Kujenga <span>Mustakabali</span> Pamoja.",
+      "collaboration": "Gundua fursa zetu za ushirikiano wa kitaaluma na kitaasisi.",
+      "partner": "Kuwa Mshirika",
+      "about": "Gundua CREDDA"
     }
   },
   "metadata": {
@@ -339,93 +337,138 @@
     "contact": "Wasiliana",
     "help": "Unahitaji msaada?"
   },
-  "about": {
-    "since": "Tangu",
-    "watch_video": "Angalia filamu ya taasisi",
+  "AboutPage": {
     "hero": {
-      "badge": "Ilianzishwa mnamo 2008 • Ubora wa Kiakademia",
+      "badge": "ILIANZISHWA MNAMO 2008 • UBORA WA KIAKADEMIA",
       "title": "Fikiria <italic>Sheria</italic>, Jenga Mustakabali.",
-      "desc": "CREDDA ni kitovu cha utafiti wa kisheria katika RDC, ikiunganisha ukali wa kisayansi na ahadi ya kijamii."
+      "subtitle": "CREDDA ni kitovu cha utafiti wa kisheria katika RDC, ikiunganisha ukali wa kisayansi na ahadi ya kijamii.",
+      "breadcrumb": "Taasisi > Kuhusu"
     },
-    "who_we_are": "Sisi ni nani?",
-    "mission_title": "Taasisi ya kiakademia iliyojitolea kwa",
-    "mission_italic": "Maendeleo ya Kijamii",
-    "mission_description": "CREDDA sio tu think tank. Ni mkono wa kisayansi wa ULPGL ambao unatekeleza kiungo kati ya nadharia za sheria na hali halisi nyanjani nchini RDC.",
-    "achievements": [
-      "Uzalishaji wa kisayansi uliothibitishwa kimataifa",
-      "Msaada wa kisheria wa bure kwa walio hatarini",
-      "Uchunguzi wa demokrasia katika Maziwa Makuu",
-      "Utaalamu wa kipekee katika ardhi na mazingira"
-    ],
-    "years_excellence": "Miaka ya Ubora",
-    "contact_us": "Wasiliana nasi",
-    "compass": "Dira Yetu",
-    "mission_vision_title": "Mission iliyo wazi kwa Afrika yenye ujasiri.",
+    "story": {
+      "badge": "Sisi ni nani?",
+      "title": "Kuhadithia Ubora wa Afrika kupitia Utafiti.",
+      "p1": "CREDDA ni nguzo ya akili ya kiakademia nchini RDC. Inashirikiana na ULPGL-Goma, tunabadilisha utafiti kuwa hatua ya kijamii ya moja kwa moja.",
+      "p2": "Ikiwa kimkakati katika mkoa wa Maziwa Makuu, tunatoa sauti huru ya kisayansi juu ya masuala ya haki na maendeleo endelevu.",
+      "image_label": "Mwili wa Kiakademia na Ubora",
+      "highlights": {
+        "title": "Athari Zetu katika Takwimu",
+        "items": [
+          "Uzalishaji wa kisayansi uliothibitishwa kimataifa",
+          "Msaada wa kisheria wa bure kwa walio hatarini",
+          "Uchunguzi wa demokrasia katika Maziwa Makuu",
+          "Utaalamu wa kipekee katika ardhi na mazingira"
+        ]
+      }
+    },
     "mission": {
-      "badge": "Ilani Yetu",
-      "title": "Vision <italic>ya mabadiliko</italic> ya sheria.",
-      "desc": "Zaidi ya maandiko, tunaamini katika sheria hai. Sheria ambayo inalinda mifumo ya ikolojia ya Bonde la Kongo na kuhakikisha utu wa watu wa asili. CREDDA sio tu maabara, ni ngao ya kisheria.",
-      "cta": "Gundua machapisho yetu"
+      "badge": "Mission Yetu",
+      "title": "Athari iliyozikwa katika sayansi.",
+      "desc": "Tunapitisha utaalamu wetu kupitia nguzo tatu za kimsingi ili kubadilisha changamoto kuwa fursa.",
+      "cards": {
+        "research": {
+          "title": "Utafiti wa Hali ya Juu",
+          "desc": "Kuzalisha maarifa asilia na madhubuti ili kuelekeza sera za umma."
+        },
+        "innovation": {
+          "title": "Ubunifu wa Kijamii",
+          "desc": "Kubuni suluhisho za kisheria na kijamii zinazoendana na mabadiliko ya bara."
+        },
+        "impact": {
+          "title": "Athari za Jamii",
+          "desc": "Kuhakikisha daraja kati ya akademia na jamii kwa ajili ya haki inayopatikana."
+        }
+      }
     },
-    "mission_text": "Kuzalisha utafiti wa hali ya juu ili kuelekeza sera za umma na kuimarisha utawala wa sheria nchini RDC.",
-    "vision": "Vision Yetu",
-    "vision_text": "Kuwa kitovu kikuu cha taaluma mbalimbali cha mabadiliko ya migogoro katika Afrika ya Kati.",
-    "values": "Maadili Yetu",
-    "values_text": "Uaminifu wa kiakademia, kutoegemea upande wa kisiasa na kujitolea kwa haki za jamii zilizo hatarini.",
-    "values_list": {
-      "excellence": "Ubora",
-      "neutrality": "Kutoegemea Upande",
-      "engagement": "Kujitolea",
-      "innovation": "Ubunifu"
-    },
-    "location": "Mahali",
-    "find_us": "Tupate Goma.",
-    "location_description": "Makao makuu ya CREDDA yapo katika Kampasi ya Salomon ya ULPGL, mazingira bora ya kiakademia katikati ya jiji la Goma.",
-    "address": "Anwani ya Kimwili",
-    "full_address": [
-      "Chuo Kikuu Huria cha Nchi za Maziwa Makuu (ULPGL),",
-      "Kampasi ya Salomon, Avenue de la Corniche,",
-      "Quartier Himbi, Goma, RDC."
-    ],
-    "stats": {
-      "y": "Miaka ya utafiti",
-      "p": "Makala yaliyochapishwa",
-      "g": "Ushirikiano wa kimataifa",
-      "l": "Kujitolea kwa ndani"
-    },
-    "cta_title": "Uko tayari kushirikiana kwa ajili ya mabadiliko?",
-    "become_partner": "Kuwa Mshirika",
-    "meet_team": "Timu Yetu",
-    "quote": "Sheria haipaswi tu kusemwa, lazima iishi kwa huduma ya haki ya hali ya hewa and kijamii.",
-    "pillars": {
-      "title": "Nguzo za Kisheria",
-      "desc": "Hatua zetu ziko katika kufuata madhubuti mifumo ya kisheria ya kitaifa na kimataifa.",
-      "items": [
+    "history": {
+      "badge": "Safari Yetu",
+      "title": "Safari ya ukamilifu na kujitolea.",
+      "timeline": [
         {
-          "t": "Katiba ya RDC",
-          "desc": "Rejea ya kimsingi ya uchambuzi wetu wa kisheria na kliniki."
+          "year": "2008",
+          "title": "Kuanzishwa kwa Kituo",
+          "desc": "Msingi wa Kituo cha Utafiti na Masomo ya Maendeleo (CREDDA) kwa maono ya kukuza utafiti wa kitaaluma barani Afrika."
         },
         {
-          "t": "Sheria ya 22/030 (Watu wa Asili)",
-          "desc": "Rejea ya kimsingi ya uchambuzi wetu wa kisheria na kliniki."
+          "year": "2012",
+          "title": "Muundo wa Kiakademia",
+          "desc": "Kuimarisha nyanja za utafiti na kuanzisha programu za kwanza za kisayansi zilizopangwa."
         },
         {
-          "t": "Mkataba wa Afrika",
-          "desc": "Rejea ya kimsingi ya uchambuzi wetu wa kisheria na kliniki."
+          "year": "2016",
+          "title": "Upanuzi wa Shughuli",
+          "desc": "Upanuzi wa maeneo ya utafiti na ushirikiano wa miradi ya taaluma mbalimbali na washirika wa kikanda."
         },
         {
-          "t": "Mkataba wa Bioanuwai",
-          "desc": "Rejea ya kimsingi ya uchambuzi wetu wa kisheria na kliniki."
+          "year": "2020",
+          "title": "Digitalization ya Kituo",
+          "desc": "Utangulizi wa zana za kidijitali katika utafiti na uhifadhi kamili wa kidijitali wa machapisho."
         },
         {
-          "t": "Azimio la UN",
-          "desc": "Rejea ya kimsingi ya uchambuzi wetu wa kisheria na kliniki."
+          "year": "2023",
+          "title": "Mabadiliko ya Kisasa",
+          "desc": "Uboreshaji wa miundombinu ya utafiti na upangaji kuelekea jukwaa la kidijitali."
         },
         {
-          "t": "Sheria ya Mazingira",
-          "desc": "Rejea ya kimsingi ya uchambuzi wetu wa kisheria na kliniki."
+          "year": "2026",
+          "title": "CREDDA ULPGL",
+          "desc": "Uzinduzi wa jukwaa lililounganishwa, digitalization kamili ya huduma na maono ya kimataifa."
         }
       ]
+    },
+    "values": {
+      "badge": "Maadili Yetu",
+      "title": "Kanuni zinazoongoza hatua zetu.",
+      "items": {
+        "excellence": {
+          "title": "Ubora",
+          "desc": "Ukamilifu wa kisayansi kama kiwango cha juu."
+        },
+        "ethics": {
+          "title": "Maadili",
+          "desc": "Uadilifu kamili katika utafiti wetu wote."
+        },
+        "independence": {
+          "title": "Uhuru",
+          "desc": "Uhuru wa kitaaluma katika huduma ya ukweli."
+        },
+        "impact": {
+          "title": "Athari",
+          "desc": "Sayansi yenye manufaa kwa mabadiliko ya kijamii."
+        },
+        "vision": {
+          "title": "Maono ya Afrika",
+          "desc": "Kuinua akili ya bara hili."
+        }
+      }
+    },
+    "impact": {
+      "title": "Mwangaza usio na mipaka.",
+      "stats": [
+        {
+          "value": "16",
+          "label": "Miaka ya Utaalamu"
+        },
+        {
+          "value": "200+",
+          "label": "Machapisho Yaliyothibitishwa"
+        },
+        {
+          "value": "15",
+          "label": "Washirika wa Kimataifa"
+        },
+        {
+          "value": "1200+",
+          "label": "Kesi za Kliniki"
+        }
+      ]
+    },
+    "vision": {
+      "title": "Kujenga Akili ya Kisasa ya Afrika.",
+      "text": "CREDDA haitazami tu mabadiliko ya ulimwengu; tunatayarisha akili kuyatarajia. Maono yetu ni bara la Afrika linaloweza kuzalisha sayansi yake yenyewe kutatua changamoto zake yenyewe, katika mazungumzo ya kudumu na ulimwengu."
+    },
+    "cta": {
+      "title": "Jiunge na kizazi kipya cha watafiti na watendaji wa mabadiliko.",
+      "button": "Kuwa Mshirika"
     }
   },
   "ResearchPage": {
@@ -1308,87 +1351,69 @@
       "submit": "Tengeneza Ufikiaji"
     }
   },
-  "AboutPage": {
+  "ProgrammesPage": {
+    "header": {
+      "badge": "Utaalamu na Vitendo",
+      "title": "Maeneo ya Kimkakati",
+      "description": "Kliniki ya Sheria ya Mazingira (CDE) ya CREDDA inatumia utaalamu wake kupitia shoka saba za kimkakati kwa ajili ya haki ya kijamii na endelevu."
+    }
+  },
+  "EventsPage": {
+    "header": {
+      "badge": "Ajenda ya Kisayansi",
+      "title": "Matukio na Mikutano",
+      "description": "Shiriki katika kongamano zetu, warsha za kliniki na wasilisho za ripoti za kila mwaka ili kusalia katika moyo wa uvumbuzi wa kisheria."
+    },
+    "upcoming": "Yanayokuja",
+    "archives": "Kumbukumbu",
+    "no_events": "Hakuna matukio yanayokuja yaliyopangwa"
+  },
+  "GlobalCTA": {
+    "badge": "Jiunge na Harakati",
+    "title": "Kujenga mustakabali kupitia <span>Sayansi</span>.",
+    "partner": "Kuwa Mshirika",
+    "about": "Mradi wa CREDDA",
+    "mission": "Soma Mission yetu",
+    "collaboration": "Shirikiana na walio bora duniani",
+    "portal": "Lango la Mtafiti"
+  },
+  "MediaCenter": {
     "hero": {
-      "badge": "ILIANZISHWA MNAMO 2008 • UBORA WA KIAKADEMIA",
-      "title": "Fikiria <italic>Sheria</italic>, Jenga Mustakabali.",
-      "subtitle": "CREDDA ni kitovu cha utafiti wa kisheria katika RDC, ikiunganisha ukali wa kisayansi na ahadi ya kijamii.",
-      "breadcrumb": "Taasisi > Kuhusu"
-    },
-    "story": {
-      "badge": "Sisi ni nani?",
-      "title": "Kuhadithia Ubora wa Afrika kupitia Utafiti.",
-      "p1": "CREDDA ni nguzo ya akili ya kiakademia nchini RDC. Inashirikiana na ULPGL-Goma, tunabadilisha utafiti kuwa hatua ya kijamii ya moja kwa moja.",
-      "p2": "Ikiwa kimkakati katika mkoa wa Maziwa Makuu, tunatoa sauti huru ya kisayansi juu ya masuala ya haki na maendeleo endelevu.",
-      "image_label": "Mwili wa Kiakademia na Ubora",
-      "highlights": {
-        "title": "Athari Zetu katika Takwimu",
-        "items": [
-          "Uzalishaji wa kisayansi uliothibitishwa kimataifa",
-          "Msaada wa kisheria wa bure kwa walio hatarini",
-          "Uchunguzi wa demokrasia katika Maziwa Makuu",
-          "Utaalamu wa kipekee katika ardhi na mazingira"
-        ]
+      "badge": "Multimédia",
+      "title": "Galerie & Matukio",
+      "subtitle": "Safari ya picha kupitia athari za CREDDA katika RDC na kimataifa.",
+      "stats": {
+        "events": "Matukio Yaliyoandikwa",
+        "media": "Maudhui ya Multimédia",
+        "videos": "Ripoti za Video"
       }
     },
-    "mission": {
-      "badge": "Mission Yetu",
-      "title": "Athari iliyozikwa katika sayansi.",
-      "desc": "Tunapitisha utaalamu wetu kupitia nguzo tatu za kimsingi ili kubadilisha changamoto kuwa fursa.",
-      "cards": {
-        "research": {
-          "title": "Utafiti wa Hali ya Juu",
-          "desc": "Kuzalisha maarifa asilia na madhubuti ili kuelekeza sera za umma."
-        },
-        "innovation": {
-          "title": "Ubunifu wa Kijamii",
-          "desc": "Kubuni suluhisho za kisheria na kijamii zinazoendana na mabadiliko ya bara."
-        },
-        "impact": {
-          "title": "Athari za Jamii",
-          "desc": "Kuhakikisha daraja kati ya akademia na jamii kwa ajili ya haki inayopatikana."
-        }
-      }
+    "filters": {
+      "all": "Vyote",
+      "events": "Matukio",
+      "videos": "Video",
+      "gallery": "Galerie"
     },
-    "history": {
-      "badge": "Safari Yetu",
-      "title": "Safari ya ukamilifu na kujitolea.",
-      "timeline": [
-        { "year": "2008", "title": "Kuanzishwa kwa Kituo", "desc": "Msingi wa Kituo cha Utafiti na Masomo ya Maendeleo (CREDDA) kwa maono ya kukuza utafiti wa kitaaluma barani Afrika." },
-        { "year": "2012", "title": "Muundo wa Kiakademia", "desc": "Kuimarisha nyanja za utafiti na kuanzisha programu za kwanza za kisayansi zilizopangwa." },
-        { "year": "2016", "title": "Upanuzi wa Shughuli", "desc": "Upanuzi wa maeneo ya utafiti na ushirikiano wa miradi ya taaluma mbalimbali na washirika wa kikanda." },
-        { "year": "2020", "title": "Digitalization ya Kituo", "desc": "Utangulizi wa zana za kidijitali katika utafiti na uhifadhi kamili wa kidijitali wa machapisho." },
-        { "year": "2023", "title": "Mabadiliko ya Kisasa", "desc": "Uboreshaji wa miundombinu ya utafiti na upangaji kuelekea jukwaa la kidijitali." },
-        { "year": "2026", "title": "CREDDA ULPGL", "desc": "Uzinduzi wa jukwaa lililounganishwa, digitalization kamili ya huduma na maono ya kimataifa." }
-      ]
+    "explorer": {
+      "itemsPerPage": "Onyesha:",
+      "back": "Rudi kwenye Galerie",
+      "events_title": "Matukio ya Kitaaluma",
+      "videos_title": "Ripoti za Video",
+      "gallery_title": "Galerie ya Kitaasisi",
+      "narrative_events": "Zaidi ya {count} matukio ya kitaaluma na shughuli za kisayansi zilizoandikwa.",
+      "narrative_videos": "{count} ripoti na makala kuhusu athari za CREDDA.",
+      "narrative_gallery": "Kumbukumbu ya picha ya shughuli za CREDDA."
     },
-    "values": {
-      "badge": "Maadili Yetu",
-      "title": "Kanuni zinazoongoza hatua zetu.",
-      "items": {
-        "excellence": { "title": "Ubora", "desc": "Ukamilifu wa kisayansi kama kiwango cha juu." },
-        "ethics": { "title": "Maadili", "desc": "Uadilifu kamili katika utafiti wetu wote." },
-        "independence": { "title": "Uhuru", "desc": "Uhuru wa kitaaluma katika huduma ya ukweli." },
-        "impact": { "title": "Athari", "desc": "Sayansi yenye manufaa kwa mabadiliko ya kijamii." },
-        "vision": { "title": "Maono ya Afrika", "desc": "Kuinua akili ya bara hili." }
-      }
+    "eventCard": {
+      "viewMore": "Angalia maelezo",
+      "location": "Mahali",
+      "organizer": "Iliyoandaliwa na"
     },
-    "impact": {
-      "title": "Mwangaza usio na mipaka.",
-      "stats": [
-        { "value": "16", "label": "Miaka ya Utaalamu" },
-        { "value": "200+", "label": "Machapisho Yaliyothibitishwa" },
-        { "value": "15", "label": "Washirika wa Kimataifa" },
-        { "value": "1200+", "label": "Kesi za Kliniki" }
-      ]
-    },
-    "vision": {
-      "title": "Kujenga Akili ya Kisasa ya Afrika.",
-      "text": "CREDDA haitazami tu mabadiliko ya ulimwengu; tunatayarisha akili kuyatarajia. Maono yetu ni bara la Afrika linaloweza kuzalisha sayansi yake yenyewe kutatua changamoto zake yenyewe, katika mazungumzo ya kudumu na ulimwengu."
-    },
-    "cta": {
-      "title": "Jiunge na kizazi kipya cha watafiti na watendaji wa mabadiliko.",
-      "button": "Kuwa Mshirika"
+    "modal": {
+      "next": "Inayofuata",
+      "prev": "Iliyopita",
+      "close": "Funga",
+      "info": "Maelezo ya picha"
     }
   }
 }
