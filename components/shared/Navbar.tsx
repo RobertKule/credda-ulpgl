@@ -15,6 +15,7 @@ export default function Navbar() {
   const t = useTranslations("Navigation");
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const { data: session } = useSession();
   const { theme, toggleTheme } = useTheme();
@@ -45,13 +46,21 @@ export default function Navbar() {
     { href: "/contact", label: t("contact", { fallback: "Contact" }) },
   ];
 
+  const languages = [
+    { code: "fr", label: "Français", flag: "🇫🇷" },
+    { code: "en", label: "English", flag: "🇬🇧" },
+    { code: "sw", label: "Kiswahili", flag: "🇹🇿" },
+  ];
+
+  const currentLang = languages.find(l => l.code === locale) || languages[0];
+
   return (
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${
           isScrolled
             ? "top-4 lg:top-6 px-4 md:px-10 pointer-events-none"
-            : "top-0 px-0 pointer-events-auto bg-transparent border-none"
+            : "top-0 px-0 pointer-events-auto bg-background/95 backdrop-blur-xl border-b border-border/40"
         }`}
       >
         <div 
@@ -130,32 +139,57 @@ export default function Navbar() {
 
           {/* ACTIONS */}
           <div className="hidden lg:flex items-center gap-4">
-            {/* Lang & Theme Group */}
-            <div className={`flex items-center gap-2 p-1 rounded-full border border-border/20 transition-all duration-500 ${isScrolled ? "bg-muted/40" : "bg-white/5"}`}>
-                <div className="flex items-center gap-0.5">
-                    {["fr", "en"].map((l) => (
-                        <Link
-                            key={l}
-                            href={pathname}
-                            locale={l}
-                            className={`text-[9.5px] font-black uppercase w-7 h-7 flex items-center justify-center rounded-full transition-all ${
-                                locale === l 
-                                ? "bg-primary text-white shadow-sm" 
-                                : "text-muted-foreground hover:text-foreground"
-                            }`}
-                        >
-                            {l}
-                        </Link>
-                    ))}
-                </div>
-                <div className="w-[1px] h-4 bg-border/30 mx-1" />
-                <button
-                    onClick={toggleTheme}
-                    className="w-7 h-7 flex items-center justify-center rounded-full transition-colors text-muted-foreground hover:text-primary"
-                >
-                    {theme === "dark" ? <Sun size={12} /> : <Moon size={12} />}
+            {/* Lang Dropdown */}
+            <div 
+                className="relative"
+                onMouseEnter={() => setIsLangOpen(true)}
+                onMouseLeave={() => setIsLangOpen(false)}
+            >
+                <button className={`flex items-center gap-2 px-3 py-1.5 rounded-full border border-border/20 transition-all duration-500 font-black text-[10px] uppercase ${isScrolled ? "bg-muted/40" : "bg-white/5"}`}>
+                    <span className="text-base leading-none">{currentLang.flag}</span>
+                    <span className="text-foreground/80">{currentLang.code}</span>
+                    <ChevronDown size={12} className={`transition-transform duration-300 ${isLangOpen ? 'rotate-180' : ''}`} />
                 </button>
+
+                <AnimatePresence>
+                    {isLangOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-full right-0 pt-4 w-40"
+                        >
+                            <div className="bg-popover/90 dark:bg-card/95 backdrop-blur-3xl rounded-2xl border border-border/50 shadow-2xl p-2 flex flex-col gap-1">
+                                {languages.map((l) => (
+                                    <Link
+                                        key={l.code}
+                                        href={pathname}
+                                        locale={l.code}
+                                        className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-[11px] font-bold transition-all ${
+                                            locale === l.code 
+                                            ? "bg-primary text-white" 
+                                            : "text-foreground/70 hover:bg-primary/5 hover:text-primary"
+                                        }`}
+                                    >
+                                        <span className="text-lg leading-none">{l.flag}</span>
+                                        <span>{l.label}</span>
+                                    </Link>
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
+
+            <div className="w-[1px] h-4 bg-border/20 mx-1" />
+
+            <button
+                onClick={toggleTheme}
+                className="w-8 h-8 flex items-center justify-center rounded-full transition-colors text-muted-foreground hover:text-primary bg-muted/40 border border-border/10"
+            >
+                {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
+            </button>
 
             {/* Auth Action */}
             <div className="flex items-center gap-2">
@@ -243,17 +277,18 @@ export default function Navbar() {
                   </button>
 
                   {/* Lang Switch */}
-                  <div className="flex gap-1 p-1 bg-card border border-border rounded-full">
-                    {["fr", "en"].map((l) => (
+                  <div className="flex gap-1.5 p-1 bg-card border border-border rounded-full">
+                    {languages.map((l) => (
                       <Link
-                        key={l}
+                        key={l.code}
                         href={pathname}
-                        locale={l}
-                        className={`w-10 h-10 flex items-center justify-center rounded-full text-xs font-black uppercase transition-all ${
-                          locale === l ? "bg-primary text-white shadow-md" : "text-muted-foreground"
+                        locale={l.code}
+                        className={`w-10 h-10 flex items-center justify-center rounded-full transition-all ${
+                          locale === l.code ? "bg-primary text-white shadow-md scale-110" : "text-muted-foreground hover:bg-muted"
                         }`}
+                        title={l.label}
                       >
-                        {l}
+                        <span className="text-lg">{l.flag}</span>
                       </Link>
                     ))}
                   </div>

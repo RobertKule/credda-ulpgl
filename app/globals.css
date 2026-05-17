@@ -103,7 +103,7 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-sans antialiased selection:bg-primary selection:text-primary-foreground;
+    @apply bg-background text-foreground font-sans antialiased selection:bg-primary selection:text-primary-foreground transition-colors duration-500;
   }
   h1, h2, .font-serif {
     @apply font-serif;
