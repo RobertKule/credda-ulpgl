@@ -714,86 +714,79 @@
   },
   "ContactPage": {
     "header": {
-      "badge": "Ushauri wa Kitaasisi",
-      "title": "Tuzungumze juu ya <span>Mustakabali</span>.",
-      "description": "Utafiti wa kisayansi, utaalamu wa kliniki au ushirikiano wa kimkakati: sekretarieti yetu itakuelekeza kwa wataalamu wanaofaa."
+      "badge": "CREDDA · Mawasiliano ya Taasisi",
+      "title": "Wacha Tuanze <span>Mazungumzo</span>.",
+      "description": "CREDDA iko wazi kwa ushirikiano wa kitaaluma, mashauriano ya kisheria, ushirikiano wa kisayansi na mabadilishano ya taasisi. Tufanye majadiliano juu ya miradi yako."
     },
     "info": {
-      "title": "Hub ya Mawasiliano",
-      "description": "Ufikiaji wa moja kwa moja kwa idara za utafiti na kliniki ya kisheria ya ULPGL.",
-      "items": [
-        {
-          "title": "Kampasi ya Salomon",
-          "content": "Avenue de la Corniche, Himbi, Goma, RDC"
+      "title": "Taarifa za Haraka",
+      "items": {
+        "address": {
+          "title": "Anwani",
+          "value": "Campus Salomon, Avenue de la Corniche, Himbi, Goma"
         },
-        {
-          "title": "Email Rasmi",
-          "content": "contact@credda-ulpgl.org"
-        },
-        {
-          "title": "Laini ya Moja kwa Moja",
-          "content": "+243 812 345 678"
-        },
-        {
-          "title": "Masaa ya Kazi",
-          "content": "Jumatatu - Ijumaa : 08:30 - 16:30"
-        }
-      ],
-      "social": "Mitandao ya Kijamii"
-    },
-    "form": {
-      "title": "Wasilisha ombi la kisayansi",
-      "fields": {
-        "name": {
-          "label": "Utambulisho Kamili",
-          "placeholder": "Pr. / Dr. / Jina Kamili",
-          "required": "*"
+        "phone": {
+          "title": "Simu",
+          "value": "+243 812 345 678"
         },
         "email": {
-          "label": "Email ya Kitaasisi",
-          "placeholder": "anwani@taasisi.org",
-          "required": "*"
+          "title": "Barua pepe Rasmi",
+          "value": "contact@credda-ulpgl.org"
+        },
+        "hours": {
+          "title": "Saa za Kazi",
+          "value": "Jumatatu - Ijumaa: 08:30 - 16:30"
+        }
+      }
+    },
+    "form": {
+      "title": "Fomu ya Mawasiliano",
+      "secure": "PROTOKALI SALAMA",
+      "fields": {
+        "name": {
+          "label": "Jina Kamili",
+          "placeholder": "Pr. / Dr. / Jina"
+        },
+        "email": {
+          "label": "Barua pepe ya Taasisi",
+          "placeholder": "anwani@taasisi.org"
         },
         "subject": {
-          "label": "Suala la Mawasiliano",
-          "placeholder": "Mfano: Ombi la ushirikiano wa kisayansi au utaalamu wa kliniki",
-          "required": "*"
+          "label": "Mada",
+          "placeholder": "Mfano: Pendekezo la ushirikiano"
+        },
+        "requestType": {
+          "label": "Aina ya Ombi",
+          "placeholder": "Chagua...",
+          "options": {
+            "collaboration": "Ushirikiano",
+            "research": "Utafiti",
+            "clinic": "Kliniki ya Kisheria",
+            "publication": "Uchapishaji",
+            "event": "Tukio",
+            "other": "Nyingine"
+          }
         },
         "message": {
           "label": "Maelezo ya Ombi Lako",
-          "placeholder": "Elezea ujumbe wako kwa ajili ya sekretarieti ya CREDDA...",
-          "required": "*"
+          "placeholder": "Eleza uhitaji wako..."
         }
       },
-      "submit": "Tuma kwa sekretarieti",
+      "submit": "Tuma kwa CREDDA",
       "submitting": "Inatuma...",
-      "error": {
-        "invalid": "Jibu lisilo sahihi kutoka kwa seva",
-        "generic": "Hitilafu imetokea wakati wa kutuma ujumbe.",
-        "connection": "Hitilafu ya unganisho. Tafadhali jaribu tena baadaye."
-      },
       "success": {
-        "title": "Ombi Limehifadhiwa.",
-        "description": "Ujumbe wako umetumwa kwa mafanikio kwa <strong>Sekretarieti ya Kisayansi ya CREDDA-ULPGL</strong>. Utapokea uthibitisho kwa email baada ya kukaguliwa na wataalamu wetu.",
+        "title": "Ujumbe Umetumwa.",
+        "description": "Ombi lako limewasilishwa. Tutajibu haraka iwezekanavyo.",
         "button": "Ujumbe mpya"
       }
     },
     "map": {
-      "badge": "Mahali",
-      "title": "Kampasi ya Salomon",
-      "gps": "Kuratibu GPS",
-      "location": "Himbi, Goma",
-      "description": "Fuata Avenue de la Corniche hadi mlango mkuu wa Kampasi ya Salomon."
+      "title": "Tupate",
+      "description": "Kituo chetu kiko mjini Goma, kwenye Campus Salomon ya ULPGL, kando ya Ziwa Kivu."
     },
-    "faq": {
-      "security": {
-        "title": "Usalama wa Data",
-        "description": "Habari yako imesimbwa na kamwe haijashirikiwa."
-      },
-      "regional": {
-        "title": "Ufikiaji wa Kikanda",
-        "description": "Tunafanya kazi katika eneo lote la Maziwa Makuu."
-      }
+    "cta": {
+      "title": "Wacha tujenge utafiti ambao utabadilisha <span>jamii</span>.",
+      "button": "Andikia CREDDA"
     }
   },
   "LoginPage": {

@@ -574,86 +574,79 @@
   },
   "ContactPage": {
     "header": {
-      "badge": "Liaison Institutionnelle",
-      "title": "Parlons du <span>Futur</span>.",
-      "description": "Recherche scientifique, expertise clinique ou partenariat stratégique : notre secrétariat vous orientera vers les experts adéquats."
+      "badge": "CREDDA · Contact Institutionnel",
+      "title": "Entrons en <span>Conversation</span>.",
+      "description": "Le CREDDA est ouvert aux partenariats académiques, consultations juridiques, collaborations scientifiques et échanges institutionnels. Discutons de vos projets."
     },
     "info": {
-      "title": "Hub de Contact",
-      "description": "Accès direct aux départements de recherche et de clinique juridique de l'ULPGL.",
-      "items": [
-        {
-          "title": "Campus Salomon",
-          "content": "Avenue de la Corniche, Himbi, Goma, RDC"
+      "title": "Informations Rapides",
+      "items": {
+        "address": {
+          "title": "Adresse",
+          "value": "Campus Salomon, Avenue de la Corniche, Himbi, Goma"
         },
-        {
+        "phone": {
+          "title": "Téléphone",
+          "value": "+243 812 345 678"
+        },
+        "email": {
           "title": "Email Officiel",
-          "content": "contact@credda-ulpgl.org"
+          "value": "contact@credda-ulpgl.org"
         },
-        {
-          "title": "Ligne Directe",
-          "content": "+243 812 345 678"
-        },
-        {
+        "hours": {
           "title": "Heures d'Ouverture",
-          "content": "Lun - Ven : 08:30 - 16:30"
+          "value": "Lun - Ven : 08:30 - 16:30"
         }
-      ],
-      "social": "Réseaux Sociaux"
+      }
     },
     "form": {
-      "title": "Soumettre une requête scientifique",
+      "title": "Formulaire de Contact",
+      "secure": "PROTOCOLE SÉCURISÉ",
       "fields": {
         "name": {
-          "label": "Identité Complète",
-          "placeholder": "Pr. / Dr. / Nom complet",
-          "required": "*"
+          "label": "Nom Complet",
+          "placeholder": "Pr. / Dr. / Nom"
         },
         "email": {
           "label": "Email Institutionnel",
-          "placeholder": "adresse@institution.org",
-          "required": "*"
+          "placeholder": "adresse@institution.org"
         },
         "subject": {
           "label": "Objet du Contact",
-          "placeholder": "Ex: Requête de collaboration scientifique ou expertise clinique",
-          "required": "*"
+          "placeholder": "Ex: Proposition de partenariat"
+        },
+        "requestType": {
+          "label": "Type de demande",
+          "placeholder": "Sélectionnez...",
+          "options": {
+            "collaboration": "Collaboration",
+            "research": "Recherche",
+            "clinic": "Clinique Juridique",
+            "publication": "Publication",
+            "event": "Événement",
+            "other": "Autre"
+          }
         },
         "message": {
           "label": "Détails de votre Requête",
-          "placeholder": "Décrivez votre message à l'attention du secrétariat du CREDDA...",
-          "required": "*"
+          "placeholder": "Expliquez-nous votre besoin..."
         }
       },
-      "submit": "Transmettre au secrétariat",
+      "submit": "Envoyer au CREDDA",
       "submitting": "Envoi en cours...",
-      "error": {
-        "invalid": "Réponse invalide du serveur",
-        "generic": "Une erreur est survenue lors de l'envoi du message.",
-        "connection": "Erreur de connexion. Veuillez réessayer plus tard."
-      },
       "success": {
-        "title": "Requête Enregistrée.",
-        "description": "Votre message a été transmis avec succès au <strong>Secrétariat Scientifique du CREDDA-ULPGL</strong>. Vous recevrez une confirmation par email après examen par nos experts.",
+        "title": "Message Envoyé.",
+        "description": "Votre requête a été transmise. Nous vous répondrons dans les plus brefs délais.",
         "button": "Nouveau message"
       }
     },
     "map": {
-      "badge": "Localisation",
-      "title": "Campus Salomon",
-      "gps": "Coordonnées GPS",
-      "location": "Himbi, Goma",
-      "description": "Suivre l'Avenue de la Corniche jusqu'à l'entrée principale du Campus Salomon."
+      "title": "Nous Trouver",
+      "description": "Notre centre est situé au cœur de la ville de Goma, sur le Campus Salomon de l'ULPGL, au bord du Lac Kivu."
     },
-    "faq": {
-      "security": {
-        "title": "Sécurité des Données",
-        "description": "Vos informations sont cryptées et ne sont jamais partagées."
-      },
-      "regional": {
-        "title": "Portée Régionale",
-        "description": "Nous opérons sur toute la région des Grands Lacs."
-      }
+    "cta": {
+      "title": "Construisons une recherche qui transforme la <span>société</span>.",
+      "button": "Écrire au CREDDA"
     }
   },
   "LoginPage": {

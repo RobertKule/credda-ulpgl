@@ -716,86 +716,79 @@
   },
   "ContactPage": {
     "header": {
-      "badge": "Institutional Liaison",
-      "title": "Let's talk about the <span>Future</span>.",
-      "description": "Scientific research, clinical expertise or strategic partnership: our secretariat will direct you to the appropriate experts."
+      "badge": "CREDDA · Institutional Contact",
+      "title": "Let's Start a <span>Conversation</span>.",
+      "description": "CREDDA is open to academic partnerships, legal consultations, scientific collaborations, and institutional exchanges. Let's discuss your projects."
     },
     "info": {
-      "title": "Contact Hub",
-      "description": "Direct access to ULPGL's research and legal clinic departments.",
-      "items": [
-        {
-          "title": "Salomon Campus",
-          "content": "Avenue de la Corniche, Himbi, Goma, DRC"
+      "title": "Quick Information",
+      "items": {
+        "address": {
+          "title": "Address",
+          "value": "Salomon Campus, Avenue de la Corniche, Himbi, Goma"
         },
-        {
+        "phone": {
+          "title": "Phone",
+          "value": "+243 812 345 678"
+        },
+        "email": {
           "title": "Official Email",
-          "content": "contact@credda-ulpgl.org"
+          "value": "contact@credda-ulpgl.org"
         },
-        {
-          "title": "Direct Line",
-          "content": "+243 812 345 678"
-        },
-        {
+        "hours": {
           "title": "Opening Hours",
-          "content": "Mon - Fri: 08:30 - 16:30"
+          "value": "Mon - Fri: 08:30 - 16:30"
         }
-      ],
-      "social": "Social Networks"
+      }
     },
     "form": {
-      "title": "Submit a scientific request",
+      "title": "Contact Form",
+      "secure": "SECURE PROTOCOL",
       "fields": {
         "name": {
-          "label": "Full Identity",
-          "placeholder": "Pr. / Dr. / Full Name",
-          "required": "*"
+          "label": "Full Name",
+          "placeholder": "Pr. / Dr. / Name"
         },
         "email": {
           "label": "Institutional Email",
-          "placeholder": "address@institution.org",
-          "required": "*"
+          "placeholder": "address@institution.org"
         },
         "subject": {
-          "label": "Contact Subject",
-          "placeholder": "Ex: Scientific collaboration request or clinical expertise",
-          "required": "*"
+          "label": "Subject",
+          "placeholder": "Ex: Partnership Proposal"
+        },
+        "requestType": {
+          "label": "Request Type",
+          "placeholder": "Select...",
+          "options": {
+            "collaboration": "Collaboration",
+            "research": "Research",
+            "clinic": "Legal Clinic",
+            "publication": "Publication",
+            "event": "Event",
+            "other": "Other"
+          }
         },
         "message": {
           "label": "Details of your Request",
-          "placeholder": "Describe your message for the attention of the CREDDA secretariat...",
-          "required": "*"
+          "placeholder": "Explain your need..."
         }
       },
-      "submit": "Forward to secretariat",
+      "submit": "Send to CREDDA",
       "submitting": "Sending...",
-      "error": {
-        "invalid": "Invalid response from server",
-        "generic": "An error occurred while sending the message.",
-        "connection": "Connection error. Please try again later."
-      },
       "success": {
-        "title": "Request Registered.",
-        "description": "Your message has been successfully transmitted to the <strong>CREDDA-ULPGL Scientific Secretariat</strong>. You will receive an email confirmation after examination by our experts.",
+        "title": "Message Sent.",
+        "description": "Your request has been transmitted. We will respond as soon as possible.",
         "button": "New message"
       }
     },
     "map": {
-      "badge": "Location",
-      "title": "Salomon Campus",
-      "gps": "GPS Coordinates",
-      "location": "Himbi, Goma",
-      "description": "Follow Avenue de la Corniche to the main entrance of Salomon Campus."
+      "title": "Find Us",
+      "description": "Our center is located in the heart of Goma, on the Salomon Campus of ULPGL, by Lake Kivu."
     },
-    "faq": {
-      "security": {
-        "title": "Data Security",
-        "description": "Your information is encrypted and never shared."
-      },
-      "regional": {
-        "title": "Regional Scope",
-        "description": "We operate throughout the Great Lakes region."
-      }
+    "cta": {
+      "title": "Let's build research that transforms <span>society</span>.",
+      "button": "Write to CREDDA"
     }
   },
   "LoginPage": {
