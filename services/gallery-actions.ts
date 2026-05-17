@@ -2,17 +2,21 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { withSafeAction, ActionResponse } from "@/lib/safe-action";
+import { ApiResponse } from "@/types/api";
+import { withSafeAction } from "@/lib/safe-action";
+import { galleryImageSchema, updateGalleryImageSchema } from "@/schemas/gallery";
+import { GalleryImage } from "@prisma/client";
 
-export async function createGalleryImage(data: any): Promise<ActionResponse<any>> {
+export async function createGalleryImage(rawData: unknown): Promise<ApiResponse<GalleryImage>> {
   return withSafeAction("createGalleryImage", async () => {
+    const data = galleryImageSchema.parse(rawData);
     const { src, category, featured, translations } = data;
 
     const image = await db.galleryImage.create({
       data: {
         src,
         category,
-        featured: featured ?? false,
+        featured,
         order: 0,
         translations: {
           create: translations
@@ -26,8 +30,9 @@ export async function createGalleryImage(data: any): Promise<ActionResponse<any>
   }, "Erreur lors de l'ajout de l'image à la galerie");
 }
 
-export async function updateGalleryImage(data: any): Promise<ActionResponse<any>> {
+export async function updateGalleryImage(rawData: unknown): Promise<ApiResponse<GalleryImage>> {
   return withSafeAction("updateGalleryImage", async () => {
+    const data = updateGalleryImageSchema.parse(rawData);
     const { id, src, category, featured, translations } = data;
 
     const image = await db.galleryImage.update({
@@ -35,7 +40,7 @@ export async function updateGalleryImage(data: any): Promise<ActionResponse<any>
       data: {
         src,
         category,
-        featured: featured ?? false,
+        featured,
         translations: {
           deleteMany: {},
           create: translations
@@ -49,7 +54,7 @@ export async function updateGalleryImage(data: any): Promise<ActionResponse<any>
   }, "Erreur lors de la mise à jour de l'image");
 }
 
-export async function deleteGalleryImage(id: string): Promise<ActionResponse<any>> {
+export async function deleteGalleryImage(id: string): Promise<ApiResponse<{ id: string }>> {
   return withSafeAction("deleteGalleryImage", async () => {
     await db.galleryImage.delete({ where: { id } });
     revalidatePath("/[locale]/admin/gallery", "layout");

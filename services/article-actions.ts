@@ -3,19 +3,25 @@
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { Domain } from "@prisma/client";
-import { withSafeAction, ActionResponse } from "@/lib/safe-action";
+import { ApiResponse } from "@/types/api";
+import { withSafeAction } from "@/lib/safe-action";
+import { articleSchema, updateArticleSchema } from "@/schemas/article";
+import { ArticleWithTranslations } from "@/types/article";
+import { Article } from "@prisma/client";
 
-export async function updateArticle(data: any): Promise<ActionResponse<any>> {
+export async function updateArticle(rawData: unknown): Promise<ApiResponse<Article>> {
   return withSafeAction("updateArticle", async () => {
+    const data = updateArticleSchema.parse(rawData);
     const article = await db.article.update({
       where: { id: data.id },
       data: {
         slug: data.slug,
         domain: data.domain,
         categoryId: data.categoryId,
-        videoUrl: data.videoUrl,
-        mainImage: data.mainImage,
+        videoUrl: data.videoUrl || null,
+        mainImage: data.mainImage || null,
         published: data.published,
+        featured: data.featured,
         translations: {
           deleteMany: {},
           create: data.translations
@@ -28,9 +34,10 @@ export async function updateArticle(data: any): Promise<ActionResponse<any>> {
   }, "Erreur lors de la mise à jour de l'article");
 }
 
-export async function createArticle(formData: any): Promise<ActionResponse<any>> {
+export async function createArticle(rawData: unknown): Promise<ApiResponse<Article>> {
   return withSafeAction("createArticle", async () => {
-    const { slug, domain, categoryId, translations, mainImage, videoUrl, published } = formData;
+    const data = articleSchema.parse(rawData);
+    const { slug, domain, categoryId, translations, mainImage, videoUrl, published, featured } = data;
 
     const existing = await db.article.findUnique({ where: { slug } })
     if (existing) {
@@ -40,11 +47,12 @@ export async function createArticle(formData: any): Promise<ActionResponse<any>>
     const article = await db.article.create({
       data: {
         slug,
-        domain: domain as Domain,
+        domain,
         categoryId,
-        mainImage,
-        videoUrl,
-        published: published ?? true,
+        mainImage: mainImage || null,
+        videoUrl: videoUrl || null,
+        published: published,
+        featured: featured,
         translations: { create: translations }
       }
     });
@@ -55,7 +63,7 @@ export async function createArticle(formData: any): Promise<ActionResponse<any>>
   }, "Erreur lors de la création de l'article");
 }
 
-export async function deleteArticle(id: string): Promise<ActionResponse<any>> {
+export async function deleteArticle(id: string): Promise<ApiResponse<{ id: string }>> {
   return withSafeAction("deleteArticle", async () => {
     await db.article.delete({ where: { id } });
     revalidatePath("/[locale]/admin/articles", "layout");
@@ -64,7 +72,7 @@ export async function deleteArticle(id: string): Promise<ActionResponse<any>> {
   }, "Impossible de supprimer l'article");
 }
 
-export async function toggleArticleStatus(id: string, currentStatus: boolean): Promise<ActionResponse<any>> {
+export async function toggleArticleStatus(id: string, currentStatus: boolean): Promise<ApiResponse<Article>> {
   return withSafeAction("toggleArticleStatus", async () => {
     const article = await db.article.update({
       where: { id },

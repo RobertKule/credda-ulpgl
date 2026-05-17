@@ -3,130 +3,138 @@
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { sendApprovalNotification, sendRejectionNotification } from "./mail-service";
-import { AccountStatus } from "@prisma/client";
+import { ApiResponse } from "@/types/api";
+import { withSafeAction } from "@/lib/safe-action";
+import { createUserSchema, updateUserProfileSchema, updateUserPasswordSchema, userRoleSchema, accountStatusSchema } from "@/schemas/user";
+import { SafeUser, Role, AccountStatus } from "@/types/user";
 import { auth } from "@/lib/auth";
 import bcrypt from "bcryptjs";
 
-export async function createUser(formData: any) {
+export async function createUser(rawData: unknown): Promise<ApiResponse<SafeUser>> {
   const session = await auth();
-  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "SUPER_ADMIN")) {
-    return { success: false, error: "Unauthorized" };
+  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+    return { success: false, error: "Non autorisé" };
   }
-  try {
-    const hashedPassword = await bcrypt.hash(formData.password, 10);
-    await db.user.create({
+
+  return withSafeAction("createUser", async () => {
+    const data = createUserSchema.parse(rawData);
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    
+    const user = await db.user.create({
       data: {
-        name: formData.name,
-        email: formData.email,
+        name: data.name,
+        email: data.email,
         password: hashedPassword,
-        role: formData.role || "ADMIN",
-        status: "APPROVED" // Admin created users are approved by default
+        role: data.role,
+        status: AccountStatus.APPROVED // Admin created users are approved by default
       }
     });
+
     revalidatePath("/admin/users", "layout");
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: "Cet email est déjà utilisé" };
-  }
+    
+    const { password: _, ...safeUser } = user;
+    return safeUser;
+  }, "Cet email est déjà utilisé");
 }
 
-export async function deleteUser(id: string) {
+export async function deleteUser(id: string): Promise<ApiResponse<{ id: string }>> {
   const session = await auth();
-  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "SUPER_ADMIN")) {
-    return { success: false, error: "Unauthorized" };
+  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+    return { success: false, error: "Non autorisé" };
   }
-  try {
+
+  return withSafeAction("deleteUser", async () => {
     await db.user.delete({ where: { id } });
     revalidatePath("/admin/users", "layout");
-    return { success: true };
-  } catch (error) {
-    return { success: false };
-  }
+    return { id };
+  }, "Impossible de supprimer l'utilisateur");
 }
 
-export async function bulkDeleteUsers(ids: string[]) {
-  try {
-    await db.user.deleteMany({
+export async function bulkDeleteUsers(ids: string[]): Promise<ApiResponse<{ count: number }>> {
+  const session = await auth();
+  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+    return { success: false, error: "Non autorisé" };
+  }
+
+  return withSafeAction("bulkDeleteUsers", async () => {
+    const result = await db.user.deleteMany({
       where: { id: { in: ids } }
     });
     revalidatePath("/admin/users", "layout");
-    return { success: true };
-  } catch (error) {
-    return { success: false };
-  }
+    return { count: result.count };
+  }, "Erreur lors de la suppression groupée");
 }
 
-export async function updateUserStatus(id: string, status: AccountStatus) {
+export async function updateUserStatus(id: string, rawStatus: unknown): Promise<ApiResponse<SafeUser>> {
   const session = await auth();
-  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "SUPER_ADMIN")) {
-    return { success: false, error: "Unauthorized" };
+  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+    return { success: false, error: "Non autorisé" };
   }
-  try {
+
+  return withSafeAction("updateUserStatus", async () => {
+    const status = accountStatusSchema.parse(rawStatus);
     const user = await db.user.update({
       where: { id },
       data: { status }
     });
 
     // Send notification
-    if (status === "APPROVED") {
+    if (status === AccountStatus.APPROVED) {
       await sendApprovalNotification(user.email, user.name || "Utilisateur");
-    } else if (status === "REJECTED") {
+    } else if (status === AccountStatus.REJECTED) {
       await sendRejectionNotification(user.email, user.name || "Utilisateur");
     }
 
     revalidatePath("/admin/users", "layout");
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: "Failed to update status" };
-  }
+    const { password: _, ...safeUser } = user;
+    return safeUser;
+  }, "Erreur lors de la mise à jour du statut");
 }
 
-export async function updateUserRole(id: string, role: "SUPER_ADMIN" | "ADMIN" | "EDITOR" | "USER") {
+export async function updateUserRole(id: string, rawRole: unknown): Promise<ApiResponse<SafeUser>> {
   const session = await auth();
-  if (!session || ((session.user as any).role !== "ADMIN" && (session.user as any).role !== "SUPER_ADMIN")) {
-    return { success: false, error: "Unauthorized" };
+  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+    return { success: false, error: "Non autorisé" };
   }
-  try {
-    await db.user.update({
+
+  return withSafeAction("updateUserRole", async () => {
+    const role = userRoleSchema.parse(rawRole);
+    const user = await db.user.update({
       where: { id },
       data: { role }
     });
     revalidatePath("/admin/users", "layout");
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: "Failed to update role" };
-  }
+    const { password: _, ...safeUser } = user;
+    return safeUser;
+  }, "Erreur lors de la mise à jour du rôle");
 }
 
-export async function updateUserProfile(id: string, data: { name?: string; email?: string; phone?: string; bio?: string }) {
-  try {
+export async function updateUserProfile(id: string, rawData: unknown): Promise<ApiResponse<SafeUser>> {
+  return withSafeAction("updateUserProfile", async () => {
+    const data = updateUserProfileSchema.parse(rawData);
     const updatedUser = await db.user.update({
       where: { id },
       data
     });
     revalidatePath("/admin/profile");
-    return { success: true, data: updatedUser };
-  } catch (error) {
-    return { success: false, error: "Failed to update profile" };
-  }
+    const { password: _, ...safeUser } = updatedUser;
+    return safeUser;
+  }, "Erreur lors de la mise à jour du profil");
 }
 
-export async function updateUserPassword(id: string, currentPassword: string, newPassword: string) {
-  try {
+export async function updateUserPassword(id: string, rawData: unknown): Promise<ApiResponse<void>> {
+  return withSafeAction("updateUserPassword", async () => {
+    const { currentPassword, newPassword } = updateUserPasswordSchema.parse(rawData);
     const user = await db.user.findUnique({ where: { id } });
-    if (!user) return { success: false, error: "User not found" };
+    if (!user) throw new Error("Utilisateur non trouvé");
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
-    if (!isMatch) return { success: false, error: "Mot de passe actuel incorrect" };
+    if (!isMatch) throw new Error("Mot de passe actuel incorrect");
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     await db.user.update({
       where: { id },
       data: { password: hashedPassword }
     });
-
-    return { success: true };
-  } catch (error) {
-    return { success: false, error: "Erreur lors de la mise à jour du mot de passe" };
-  }
+  }, "Erreur lors de la mise à jour du mot de passe");
 }

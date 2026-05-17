@@ -1,11 +1,13 @@
-// services/program-actions.ts
 "use server"
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { withSafeAction, ActionResponse } from "@/lib/safe-action";
+import { ApiResponse } from "@/types/api";
+import { withSafeAction } from "@/lib/safe-action";
+import { programSchema, updateProgramSchema } from "@/schemas/program";
+import { Program } from "@prisma/client";
 
-export async function deleteProgram(id: string): Promise<ActionResponse<any>> {
+export async function deleteProgram(id: string): Promise<ApiResponse<{ id: string }>> {
   return withSafeAction("deleteProgram", async () => {
     await db.program.delete({ where: { id } });
     revalidatePath("/admin/programs", "layout");
@@ -14,14 +16,15 @@ export async function deleteProgram(id: string): Promise<ActionResponse<any>> {
   }, "Erreur lors de la suppression du programme");
 }
 
-export async function createProgram(data: any): Promise<ActionResponse<any>> {
+export async function createProgram(rawData: unknown): Promise<ApiResponse<Program>> {
   return withSafeAction("createProgram", async () => {
+    const data = programSchema.parse(rawData);
     const { slug, mainImage, published, featured, translations } = data;
     
     const program = await db.program.create({
       data: {
         slug,
-        mainImage,
+        mainImage: mainImage || null,
         published,
         featured,
         translations: {
@@ -36,15 +39,16 @@ export async function createProgram(data: any): Promise<ActionResponse<any>> {
   }, "Erreur lors de la création du programme");
 }
 
-export async function updateProgram(data: any): Promise<ActionResponse<any>> {
+export async function updateProgram(rawData: unknown): Promise<ApiResponse<Program>> {
   return withSafeAction("updateProgram", async () => {
+    const data = updateProgramSchema.parse(rawData);
     const { id, slug, mainImage, published, featured, translations } = data;
 
     const program = await db.program.update({
       where: { id },
       data: {
         slug,
-        mainImage,
+        mainImage: mainImage || null,
         published,
         featured,
         translations: {
@@ -60,7 +64,7 @@ export async function updateProgram(data: any): Promise<ActionResponse<any>> {
   }, "Erreur lors de la mise à jour du programme");
 }
 
-export async function toggleProgramPublished(id: string, published: boolean): Promise<ActionResponse<any>> {
+export async function toggleProgramPublished(id: string, published: boolean): Promise<ApiResponse<Program>> {
   return withSafeAction("toggleProgramPublished", async () => {
     return await db.program.update({
       where: { id },
@@ -69,7 +73,7 @@ export async function toggleProgramPublished(id: string, published: boolean): Pr
   }, "Erreur lors de la modification du statut de publication");
 }
 
-export async function toggleProgramFeatured(id: string, featured: boolean): Promise<ActionResponse<any>> {
+export async function toggleProgramFeatured(id: string, featured: boolean): Promise<ApiResponse<Program>> {
   return withSafeAction("toggleProgramFeatured", async () => {
     return await db.program.update({
       where: { id },
