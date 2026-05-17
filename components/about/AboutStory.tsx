@@ -31,17 +31,29 @@ export default function AboutStory() {
               {/* ROW 1: TITLE & IMAGE */}
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 {/* BRANDING / TITLE */}
-                <div className="flex flex-col space-y-4 text-center lg:text-left items-center lg:items-start">
+                <motion.div
+                  initial={{ opacity: 0, x: -24 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex flex-col space-y-4 text-center lg:text-left items-center lg:items-start"
+                >
                   <span className="text-primary font-bold text-[10px] uppercase tracking-[0.4em] mb-2 block">
                     {t("badge")}
                   </span>
                   <h2 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-foreground leading-tight">
                     {t("title")}
                   </h2>
-                </div>
+                </motion.div>
 
                 {/* IMAGE SIDE */}
-                <div className="flex justify-center lg:justify-end">
+                <motion.div
+                  initial={{ opacity: 0, x: 24 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex justify-center lg:justify-end"
+                >
                   <div className="relative aspect-[16/10] w-full max-w-lg rounded-md overflow-hidden shadow-2xl group
                                   hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.25)] hover:-translate-y-2 transition-all duration-500">
                     <Image
@@ -61,21 +73,27 @@ export default function AboutStory() {
                       </p>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </div>
 
               {/* ROW 2: NARRATIVE & HIGHLIGHTS */}
               <div className="grid grid-cols-1 gap-8 pt-6 border-t border-border/50">
                 <div className="grid lg:grid-cols-3 gap-8 items-start">
                   {/* STORY TEXT - SPANS 2 COLS */}
-                  <div className="lg:col-span-2 space-y-6 text-base md:text-lg text-muted-foreground leading-relaxed font-light">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    className="lg:col-span-2 space-y-6 text-base md:text-lg text-muted-foreground leading-relaxed font-light"
+                  >
                     <p className="border-l-4 border-primary/30 pl-6 italic text-left">
                       {t("p1")}
                     </p>
                     <p className="text-left">
                       {t("p2")}
                     </p>
-                  </div>
+                  </motion.div>
 
                   {/* KEY HIGHLIGHTS - SPANS 1 COL */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3 w-full">
@@ -84,9 +102,13 @@ export default function AboutStory() {
                       { icon: "02", label: locale === "fr" ? "Indépendance" : "Independence" },
                       { icon: "03", label: locale === "fr" ? "Impact Social" : "Social Impact" },
                       { icon: "04", label: locale === "fr" ? "Innovation" : "Innovation" },
-                    ].map((item) => (
-                      <div
+                    ].map((item, i) => (
+                      <motion.div
                         key={item.icon}
+                        initial={{ opacity: 0, x: 16 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
                         className="flex items-center gap-4 bg-card/50 backdrop-blur-md p-3 rounded-[1.5rem] border border-border/40
                                    hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.15)] hover:-translate-y-1 hover:border-primary/40 hover:bg-card/80
                                    transition-all duration-500 group"
@@ -97,7 +119,7 @@ export default function AboutStory() {
                         <span className="text-[10px] font-bold uppercase tracking-wider text-foreground/80">
                           {item.label}
                         </span>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>
