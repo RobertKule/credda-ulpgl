@@ -81,7 +81,8 @@ export default function PublicationExplorer({
   return (
     <div className="space-y-12">
       {/* TOOLBAR */}
-      <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-card/30 backdrop-blur-xl p-4 lg:p-6 rounded-md border border-border/50 sticky top-24 z-30 shadow-xl shadow-black/5">
+      <div className="sticky top-28 z-30 mx-auto max-w-5xl w-full">
+        <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-card/40 backdrop-blur-xl p-4 lg:p-6 rounded-md border border-border/50 shadow-xl shadow-black/10">
         
         {/* SEARCH */}
         <div className="relative w-full lg:max-w-md group">
@@ -135,6 +136,7 @@ export default function PublicationExplorer({
           </div>
         </div>
       </div>
+    </div>
 
       {/* REVEAL ACTIVE FILTERS */}
       {(search || selectedCategory !== "all") && (
