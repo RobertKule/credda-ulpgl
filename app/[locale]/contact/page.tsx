@@ -52,7 +52,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
       <section className="py-24 lg:py-32 px-6 relative" id="form-section">
         <div className="container mx-auto max-w-7xl">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 xl:gap-24 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-16 items-center mb-20 lg:mb-32">
             
             {/* LEFT: INFO & MAP */}
             <div className="lg:col-span-5 space-y-12">
@@ -65,30 +65,10 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
                {/* Info Cards Grid */}
                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <ContactInfoCard icon={<MapPin size={22} />} title={t('info.items.address.title')} content={t('info.items.address.value')} />
-                  <ContactInfoCard icon={<Phone size={22} />} title={t('info.items.phone.title')} content={t('info.items.phone.value')} />
-                  <ContactInfoCard icon={<Mail size={22} />} title={t('info.items.email.title')} content={t('info.items.email.value')} />
-                  <ContactInfoCard icon={<Clock size={22} />} title={t('info.items.hours.title')} content={t('info.items.hours.value')} />
-               </div>
-
-               {/* Immersive Map Block */}
-               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-border/50 shadow-2xl group/map">
-                 <div className="absolute inset-0 bg-primary/20 mix-blend-overlay z-10 pointer-events-none group-hover/map:bg-transparent transition-colors duration-1000" />
-                 <iframe
-                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15953.522818968944!2d29.2152!3d-1.6883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dd0f735c03f443%3A0xc6cb1c7e9c32f8eb!2sUniversit%C3%A9%20Libre%20des%20Pays%20des%20Grands%20Lacs!5e0!3m2!1sen!2scd!4v1700000000000!5m2!1sen!2scd"
-                   width="100%"
-                   height="100%"
-                   style={{ border: 0, filter: "grayscale(100%) contrast(1.2)" }}
-                   allowFullScreen
-                   loading="lazy"
-                   referrerPolicy="no-referrer-when-downgrade"
-                   className="relative z-0 group-hover/map:scale-105 transition-transform duration-[2000ms]"
-                 />
-                 {/* Floating Card inside map */}
-                 <div className="absolute bottom-4 left-4 right-4 bg-background/80 backdrop-blur-xl p-4 rounded-xl border border-border/50 z-20 shadow-2xl transform translate-y-2 opacity-90 group-hover/map:translate-y-0 group-hover/map:opacity-100 transition-all duration-500 hover:!bg-background/95">
-                   <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-1">{t('map.title')}</p>
-                   <p className="text-xs font-light text-foreground">{t('map.description')}</p>
-                 </div>
+                  <ContactInfoCard icon={<MapPin size={28} />} title={t('info.items.address.title')} content={t('info.items.address.value')} />
+                  <ContactInfoCard icon={<Phone size={28} />} title={t('info.items.phone.title')} content={t('info.items.phone.value')} />
+                  <ContactInfoCard icon={<Mail size={28} />} title={t('info.items.email.title')} content={t('info.items.email.value')} />
+                  <ContactInfoCard icon={<Clock size={28} />} title={t('info.items.hours.title')} content={t('info.items.hours.value')} />
                </div>
             </div>
 
@@ -98,6 +78,33 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
             </div>
 
           </div>
+        </div>
+      </section>
+
+      {/* 4. MAP SECTION */}
+      <section className="py-24 pb-0 bg-card/30 border-t border-border/30 relative">
+        <div className="container mx-auto px-6 max-w-7xl mb-12 flex flex-col items-center text-center space-y-4">
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">{t('map.title')}</span>
+          <h2 className="text-3xl md:text-5xl font-serif font-bold text-foreground">
+            Nous Trouver
+          </h2>
+          <p className="text-sm md:text-base text-muted-foreground max-w-2xl leading-relaxed">
+            {t('map.description')}
+          </p>
+        </div>
+
+        {/* Clear, interactive Map Block spanning full width of the screen */}
+        <div className="w-full h-[500px] lg:h-[700px] bg-muted/50 border-y border-border/50 relative z-10 shadow-inner">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15953.522818968944!2d29.2152!3d-1.6883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dd0f735c03f443%3A0xc6cb1c7e9c32f8eb!2sUniversit%C3%A9%20Libre%20des%20Pays%20des%20Grands%20Lacs!5e0!3m2!1sen!2scd!4v1700000000000!5m2!1sen!2scd"
+            width="100%"
+            height="100%"
+            style={{ border: 0, filter: "grayscale(30%) contrast(1.1)" }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="w-full h-full object-cover"
+          />
         </div>
       </section>
 
@@ -123,16 +130,20 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
 function ContactInfoCard({ icon, title, content }: { icon: any, title: string, content: string }) {
   return (
-    <div className="relative group p-5 bg-card/40 hover:bg-card border border-border/40 hover:border-primary/30 rounded-xl transition-all duration-500 overflow-hidden shadow-sm hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1">
-      {/* Decorative Glow */}
-      <div className="absolute -inset-1 bg-gradient-to-r from-primary/10 to-transparent blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+    <div className="relative group p-[1px] rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
+      {/* Animated Border Beam */}
+      <div className="absolute top-1/2 left-1/2 w-[200%] h-[200%] bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(22,101,52,0.8)_360deg)] opacity-0 group-hover:opacity-100 group-hover:animate-border-beam transition-opacity duration-500 pointer-events-none" />
       
-      <div className="relative z-10 flex flex-col gap-4">
-        <div className="w-12 h-12 bg-muted/50 border border-border/50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-500 rounded-lg">
+      {/* Inner Card */}
+      <div className="relative z-10 p-6 lg:p-8 bg-card/80 backdrop-blur-xl h-full min-h-[200px] rounded-[11px] flex flex-col justify-center gap-5 border border-border/40 group-hover:border-transparent transition-colors duration-500 overflow-hidden">
+        {/* Soft background glow */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-primary/5 to-transparent blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+        <div className="relative z-10 w-16 h-16 bg-muted/50 border border-border/50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary group-hover:scale-110 transition-all duration-500 rounded-xl">
           {icon}
         </div>
-        <div className="space-y-1">
-          <h4 className="text-[10px] uppercase font-bold tracking-[0.15em] text-muted-foreground/60 group-hover:text-primary/70 transition-colors">{title}</h4>
+        <div className="relative z-10 space-y-1.5">
+          <h4 className="text-[11px] uppercase font-bold tracking-[0.15em] text-muted-foreground/60 group-hover:text-primary transition-colors">{title}</h4>
           <p className="text-sm font-medium text-foreground leading-relaxed">{content}</p>
         </div>
       </div>
