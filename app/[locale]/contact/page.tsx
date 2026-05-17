@@ -32,7 +32,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
     submitting: t('form.submitting'),
     success: {
       title: t('form.success.title'),
-      description: t('form.success.description', { strong: (chunks: React.ReactNode) => <strong className="font-bold text-foreground">{chunks}</strong> }),
+      description: t('form.success.description'),
       button: t('form.success.button')
     },
     title: t('form.title'),
@@ -104,9 +104,10 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
       {/* 5. SECTION CTA FINAL */}
       <section className="py-32 bg-primary/5 border-t border-primary/10 relative overflow-hidden">
         <div className="container mx-auto px-6 text-center space-y-10 relative z-10">
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif font-black text-foreground max-w-4xl mx-auto leading-[1.1] tracking-tight">
-            {t('cta.title', { span: (chunks) => <span className="text-primary italic inline-block hover:scale-105 transition-transform cursor-default">{chunks}</span> })}
-          </h2>
+          <h2 
+            className="text-4xl md:text-6xl lg:text-7xl font-serif font-black text-foreground max-w-4xl mx-auto leading-[1.1] tracking-tight"
+            dangerouslySetInnerHTML={{ __html: (t.raw('cta.title') as string).replace('<span>', '<span class="text-primary italic inline-block hover:scale-105 transition-transform cursor-default">') }}
+          />
           <Button asChild className="h-14 lg:h-16 px-8 lg:px-12 rounded-full bg-primary text-primary-foreground text-[10px] lg:text-xs font-black tracking-[0.2em] uppercase hover:scale-[1.02] transition-transform shadow-2xl shadow-primary/20 group">
              <a href="#form-section">
                {t('cta.button')}

@@ -70,11 +70,7 @@ export default function ContactForm({ t }: ContactFormProps) {
     }
   }
 
-  const formVariants = {
-    hidden: { opacity: 0, scale: 0.98 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: "easeOut" } },
-    exit: { opacity: 0, scale: 0.95, transition: { duration: 0.3 } }
-  };
+
 
   return (
     <div className="relative group w-full mx-auto pb-4">
@@ -92,10 +88,9 @@ export default function ContactForm({ t }: ContactFormProps) {
           {status === "success" ? (
             <motion.div 
               key="success"
-              variants={formVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }}
+              exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.3 } }}
               className="flex flex-col items-center text-center space-y-8 py-16"
             >
               <motion.div 
@@ -120,7 +115,7 @@ export default function ContactForm({ t }: ContactFormProps) {
               </Button>
             </motion.div>
           ) : (
-            <motion.div key="form" variants={formVariants} initial="hidden" animate="visible" exit="exit" className="w-full">
+            <motion.div key="form" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.3 } }} className="w-full">
               
               {/* Form Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 pb-6 border-b border-border/30">
