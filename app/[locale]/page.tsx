@@ -87,7 +87,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       sql`SELECT count(*) FROM "Article" WHERE domain = 'CLINICAL' AND published = true`,
       sql`SELECT count(*) FROM "ClinicalCase"`,
       sql`SELECT count(*) FROM "GalleryImage"`
-    ])) as any[];
+    ])) as [any[], any[], any[], any[], { count: string }[], { count: string }[], { count: string }[], { count: string }[], { count: string }[], { count: string }[], { count: string }[]];
 
     const totalArticles = parseInt(totalArticlesResult[0].count, 10);
     const totalPubs = parseInt(totalPubsResult[0].count, 10);

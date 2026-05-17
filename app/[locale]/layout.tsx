@@ -1,30 +1,22 @@
 import { getMessages } from "next-intl/server";
-import { Fraunces, Bricolage_Grotesque, Outfit } from 'next/font/google'
+import { Lora, Inter } from 'next/font/google'
 import Providers from "@/components/shared/Providers";
 import MainLayoutWrapper from "@/components/shared/MainLayoutWrapper";
 import "../globals.css";
 
-const fraunces = Fraunces({
+const lora = Lora({
   subsets: ['latin'],
-  weight: ['400', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
-  variable: '--font-fraunces',
+  variable: '--font-lora',
   display: 'swap',
   preload: true,
 })
 
-const bricolage = Bricolage_Grotesque({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-bricolage',
-  display: 'swap',
-  preload: true,
-})
-
-const outfit = Outfit({
+const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600'],
-  variable: '--font-outfit',
+  variable: '--font-inter',
   display: 'swap',
   preload: true,
 })
@@ -44,7 +36,7 @@ export default async function RootLayout({
   const messages = await getMessages({ locale });
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${fraunces.variable} ${bricolage.variable} ${outfit.variable} scroll-smooth`}>
+    <html lang={locale} suppressHydrationWarning className={`${lora.variable} ${inter.variable} scroll-smooth`}>
       <head>
         <script
           id="theme-script"
@@ -62,7 +54,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="font-outfit antialiased bg-gray-400 text-foreground w-screen overflow-x-hidden">
+      <body className="font-sans antialiased text-foreground bg-background w-screen overflow-x-hidden">
         <Providers locale={locale} messages={messages}>
           <MainLayoutWrapper>
             {children}
