@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { 
     Instagram, 
     Facebook, 
@@ -53,6 +53,7 @@ export default function ConnectedGallerySection({ images, totalCount = 0 }: { im
                         alt={carouselImages[currentIndex].title}
                         fill
                         priority
+                        unoptimized
                         className="object-cover object-center opacity-50"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#0A192F] via-transparent to-black/20" />
@@ -71,7 +72,7 @@ export default function ConnectedGallerySection({ images, totalCount = 0 }: { im
                     <span className="text-xs md:text-sm font-black uppercase tracking-[1em] text-primary block mb-6">
                         CREDDA • MÉDIATHÈQUE
                     </span>
-                    <h2 className="text-6xl md:text-8xl lg:text-[10rem] font-fraunces font-black tracking-tighter leading-[0.8] mb-10 max-w-6xl mx-auto drop-shadow-2xl">
+                    <h2 className="text-6xl md:text-8xl lg:text-[10rem] font-serif font-black tracking-tighter leading-[0.8] mb-10 max-w-6xl mx-auto drop-shadow-2xl">
                         {carouselImages[currentIndex].title || "Institutional Excellence"}
                     </h2>
                 </motion.div>
@@ -91,7 +92,7 @@ export default function ConnectedGallerySection({ images, totalCount = 0 }: { im
                                 <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-images"><path d="M18 22H4a2 2 0 0 1-2-2V6"/><path d="m22 13-1.296-1.296a2.41 2.41 0 0 0-3.408 0L11 18"/><circle cx="12" cy="8" r="2"/><rect width="16" height="16" x="6" y="2" rx="2"/></svg>
                             </div>
                             <div className="flex flex-col">
-                                <span className="text-4xl font-fraunces font-black tracking-tighter text-primary">
+                                <span className="text-4xl font-serif font-black tracking-tighter text-primary">
                                     {totalCount || carouselImages.length}+
                                 </span>
                                 <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50">
@@ -162,7 +163,7 @@ export default function ConnectedGallerySection({ images, totalCount = 0 }: { im
             </div>
 
             <style jsx>{`
-                .font-fraunces { font-family: var(--font-fraunces), serif; }
+                .font-serif { font-family: var(--font-serif), serif; }
             `}</style>
         </section>
     );

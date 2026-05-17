@@ -1,7 +1,7 @@
 // components/home/ClinicalSection.tsx
 "use client";
 
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Link } from "@/navigation";
 import { Gavel, Scale, ArrowRight, ShieldCheck } from "lucide-react";
 import Image from "next/image";
