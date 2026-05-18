@@ -1,7 +1,9 @@
 // app/api/user/profile/route.ts
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { db as prisma } from "@/lib/db";
+import { db } from "@/lib/db";
+import { updateUserProfileSchema } from "@/schemas/user";
+import { SafeUser } from "@/types/user";
 
 export async function PATCH(req: Request) {
   try {
@@ -12,46 +14,32 @@ export async function PATCH(req: Request) {
     }
 
     const body = await req.json();
-    const { name, phone, organization, bio, image } = body;
+    const data = updateUserProfileSchema.parse(body);
 
-    const updatedUser = await prisma.user.update({
+    const updatedUser = await db.user.update({
       where: { email: session.user.email as string },
-      data: {
-        name,
-        phone,
-        organization,
-        bio,
-        image,
-      },
+      data,
     });
+
+    const { password: _, ...safeUser } = updatedUser;
 
     return NextResponse.json({
       message: "Profile updated successfully",
-      user: {
-        name: updatedUser.name,
-        phone: updatedUser.phone,
-        organization: updatedUser.organization,
-        bio: updatedUser.bio,
-        image: updatedUser.image,
-      },
+      user: safeUser,
     });
   } catch (error: any) {
+    // Prisma connection errors or other issues
     const isConnError = error.code === 'P1017' || error.message?.includes('closed the connection');
     
     if (isConnError) {
       console.warn("⚠️ Database connection closed gracefully in profile update API.");
-    } else {
-      console.error("Profile update error:", error);
-    }
-    
-    // Resilience: Handle database connection drops gracefully
-    if (isConnError) {
       return NextResponse.json(
         { message: "La base de données est temporairement indisponible. Veuillez réessayer." },
         { status: 503 }
       );
     }
 
+    console.error("Profile update error:", error);
     return NextResponse.json(
       { message: "Une erreur est survenue lors de la mise à jour." },
       { status: 500 }

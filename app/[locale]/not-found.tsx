@@ -51,10 +51,10 @@ export default async function NotFound() {
             {t('explore')}
           </p>
           <div className="flex flex-wrap justify-center gap-3">
-            <QuickLink href="/research" label={t('research')} icon={<BookOpen size={14} />} />
+            <QuickLink href="/publications" label={t('research')} icon={<BookOpen size={14} />} />
             <QuickLink href="/publications" label={t('publications')} icon={<BookOpen size={14} />} />
-            <QuickLink href="/events" label={t('events')} icon={<Calendar size={14} />} />
-            <QuickLink href="/gallery" label={t('gallery')} icon={<ImageIcon size={14} />} />
+            <QuickLink href="/media-center" label={t('events')} icon={<Calendar size={14} />} />
+            <QuickLink href="/media-center" label={t('gallery')} icon={<ImageIcon size={14} />} />
           </div>
         </div>
       </div>

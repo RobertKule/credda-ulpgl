@@ -151,7 +151,7 @@ export default function UserManagementTable({ initialUsers }: { initialUsers: Us
                 <td className="p-4">
                   <select 
                     value={u.role}
-                    onChange={(e) => handleRoleUpdate(u.id, e.target.value as any)}
+                    onChange={(e) => handleRoleUpdate(u.id, e.target.value as "ADMIN" | "SUPER_ADMIN" | "EDITOR" | "USER")}
                     className="text-xs font-black uppercase tracking-widest bg-muted/40 border border-border px-3 py-1.5 rounded-lg cursor-pointer focus:ring-2 focus:ring-primary/20 outline-none transition-all text-foreground"
                     disabled={isPending}
                   >

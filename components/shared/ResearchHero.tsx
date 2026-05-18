@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Link } from "@/navigation";
 import { ArrowRight, BookOpen, Calendar, User } from "lucide-react";
 import Image from "next/image";
@@ -62,7 +62,7 @@ export default function ResearchHero({ featuredArticle, locale }: ResearchHeroPr
             </div>
 
             <Link 
-              href={`/research/${featuredArticle.slug}`}
+              href={`/publications/${featuredArticle.slug}`}
               className="group relative inline-flex items-center gap-4 px-10 py-5 bg-white text-primary font-heading font-black uppercase tracking-widest text-[10px] overflow-hidden"
             >
               <span className="relative z-10 flex items-center gap-2">
@@ -82,6 +82,7 @@ export default function ResearchHero({ featuredArticle, locale }: ResearchHeroPr
               src={featuredArticle.mainImage || "/images/hero-poster.webp"} 
               alt={translation?.title || "Featured Research"} 
               fill 
+              sizes="(max-width: 1024px) 100vw, 50vw"
               priority
               className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
             />

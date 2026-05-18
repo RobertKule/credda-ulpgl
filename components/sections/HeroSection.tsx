@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, Variants } from "framer-motion";
+import { m as motion, useScroll, useTransform, Variants } from "framer-motion";
 import { Play, Pause, Volume2, VolumeX, ArrowRight, ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 export default function HeroSection() {
-    const t = useTranslations("common" as any); // fallback if not translated
+    const t = useTranslations("common"); // fallback if not translated
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isPlaying, setIsPlaying] = useState(true);
     const [isMuted, setIsMuted] = useState(true);
@@ -72,7 +72,7 @@ export default function HeroSection() {
     if (!isMounted) return <div className="h-screen w-full bg-slate-900" />;
 
     return (
-        <section className="relative h-screen w-full overflow-hidden bg-[#0f172a] flex items-center justify-center">
+        <section className="relative h-screen w-full overflow-hidden bg-background flex items-center justify-center">
             {/* Background Video with Parallax */}
             <motion.div style={{ y, scale }} className="absolute inset-0 w-full h-full pointer-events-none">
                 <video
@@ -86,10 +86,10 @@ export default function HeroSection() {
                 >
                     <source src="/video/hero-bg.mp4" type="video/mp4" />
                 </video>
-                {/* Overlay Gradients */}
-                <div className="absolute inset-0 bg-blue-900/40 mix-blend-multiply" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/50 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#0f172a]/80 via-transparent to-transparent" />
+                {/* Overlay Gradients - Clean Light/Dark Theme Institutional */}
+                <div className="absolute inset-0 bg-background/85" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/40 to-transparent" />
             </motion.div>
 
             {/* Main Content */}
@@ -102,36 +102,36 @@ export default function HeroSection() {
                     className="max-w-4xl"
                 >
                     <motion.div variants={itemVariants} className="mb-6 flex items-center gap-3">
-                        <span className="w-12 h-[2px] bg-primary/50 rounded-md" />
-                        <span className="text-blue-400 font-semibold tracking-wider uppercase text-sm">
+                        <span className="w-12 h-[2px] bg-primary/40 rounded-md" />
+                        <span className="text-primary font-bold tracking-widest uppercase text-xs">
                             CREDDA-ULPGL
                         </span>
                     </motion.div>
 
                     <motion.h1
                         variants={itemVariants}
-                        className="text-5xl md:text-7xl lg:text-8xl font-serif text-white font-bold leading-tight mb-6"
+                        className="text-5xl md:text-7xl lg:text-8xl font-serif text-foreground font-black leading-[1.1] mb-6 drop-shadow-sm"
                     >
                         Clinique
                         <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-600">
                             Juridique
                         </span>
                         <br />
-                        Environnementale.
+                        <span className="text-muted-foreground/80">Environnementale.</span>
                     </motion.h1>
 
                     <motion.p
                         variants={itemVariants}
-                        className="text-lg md:text-2xl text-slate-300 max-w-2xl mb-10 font-light leading-relaxed"
+                        className="text-lg md:text-2xl text-muted-foreground max-w-2xl mb-10 font-medium leading-relaxed"
                     >
                         Nous protégeons les droits des communautés et la biodiversité par le droit.
                     </motion.p>
 
                     <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4">
                         <Link
-                            href="/research"
-                            className="group relative inline-flex items-center gap-2 bg-primary hover:bg-blue-700 text-white px-8 py-4 rounded-md font-medium transition-all duration-300 overflow-hidden"
+                            href="/publications"
+                            className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-primary to-emerald hover:from-primary/90 hover:to-emerald/90 text-white px-8 py-4 rounded-md shadow-lg shadow-emerald/20 font-medium transition-all duration-300 overflow-hidden"
                         >
                             <span className="relative z-10">Explorer nos recherches</span>
                             <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
@@ -140,7 +140,7 @@ export default function HeroSection() {
 
                         <Link
                             href="/contact"
-                            className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/20 px-8 py-4 rounded-md font-medium transition-all duration-300"
+                            className="inline-flex items-center gap-2 bg-transparent hover:bg-muted text-foreground border border-border px-8 py-4 rounded-md font-bold transition-all duration-300"
                         >
                             Nous contacter
                         </Link>
@@ -157,14 +157,14 @@ export default function HeroSection() {
             >
                 <button
                     onClick={togglePlay}
-                    className="w-12 h-12 flex items-center justify-center rounded-md bg-black/30 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 transition-colors"
+                    className="w-12 h-12 flex items-center justify-center rounded-md bg-background/50 backdrop-blur-md border border-border text-foreground hover:bg-muted transition-colors"
                     aria-label={isPlaying ? "Pause video" : "Play video"}
                 >
                     {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5 ml-1" />}
                 </button>
                 <button
                     onClick={toggleMute}
-                    className="w-12 h-12 flex items-center justify-center rounded-md bg-black/30 backdrop-blur-md border border-white/10 text-white hover:bg-white/10 transition-colors"
+                    className="w-12 h-12 flex items-center justify-center rounded-md bg-background/50 backdrop-blur-md border border-border text-foreground hover:bg-muted transition-colors"
                     aria-label={isMuted ? "Unmute video" : "Mute video"}
                 >
                     {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
@@ -179,15 +179,15 @@ export default function HeroSection() {
                 className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 cursor-pointer group"
                 onClick={scrollToNext}
             >
-                <span className="text-white/60 text-xs uppercase tracking-widest font-medium group-hover:text-white transition-colors">
+                <span className="text-muted-foreground/60 text-xs uppercase tracking-widest font-bold group-hover:text-primary transition-colors">
                     Scroll
                 </span>
                 <motion.div
                     animate={{ y: [0, 8, 0] }}
                     transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                    className="w-8 h-12 rounded-md border border-white/30 flex items-start justify-center p-2 group-hover:border-white/60 transition-colors"
+                    className="w-8 h-12 rounded-md border border-border flex items-start justify-center p-2 group-hover:border-primary transition-colors bg-background/50 backdrop-blur-sm"
                 >
-                    <span className="w-1 h-2 bg-blue-400 rounded-md" />
+                    <span className="w-1 h-2 bg-primary rounded-md" />
                 </motion.div>
             </motion.div>
         </section>

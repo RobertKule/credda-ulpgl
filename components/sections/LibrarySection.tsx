@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import PublicationCard from "@/components/ui/PublicationCard";
 import Link from "next/link";
 import { ArrowRight, BookMarked, Layers } from "lucide-react";
+import { useLocale } from "next-intl";
 
 interface LibrarySectionProps {
     reports: any[];
@@ -17,6 +18,7 @@ interface LibrarySectionProps {
 }
 
 export default function LibrarySection({ reports = [], stats }: LibrarySectionProps) {
+    const locale = useLocale();
     // Use first 3 reports or fallback dummy data if empty (to satisfy design prompt)
     const displayReports = reports.length > 0 ? reports.slice(0, 3) : [
         { id: "1", title: "Rapport Annuel CREDDA 2024 - Perspectives et Impact", createdAt: new Date() },
@@ -72,7 +74,8 @@ export default function LibrarySection({ reports = [], stats }: LibrarySectionPr
                         {displayReports.map((report, index) => (
                             <PublicationCard
                                 key={report.id || index}
-                                report={report}
+                                doc={report}
+                                locale={locale}
                                 delay={index * 0.15}
                             />
                         ))}

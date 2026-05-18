@@ -2,16 +2,20 @@
 
 import React, { useState, useEffect, Suspense } from "react";
 import dynamic from "next/dynamic";
-const Hero = dynamic(() => import("@/components/home/Hero"), { ssr: false });
+const Hero = dynamic(() => import("@/components/home/Hero"), { 
+  ssr: false, 
+  loading: () => <HeroSkeleton />
+});
+import HeroSkeleton from "@/components/home/HeroSkeleton";
 import Stats from "@/components/home/Stats";
 import FeaturedResearch from "@/components/home/FeaturedResearch";
-import ClinicalSection from "@/components/home/ClinicalSection";
+import Timeline from "@/components/home/Timeline";
 import TeamSection from "@/components/home/TeamSection";
 import TestimonialSection from "@/components/home/TestimonialSection";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, ExternalLink, ShieldCheck, ArrowUpRight } from "lucide-react";
+import { m as motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, ExternalLink, ShieldCheck } from "lucide-react";
 import { Link } from "@/navigation";
 import GSAPReveal from "@/components/shared/GSAPReveal";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
@@ -22,7 +26,8 @@ import { SectionDecorNumber } from "@/components/home/SectionDecorNumber";
 import StatsSection from "@/components/home/StatsSection";
 import VisionSection from "@/components/home/VisionSection";
 import FAQSection from "@/components/home/FAQSection";
-import ConnectedGallerySection from "@/components/home/ConnectedGallerySection";
+import GalleryGrid from "@/components/home/GalleryGrid";
+import CtaSection from "@/components/home/CtaSection";
 
 const SECTION_PAD = "w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16";
 
@@ -40,10 +45,13 @@ export default function HomeClient({
   return (
     <div className="relative min-h-screen text-foreground transition-colors duration-500 selection:bg-primary selection:text-primary-foreground">
 
-      <PersistentGlobeBackground />
 
-      <main className="relative z-10 w-full overflow-hidden">
-        {/* HERO & TRUST BAR */}
+      <main className="relative z-10 w-full overflow-x-clip">
+
+        {/* ═══════════════════════════════════════════
+            1. HERO + PARTNERS
+            Background: transparent / full color
+        ════════════════════════════════════════════ */}
         <section className="relative z-20">
           <Hero testimonials={testimonials} team={team} />
           <div className="w-full">
@@ -51,97 +59,127 @@ export default function HomeClient({
           </div>
         </section>
 
-        <div className="relative z-30 border-b border-border/10">
-          <StatsSection
-            data={[
-              { label: t('stats.years'), value: new Date().getFullYear() - 2008, suffix: "" },
-              { label: t('stats.pubs'), value: dbStats?.totalResources || 150, suffix: "+" },
-              { label: t('stats.partners'), value: (partners ?? []).length || 15, suffix: "" },
-              { label: t('stats.cases'), value: dbStats?.clinicalCases || 120, suffix: "+" },
-            ]}
-          />
+       {/* ═══════════════════════════════════════════
+    2. STATS — Institutional Glass Band
+    Light, transparent, keeps hero background visible
+════════════════════════════════════════════ */}
+
+<div className="relative z-30 bg-gradient-to-b from-primary/5 via-background/10 to-transparent dark:from-primary/10 dark:via-background/5 dark:to-transparent border-y border-primary/20 dark:border-primary/10 backdrop-blur-md overflow-hidden">
+
+  {/* subtle overlay texture (optionnel mais pro) */}
+  <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
+    <div className="w-full h-full bg-[radial-gradient(circle_at_1px_1px,_rgba(0,0,0,0.08)_1px,_transparent_0)] bg-[size:24px_24px]" />
+  </div>
+
+  <StatsSection
+    data={[
+      {
+        label: t('stats.years'),
+        value: new Date().getFullYear() - 2008,
+        suffix: ""
+      },
+      {
+        label: t('stats.pubs'),
+        value: dbStats?.totalResources || 150,
+        suffix: "+"
+      },
+      {
+        label: t('stats.partners'),
+        value: (partners ?? []).length || 15,
+        suffix: ""
+      },
+      {
+        label: t('stats.cases'),
+        value: dbStats?.clinicalCases || 120,
+        suffix: "+"
+      },
+    ]}
+  />
+</div>
+
+        {/* ═══════════════════════════════════════════
+            3. VISION — Glassmorphism Layer 1
+            Semi-transparent, subtle blur, clean top border.
+        ════════════════════════════════════════════ */}
+        <div className="relative z-20 bg-background/70 dark:bg-background/60 backdrop-blur-sm border-y border-border dark:border-border/15">
+          <VisionSection />
         </div>
 
-        {/* VISION & EXPERTISE (Bento Grid) */}
-        <VisionSection />
-
-        {/* VIDEO SECTION */}
-        <section className="border-y border-border/10">
+        {/* ═══════════════════════════════════════════
+            4. VIDEO — Darker Glass Strip
+            Slightly more opaque to transition forward.
+        ════════════════════════════════════════════ */}
+        <section className="relative z-20 bg-card/60 dark:bg-card/50 backdrop-blur-md border-y border-border dark:border-border/15">
           <AboutVideoSection />
         </section>
 
-        {/* RESEARCH */}
-        <section id="research" className="relative z-20 w-full py-24 lg:py-32 bg-background">
+        {/* ═══════════════════════════════════════════
+            5. PUBLICATIONS / INSIGHTS — Glassmorphism Layer 2
+            Light surface, warm backdrop.
+        ════════════════════════════════════════════ */}
+        <section
+          id="publications"
+          className="relative z-20 w-full py-24 lg:py-32 bg-background/80 dark:bg-background/70 backdrop-blur-sm border-b border-border dark:border-border/15"
+        >
           <FeaturedResearch research={featuredResearch} />
         </section>
 
-        {/* GALLERY */}
-        <ConnectedGallerySection images={galleryImages} totalCount={totalGalleryImages} />
+        {/* ═══════════════════════════════════════════
+            6. GALLERY — Asymmetric Grid (10 images sample)
+        ════════════════════════════════════════════ */}
+        <div className="relative z-20 bg-muted/40 dark:bg-muted/20 backdrop-blur-sm border-y border-border dark:border-border/15">
+          <GalleryGrid images={galleryImages.slice(0, 10)} totalCount={totalGalleryImages} />
+        </div>
 
-
-
-        {/* CLINICAL */}
-        <section id="clinical" className="relative z-20 py-24 lg:py-40 bg-card/10 border-y border-border/40">
+        {/* ═══════════════════════════════════════════
+            7. HISTORY — Timeline Workflow
+            Replaces old Clinical / Mention section.
+        ════════════════════════════════════════════ */}
+        <section
+          id="history"
+          className="relative z-20 py-24 lg:py-40 bg-primary/[0.04] dark:bg-primary/[0.08] border-y border-primary/30 dark:border-primary/15 backdrop-blur-sm"
+        >
           <div className={SECTION_PAD}>
-            <ClinicalSection />
+            <Timeline />
           </div>
         </section>
 
-        {/* TEAM */}
-        <section id="team" className="relative z-20 bg-background p-4 lg:p-10">
+        {/* ═══════════════════════════════════════════
+            8. TEAM — Solid Background
+            Full bg for portrait-heavy section.
+        ════════════════════════════════════════════ */}
+        <section id="team" className="relative z-20 bg-background border-t border-border dark:border-border/15 p-4 lg:p-10">
           <div className={SECTION_PAD}>
             <TeamSection team={team} />
           </div>
         </section>
 
-        {/* TESTIMONIALS */}
-        <section id="testimonials" className="relative z-20">
+        {/* ═══════════════════════════════════════════
+            9. TESTIMONIALS — Glass
+        ════════════════════════════════════════════ */}
+        <section
+          id="testimonials"
+          className="relative z-20 bg-card/50 dark:bg-card/30 backdrop-blur-md border-y border-border dark:border-border/15"
+        >
           <TestimonialSection testimonials={testimonials} />
         </section>
 
-        {/* FAQ */}
-        <section id="faq" className="relative z-20 py-24 lg:py-40 border-t border-border/10">
+        {/* ═══════════════════════════════════════════
+            10. FAQ — Muted Glass
+        ════════════════════════════════════════════ */}
+        <section
+          id="faq"
+          className="relative z-20 py-24 lg:py-40 bg-background/90 dark:bg-background/80 backdrop-blur-sm border-t border-border dark:border-border/15"
+        >
           <div className={SECTION_PAD}>
             <FAQSection />
           </div>
         </section>
 
-
-
-        {/* CTA FINAL - Modern Pill Redesign */}
-        <section className="relative z-20 py-4 md:py-8 lg:py-12 bg-[#16256B] dark:bg-[#0D1645]">
-          <div className="max-w-7xl mx-auto px-6">
-            <motion.div
-              initial={{ y: 50, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true }}
-              className="bg-background rounded-[3rem] md:rounded-full p-4 md:p-8 lg:p-12 flex flex-col md:flex-row items-center justify-between gap-10 md:gap-20 text-center md:text-left transition-all shadow-2xl border border-primary/20 selection:bg-primary selection:text-white"
-            >
-              <h2 className="text-xl md:text-2xl lg:text-3xl font-fraunces font-black tracking-tighter text-foreground leading-[1.1] max-w-2xl">
-                {t.rich('cta.title', {
-                  span: (chunks) => <span className="text-primary italic font-light">{chunks}</span>,
-                  br: () => <br />
-                }) || (
-                    <>
-                      Rejoignez notre réseau de <span className="text-primary italic font-light">Partenariat</span>
-                    </>
-                  )}
-              </h2>
-
-              <Link
-                href="/contact"
-                className="group flex items-center gap-4 px-8 py-5 bg-primary text-primary-foreground rounded-full transition-all duration-500 hover:scale-105 hover:shadow-primary/20 hover:shadow-xl"
-              >
-                <span className="text-md font-black uppercase tracking-widest">
-                  {t('cta.partner') || "Book a Demo"}
-                </span>
-                <div className="w-10 h-10 rounded-full bg-foreground text-background flex items-center justify-center transition-transform duration-500 group-hover:rotate-45">
-                  <ArrowUpRight size={20} />
-                </div>
-              </Link>
-            </motion.div>
-          </div>
-        </section>
+        {/* ═══════════════════════════════════════════
+            11. CTA FINAL — Premium Immersive
+        ════════════════════════════════════════════ */}
+        <CtaSection />
 
       </main>
 
@@ -155,8 +193,6 @@ export default function HomeClient({
           width: max-content;
           animation: infinite-scroll 40s linear infinite;
         }
-        .font-fraunces { font-family: var(--font-fraunces), serif; }
-        .font-bricolage { font-family: var(--font-bricolage), sans-serif; }
       `}</style>
     </div>
   );

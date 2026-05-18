@@ -13,24 +13,13 @@ import { Button } from "@/components/ui/button";
 import { deletePublication } from "@/services/publication-actions";
 import { Link } from "@/navigation";
 import { toast } from "react-hot-toast";
-
-interface Publication {
-  id: string;
-  year: number;
-  doi: string | null;
-  pdfUrl: string;
-  domain: string;
-  translations: {
-    title: string;
-    authors: string;
-  }[];
-}
+import { PublicationWithTranslations } from "@/types/publication";
 
 export default function PublicationManagementTable({ 
   initialPublications,
   locale 
 }: { 
-  initialPublications: Publication[],
+  initialPublications: PublicationWithTranslations[],
   locale: string
 }) {
   const [publications, setPublications] = useState(initialPublications);

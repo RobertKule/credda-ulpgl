@@ -18,10 +18,9 @@ async function main() {
   // ── 0. ADMIN USERS ──────────────────────────────────────────────────────
   try {
     console.log('⏳ Hashing passwords...');
-    const hashedSuperAdmin = await bcrypt.hash('Rkule@02', 10);
-    const hashedAdmin = await bcrypt.hash(
-      process.env.MASTER_ADMIN_PASSWORD || 'credda2026admin', 10
-    );
+    const masterPassword = process.env.MASTER_ADMIN_PASSWORD || 'credda2026admin';
+    const hashedSuperAdmin = await bcrypt.hash(masterPassword, 10);
+    const hashedAdmin = await bcrypt.hash(masterPassword, 10);
 
     await prisma.user.upsert({
       where: { email: 'rkule880@gmail.com' },

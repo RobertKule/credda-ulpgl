@@ -6,14 +6,23 @@ export async function GET(req: NextRequest) {
   const locale = searchParams.get("locale") || "fr";
 
   try {
+    interface GalleryImageSqlResult {
+      id: string;
+      src: string;
+      category: string;
+      order: number;
+      featured: boolean;
+      translations: { title: string; description?: string | null }[];
+    }
+
     const images = (await sql`
       SELECT gi.*, 
         (SELECT json_agg(t) FROM "GalleryImageTranslation" t WHERE t."galleryImageId" = gi.id AND t.language = ${locale}) as translations
       FROM "GalleryImage" gi
       ORDER BY gi."order" ASC
-    `) as any[];
+    `) as GalleryImageSqlResult[];
 
-    const items = images.map((img: any) => ({
+    const items = images.map((img) => ({
       id: img.id,
       src: img.src,
       category: img.category,
@@ -24,8 +33,9 @@ export async function GET(req: NextRequest) {
     }));
 
     return NextResponse.json({ items });
-  } catch (error: any) {
-    console.error("[API] Gallery error:", error.message);
+  } catch (error: unknown) {
+    const err = error as Error;
+    console.error("[API] Gallery error:", err.message);
     return NextResponse.json({ items: [] }, { status: 500 });
   }
 }

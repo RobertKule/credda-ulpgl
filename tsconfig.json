@@ -44,6 +44,15 @@
     "mini_seed.ts",
     "prisma/seed.ts",
     "playwright.config.ts",
-    "__tests__"
+    "vitest.config.ts",
+    "vitest.config.mts",
+    "__tests__",
+    "test",
+    "e2e",
+    "coverage",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
   ]
 }

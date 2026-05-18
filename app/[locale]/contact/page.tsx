@@ -1,203 +1,152 @@
-"use client";
-
-import { useTranslations } from "next-intl";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Phone, MapPin, Send, CheckCircle2, ArrowRight, Loader2 } from "lucide-react";
+import { getTranslations } from "next-intl/server";
+import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import React from "react";
+import EditorialPageHero from "@/components/shared/EditorialPageHero";
+import ContactForm from "@/components/contact/ContactForm";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
-import { sendContactMessage } from "@/services/contact-actions";
-import { toast } from "react-hot-toast";
+export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'ContactPage' });
 
-export default function ContactPage() {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setStatus("loading");
-    
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      subject: formData.get("subject") as string,
-      message: formData.get("message") as string,
-    };
-
-    try {
-      const res = await sendContactMessage(data);
-      if (res.success) {
-        setStatus("success");
-        toast.success("Message envoyé au secrétariat !");
-      } else {
-        setStatus("error");
-        toast.error(res.error || "Une erreur est survenue.");
-      }
-    } catch (error) {
-      setStatus("error");
-      toast.error("Erreur réseau. Veuillez réessayer.");
-    }
-  }
+  const formTranslations = {
+    fields: {
+      name: { label: t('form.fields.name.label'), placeholder: t('form.fields.name.placeholder') },
+      email: { label: t('form.fields.email.label'), placeholder: t('form.fields.email.placeholder') },
+      subject: { label: t('form.fields.subject.label'), placeholder: t('form.fields.subject.placeholder') },
+      requestType: {
+        label: t('form.fields.requestType.label'),
+        placeholder: t('form.fields.requestType.placeholder'),
+        options: {
+          collaboration: t('form.fields.requestType.options.collaboration'),
+          research: t('form.fields.requestType.options.research'),
+          clinic: t('form.fields.requestType.options.clinic'),
+          publication: t('form.fields.requestType.options.publication'),
+          event: t('form.fields.requestType.options.event'),
+          other: t('form.fields.requestType.options.other')
+        }
+      },
+      message: { label: t('form.fields.message.label'), placeholder: t('form.fields.message.placeholder') }
+    },
+    submit: t('form.submit'),
+    submitting: t('form.submitting'),
+    success: {
+      title: t('form.success.title'),
+      description: t('form.success.description'),
+      button: t('form.success.button')
+    },
+    title: t('form.title'),
+    secure: t('form.secure')
+  };
 
   return (
-    <main className="min-h-screen bg-background py-24 px-6 lg:px-12 selection:bg-primary selection:text-primary-foreground font-sans">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+    <main className="min-h-screen bg-background pb-0 selection:bg-primary selection:text-primary-foreground">
+      {/* 1. STANDARDIZED HERO */}
+      <EditorialPageHero 
+        title={(t.raw('header.title') as string).replace(/<span>|<\/span>/g, '')}
+        subtitle={t('header.description')}
+        badge={t('header.badge')}
+      />
+
+      {/* 2 & 3 & 4. CONTACT LAYOUT */}
+      <section className="py-24 lg:py-32 px-6 relative" id="form-section">
+        <div className="container mx-auto max-w-7xl">
           
-          {/* GAUCHE : IDENTITÉ & INFOS */}
-          <div className="space-y-20">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="space-y-8"
-            >
-              <div className="flex items-center gap-4">
-                <div className="h-[1px] w-12 bg-primary" />
-                <span className="text-[10px] uppercase tracking-[0.6em] font-black text-primary">Liaison Institutionnelle</span>
-              </div>
-              
-              <h1 className="text-6xl md:text-8xl font-serif font-black text-foreground leading-[0.85] tracking-tighter uppercase">
-                Écrivons le <br />
-                <span className="text-primary italic">Futur.</span>
-              </h1>
-              
-              <p className="text-muted-foreground font-medium max-w-md leading-relaxed text-sm uppercase tracking-widest opacity-60">
-                Recherche scientifique, expertise clinique ou partenariat stratégique : le secrétariat CREDDA-ULPGL assure votre orientation.
-              </p>
-            </motion.div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 xl:gap-16 items-center mb-20 lg:mb-32">
+            
+            {/* LEFT: INFO & MAP */}
+            <div className="lg:col-span-5 space-y-12">
+               {/* Quick Infos Title */}
+               <div className="space-y-4">
+                  <h2 className="text-3xl md:text-5xl font-serif font-bold text-foreground leading-[1.1]">
+                    {t('info.title')}
+                  </h2>
+               </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16 border-t border-border/50 pt-16">
-              <ContactInfoCard 
-                icon={<MapPin size={18} />} 
-                title="Campus Salomon" 
-                content="Av. de la Corniche, Himbi, Goma" 
-              />
-              <ContactInfoCard 
-                icon={<Mail size={18} />} 
-                title="Email Officiel" 
-                content="creddaulpgl08@gmail.com" 
-              />
-              <ContactInfoCard 
-                icon={<Phone size={18} />} 
-                title="Ligne Directe" 
-                content="+243 812 345 678" 
-              />
+               {/* Info Cards Grid */}
+               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <ContactInfoCard icon={<MapPin size={28} />} title={t('info.items.address.title')} content={t('info.items.address.value')} />
+                  <ContactInfoCard icon={<Phone size={28} />} title={t('info.items.phone.title')} content={t('info.items.phone.value')} />
+                  <ContactInfoCard icon={<Mail size={28} />} title={t('info.items.email.title')} content={t('info.items.email.value')} />
+                  <ContactInfoCard icon={<Clock size={28} />} title={t('info.items.hours.title')} content={t('info.items.hours.value')} />
+               </div>
             </div>
-          </div>
 
-          {/* DROITE : LE FORMULAIRE (RATIO CARRÉ) */}
-          <div className="relative group">
-            {/* Déco technique autour du formulaire */}
-            <div className="absolute -top-4 -right-4 w-24 h-24 border-t border-r border-primary/20 pointer-events-none" />
-            <div className="absolute -bottom-4 -left-4 w-24 h-24 border-b border-l border-primary/20 pointer-events-none" />
+            {/* RIGHT: CONTACT FORM */}
+            <div className="lg:col-span-7">
+               <ContactForm t={formTranslations} />
+            </div>
 
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="relative bg-card border border-border p-6 sm:p-10 lg:p-14 flex flex-col justify-center shadow-2xl overflow-hidden rounded-[2rem] min-h-[500px]"
-            >
-              <AnimatePresence mode="wait">
-                {status === "success" ? (
-                  <motion.div 
-                    key="success"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    className="flex flex-col items-center text-center space-y-8"
-                  >
-                    <div className="w-20 h-20 bg-primary/10 rounded-md flex items-center justify-center text-primary border border-primary/20">
-                      <CheckCircle2 size={40} />
-                    </div>
-                    <div className="space-y-2">
-                      <h2 className="text-3xl font-serif font-black uppercase tracking-tighter">Transmis.</h2>
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] font-bold">
-                        Votre requête est en cours de traitement par le secrétariat.
-                      </p>
-                    </div>
-                    <Button 
-                      onClick={() => setStatus("idle")}
-                      className="bg-foreground text-background rounded-md uppercase font-black text-[10px] tracking-widest px-10 py-6 hover:bg-primary hover:text-primary-foreground transition-all"
-                    >
-                      Nouveau Message
-                    </Button>
-                  </motion.div>
-                ) : (
-                  <motion.div key="form" className="w-full">
-                    <div className="flex items-center justify-between mb-12 border-b border-border pb-6">
-                      <h3 className="text-xl font-serif font-black uppercase tracking-tighter italic">Requête Officielle</h3>
-                      <div className="text-[8px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1">Secure Protocol</div>
-                    </div>
-
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
-                        <Field label="Identité" name="name" placeholder="Pr. Robert Kule" required />
-                        <Field label="Contact" name="email" type="email" placeholder="kule@ulpgl.ac.cd" required />
-                      </div>
-                      <Field label="Sujet" name="subject" placeholder="Coopération de recherche" required />
-                      
-                      <div className="space-y-3 group/field">
-                        <div className="flex justify-between items-center">
-                          <label className="text-[9px] uppercase font-black tracking-widest text-muted-foreground group-focus-within/field:text-primary transition-colors">Message</label>
-                          <div className="h-[1px] w-8 bg-border group-focus-within/field:bg-primary transition-all" />
-                        </div>
-                        <Textarea 
-                          name="message"
-                          placeholder="Explicitez votre requête ici..." 
-                          className="bg-muted/30 border-border rounded-md min-h-[120px] focus-visible:ring-1 focus-visible:ring-primary/40 focus:border-primary/50 transition-all text-sm font-medium placeholder:opacity-10"
-                          required
-                        />
-                      </div>
-
-                      <Button 
-                        disabled={status === "loading"}
-                        className="w-full bg-primary text-primary-foreground rounded-md h-16 font-black uppercase tracking-[0.4em] text-[10px] hover:scale-[1.01] active:scale-95 transition-all shadow-xl shadow-primary/10"
-                      >
-                        {status === "loading" ? (
-                          <Loader2 className="animate-spin" size={18} />
-                        ) : (
-                          <span className="flex items-center gap-4">
-                            Envoyer au Secrétariat
-                            <ArrowRight size={14} />
-                          </span>
-                        )}
-                      </Button>
-                    </form>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* 4. MAP SECTION */}
+      <section className="py-24 pb-0 bg-card/30 border-t border-border/30 relative">
+        <div className="container mx-auto px-6 max-w-7xl mb-12 flex flex-col items-center text-center space-y-4">
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">{t('map.title')}</span>
+          <h2 className="text-3xl md:text-5xl font-serif font-bold text-foreground">
+            Nous Trouver
+          </h2>
+          <p className="text-sm md:text-base text-muted-foreground max-w-2xl leading-relaxed">
+            {t('map.description')}
+          </p>
+        </div>
+
+        {/* Clear, interactive Map Block spanning full width of the screen */}
+        <div className="w-full h-[500px] lg:h-[700px] bg-muted/50 border-y border-border/50 relative z-10 shadow-inner">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15953.522818968944!2d29.2152!3d-1.6883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dd0f735c03f443%3A0xc6cb1c7e9c32f8eb!2sUniversit%C3%A9%20Libre%20des%20Pays%20des%20Grands%20Lacs!5e0!3m2!1sen!2scd!4v1700000000000!5m2!1sen!2scd"
+            width="100%"
+            height="100%"
+            style={{ border: 0, filter: "grayscale(30%) contrast(1.1)" }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </section>
+
+      {/* 5. SECTION CTA FINAL */}
+      <section className="py-32 bg-primary/5 border-t border-primary/10 relative overflow-hidden">
+        <div className="container mx-auto px-6 text-center space-y-10 relative z-10">
+          <h2 
+            className="text-4xl md:text-6xl lg:text-7xl font-serif font-black text-foreground max-w-4xl mx-auto leading-[1.1] tracking-tight"
+            dangerouslySetInnerHTML={{ __html: (t.raw('cta.title') as string).replace('<span>', '<span class="text-primary italic inline-block hover:scale-105 transition-transform cursor-default">') }}
+          />
+          <Button asChild className="h-14 lg:h-16 px-8 lg:px-12 rounded-full bg-primary text-primary-foreground text-[10px] lg:text-xs font-black tracking-[0.2em] uppercase hover:scale-[1.02] transition-transform shadow-2xl shadow-primary/20 group">
+             <a href="#form-section">
+               {t('cta.button')}
+             </a>
+          </Button>
+        </div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 blur-[150px] rounded-full pointer-events-none" />
+      </section>
+
     </main>
   );
 }
 
-// COMPOSANTS LOCAUX
 function ContactInfoCard({ icon, title, content }: { icon: any, title: string, content: string }) {
   return (
-    <div className="group space-y-4">
-      <div className="w-12 h-12 bg-primary/5 border border-primary/20 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500">
-        {icon}
-      </div>
-      <div className="space-y-1">
-        <h4 className="text-[10px] uppercase font-black tracking-widest text-muted-foreground/40">{title}</h4>
-        <p className="text-sm font-bold text-foreground leading-relaxed uppercase tracking-tighter">{content}</p>
-      </div>
-    </div>
-  );
-}
+    <div className="relative group p-[1px] rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
+      {/* Animated Border Beam */}
+      <div className="absolute top-1/2 left-1/2 w-[200%] h-[200%] bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(22,101,52,0.8)_360deg)] opacity-0 group-hover:opacity-100 group-hover:animate-border-beam transition-opacity duration-500 pointer-events-none" />
+      
+      {/* Inner Card */}
+      <div className="relative z-10 p-6 lg:p-8 bg-card/80 backdrop-blur-xl h-full min-h-[200px] rounded-[11px] flex flex-col justify-center gap-5 border border-border/40 group-hover:border-transparent transition-colors duration-500 overflow-hidden">
+        {/* Soft background glow */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-primary/5 to-transparent blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-function Field({ label, ...props }: any) {
-  return (
-    <div className="space-y-2 group/input">
-      <label className="text-[9px] uppercase font-black tracking-widest text-muted-foreground group-focus-within/input:text-primary transition-colors">{label}</label>
-      <Input 
-        {...props}
-        className="bg-muted/30 border-border rounded-md h-12 focus-visible:ring-1 focus-visible:ring-primary/40 transition-all text-xs font-bold placeholder:opacity-10"
-      />
+        <div className="relative z-10 w-16 h-16 bg-muted/50 border border-border/50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary group-hover:scale-110 transition-all duration-500 rounded-xl">
+          {icon}
+        </div>
+        <div className="relative z-10 space-y-1.5">
+          <h4 className="text-[11px] uppercase font-bold tracking-[0.15em] text-muted-foreground/60 group-hover:text-primary transition-colors">{title}</h4>
+          <p className="text-sm font-medium text-foreground leading-relaxed">{content}</p>
+        </div>
+      </div>
     </div>
   );
 }

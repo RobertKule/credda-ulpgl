@@ -2,42 +2,31 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { withSafeAction, ActionResponse } from "@/lib/safe-action";
+import { ApiResponse } from "@/types/api";
+import { withSafeAction } from "@/lib/safe-action";
+import { memberSchema, updateMemberSchema } from "@/schemas/member";
+import { Member } from "@prisma/client";
 
-export async function createMember(formData: any): Promise<ActionResponse<any>> {
+export async function createMember(rawData: unknown): Promise<ApiResponse<Member>> {
   return withSafeAction("createMember", async () => {
+    const data = memberSchema.parse(rawData);
+    const { translations, ...memberData } = data;
+
     const member = await db.member.create({
       data: {
-        slug: formData.slug,
-        name: formData.name,
-        image: formData.image,
-        email: formData.email,
-        facebook: formData.facebook,
-        linkedin: formData.linkedin,
-        twitter: formData.twitter,
-        whatsapp: formData.whatsapp,
-        youtube: formData.youtube,
-        tiktok: formData.tiktok,
-        website: formData.website,
-        order: parseInt(formData.order) || 0,
+        ...memberData,
         translations: { 
-          create: formData.translations.map((t: any) => ({
-            language: t.language,
-            role: t.role,
-            bio: t.bio,
-            education: t.education,
-            researchAxes: t.researchAxes,
-            expertise: t.expertise
-          })) 
+          create: translations
         }
       }
     });
+
     revalidatePath("/[locale]/admin/members", "layout");
     return member;
   }, "Erreur lors de l'intégration du membre");
 }
 
-export async function deleteMember(id: string): Promise<ActionResponse<any>> {
+export async function deleteMember(id: string): Promise<ApiResponse<{ id: string }>> {
   return withSafeAction("deleteMember", async () => {
     await db.member.delete({ where: { id } });
     revalidatePath("/[locale]/admin/members", "layout");
@@ -45,36 +34,22 @@ export async function deleteMember(id: string): Promise<ActionResponse<any>> {
   }, "Impossible de supprimer ce membre");
 }
 
-export async function updateMember(id: string, formData: any): Promise<ActionResponse<any>> {
+export async function updateMember(id: string, rawData: unknown): Promise<ApiResponse<Member>> {
   return withSafeAction("updateMember", async () => {
+    const data = updateMemberSchema.parse({ ... (rawData as object), id });
+    const { translations, id: _, ...memberData } = data;
+
     const member = await db.member.update({
       where: { id },
       data: {
-        slug: formData.slug,
-        name: formData.name,
-        image: formData.image,
-        email: formData.email,
-        facebook: formData.facebook,
-        linkedin: formData.linkedin,
-        twitter: formData.twitter,
-        whatsapp: formData.whatsapp,
-        youtube: formData.youtube,
-        tiktok: formData.tiktok,
-        website: formData.website,
-        order: parseInt(formData.order) || 0,
+        ...memberData,
         translations: {
           deleteMany: {},
-          create: formData.translations.map((t: any) => ({
-            language: t.language,
-            role: t.role,
-            bio: t.bio,
-            education: t.education,
-            researchAxes: t.researchAxes,
-            expertise: t.expertise
-          }))
+          create: translations
         }
       }
     });
+
     revalidatePath("/[locale]/admin/members", "layout");
     return member;
   }, "Erreur lors de la mise à jour du profil membre");

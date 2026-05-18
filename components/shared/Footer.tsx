@@ -58,7 +58,7 @@ export default function Footer() {
     <ul className="space-y-5">
       {Array.isArray(expertiseItems) && expertiseItems.map((item: string) => (
         <li key={item} className="group">
-          <Link href="/research" className="text-sm text-muted-foreground hover:text-primary transition-all flex items-center gap-3">
+          <Link href="/publications" className="text-sm text-muted-foreground hover:text-primary transition-all flex items-center gap-3">
             <span className="w-1.5 h-1.5 bg-primary rounded-md scale-0 group-hover:scale-100 transition-transform duration-300" />
             {item}
           </Link>

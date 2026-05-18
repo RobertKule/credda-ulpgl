@@ -1,10 +1,9 @@
-// app/[locale]/admin/messages/page.tsx
 import { db } from "@/lib/db";
-import { Inbox, MessageSquare, MailOpen, Clock } from "lucide-react";
+import { ContactMessage } from "@/types/contact";
 import InboxTable from "./InboxTable";
 
 export default async function AdminMessagesPage() {
-  const messages = await db.contactMessage.findMany({
+  const messages: ContactMessage[] = await db.contactMessage.findMany({
     orderBy: { createdAt: "desc" },
   });
 
@@ -49,7 +48,7 @@ export default async function AdminMessagesPage() {
 
       {/* Main Inbox Application */}
       <div className="max-w-6xl">
-         <InboxTable initialMessages={messages as any} />
+         <InboxTable initialMessages={messages} />
       </div>
     </div>
   );

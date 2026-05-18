@@ -22,7 +22,7 @@ export default async function AdminLayout({
     redirect(`/${locale}/login`);
   }
 
-  const userRole = (session.user as any).role;
+  const userRole = session.user.role;
 
   // Enforce ADMIN and EDITOR roles
   if (userRole !== "ADMIN" && userRole !== "SUPER_ADMIN" && userRole !== "EDITOR") {
@@ -64,8 +64,8 @@ export default async function AdminLayout({
           <AdminTopBar locale={locale} />
 
           {/* Zone de Contenu */}
-          <main className="flex-1 p-4 sm:p-6 lg:p-10 overflow-x-hidden">
-            <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
+            <div className="max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700 bg-card/50 backdrop-blur-3xl rounded-2xl border border-border/60 shadow-sm p-4 sm:p-6 min-h-[85vh]">
                {children}
             </div>
           </main>

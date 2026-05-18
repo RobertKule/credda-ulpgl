@@ -3,9 +3,12 @@
 
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { withSafeAction, ActionResponse } from "@/lib/safe-action";
+import { withSafeAction } from "@/lib/safe-action";
+import { ApiResponse } from "@/types/api";
+import { PublicationWithTranslations } from "@/types/publication";
+import { Publication } from "@prisma/client";
 
-export async function getPublicationsByDomain(domain: "RESEARCH" | "CLINICAL", locale: string): Promise<ActionResponse<any>> {
+export async function getPublicationsByDomain(domain: "RESEARCH" | "CLINICAL", locale: string): Promise<ApiResponse<PublicationWithTranslations[]>> {
   return withSafeAction("getPublicationsByDomain", async () => {
     return await db.publication.findMany({
       where: { domain },
@@ -19,12 +22,19 @@ export async function getPublicationsByDomain(domain: "RESEARCH" | "CLINICAL", l
   }, "Erreur lors de la récupération des publications");
 }
 
-export async function createPublication(data: any): Promise<ActionResponse<any>> {
+export async function createPublication(data: {
+  slug: string;
+  year: string | number;
+  pdfUrl: string;
+  domain?: "RESEARCH" | "CLINICAL";
+  doi?: string | null;
+  translations: { language: string; title: string; authors: string; description: string; content?: string | null }[];
+}): Promise<ApiResponse<Publication>> {
   return withSafeAction("createPublication", async () => {
     const pub = await db.publication.create({
       data: {
         slug: data.slug,
-        year: parseInt(data.year),
+        year: typeof data.year === "string" ? parseInt(data.year) : data.year,
         pdfUrl: data.pdfUrl,
         domain: data.domain || "RESEARCH",
         doi: data.doi,
@@ -38,7 +48,7 @@ export async function createPublication(data: any): Promise<ActionResponse<any>>
   }, "Erreur lors de la création de la publication");
 }
 
-export async function deletePublication(id: string): Promise<ActionResponse<any>> {
+export async function deletePublication(id: string): Promise<ApiResponse<{ id: string }>> {
   return withSafeAction("deletePublication", async () => {
     await db.publication.delete({
       where: { id }
@@ -48,13 +58,20 @@ export async function deletePublication(id: string): Promise<ActionResponse<any>
   }, "Erreur lors de la suppression de la publication");
 }
 
-export async function updatePublication(id: string, data: any): Promise<ActionResponse<any>> {
+export async function updatePublication(id: string, data: {
+  slug: string;
+  year: string | number;
+  pdfUrl: string;
+  domain: "RESEARCH" | "CLINICAL";
+  doi?: string | null;
+  translations: { language: string; title: string; authors: string; description: string; content?: string | null }[];
+}): Promise<ApiResponse<Publication>> {
   return withSafeAction("updatePublication", async () => {
     const pub = await db.publication.update({
       where: { id },
       data: {
         slug: data.slug,
-        year: parseInt(data.year),
+        year: typeof data.year === "string" ? parseInt(data.year) : data.year,
         pdfUrl: data.pdfUrl,
         domain: data.domain,
         doi: data.doi,

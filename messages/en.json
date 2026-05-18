@@ -8,9 +8,12 @@
     "system": "CREDDA CORE"
   },
   "Navigation": {
+    "home": "Home",
     "research": "Research",
     "clinical": "Legal Clinic",
     "publications": "Publications",
+    "mediaCenter": "Media Center",
+    "announcements": "Announcements",
     "about": "The Institution",
     "programmes": "Programmes",
     "events": "Events",
@@ -29,8 +32,17 @@
   "HomePage": {
     "hero": {
       "badge": "#1 Research & Excellence 2025",
-      "title": "Driving Change with African Knowledge",
+      "title_prefix": "Driving Change with",
+      "title_carousel": [
+        "African Knowledge",
+        "Excellence",
+        "Innovation",
+        "Development",
+        "Justice"
+      ],
       "subtitle": "Join thousands of researchers and development actors worldwide by accessing resources designed for modern minds.",
+      "subtitle_credda": "Join thousands of researchers and development actors worldwide by accessing resources designed for modern minds.",
+      "subtitle_ulpgl": "The Free University of the Great Lakes Countries, a pillar of academic excellence in the DRC.",
       "discover": "Discover our research",
       "carousel": [
         {
@@ -64,15 +76,15 @@
     "vision": {
       "badge": "ACADEMIC HERITAGE",
       "title": "Redefining the Future of <highlight>Research</highlight> and <highlight>Justice</highlight> in DRC.",
-      "main_description": "CREDDA positions itself as a think tank and a catalyst for reform, combining scientific excellence with on-the-ground engagement.",
+      "main_description": "A think tank and catalyst for reform, combining scientific excellence with social engagement.",
       "card_vision_badge": "Our Vision",
       "card_vision_text": "Uniting academic excellence with social impact for tomorrow's Africa.",
       "card_readiness_title": "Excellence & Engagement",
-      "card_readiness_text": "CREDDA trains leaders capable of combining scientific rigor with solving real-world challenges.",
+      "card_readiness_text": "CREDDA trains leaders combining scientific rigor with solving real-world challenges.",
       "pillar1_title": "Legal Research",
-      "pillar1_text": "Production of high-level knowledge and influential scientific publications.",
+      "pillar1_text": "Production of high-level knowledge and influential publications.",
       "pillar2_title": "Legal Clinic",
-      "pillar2_text": "Defense of human rights and direct access to justice for vulnerable communities."
+      "pillar2_text": "Defense of human rights and direct access to justice for all."
     },
     "about": {
       "badge": "Academic Heritage",
@@ -184,18 +196,9 @@
         "ulpgl.webp"
       ]
     },
-    "cta": {
-      "badge": "Join the Movement",
-      "title": "Building the future through <span>Science</span>.",
-      "partner": "Become a Partner",
-      "about": "The CREDDA Project",
-      "mission": "Read our Mission",
-      "collaboration": "Collaborating with the World's Finest",
-      "portal": "Researcher Portal"
-    },
     "Gallery": {
       "badge": "MEDIA LIBRARY",
-      "title": "Latest <span class=\"text-primary\">Episodes & Articles</span>",
+      "title": "Our",
       "description": "Discover our latest legal advances and field analyses through our multimedia content.",
       "cta": "Full exploration",
       "load_more": "Load more",
@@ -205,7 +208,8 @@
         "close": "Close",
         "prev": "Previous",
         "next": "Next"
-      }
+      },
+      "title_highlight": "Institutional Gallery"
     },
     "intro_subtitle": "Research & Excellence",
     "about_caption": "Thinking the Rule of Law.",
@@ -239,6 +243,43 @@
           "a": "Yes, CREDDA collaborates with many international universities (Oxford, Northwestern, LSE, etc.). Contact our scientific secretariat for any proposal."
         }
       ]
+    },
+    "Timeline": {
+      "badge": "Our Journey",
+      "title": "History & Evolution",
+      "items": {
+        "2008": {
+          "title": "Center Creation",
+          "description": "Foundation of the Center for Research and Studies for Development (CREDDA)."
+        },
+        "2012": {
+          "title": "Academic Structuring",
+          "description": "Strengthening research areas and establishing early structured scientific programs."
+        },
+        "2016": {
+          "title": "Activity Expansion",
+          "description": "Extension of research fields and integration of interdisciplinary projects."
+        },
+        "2020": {
+          "title": "Digitalization",
+          "description": "Introduction of digital tools in research and full digital archiving of publications."
+        },
+        "2023": {
+          "title": "Modern Transformation",
+          "description": "Modernization of research infrastructure and structuring towards a digital platform."
+        },
+        "2026": {
+          "title": "CREDDA ULPGL (Now)",
+          "description": "Launch of the unified platform, full digitalization of services and global research vision."
+        }
+      }
+    },
+    "cta": {
+      "badge": "JOIN US",
+      "title": "Let's Build the <span>Future</span> Together.",
+      "collaboration": "Explore our academic and institutional collaboration opportunities.",
+      "partner": "Become a Partner",
+      "about": "Discover CREDDA"
     }
   },
   "metadata": {
@@ -298,93 +339,138 @@
     "contact": "Contact",
     "help": "Need help?"
   },
-  "about": {
-    "since": "Since",
-    "watch_video": "Watch institutional film",
+  "AboutPage": {
     "hero": {
-      "badge": "Founded in 2008 • Academic Excellence",
-      "title": "Thinking <italic>Law</italic>, Building the Future.",
-      "desc": "CREDDA is the epicenter of legal research in the DRC, merging scientific rigor and social engagement."
+      "badge": "FOUNDED IN 2008 • ACADEMIC EXCELLENCE",
+      "title": "Thinking the <italic>Law</italic>, Building the Future.",
+      "subtitle": "CREDDA is the epicenter of legal research in the DRC, merging scientific rigor with social engagement.",
+      "breadcrumb": "Institution > About"
     },
-    "who_we_are": "Who are we?",
-    "mission_title": "An academic institution dedicated to",
-    "mission_italic": "Societal Progress",
-    "mission_description": "CREDDA is not just a think tank. It is the scientific arm of ULPGL that materializes the link between legal theories and field realities in the DRC.",
-    "achievements": [
-      "Internationally certified scientific production",
-      "Free legal aid for the vulnerable",
-      "Democracy observatory in the Great Lakes",
-      "Unique land and environmental expertise"
-    ],
-    "years_excellence": "Years of Excellence",
-    "contact_us": "Contact Us",
-    "compass": "Our Compass",
-    "mission_vision_title": "A clear mission for a resilient Africa.",
+    "story": {
+      "badge": "Who are we?",
+      "title": "Narrating African Excellence through Research.",
+      "p1": "CREDDA is a pillar of academic intelligence in the DRC. Affilié à l'ULPGL-Goma, we transform research into direct social action.",
+      "p2": "Strategically located in the Great Lakes, we provide an independent scientific voice on justice and sustainable development issues.",
+      "image_label": "Academic Body & Excellence",
+      "highlights": {
+        "title": "Our Impact in Numbers",
+        "items": [
+          "Internationally certified scientific production",
+          "Free legal aid for the vulnerable",
+          "Democracy observatory in the Great Lakes",
+          "Unique expertise in land and environment"
+        ]
+      }
+    },
     "mission": {
-      "badge": "Our Manifesto",
-      "title": "A <italic>transformative</italic> vision of law.",
-      "desc": "Beyond texts, we believe in living law. A law that protects the Congo Basin ecosystems and guarantees the dignity of indigenous peoples. CREDDA is not just a laboratory, it is a legal shield.",
-      "cta": "Discover our publications"
+      "badge": "Our Mission",
+      "title": "Impact Rooted in Science.",
+      "desc": "We channel our expertise through three fundamental axes to transform challenges into opportunities.",
+      "cards": {
+        "research": {
+          "title": "Cutting-edge Research",
+          "desc": "Producing original and rigorous knowledge to inform public policy."
+        },
+        "innovation": {
+          "title": "Social Innovation",
+          "desc": "Designing legal and social solutions adapted to the continent's transitions."
+        },
+        "impact": {
+          "title": "Community Impact",
+          "desc": "Ensuring a bridge between academia and populations for accessible justice."
+        }
+      }
     },
-    "mission_text": "Produce high-quality research to guide public policies and strengthen the rule of law in the DRC.",
-    "vision": "Our Vision",
-    "vision_text": "Become the main interdisciplinary hub for conflict transformation in Central Africa.",
-    "values": "Our Values",
-    "values_text": "Academic integrity, political neutrality, and commitment to the rights of vulnerable communities.",
-    "values_list": {
-      "excellence": "Excellence",
-      "neutrality": "Neutrality",
-      "engagement": "Engagement",
-      "innovation": "Innovation"
-    },
-    "location": "Location",
-    "find_us": "Find us in Goma.",
-    "location_description": "CREDDA's headquarters is located within the Salomon Campus of ULPGL, a privileged academic setting in the heart of Goma.",
-    "address": "Physical Address",
-    "full_address": [
-      "Université Libre des Pays des Grands Lacs (ULPGL),",
-      "Salomon Campus, Avenue de la Corniche,",
-      "Himbi District, Goma, DRC."
-    ],
-    "stats": {
-      "y": "Years of research",
-      "p": "Published articles",
-      "g": "Global partnerships",
-      "l": "Local engagement"
-    },
-    "cta_title": "Ready to collaborate for change?",
-    "become_partner": "Become a Partner",
-    "meet_team": "Our Team",
-    "quote": "Law must not only be spoken, it must be lived in the service of climate and social justice.",
-    "pillars": {
-      "title": "The Legal Pillars",
-      "desc": "Our actions are strictly in line with national and international normative frameworks.",
-      "items": [
+    "history": {
+      "badge": "Our Journey",
+      "title": "A journey of rigor and commitment.",
+      "timeline": [
         {
-          "t": "DRC Constitution",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2008",
+          "title": "Center Creation",
+          "desc": "Foundation of the Center for Research and Studies for Development (CREDDA) with a vision to promote academic research in Africa."
         },
         {
-          "t": "Law 22/030 (Indigenous)",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2012",
+          "title": "Academic Structuring",
+          "desc": "Strengthening research axes and establishing the first structured scientific programs."
         },
         {
-          "t": "African Charter",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2016",
+          "title": "Expansion of Activities",
+          "desc": "Extension of research areas and integration of interdisciplinary projects with regional partners."
         },
         {
-          "t": "Bio Diversity Convention",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2020",
+          "title": "Digitalization of the Center",
+          "desc": "Introduction of digital tools in research and complete digital archiving of publications."
         },
         {
-          "t": "UN Declaration",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2023",
+          "title": "Modern Transformation",
+          "desc": "Modernization of research infrastructure and structuring towards a digital platform."
         },
         {
-          "t": "Environmental Law",
-          "desc": "Fundamental reference of our legal and clinical analyses."
+          "year": "2026",
+          "title": "CREDDA ULPGL",
+          "desc": "Launch of the unified platform, complete digitalization of services, and international vision."
         }
       ]
+    },
+    "values": {
+      "badge": "Our Values",
+      "title": "The principles guiding our actions.",
+      "items": {
+        "excellence": {
+          "title": "Excellence",
+          "desc": "Scientific rigor as an absolute standard."
+        },
+        "ethics": {
+          "title": "Ethics",
+          "desc": "Total integrity in all our research."
+        },
+        "independence": {
+          "title": "Independence",
+          "desc": "Academic freedom at the service of truth."
+        },
+        "impact": {
+          "title": "Impact",
+          "desc": "Useable science for social transformation."
+        },
+        "vision": {
+          "title": "African Vision",
+          "desc": "Holding high the continent's intelligence."
+        }
+      }
+    },
+    "impact": {
+      "title": "A global influence without boundaries.",
+      "stats": [
+        {
+          "value": "16",
+          "label": "Years of Expertise"
+        },
+        {
+          "value": "200+",
+          "label": "Certified Publications"
+        },
+        {
+          "value": "15",
+          "label": "Global Partners"
+        },
+        {
+          "value": "1200+",
+          "label": "Clinical Cases Treated"
+        }
+      ]
+    },
+    "vision": {
+      "title": "Building Modern African Intelligence.",
+      "text": "CREDDA does not just observe world changes; we prepare minds to anticipate them. Our vision is that of an Africa capable of producing its own science to solve its own challenges, in permanent dialogue with the world."
+    },
+    "cta": {
+      "title": "Join a new generation of researchers and changemakers.",
+      "button": "Become a Partner"
     }
   },
   "ResearchPage": {
@@ -581,6 +667,11 @@
     "notFound": {
       "title": "Publication not found",
       "description": "The publication you are looking for does not exist or has been moved."
+    },
+    "hub": {
+      "title": "CREDDA Research Hub",
+      "description": "This publication is part of the permanent collection of the ULPGL Interdisciplinary Research Center.",
+      "link": "More info"
     }
   },
   "TeamPage": {
@@ -625,86 +716,151 @@
   },
   "ContactPage": {
     "header": {
-      "badge": "Institutional Liaison",
-      "title": "Let's talk about the <span>Future</span>.",
-      "description": "Scientific research, clinical expertise or strategic partnership: our secretariat will direct you to the appropriate experts."
+      "badge": "CREDDA · Institutional Contact",
+      "title": "Let's Start a <span>Conversation</span>.",
+      "description": "CREDDA is open to academic partnerships, legal consultations, scientific collaborations, and institutional exchanges. Let's discuss your projects."
     },
     "info": {
-      "title": "Contact Hub",
-      "description": "Direct access to ULPGL's research and legal clinic departments.",
-      "items": [
-        {
-          "title": "Salomon Campus",
-          "content": "Avenue de la Corniche, Himbi, Goma, DRC"
+      "title": "Quick Information",
+      "items": {
+        "address": {
+          "title": "Address",
+          "value": "Salomon Campus, Avenue de la Corniche, Himbi, Goma"
         },
-        {
+        "phone": {
+          "title": "Phone",
+          "value": "+243 812 345 678"
+        },
+        "email": {
           "title": "Official Email",
-          "content": "contact@credda-ulpgl.org"
+          "value": "contact@credda-ulpgl.org"
         },
-        {
-          "title": "Direct Line",
-          "content": "+243 812 345 678"
-        },
-        {
+        "hours": {
           "title": "Opening Hours",
-          "content": "Mon - Fri: 08:30 - 16:30"
+          "value": "Mon - Fri: 08:30 - 16:30"
         }
-      ],
-      "social": "Social Networks"
+      }
     },
     "form": {
-      "title": "Submit a scientific request",
+      "title": "Contact Form",
+      "secure": "SECURE PROTOCOL",
       "fields": {
         "name": {
-          "label": "Full Identity",
-          "placeholder": "Pr. / Dr. / Full Name",
-          "required": "*"
+          "label": "Full Name",
+          "placeholder": "Pr. / Dr. / Name"
         },
         "email": {
           "label": "Institutional Email",
-          "placeholder": "address@institution.org",
-          "required": "*"
+          "placeholder": "address@institution.org"
         },
         "subject": {
-          "label": "Contact Subject",
-          "placeholder": "Ex: Scientific collaboration request or clinical expertise",
-          "required": "*"
+          "label": "Subject",
+          "placeholder": "Ex: Partnership Proposal"
+        },
+        "requestType": {
+          "label": "Request Type",
+          "placeholder": "Select...",
+          "options": {
+            "collaboration": "Collaboration",
+            "research": "Research",
+            "clinic": "Legal Clinic",
+            "publication": "Publication",
+            "event": "Event",
+            "other": "Other"
+          }
         },
         "message": {
           "label": "Details of your Request",
-          "placeholder": "Describe your message for the attention of the CREDDA secretariat...",
-          "required": "*"
+          "placeholder": "Explain your need..."
         }
       },
-      "submit": "Forward to secretariat",
+      "submit": "Send to CREDDA",
       "submitting": "Sending...",
-      "error": {
-        "invalid": "Invalid response from server",
-        "generic": "An error occurred while sending the message.",
-        "connection": "Connection error. Please try again later."
-      },
       "success": {
-        "title": "Request Registered.",
-        "description": "Your message has been successfully transmitted to the <strong>CREDDA-ULPGL Scientific Secretariat</strong>. You will receive an email confirmation after examination by our experts.",
+        "title": "Message Sent.",
+        "description": "Your request has been transmitted. We will respond as soon as possible.",
         "button": "New message"
       }
     },
     "map": {
-      "badge": "Location",
-      "title": "Salomon Campus",
-      "gps": "GPS Coordinates",
-      "location": "Himbi, Goma",
-      "description": "Follow Avenue de la Corniche to the main entrance of Salomon Campus."
+      "title": "Find Us",
+      "description": "Our center is located in the heart of Goma, on the Salomon Campus of ULPGL, by Lake Kivu."
     },
-    "faq": {
-      "security": {
-        "title": "Data Security",
-        "description": "Your information is encrypted and never shared."
+    "cta": {
+      "title": "Let's build research that transforms <span>society</span>.",
+      "button": "Write to CREDDA"
+    }
+  },
+  "RequestAccessPage": {
+    "header": {
+      "title": "Request Access",
+      "subtitle": "Institutional Portal"
+    },
+    "stepper": {
+      "step1": "Welcome",
+      "step2": "Information",
+      "step3": "Security",
+      "step4": "Review"
+    },
+    "step_welcome": {
+      "title": "Access Request",
+      "subtitle": "Welcome to the CREDDA-ULPGL institutional space",
+      "description": "Your account request will be analyzed and validated by our administration.",
+      "continue": "Continue"
+    },
+    "step_personal": {
+      "title": "Personal Information",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "email": "Email Address",
+      "emailPlaceholder": "name@example.com",
+      "phone": "Phone Number",
+      "phonePlaceholder": "+243 9...",
+      "roleLabel": "Requested Role",
+      "roles": {
+        "researcher": "Researcher",
+        "student": "Student",
+        "admin": "Administration",
+        "partner": "Partner",
+        "clinic": "Legal Clinic",
+        "guest": "Guest"
       },
-      "regional": {
-        "title": "Regional Scope",
-        "description": "We operate throughout the Great Lakes region."
-      }
+      "continue": "Next Step",
+      "validation_error": "Please fill in all required fields."
+    },
+    "step_security": {
+      "title": "Security",
+      "password": "Password",
+      "passwordPlaceholder": "Enter a strong password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Re-enter the password",
+      "strength": "Password Strength",
+      "strength_weak": "Weak",
+      "strength_medium": "Medium",
+      "strength_strong": "Strong",
+      "password_mismatch": "Passwords do not match",
+      "continue": "Next Step",
+      "back": "Back",
+      "validation_error": "Password must be at least 8 characters and match."
+    },
+    "step_review": {
+      "title": "Review Data",
+      "disclaimer": "Please verify your information before submission.",
+      "terms": "I confirm that the information provided is accurate.",
+      "submit": "Submit Request",
+      "back": "Back",
+      "submitting": "Submitting..."
+    },
+    "success": {
+      "title": "Request Sent",
+      "text1": "We have successfully received your access request.",
+      "text2": "Our team will analyze your information before validating your account.",
+      "text3": "A response will be sent to you by email to confirm your registration.",
+      "back": "Back to Home"
+    },
+    "errors": {
+      "title": "Error",
+      "retry": "Retry"
     }
   },
   "LoginPage": {
@@ -718,6 +874,9 @@
       "email_placeholder": "name@ulpgl.ac.cd",
       "password_label": "Secure Access Key",
       "password_placeholder": "••••••••",
+      "show_password": "Show",
+      "hide_password": "Hide",
+      "remember_me": "Remember access",
       "forgot_link": "Forgot?"
     },
     "submit": {
@@ -726,7 +885,10 @@
     },
     "footer": {
       "university": "ULPGL GOMA",
-      "copyright": "CREDDA © {year}"
+      "copyright": "CREDDA © {year}",
+      "secure_access": "Encrypted Access",
+      "data_protection": "Protected Data",
+      "institution": "Academic Institution"
     },
     "forgot_view": {
       "back": "BACK TO LOGIN",
@@ -754,13 +916,15 @@
     "form_header": {
       "login_title": "Login",
       "forgot_title": "Recovery",
-      "login_subtitle": "Harmonized Administration System",
+      "login_subtitle": "Access your institutional space",
       "forgot_subtitle": "Institutional ID Required"
     },
     "navigation": {
       "exit": "EXIT",
       "back_to_portal": "Back to public portal",
-      "create_account": "Create an account"
+      "create_account": "Create an account",
+      "request_access": "Request institutional access",
+      "request_access_desc": "Professional or Researcher?"
     },
     "success_modal": {
       "title": "Access Granted",
@@ -1260,6 +1424,71 @@
       "email": "Professional Email",
       "password": "Temporary Password",
       "submit": "Generate Access"
+    }
+  },
+  "ProgrammesPage": {
+    "header": {
+      "badge": "Expertise & Action",
+      "title": "Strategic Focus Areas",
+      "description": "The Environmental Law Clinic (CDE) of CREDDA deploys its expertise through seven strategic axes for social and sustainable justice."
+    }
+  },
+  "EventsPage": {
+    "header": {
+      "badge": "Scientific Agenda",
+      "title": "Events & Conferences",
+      "description": "Participate in our symposiums, clinical workshops and annual report presentations to stay at the heart of legal innovation."
+    },
+    "upcoming": "Upcoming",
+    "archives": "Archives",
+    "no_events": "No upcoming events scheduled"
+  },
+  "GlobalCTA": {
+    "badge": "Join the Movement",
+    "title": "Building the future through <span>Science</span>.",
+    "partner": "Become a Partner",
+    "about": "The CREDDA Project",
+    "mission": "Read our Mission",
+    "collaboration": "Collaborating with the World's Finest",
+    "portal": "Researcher Portal"
+  },
+  "MediaCenter": {
+    "hero": {
+      "badge": "Multimedia",
+      "title": "Gallery & Events",
+      "subtitle": "A visual journey through CREDDA's impact in DRC and internationally.",
+      "stats": {
+        "events": "Documented Events",
+        "media": "Multimedia Content",
+        "videos": "Video Reports"
+      }
+    },
+    "filters": {
+      "all": "All",
+      "events": "Events",
+      "videos": "Videos",
+      "gallery": "Gallery"
+    },
+    "explorer": {
+      "itemsPerPage": "Show:",
+      "back": "Back to Gallery",
+      "events_title": "Academic Events",
+      "videos_title": "Video Reports",
+      "gallery_title": "Institutional Gallery",
+      "narrative_events": "More than {count} documented academic events and scientific activities.",
+      "narrative_videos": "{count} reports and documentaries on CREDDA's impact.",
+      "narrative_gallery": "A living visual archive of CREDDA's activities."
+    },
+    "eventCard": {
+      "viewMore": "View Details",
+      "location": "Location",
+      "organizer": "Organized by"
+    },
+    "modal": {
+      "next": "Next",
+      "prev": "Previous",
+      "close": "Close",
+      "info": "Image Details"
     }
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { BookOpen, ShieldCheck, Award } from "lucide-react";
 import { useTheme } from "@/components/shared/ThemeProvider";
 
@@ -15,9 +15,9 @@ export default function PersistentGlobeBackground() {
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-      {/* Institutional Deep Blue Background */}
+      {/* Institutional Deep Green Background */}
       <div className={`absolute inset-0 transition-colors duration-1000 ${
-        theme === 'dark' ? 'bg-[#101B4D]' : 'bg-[#203696]'
+        theme === 'dark' ? 'bg-[#040D06]' : 'bg-background'
       }`} />
 
       {/* Persistent Rotating Globe - Positioned Right */}

@@ -9,7 +9,7 @@ import { ImageIcon, Upload, Link as LinkIcon, X, Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 
 interface SmartImageInputProps {
   value: string;

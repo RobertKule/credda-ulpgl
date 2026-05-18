@@ -1,5 +1,5 @@
-// app/[locale]/admin/clinical/page.tsx
 import { getAllClinicalCases } from "@/services/clinical-actions";
+import { ClinicalCaseWithBeneficiary } from "@/types/clinical";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
@@ -23,7 +23,7 @@ import { Link } from "@/navigation";
 
 export default async function ClinicianAdminPage() {
   const result = await getAllClinicalCases();
-  const cases = result.success ? result.data : [];
+  const cases: ClinicalCaseWithBeneficiary[] = result.success ? (result.data ?? []) : [];
 
   const getUrgencyBadge = (urgency: string) => {
     switch (urgency) {

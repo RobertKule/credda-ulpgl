@@ -29,29 +29,18 @@ import {
   archiveMessage, 
   replyToContactMessage 
 } from "@/services/contact-actions";
+import { ContactMessage, ContactStatus } from "@/types/contact";
 import { toast } from "react-hot-toast";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 
-interface Message {
-  id: string;
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-  status: "UNREAD" | "READ" | "ARCHIVED";
-  createdAt: Date;
-  repliedAt: Date | null;
-  replyContent: string | null;
-}
-
-export default function InboxTable({ initialMessages }: { initialMessages: Message[] }) {
-  const [messages, setMessages] = useState<Message[]>(initialMessages);
+export default function InboxTable({ initialMessages }: { initialMessages: ContactMessage[] }) {
+  const [messages, setMessages] = useState<ContactMessage[]>(initialMessages);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
-  const [replyingTo, setReplyingTo] = useState<Message | null>(null);
+  const [replyingTo, setReplyingTo] = useState<ContactMessage | null>(null);
   const [replyText, setReplyText] = useState("");
 
   const filteredMessages = useMemo(() => {

@@ -7,7 +7,7 @@ import { createUser } from "@/services/user-actions";
 import { useRouter, useParams } from "next/navigation";
 import { ShieldAlert, Save, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 
 export default function NewUserPage() {
   const router = useRouter();

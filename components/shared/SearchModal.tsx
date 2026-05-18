@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 import { Search, X, FileText, BookOpen, Loader2, Command, ChevronRight, ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Link } from "@/navigation";
@@ -115,7 +115,7 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
                         {results.articles.map((a: any) => {
                            const title = a.translations.find((tr: any) => tr.language === locale)?.title || a.translations[0].title;
                            return (
-                            <Link key={a.id} href={`/research/${a.slug}`} onClick={onClose} className="flex items-center justify-between p-4 hover:bg-white/5 transition-all group rounded-sm">
+                            <Link key={a.id} href={`/publications/${a.slug}`} onClick={onClose} className="flex items-center justify-between p-4 hover:bg-white/5 transition-all group rounded-sm">
                               <div className="flex items-center gap-4">
                                 <div className="p-2 bg-white/5 rounded-sm">
                                   <FileText size={16} className="text-[#F5F2EC]/40 group-hover:text-[#C9A84C] transition-colors" />

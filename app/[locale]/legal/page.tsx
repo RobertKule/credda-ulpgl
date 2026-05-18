@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Scale, Building2, User, Landmark, ShieldCheck } from "lucide-react";
 
 export default function LegalPage() {

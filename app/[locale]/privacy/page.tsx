@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { Shield, Lock, FileText, Fingerprint, MailCheck } from "lucide-react";
 
 export default function PrivacyPage() {

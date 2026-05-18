@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { motion, HTMLMotionProps } from "framer-motion";
+import { m as motion, HTMLMotionProps } from "framer-motion";
 
 interface AnimatedCardProps extends HTMLMotionProps<"div"> {
     children: React.ReactNode;

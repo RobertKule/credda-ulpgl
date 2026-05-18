@@ -3,9 +3,11 @@
 import { useEffect } from 'react';
 import { Link } from '@/navigation';
 import { AlertTriangle, RefreshCcw, Home, ChevronRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { m as motion } from "framer-motion";
 
 import { useTranslations } from 'next-intl';
+
+import { logger } from "@/lib/logger";
 
 export default function Error({
   error,
@@ -17,8 +19,8 @@ export default function Error({
   const t = useTranslations('ErrorPage');
 
   useEffect(() => {
-    // Log the error to an error reporting service
-    console.error('Production Error:', error);
+    // Log the error using the new structured logger
+    logger.error({ err: error, digest: error.digest, msg: 'Production Error caught' });
   }, [error]);
 
   return (

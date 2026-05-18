@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import { 
   User, 
   Mail, 
@@ -45,14 +45,26 @@ export default function ProfilePage() {
     }
   }, [status, router, locale]);
 
+  interface ExtendedUser {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role: string;
+    phone?: string | null;
+    organization?: string | null;
+    bio?: string | null;
+  }
+
   useEffect(() => {
     if (session?.user) {
+      const user = session.user as ExtendedUser;
       setFormData({
-        name: session.user.name || "",
-        phone: (session.user as any).phone || "",
-        organization: (session.user as any).organization || "",
-        bio: (session.user as any).bio || "",
-        image: session.user.image || ""
+        name: user.name || "",
+        phone: user.phone || "",
+        organization: user.organization || "",
+        bio: user.bio || "",
+        image: user.image || ""
       });
     }
   }, [session]);
@@ -152,7 +164,7 @@ export default function ProfilePage() {
               </div>
               <div className="flex items-center gap-3 text-slate-500">
                 <ShieldCheck size={18} />
-                <span className="text-xs font-black uppercase tracking-widest">{(session.user as any).role}</span>
+                <span className="text-xs font-black uppercase tracking-widest">{session.user.role}</span>
               </div>
             </div>
           </div>

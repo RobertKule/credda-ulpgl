@@ -1,26 +1,34 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { withSafeAction, ActionResponse } from "@/lib/safe-action";
+import { ApiResponse } from "@/types/api";
+import { withSafeAction } from "@/lib/safe-action";
+import { clinicalCaseSchema, updateClinicalCaseSchema } from "@/schemas/clinical";
+import { ClinicalCaseWithBeneficiary, FullClinicalCase, CaseStatus } from "@/types/clinical";
+import { CaseNote, ClinicalCase } from "@prisma/client";
+import { z } from "zod";
 
 /** Pas de revalidatePath ici : ce module est importé par des Client Components.
  *  Utiliser router.refresh() côté client après mutation (voir ClinicalCaseForm). */
 
-export async function submitClinicalCase(formData: any): Promise<ActionResponse<any>> {
+export async function submitClinicalCase(rawData: unknown): Promise<ApiResponse<ClinicalCase>> {
   return withSafeAction("submitClinicalCase", async () => {
+    const parsed = clinicalCaseSchema.parse(rawData);
+    const { name, email, phone, location, beneficiaryType, problemType, description, incidentDate, urgency, expectations } = parsed;
+
     // 1. Gérer le bénéficiaire (recherche par téléphone pour éviter les doublons simples)
     let beneficiary = await db.beneficiary.findFirst({
-      where: { phone: formData.phone }
+      where: { phone }
     });
 
     if (!beneficiary) {
       beneficiary = await db.beneficiary.create({
         data: {
-          name: formData.name,
-          email: formData.email || null,
-          phone: formData.phone,
-          location: formData.location,
-          type: formData.beneficiaryType || "LOCAL_COMMUNITY",
+          name,
+          email: email || null,
+          phone,
+          location,
+          type: beneficiaryType,
         }
       });
     }
@@ -28,13 +36,13 @@ export async function submitClinicalCase(formData: any): Promise<ActionResponse<
     // 2. Créer le cas clinique
     const newCase = await db.clinicalCase.create({
       data: {
-        title: `Cas: ${formData.problemType} - ${formData.location}`,
-        description: formData.description,
-        problemType: formData.problemType,
-        location: formData.location,
-        incidentDate: formData.incidentDate ? new Date(formData.incidentDate) : null,
-        urgency: formData.urgency || "MEDIUM",
-        expectations: formData.expectations,
+        title: `Cas: ${problemType} - ${location}`,
+        description,
+        problemType,
+        location,
+        incidentDate: incidentDate ? new Date(incidentDate) : null,
+        urgency: urgency,
+        expectations,
         beneficiaryId: beneficiary.id,
         status: "NEW",
       }
@@ -44,7 +52,7 @@ export async function submitClinicalCase(formData: any): Promise<ActionResponse<
   }, "Erreur lors de la soumission du cas clinique");
 }
 
-export async function getAllClinicalCases(): Promise<ActionResponse<any>> {
+export async function getAllClinicalCases(): Promise<ApiResponse<ClinicalCaseWithBeneficiary[]>> {
   return withSafeAction("getAllClinicalCases", async () => {
     return await db.clinicalCase.findMany({
       include: { beneficiary: true },
@@ -53,7 +61,7 @@ export async function getAllClinicalCases(): Promise<ActionResponse<any>> {
   }, "Erreur de récupération des cas cliniques");
 }
 
-export async function getClinicalCaseById(id: string): Promise<ActionResponse<any>> {
+export async function getClinicalCaseById(id: string): Promise<ApiResponse<FullClinicalCase | null>> {
   return withSafeAction("getClinicalCaseById", async () => {
     return await db.clinicalCase.findUnique({
       where: { id },
@@ -67,46 +75,49 @@ export async function getClinicalCaseById(id: string): Promise<ActionResponse<an
   }, "Cas clinique non trouvé");
 }
 
-export async function updateClinicalCaseStatus(id: string, status: string): Promise<ActionResponse<any>> {
+export async function updateClinicalCaseStatus(id: string, status: CaseStatus): Promise<ApiResponse<ClinicalCase>> {
   return withSafeAction("updateClinicalCaseStatus", async () => {
     return await db.clinicalCase.update({
       where: { id },
-      data: { status: status as any }
+      data: { status }
     });
   }, "Erreur de mise à jour du statut");
 }
 
-export async function deleteClinicalCase(id: string): Promise<ActionResponse<any>> {
+export async function deleteClinicalCase(id: string): Promise<ApiResponse<{ id: string }>> {
   return withSafeAction("deleteClinicalCase", async () => {
     await db.clinicalCase.delete({ where: { id } });
     return { id };
   }, "Erreur lors de la suppression du cas clinique");
 }
 
-export async function updateClinicalCase(id: string, formData: any): Promise<ActionResponse<any>> {
+export async function updateClinicalCase(id: string, rawData: unknown): Promise<ApiResponse<ClinicalCase>> {
   return withSafeAction("updateClinicalCase", async () => {
+    const parsed = updateClinicalCaseSchema.parse({ ... (rawData as object), id });
+    const { description, problemType, location, incidentDate, urgency, expectations, status, beneficiaryId, name, email, phone, beneficiaryType } = parsed;
+
     const updated = await db.clinicalCase.update({
       where: { id },
       data: {
-        description: formData.description,
-        problemType: formData.problemType,
-        location: formData.location,
-        incidentDate: formData.incidentDate ? new Date(formData.incidentDate) : null,
-        urgency: formData.urgency || "MEDIUM",
-        expectations: formData.expectations,
-        status: formData.status
+        description,
+        problemType,
+        location,
+        incidentDate: incidentDate ? new Date(incidentDate) : null,
+        urgency,
+        expectations,
+        status
       }
     });
 
-    if (formData.beneficiaryId) {
+    if (beneficiaryId) {
       await db.beneficiary.update({
-        where: { id: formData.beneficiaryId },
+        where: { id: beneficiaryId },
         data: {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          location: formData.location,
-          type: formData.beneficiaryType
+          name,
+          email: email || null,
+          phone,
+          location,
+          type: beneficiaryType
         }
       });
     }
@@ -115,7 +126,7 @@ export async function updateClinicalCase(id: string, formData: any): Promise<Act
   }, "Erreur lors de la mise à jour du cas clinique");
 }
 
-export async function addCaseNote(id: string, content: string, clinicianId: string): Promise<ActionResponse<any>> {
+export async function addCaseNote(id: string, content: string, clinicianId: string): Promise<ApiResponse<CaseNote>> {
   return withSafeAction("addCaseNote", async () => {
     return await db.caseNote.create({
       data: {
@@ -127,7 +138,7 @@ export async function addCaseNote(id: string, content: string, clinicianId: stri
   }, "Erreur lors de l'ajout de la note");
 }
 
-export async function getCasesByPhone(phone: string): Promise<ActionResponse<any>> {
+export async function getCasesByPhone(phone: string): Promise<ApiResponse<FullClinicalCase[]>> {
   return withSafeAction("getCasesByPhone", async () => {
     return await db.clinicalCase.findMany({
       where: {

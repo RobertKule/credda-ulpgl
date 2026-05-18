@@ -1,9 +1,9 @@
-// app/[locale]/admin/publications/page.tsx
 import { db } from "@/lib/db";
 import { Link } from "@/navigation";
 import { Button } from "@/components/ui/button";
 import { Plus, BookOpen } from "lucide-react";
 import PublicationManagementTable from "./PublicationManagementTable";
+import { PublicationWithTranslations } from "@/types/publication";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -12,7 +12,7 @@ interface Props {
 export default async function AdminPublicationsPage({ params }: Props) {
   const { locale } = await params;
 
-  const publications = await db.publication.findMany({
+  const publications: PublicationWithTranslations[] = await db.publication.findMany({
     include: { translations: { where: { language: locale } } },
     orderBy: { year: "desc" },
   });
@@ -47,7 +47,7 @@ export default async function AdminPublicationsPage({ params }: Props) {
         </div>
       </div>
 
-      <PublicationManagementTable initialPublications={publications as any} locale={locale} />
+      <PublicationManagementTable initialPublications={publications} locale={locale} />
     </div>
   );
 }

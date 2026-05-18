@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import { motion, Variants } from "framer-motion";
+import { m as motion, Variants } from "framer-motion";
 import { Link } from "@/navigation";
 import { ArrowRight, BookOpen } from "lucide-react";
 import Image from "next/image";
@@ -41,7 +41,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
           </GSAPReveal>
 
           <GSAPReveal direction="up" delay={0.2}>
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-fraunces font-black tracking-tighter leading-[1.1] text-foreground">
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-serif font-black tracking-tighter leading-[1.1] text-foreground">
               {t.rich('research.title_insight', {
                   span: (chunks) => <span className="text-primary italic font-light">{chunks}</span>
               }) || (
@@ -87,7 +87,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                 <span className="absolute left-0 top-1/2 w-0.5 h-0 bg-primary group-hover:h-full group-hover:top-0 transition-all duration-500 ease-out z-10" />
                 <span className="absolute right-0 top-1/2 w-0.5 h-0 bg-primary group-hover:h-full group-hover:top-0 transition-all duration-500 ease-out z-10" />
 
-                <Link href={`/research/${item.slug}`} className="block space-y-4">
+                <Link href={`/publications/${item.slug}`} className="block space-y-4">
                   {/* Image Area */}
                   <div className="relative aspect-video w-full overflow-hidden">
                     <Image 
@@ -113,7 +113,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                     </div>
 
                     <div className="space-y-2">
-                      <h3 className="text-xl md:text-2xl font-fraunces font-black text-foreground leading-[1.2] tracking-tight group-hover:text-primary transition-colors duration-500 line-clamp-2">
+                      <h3 className="text-xl md:text-2xl font-serif font-black text-foreground leading-[1.2] tracking-tight group-hover:text-primary transition-colors duration-500 line-clamp-2">
                          {item.translations?.[0]?.title}
                       </h3>
                       <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">

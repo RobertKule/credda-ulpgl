@@ -28,8 +28,11 @@ function applyTheme(mode: ThemeMode) {
 }
 
 export function ThemeProvider({ children, forcedTheme }: { children: ReactNode, forcedTheme?: ThemeMode }) {
-  const [theme, setThemeState] = useState<ThemeMode>(forcedTheme || "dark");
+  const [theme, setThemeState] = useState<ThemeMode>("dark");
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     const stored = localStorage.getItem(STORAGE_KEY) as ThemeMode | null;
     if (stored === "light" || stored === "dark") {
       setThemeState(stored);
@@ -46,6 +49,7 @@ export function ThemeProvider({ children, forcedTheme }: { children: ReactNode, 
     setThemeState(t);
     localStorage.setItem(STORAGE_KEY, t);
     applyTheme(t);
+    // Force a small delay to ensure class is applied before state reaches children if needed
   }, []);
 
   const toggleTheme = useCallback(() => {
@@ -57,9 +61,13 @@ export function ThemeProvider({ children, forcedTheme }: { children: ReactNode, 
     });
   }, []);
 
+  // Use a fragment and only render children after mount to avoid hydration mismatch
+  // However, for SE and speed, we render but wrap client-specific logic
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
-      {children}
+      <div className={`contents ${mounted ? "theme-ready" : ""}`}>
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 }

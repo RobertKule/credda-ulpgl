@@ -27,7 +27,7 @@ import {
   ShieldCheck
 } from "lucide-react";
 import { submitClinicalCase } from "@/services/clinical-actions";
-import { motion, AnimatePresence } from "framer-motion";
+import { m as motion, AnimatePresence } from "framer-motion";
 
 export default function CaseForm() {
   const t = useTranslations("ContactPage.form");

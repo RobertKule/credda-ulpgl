@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sql } from "@/lib/db";
+import { db } from "@/lib/db";
+import { ArticleWithTranslations } from "@/types/article";
 
 const PAGE_SIZE = 12;
 
@@ -10,32 +11,30 @@ export async function GET(req: NextRequest) {
   const skip = (page - 1) * PAGE_SIZE;
 
   try {
-    // Fetch articles with their translations and category translations in one go (or separate for simplicity)
-    const items = (await sql`
-      SELECT a.*, 
-        (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
-        (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations
-      FROM "Article" a
-      WHERE a.published = true
-      ORDER BY a."createdAt" DESC
-      LIMIT ${PAGE_SIZE} OFFSET ${skip}
-    `) as any[];
-
-    const countResult = (await sql`SELECT count(*) FROM "Article" WHERE published = true`) as any[];
-    const total = parseInt(countResult[0].count, 10);
-
-    // Map to match expected Prisma structure if needed
-    const formattedItems = items.map((item: any) => ({
-      ...item,
-      translations: item.translations || [],
-      category: item.categoryId ? {
-        id: item.categoryId,
-        translations: item.category_translations || []
-      } : null
-    }));
+    const [items, total] = await Promise.all([
+      db.article.findMany({
+        where: { published: true },
+        include: {
+          translations: {
+            where: { language: locale }
+          },
+          category: {
+            include: {
+              translations: {
+                where: { language: locale }
+              }
+            }
+          }
+        },
+        orderBy: { createdAt: "desc" },
+        take: PAGE_SIZE,
+        skip: skip
+      }),
+      db.article.count({ where: { published: true } })
+    ]);
 
     return NextResponse.json({
-      items: formattedItems,
+      items,
       pagination: {
         page,
         pageSize: PAGE_SIZE,
@@ -43,8 +42,9 @@ export async function GET(req: NextRequest) {
         totalPages: Math.ceil(total / PAGE_SIZE) || 1
       }
     });
-  } catch (error: any) {
-    console.error("[API] Articles error:", error.message);
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+    console.error("[API] Articles error:", errorMessage);
     return NextResponse.json({ items: [], pagination: { page, total: 0 } }, { status: 500 });
   }
 }

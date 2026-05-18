@@ -36,17 +36,17 @@ export default async function EditArticlePage({ params }: Props) {
     id: data.id,
     slug: data.slug,
     domain: data.domain,
-    categoryId: (data as any).categoryId || "",
-    videoUrl: (data as any).videoUrl || "",
-    mainImage: (data as any).mainImage || "",
-    published: (data as any).published ?? true,
-    year: (data as any).year || new Date().getFullYear(),
-    doi: (data as any).doi || "",
-    pdfUrl: (data as any).pdfUrl || "",
+    categoryId: article?.categoryId || "",
+    videoUrl: article?.videoUrl || "",
+    mainImage: article?.mainImage || "",
+    published: article?.published ?? true,
+    year: publication?.year || new Date().getFullYear(),
+    doi: publication?.doi || "",
+    pdfUrl: publication?.pdfUrl || "",
     translations: data.translations.map((t: any) => ({
       language: t.language,
       title: t.title || "",
-      excerpt: t.excerpt || t.description || "",
+      excerpt: (t.excerpt || t.description) || "",
       content: t.content || ""
     }))
   };

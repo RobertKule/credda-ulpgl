@@ -42,7 +42,7 @@ export default function ClinicalImpactSection() {
                             </div>
                         ))}
                     </div>
-                    <Link href="/clinical" className="group inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400 border-b border-emerald-400/30 pb-2 hover:border-emerald-400 transition-all">
+                    <Link href="/publications" className="group inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-emerald-400 border-b border-emerald-400/30 pb-2 hover:border-emerald-400 transition-all">
                         {t('clinical.cta')} <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform duration-500" />
                     </Link>
                 </div>

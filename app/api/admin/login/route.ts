@@ -1,8 +1,10 @@
-// app/api/admin/login/route.ts
 import { NextRequest, NextResponse } from "next/server";
+import { logger } from "@/lib/logger";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import jwt from 'jsonwebtoken';
+
+import { rateLimit, resetRateLimit } from "@/lib/rate-limit";
 
 // ✅ FORCER nodejs runtime (TRÈS IMPORTANT)
 export const runtime = 'nodejs';
@@ -11,57 +13,36 @@ export async function POST(req: NextRequest) {
   try {
     const { email, password } = await req.json();
     
-    console.log(`🔐 Tentative de connexion: ${email}`);
+    if (!email || !password) {
+      return NextResponse.json({ message: "Email et mot de passe requis" }, { status: 400 });
+    }
+
+    // ✅ Rate Limiting
+    const limit = await rateLimit(email);
+    if (!limit.success) {
+      return NextResponse.json(
+        { message: "Trop de tentatives. Veuillez réessayer dans 15 minutes." },
+        { status: 429 }
+      );
+    }
 
     // ✅ Vérifier que le secret JWT est défini
     const jwtSecret = process.env.NEXTAUTH_SECRET;
     if (!jwtSecret) {
-      console.error("❌ NEXTAUTH_SECRET non défini");
+      logger.error("❌ NEXTAUTH_SECRET non défini");
       return NextResponse.json(
         { message: "Erreur de configuration serveur" },
         { status: 500 }
       );
     }
 
-    // ✅ Admin par défaut (seed / fallback production)
-    const adminFromSeed = [
-      { email: "masteradmin@credda.org", password: process.env.MASTER_ADMIN_PASSWORD || "CreddaMaster2026!", role: "SUPER_ADMIN" },
-      { email: "admin@credda-ulpgl.org", password: "Admin123!", role: "ADMIN" },
-      { email: "editor@credda-ulpgl.org", password: "Editor123!", role: "EDITOR" },
-      { email: "kulewakangitsirobert@gmail.com", password: "credda@2026", role: "ADMIN" }
-    ].find(a => a.email === email && a.password === password);
-
-    if (adminFromSeed) {
-      const token = jwt.sign(
-        { 
-          id: email, 
-          email: adminFromSeed.email, 
-          role: adminFromSeed.role 
-        },
-        jwtSecret,
-        { expiresIn: '7d' }
-      );
-
-      console.log(`✅ Token généré pour ${email} (seed)`);
-      
-      return NextResponse.json({ 
-        success: true,
-        token,
-        user: { 
-          id: email, 
-          email, 
-          role: adminFromSeed.role 
-        }
-      });
-    }
-
-    // ✅ Recherche en base
+    // ✅ Recherche en base uniquement
     const user = await db.user.findUnique({ 
       where: { email } 
     });
     
     if (!user) {
-      console.log(`❌ Utilisateur non trouvé: ${email}`);
+      logger.warn({ email }, "❌ Auth failure: Utilisateur non trouvé");
       return NextResponse.json(
         { message: "Email ou mot de passe incorrect" },
         { status: 401 }
@@ -70,7 +51,7 @@ export async function POST(req: NextRequest) {
 
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      console.log(`❌ Mot de passe incorrect pour: ${email}`);
+      logger.warn({ email }, "❌ Auth failure: Mot de passe incorrect");
       return NextResponse.json(
         { message: "Email ou mot de passe incorrect" },
         { status: 401 }
@@ -78,7 +59,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (user.status !== "APPROVED") {
-      console.log(`❌ Compte non approuvé: ${email} (${user.status})`);
+      logger.warn({ email, status: user.status }, "❌ Auth failure: Compte non approuvé");
       return NextResponse.json(
         { message: "Votre compte est en attente d'approbation ou a été désactivé." },
         { status: 403 }
@@ -91,8 +72,11 @@ export async function POST(req: NextRequest) {
       { expiresIn: '7d' }
     );
 
-    console.log(`✅ Token généré pour: ${email}`);
+    logger.info({ email }, "✅ Token généré: Connexion admin réussie");
     
+    // Reset rate limit on success
+    resetRateLimit(email);
+
     return NextResponse.json({ 
       success: true,
       token,
@@ -104,7 +88,7 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error) {
-    console.error("❌ Erreur serveur:", error);
+    logger.error({ err: error }, "❌ Erreur serveur lors du login admin");
     return NextResponse.json(
       { message: "Erreur serveur" },
       { status: 500 }

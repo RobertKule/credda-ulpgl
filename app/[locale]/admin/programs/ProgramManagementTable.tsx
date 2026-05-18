@@ -17,23 +17,13 @@ import {
 import { Link } from "@/navigation";
 import { toast } from "react-hot-toast";
 
-interface Program {
-  id: string;
-  slug: string;
-  published: boolean;
-  featured: boolean;
-  mainImage: string | null;
-  translations: {
-    title: string;
-    description: string;
-  }[];
-}
+import { ProgramWithTranslations } from "@/types/program";
 
 export default function ProgramManagementTable({ 
   initialPrograms,
   locale 
 }: { 
-  initialPrograms: Program[],
+  initialPrograms: ProgramWithTranslations[],
   locale: string
 }) {
   const [programs, setPrograms] = useState(initialPrograms);
