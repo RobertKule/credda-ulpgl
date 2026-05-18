@@ -59,20 +59,43 @@ export default function HomeClient({
           </div>
         </section>
 
-        {/* ═══════════════════════════════════════════
-            2. STATS — Tinted Institutional Green Band
-            Distinct from Hero. Draws attention to numbers.
-        ════════════════════════════════════════════ */}
-        <div className="relative z-30 bg-primary/5 dark:bg-primary/10 border-y border-primary/30 dark:border-primary/15">
-          <StatsSection
-            data={[
-              { label: t('stats.years'), value: new Date().getFullYear() - 2008, suffix: "" },
-              { label: t('stats.pubs'), value: dbStats?.totalResources || 150, suffix: "+" },
-              { label: t('stats.partners'), value: (partners ?? []).length || 15, suffix: "" },
-              { label: t('stats.cases'), value: dbStats?.clinicalCases || 120, suffix: "+" },
-            ]}
-          />
-        </div>
+       {/* ═══════════════════════════════════════════
+    2. STATS — Institutional Glass Band
+    Light, transparent, keeps hero background visible
+════════════════════════════════════════════ */}
+
+<div className="relative z-30 bg-gradient-to-b from-primary/5 via-background/10 to-transparent dark:from-primary/10 dark:via-background/5 dark:to-transparent border-y border-primary/20 dark:border-primary/10 backdrop-blur-md overflow-hidden">
+
+  {/* subtle overlay texture (optionnel mais pro) */}
+  <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
+    <div className="w-full h-full bg-[radial-gradient(circle_at_1px_1px,_rgba(0,0,0,0.08)_1px,_transparent_0)] bg-[size:24px_24px]" />
+  </div>
+
+  <StatsSection
+    data={[
+      {
+        label: t('stats.years'),
+        value: new Date().getFullYear() - 2008,
+        suffix: ""
+      },
+      {
+        label: t('stats.pubs'),
+        value: dbStats?.totalResources || 150,
+        suffix: "+"
+      },
+      {
+        label: t('stats.partners'),
+        value: (partners ?? []).length || 15,
+        suffix: ""
+      },
+      {
+        label: t('stats.cases'),
+        value: dbStats?.clinicalCases || 120,
+        suffix: "+"
+      },
+    ]}
+  />
+</div>
 
         {/* ═══════════════════════════════════════════
             3. VISION — Glassmorphism Layer 1
