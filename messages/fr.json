@@ -649,6 +649,78 @@
       "button": "Écrire au CREDDA"
     }
   },
+  "RequestAccessPage": {
+    "header": {
+      "title": "Demande d'accès",
+      "subtitle": "Portail Institutionnel"
+    },
+    "stepper": {
+      "step1": "Bienvenue",
+      "step2": "Informations",
+      "step3": "Sécurité",
+      "step4": "Révision"
+    },
+    "step_welcome": {
+      "title": "Demande d'accès",
+      "subtitle": "Bienvenue dans l'espace institutionnel du CREDDA-ULPGL",
+      "description": "Votre demande de compte sera analysée et validée par notre administration.",
+      "continue": "Continuer"
+    },
+    "step_personal": {
+      "title": "Informations Personnelles",
+      "fullName": "Nom complet",
+      "fullNamePlaceholder": "Entrez votre nom",
+      "email": "Adresse Email",
+      "emailPlaceholder": "nom@exemple.com",
+      "phone": "Téléphone",
+      "phonePlaceholder": "+243 9...",
+      "roleLabel": "Rôle demandé",
+      "roles": {
+        "researcher": "Chercheur",
+        "student": "Étudiant",
+        "admin": "Administration",
+        "partner": "Partenaire",
+        "clinic": "Clinique Juridique",
+        "guest": "Invité"
+      },
+      "continue": "Étape Suivante",
+      "validation_error": "Veuillez remplir tous les champs requis."
+    },
+    "step_security": {
+      "title": "Sécurité",
+      "password": "Mot de passe",
+      "passwordPlaceholder": "Saisissez un mot de passe fort",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPasswordPlaceholder": "Retapez le mot de passe",
+      "strength": "Force du mot de passe",
+      "strength_weak": "Faible",
+      "strength_medium": "Moyen",
+      "strength_strong": "Fort",
+      "password_mismatch": "Les mots de passe ne correspondent pas",
+      "continue": "Étape Suivante",
+      "back": "Retour",
+      "validation_error": "Le mot de passe doit contenir au moins 8 caractères et correspondre."
+    },
+    "step_review": {
+      "title": "Vérification",
+      "disclaimer": "Veuillez vérifier vos informations avant de soumettre.",
+      "terms": "Je confirme que les informations fournies sont exactes.",
+      "submit": "Valider ma demande",
+      "back": "Retour",
+      "submitting": "Validation en cours..."
+    },
+    "success": {
+      "title": "Demande envoyée",
+      "text1": "Nous avons bien reçu votre demande d'accès.",
+      "text2": "Notre équipe analysera vos informations avant validation de votre compte.",
+      "text3": "Une réponse vous sera envoyée par email pour confirmer votre inscription.",
+      "back": "Retour à l'accueil"
+    },
+    "errors": {
+      "title": "Erreur",
+      "retry": "Réessayer"
+    }
+  },
   "LoginPage": {
     "header": {
       "back": "RETOUR AU SITE",

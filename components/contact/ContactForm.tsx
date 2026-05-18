@@ -82,7 +82,7 @@ export default function ContactForm({ t }: ContactFormProps) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="relative bg-card/60 backdrop-blur-2xl border border-border/40 p-6 sm:p-8 md:p-12 shadow-2xl rounded-2xl md:rounded-[2rem] overflow-hidden transition-all duration-500 hover:shadow-primary/5 hover:border-primary/20"
+        className="relative bg-emerald-50/90 dark:bg-card/60 backdrop-blur-2xl border border-emerald-200/50 dark:border-border/40 p-6 sm:p-8 md:p-12 shadow-[0_20px_60px_rgba(16,185,129,0.08)] dark:shadow-2xl rounded-2xl md:rounded-[2rem] overflow-hidden transition-all duration-500 hover:shadow-emerald-500/10 dark:hover:shadow-primary/5 hover:border-emerald-300/50 dark:hover:border-primary/20"
       >
         <AnimatePresence mode="wait">
           {status === "success" ? (
@@ -97,7 +97,7 @@ export default function ContactForm({ t }: ContactFormProps) {
                  initial={{ scale: 0 }} 
                  animate={{ scale: 1 }} 
                  transition={{ type: "spring", delay: 0.2 }}
-                 className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center text-primary border border-primary/20 shadow-[0_0_30px_rgba(201,168,76,0.3)]"
+                 className="w-20 h-20 bg-emerald-500/10 dark:bg-primary/10 rounded-full flex items-center justify-center text-emerald-600 dark:text-primary border border-emerald-300/50 dark:border-primary/20 shadow-[0_0_30px_rgba(16,185,129,0.3)] dark:shadow-[0_0_30px_rgba(201,168,76,0.3)]"
               >
                 <CheckCircle2 size={40} />
               </motion.div>
@@ -109,7 +109,7 @@ export default function ContactForm({ t }: ContactFormProps) {
               </div>
               <Button 
                 onClick={() => { setStatus("idle"); setRequestType(""); }}
-                className="bg-primary text-primary-foreground rounded-full mt-4 uppercase font-black text-[10px] tracking-widest px-10 py-6 hover:bg-primary/90 transition-all shadow-xl shadow-primary/20"
+                className="bg-emerald-600 text-white dark:bg-primary dark:text-primary-foreground rounded-full mt-4 uppercase font-black text-[10px] tracking-widest px-10 py-6 hover:bg-emerald-700 dark:hover:bg-primary/90 transition-all shadow-xl shadow-emerald-500/20 dark:shadow-primary/20"
               >
                 {t.success.button}
               </Button>
@@ -118,14 +118,14 @@ export default function ContactForm({ t }: ContactFormProps) {
             <motion.div key="form" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1, transition: { duration: 0.5 } }} exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.3 } }} className="w-full">
               
               {/* Form Header */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 pb-6 border-b border-border/30">
-                <h3 className="text-2xl md:text-3xl font-serif font-bold text-foreground">{t.title}</h3>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10 pb-6 border-b border-emerald-200/50 dark:border-border/30">
+                <h3 className="text-2xl md:text-3xl font-serif font-bold text-emerald-900 dark:text-foreground">{t.title}</h3>
                 <div className="flex items-center gap-3">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                   </span>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-primary">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600 dark:text-primary">
                     {t.secure}
                   </span>
                 </div>
@@ -139,14 +139,14 @@ export default function ContactForm({ t }: ContactFormProps) {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                    <div className="space-y-3 group/input">
-                     <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-muted-foreground/60 transition-colors group-focus-within/input:text-primary">
+                     <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-emerald-700/60 dark:text-muted-foreground/60 transition-colors group-focus-within/input:text-emerald-600 dark:group-focus-within/input:text-primary">
                        {t.fields.requestType.label}
                      </label>
                      <Select value={requestType} onValueChange={setRequestType}>
-                       <SelectTrigger className="bg-muted/10 border-border/50 rounded-md h-14 focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all text-sm font-medium shadow-sm hover:bg-muted/20 hover:border-primary/30 outline-none">
+                       <SelectTrigger className="bg-white/80 dark:bg-muted/10 border-emerald-200/60 dark:border-border/50 rounded-md h-14 focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-primary/20 focus:border-emerald-500 dark:focus:border-primary/40 transition-all text-sm font-medium shadow-sm hover:bg-emerald-50 dark:hover:bg-muted/20 hover:border-emerald-300 dark:hover:border-primary/30 outline-none">
                          <SelectValue placeholder={t.fields.requestType.placeholder} />
                        </SelectTrigger>
-                       <SelectContent className="rounded-xl border-border/40 bg-card/95 backdrop-blur-xl">
+                       <SelectContent className="rounded-xl border-emerald-200/50 dark:border-border/40 bg-white/95 dark:bg-card/95 backdrop-blur-xl">
                          {Object.entries(t.fields.requestType.options).map(([key, value]) => (
                            <SelectItem key={key} value={key} className="text-sm cursor-pointer">{value as string}</SelectItem>
                          ))}
@@ -158,23 +158,23 @@ export default function ContactForm({ t }: ContactFormProps) {
                 </div>
 
                 <div className="space-y-3 group/field">
-                  <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-muted-foreground/60 transition-colors group-focus-within/field:text-primary">
+                  <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-emerald-700/60 dark:text-muted-foreground/60 transition-colors group-focus-within/field:text-emerald-600 dark:group-focus-within/field:text-primary">
                     {t.fields.message.label}
                   </label>
                   <Textarea 
                     name="message"
                     placeholder={t.fields.message.placeholder} 
-                    className="bg-muted/10 border-border/50 rounded-md min-h-[160px] focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all text-sm font-light shadow-inner resize-none hover:bg-muted/20 outline-none"
+                    className="bg-white/80 dark:bg-muted/10 border-emerald-200/60 dark:border-border/50 rounded-md min-h-[160px] focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-primary/20 focus:border-emerald-500 dark:focus:border-primary/40 transition-all text-sm font-light shadow-inner resize-none hover:bg-emerald-50 dark:hover:bg-muted/20 outline-none"
                     required
                   />
                 </div>
 
                 <Button 
                   disabled={status === "loading"}
-                  className="w-full bg-primary text-primary-foreground rounded-lg h-16 font-bold uppercase tracking-[0.2em] text-xs hover:scale-[1.01] active:scale-95 transition-all shadow-xl shadow-primary/20 group/submit relative overflow-hidden"
+                  className="w-full bg-emerald-600 text-white dark:bg-primary dark:text-primary-foreground rounded-lg h-16 font-bold uppercase tracking-[0.2em] text-xs hover:scale-[1.01] active:scale-95 transition-all shadow-xl shadow-emerald-500/20 dark:shadow-primary/20 group/submit relative overflow-hidden"
                 >
                   {/* Subtle shine effect on button */}
-                  <div className="absolute inset-0 -translate-x-[150%] bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover/submit:translate-x-[150%] transition-transform duration-[1500ms]" />
+                  <div className="absolute inset-0 -translate-x-[150%] bg-gradient-to-r from-transparent via-white/20 dark:via-background/10 to-transparent group-hover/submit:translate-x-[150%] transition-transform duration-[1500ms]" />
                   
                   {status === "loading" ? (
                     <span className="flex items-center gap-3">
@@ -199,10 +199,10 @@ export default function ContactForm({ t }: ContactFormProps) {
 function Field({ label, ...props }: any) {
   return (
     <div className="space-y-3 group/input">
-      <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-muted-foreground/60 transition-colors group-focus-within/input:text-primary">{label}</label>
+      <label className="text-[10px] uppercase font-bold tracking-[0.2em] text-emerald-700/60 dark:text-muted-foreground/60 transition-colors group-focus-within/input:text-emerald-600 dark:group-focus-within/input:text-primary">{label}</label>
       <Input 
         {...props}
-        className="bg-muted/10 border-border/50 rounded-md h-14 focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-all text-sm font-medium shadow-sm hover:bg-muted/20 hover:border-primary/30 outline-none"
+        className="bg-white/80 dark:bg-muted/10 border-emerald-200/60 dark:border-border/50 rounded-md h-14 focus:ring-2 focus:ring-emerald-500/20 dark:focus:ring-primary/20 focus:border-emerald-500 dark:focus:border-primary/40 transition-all text-sm font-medium shadow-sm hover:bg-emerald-50 dark:hover:bg-muted/20 hover:border-emerald-300 dark:hover:border-primary/30 outline-none"
       />
     </div>
   );

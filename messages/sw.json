@@ -789,6 +789,78 @@
       "button": "Andikia CREDDA"
     }
   },
+  "RequestAccessPage": {
+    "header": {
+      "title": "Ombi la Ufikiaji",
+      "subtitle": "Portal ya Taasisi"
+    },
+    "stepper": {
+      "step1": "Karibu",
+      "step2": "Taarifa",
+      "step3": "Usalama",
+      "step4": "Mapitio"
+    },
+    "step_welcome": {
+      "title": "Ombi la Ufikiaji",
+      "subtitle": "Karibu kwenye nafasi ya kitaasisi ya CREDDA-ULPGL",
+      "description": "Ombi lako la akaunti litachanganuliwa na kuidhinishwa na utawala.",
+      "continue": "Endelea"
+    },
+    "step_personal": {
+      "title": "Taarifa Binafsi",
+      "fullName": "Jina Kamili",
+      "fullNamePlaceholder": "Ingiza jina lako",
+      "email": "Barua pepe",
+      "emailPlaceholder": "jina@ulpgl.ac.cd",
+      "phone": "Nambari ya Simu",
+      "phonePlaceholder": "+243 9...",
+      "roleLabel": "Aina ya Ufikiaji",
+      "roles": {
+        "researcher": "Mtafiti",
+        "student": "Mwanafunzi",
+        "admin": "Utawala",
+        "partner": "Mshirika",
+        "clinic": "Kliniki ya Kisheria",
+        "guest": "Mgeni"
+      },
+      "continue": "Hatua Inayofuata",
+      "validation_error": "Jaza shamba zote zinazohitajika."
+    },
+    "step_security": {
+      "title": "Usalama",
+      "password": "Nenosiri",
+      "passwordPlaceholder": "Ingiza nenosiri jipya",
+      "confirmPassword": "Thibitisha Nenosiri",
+      "confirmPasswordPlaceholder": "Ingiza nenosiri tena",
+      "strength": "Nguvu ya Nenosiri",
+      "strength_weak": "Dhaifu",
+      "strength_medium": "Wastani",
+      "strength_strong": "Nguvu",
+      "password_mismatch": "Nenosiri hazifanani",
+      "continue": "Hatua Inayofuata",
+      "back": "Rudi",
+      "validation_error": "Nenosiri lazima iwe angalau herufi 8 na zifanane."
+    },
+    "step_review": {
+      "title": "Mapitio",
+      "disclaimer": "Tafadhali kagua taarifa zako.",
+      "terms": "Ninathibitisha kuwa taarifa zilizotolewa ni sahihi.",
+      "submit": "Kamilisha Ombi",
+      "back": "Rudi",
+      "submitting": "Inawasilisha..."
+    },
+    "success": {
+      "title": "Ombi Limetumwa",
+      "text1": "Tumepokea ombi lako la ufikiaji kikamilifu.",
+      "text2": "Timu yetu itachanganua taarifa zako.",
+      "text3": "Majibu yatatumwa kwako kupitia barua pepe.",
+      "back": "Rudi Nyumbani"
+    },
+    "errors": {
+      "title": "Hitilafu",
+      "retry": "Jaribu tena"
+    }
+  },
   "LoginPage": {
     "header": {
       "back": "RUDI KWENYE TOVUTI",

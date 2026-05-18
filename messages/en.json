@@ -791,6 +791,78 @@
       "button": "Write to CREDDA"
     }
   },
+  "RequestAccessPage": {
+    "header": {
+      "title": "Request Access",
+      "subtitle": "Institutional Portal"
+    },
+    "stepper": {
+      "step1": "Welcome",
+      "step2": "Information",
+      "step3": "Security",
+      "step4": "Review"
+    },
+    "step_welcome": {
+      "title": "Access Request",
+      "subtitle": "Welcome to the CREDDA-ULPGL institutional space",
+      "description": "Your account request will be analyzed and validated by our administration.",
+      "continue": "Continue"
+    },
+    "step_personal": {
+      "title": "Personal Information",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "email": "Email Address",
+      "emailPlaceholder": "name@example.com",
+      "phone": "Phone Number",
+      "phonePlaceholder": "+243 9...",
+      "roleLabel": "Requested Role",
+      "roles": {
+        "researcher": "Researcher",
+        "student": "Student",
+        "admin": "Administration",
+        "partner": "Partner",
+        "clinic": "Legal Clinic",
+        "guest": "Guest"
+      },
+      "continue": "Next Step",
+      "validation_error": "Please fill in all required fields."
+    },
+    "step_security": {
+      "title": "Security",
+      "password": "Password",
+      "passwordPlaceholder": "Enter a strong password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Re-enter the password",
+      "strength": "Password Strength",
+      "strength_weak": "Weak",
+      "strength_medium": "Medium",
+      "strength_strong": "Strong",
+      "password_mismatch": "Passwords do not match",
+      "continue": "Next Step",
+      "back": "Back",
+      "validation_error": "Password must be at least 8 characters and match."
+    },
+    "step_review": {
+      "title": "Review Data",
+      "disclaimer": "Please verify your information before submission.",
+      "terms": "I confirm that the information provided is accurate.",
+      "submit": "Submit Request",
+      "back": "Back",
+      "submitting": "Submitting..."
+    },
+    "success": {
+      "title": "Request Sent",
+      "text1": "We have successfully received your access request.",
+      "text2": "Our team will analyze your information before validating your account.",
+      "text3": "A response will be sent to you by email to confirm your registration.",
+      "back": "Back to Home"
+    },
+    "errors": {
+      "title": "Error",
+      "retry": "Retry"
+    }
+  },
   "LoginPage": {
     "header": {
       "back": "BACK TO SITE",

@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { LoginForm } from "@/components/auth/LoginForm";
 import dynamic from "next/dynamic";
+import { RequestAccessForm } from "@/components/auth/RequestAccessForm";
 
 const AfricaGlobe = dynamic(() => import("@/components/home/AfricaGlobe"), {
   ssr: false,
   loading: () => null,
 });
 
-export default function LoginPage() {
+export default function RequestAccessPage() {
   const [mounted, setMounted] = useState(false);
   
   useEffect(() => { 
@@ -31,7 +31,7 @@ export default function LoginPage() {
 
       {/* Form Overlay Area */}
       <div className="relative z-10 w-full px-4 sm:px-6 py-12 flex justify-center mt-12 sm:mt-0">
-        <LoginForm />
+        <RequestAccessForm />
       </div>
       
     </div>
