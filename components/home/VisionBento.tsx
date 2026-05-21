@@ -34,7 +34,7 @@ export default function VisionBento() {
           className="relative aspect-[3/4] md:aspect-[4/5] rounded-md overflow-hidden group border border-white/5"
         >
           <Image
-            src="/images/bg-credda.jpg"
+            src="/images/reflexion.jpg"
             alt="ULPGL Building"
             fill
             className="object-cover grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-110"
