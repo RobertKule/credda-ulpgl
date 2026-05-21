@@ -20,8 +20,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden font-outfit transition-colors duration-700
-      bg-gradient-to-br from-white to-primary/10 
-      dark:from-[#040D06] dark:to-background"
+      bg-background"
     >
       
       {/* Integrated Globe Background */}

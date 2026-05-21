@@ -69,7 +69,7 @@ type Palette = {
 
 /** Mode sombre : globe en tons clairs (or / blanc cassé) sur océan noir */
 const paletteDark: Palette = {
-  ocean: '#0D0D0B',
+  ocean: '#040D06',
   rim: 'rgba(245,242,236,0.22)',
   gridLat: 'rgba(245,242,236,0.11)',
   gridLon: 'rgba(245,242,236,0.08)',
