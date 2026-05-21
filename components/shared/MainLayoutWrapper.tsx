@@ -20,6 +20,7 @@ export default function MainLayoutWrapper({
   const pathname = useNextPathname();
   const isAdmin = pathname?.includes("/admin") || pathname?.split('/').includes("admin");
   const isHome = pathname === '/' || /^\/[a-z]{2}$/.test(pathname || '');
+  const isAuthPage = !!(pathname?.includes("/login") || pathname?.includes("/request-access"));
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -37,7 +38,7 @@ export default function MainLayoutWrapper({
       </AnimatePresence>
       <SystemBanner />
       <Navbar />
-      {!isHome && <PersistentGlobeBackground />}
+      {!isHome && !isAuthPage && <PersistentGlobeBackground />}
       <div className="relative z-10 m-0 p-0 mt-20 min-h-screen bg-transparent text-foreground transition-all duration-500">
         {children}
       </div>
