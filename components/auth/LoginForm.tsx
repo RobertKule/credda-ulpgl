@@ -135,43 +135,35 @@ export function LoginForm() {
         overflow-hidden
         w-full
         max-w-5xl
-        rounded-[2rem]
-        border
-        border-emerald-200/50
-        dark:border-primary/20
-        bg-emerald-50
-        dark:bg-card/40
-        dark:backdrop-blur-2xl
-        shadow-[0_20px_70px_rgba(16,185,129,0.08)]
-        dark:shadow-[0_20px_80px_rgba(225,242,71,0.05)]
+        lg:rounded-[2rem]
+        lg:border
+        lg:border-emerald-200/50
+        lg:dark:border-white/10
+        bg-card
+        lg:shadow-[0_20px_70px_rgba(16,185,129,0.05)]
+        lg:dark:shadow-[0_20px_80px_rgba(0,0,0,0.3)]
         flex
         flex-col
         lg:flex-row
       "
     >
       {/* Glow */}
-      <div className="absolute top-[-120px] right-[-100px] w-[260px] h-[260px] rounded-full bg-emerald-400/10 blur-3xl dark:bg-primary/10" />
-      <div className="absolute bottom-[-120px] left-[-100px] w-[260px] h-[260px] rounded-full bg-emerald-500/10 blur-3xl dark:bg-primary/5" />
+      <div className="hidden lg:block absolute top-[-120px] right-[-100px] w-[260px] h-[260px] rounded-full bg-emerald-400/5 blur-3xl dark:bg-primary/5" />
+      <div className="hidden lg:block absolute bottom-[-120px] left-[-100px] w-[260px] h-[260px] rounded-full bg-emerald-500/5 blur-3xl dark:bg-primary/5" />
 
-      {/* LEFT SIDE */}
+      {/* LEFT SIDE — Desktop only */}
       <div
         className="
           relative
-          w-full
+          hidden
+          lg:flex
           lg:w-[45%]
-          border-b
-          lg:border-b-0
           lg:border-r
           border-emerald-200/50
           dark:border-white/5
-          bg-gradient-to-br
-          from-emerald-100/70
-          to-emerald-50/40
-          dark:from-background/30
-          dark:to-background/10
-          p-10
-          md:p-14
-          flex
+          bg-emerald-50/30
+          dark:bg-white/[0.02]
+          p-14
           flex-col
           justify-between
         "
@@ -284,11 +276,11 @@ export function LoginForm() {
                 rounded-xl
                 border
                 border-emerald-300/50
-                dark:border-primary/20
+                dark:border-white/10
                 bg-white/70
                 hover:bg-white
-                dark:bg-primary/5
-                dark:hover:bg-primary/10
+                dark:bg-white/5
+                dark:hover:bg-white/10
                 text-[11px]
                 uppercase
                 tracking-[0.18em]
@@ -305,8 +297,29 @@ export function LoginForm() {
         )}
       </div>
 
-      {/* RIGHT SIDE */}
-      <div className="relative w-full lg:w-[55%] p-10 md:p-14 flex items-center">
+      {/* RIGHT SIDE — Form */}
+      <div className="relative w-full lg:w-[55%] px-4 py-8 sm:p-10 md:p-14 flex flex-col justify-center">
+        {/* Mobile-only compact header */}
+        <div className="lg:hidden mb-8 space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center border border-emerald-300/50 dark:border-white/10 bg-white/80 dark:bg-white/5">
+              <Image
+                src="/logocredda.png"
+                alt="CREDDA"
+                width={24}
+                height={24}
+                className="dark:invert"
+              />
+            </div>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-200/60 dark:border-white/10 bg-white/70 dark:bg-white/[0.03]">
+              <Sparkles size={11} className="text-emerald-600 dark:text-primary" />
+              <span className="text-[9px] uppercase tracking-[0.22em] font-black text-emerald-700 dark:text-primary">CREDDA</span>
+            </div>
+          </div>
+          <h1 className="text-2xl font-fraunces font-black tracking-tight text-emerald-950 dark:text-foreground">
+            {view === "login" ? t("form_header.login_title") : t("form_header.forgot_title")}
+          </h1>
+        </div>
         <AnimatePresence mode="wait">
           {view === "login" ? (
             <motion.form
@@ -608,10 +621,28 @@ export function LoginForm() {
           )}
         </AnimatePresence>
 
-        {/* FOOTER LINK */}
-        <div className="absolute bottom-6 right-6">
+        {/* Mobile navigation links */}
+        {view === "login" && (
+          <div className="lg:hidden flex flex-wrap items-center gap-3 mt-8">
+            <Link
+              href="/request-access"
+              className="h-10 px-4 rounded-xl border border-emerald-300/50 dark:border-white/10 bg-white/70 dark:bg-white/5 inline-flex items-center justify-center text-[10px] uppercase tracking-[0.16em] font-black text-emerald-700 dark:text-primary transition-all"
+            >
+              {t("navigation.request_access")}
+            </Link>
+            <Link
+              href="/"
+              className="h-10 px-4 rounded-xl border border-emerald-200/50 dark:border-white/10 bg-white/50 dark:bg-white/5 inline-flex items-center justify-center text-[10px] uppercase tracking-[0.16em] font-black text-emerald-700/60 dark:text-muted-foreground/70 transition-all"
+            >
+              {t("navigation.back_to_portal")}
+            </Link>
+          </div>
+        )}
+
+        {/* Desktop footer link */}
+        <div className="hidden lg:block absolute bottom-6 right-6">
           <Link
-            href={`/`}
+            href="/"
             className="
               text-[10px]
               uppercase
@@ -643,8 +674,8 @@ export function LoginForm() {
               flex
               items-center
               justify-center
-              bg-card/80
-              dark:bg-background/80
+              bg-white/90
+              dark:bg-[#040D06]/95
               backdrop-blur-xl
               p-6
             "
@@ -682,7 +713,7 @@ export function LoginForm() {
                   justify-center
                   ${
                     modalType === "success"
-                      ? "bg-emerald-500/10 text-emerald-500"
+                      ? "bg-emerald-500/10 text-emerald-500 dark:text-primary"
                       : "bg-destructive/10 text-destructive"
                   }
                 `}
@@ -701,7 +732,7 @@ export function LoginForm() {
               </div>
 
               <div className="space-y-2">
-                <h3 className="text-2xl font-fraunces font-black">
+                <h3 className="text-2xl font-fraunces font-black text-emerald-950 dark:text-foreground">
                   {modalType === "success"
                     ? t("success_modal.title")
                     : t("error_modal.title")}
@@ -723,6 +754,8 @@ export function LoginForm() {
                     tracking-[0.16em]
                     text-[11px]
                     font-black
+                    border-emerald-200
+                    dark:border-white/10
                   "
                 >
                   {t("modal.retry")}
