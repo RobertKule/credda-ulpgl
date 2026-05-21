@@ -169,40 +169,41 @@ export function RequestAccessForm() {
   };
 
   const inputClass =
-    "h-[56px] pl-12 pr-4 bg-white border border-emerald-200 rounded-xl text-[15px] text-emerald-900 placeholder:text-emerald-400 shadow-sm focus-visible:ring-2 focus-visible:ring-emerald-500/20 focus-visible:border-emerald-500";
+    "h-[56px] pl-12 pr-4 bg-white dark:bg-black/20 border border-emerald-200 dark:border-white/10 rounded-xl text-[15px] text-emerald-900 dark:text-foreground placeholder:text-emerald-400 dark:placeholder:text-muted-foreground/40 shadow-sm focus-visible:ring-2 focus-visible:ring-emerald-500/20 dark:focus-visible:ring-primary/40 focus-visible:border-emerald-500 dark:focus-visible:border-primary/60 transition-all";
 
   const iconClass =
-    "absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500/60";
+    "absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500/60 dark:text-muted-foreground/60";
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
-      className="relative w-full max-w-2xl overflow-hidden rounded-[2rem] border border-emerald-200/50 bg-emerald-50 shadow-[0_20px_60px_rgba(16,185,129,0.08)] flex flex-col"
+      className="relative w-full max-w-2xl overflow-hidden rounded-[2rem] border border-emerald-200/50 dark:border-white/10 bg-card dark:backdrop-blur-3xl shadow-[0_20px_60px_rgba(16,185,129,0.05)] dark:shadow-[0_20px_80px_rgba(0,0,0,0.3)] flex flex-col"
     >
       {/* HEADER */}
       {!modalType && (
-        <div className="px-8 pt-6 pb-5 border-b border-emerald-200/50">
+        <div className="px-8 pt-6 pb-5 border-b border-emerald-200/50 dark:border-white/5">
           <div className="flex items-center justify-between mb-6">
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center border border-emerald-300/50 bg-white shadow-sm">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center border border-emerald-300/50 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm">
               <Image
                 src="/logocredda.png"
                 alt="CREDDA"
                 width={32}
                 height={32}
+                className="dark:invert"
               />
             </div>
 
-            <div className="text-[11px] uppercase tracking-[0.2em] font-black text-emerald-700/70">
+            <div className="text-[11px] uppercase tracking-[0.2em] font-black text-emerald-700/70 dark:text-primary">
               {step} / {totalSteps}
             </div>
           </div>
 
           <div className="space-y-2">
-            <div className="h-1.5 bg-emerald-100 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-emerald-100 dark:bg-white/5 rounded-full overflow-hidden">
               <motion.div
-                className="h-full bg-emerald-500"
+                className="h-full bg-emerald-500 dark:bg-primary"
                 animate={{
                   width: `${currentProgress}%`,
                 }}
@@ -227,19 +228,19 @@ export function RequestAccessForm() {
               transition={{ duration: 0.3 }}
               className="h-full flex flex-col items-center justify-center text-center"
             >
-              <div className="mb-5 inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-200 bg-white">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <div className="mb-5 inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-emerald-200 dark:border-white/10 bg-white dark:bg-white/5">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 dark:bg-primary animate-pulse" />
 
-                <span className="text-[9px] uppercase tracking-[0.22em] font-black text-emerald-700">
+                <span className="text-[9px] uppercase tracking-[0.22em] font-black text-emerald-700 dark:text-primary">
                   CREDDA · ACCESS
                 </span>
               </div>
 
-              <h2 className="text-4xl font-black tracking-tight text-emerald-950">
+              <h2 className="text-4xl font-black tracking-tight text-emerald-950 dark:text-foreground">
                 {t("step_welcome.title")}
               </h2>
 
-              <p className="mt-4 max-w-md text-[14px] leading-relaxed text-emerald-800/75">
+              <p className="mt-4 max-w-md text-[14px] leading-relaxed text-emerald-800/75 dark:text-muted-foreground">
                 {t("step_welcome.subtitle")}
               </p>
             </motion.div>
@@ -257,57 +258,68 @@ export function RequestAccessForm() {
               transition={{ duration: 0.3 }}
               className="space-y-6"
             >
-              <h2 className="text-2xl font-black">
+              <h2 className="text-2xl font-black text-emerald-950 dark:text-foreground">
                 {t("step_personal.title")}
               </h2>
 
               <div className="grid md:grid-cols-2 gap-5">
+                {/* Full Name */}
                 <div className="relative">
                   <div className={iconClass}>
                     <User size={18} />
                   </div>
-
                   <Input
+                    type="text"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
-                    placeholder={t(
-                      "step_personal.fullNamePlaceholder"
-                    )}
+                    placeholder={t("step_personal.fullName")}
                     className={inputClass}
                   />
                 </div>
 
+                {/* Email */}
                 <div className="relative">
                   <div className={iconClass}>
                     <Mail size={18} />
                   </div>
-
                   <Input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder={t("step_personal.emailPlaceholder")}
+                    placeholder={t("step_personal.email")}
                     className={inputClass}
                   />
+                  <AnimatePresence>
+                    {isEmailValid && (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0 }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-500"
+                      >
+                        <CheckCircle2 size={18} strokeWidth={2.5} />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </div>
 
+              {/* Phone */}
               <div className="relative">
                 <div className={iconClass}>
                   <Phone size={18} />
                 </div>
-
                 <Input
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder={t("step_personal.phonePlaceholder")}
+                  placeholder={t("step_personal.phone")}
                   className={inputClass}
                 />
               </div>
 
               <div className="space-y-3">
-                <div className="text-[12px] uppercase font-bold tracking-widest text-emerald-700/70">
+                <div className="text-[12px] uppercase font-bold tracking-widest text-emerald-700/70 dark:text-primary">
                   {t("step_personal.roleLabel")}
                 </div>
 
@@ -327,8 +339,8 @@ export function RequestAccessForm() {
                       onClick={() => setRole(type)}
                       className={`px-4 py-3 rounded-xl border text-[13px] font-medium transition-all ${
                         role === type
-                          ? "bg-emerald-600 text-white border-transparent"
-                          : "bg-white border-emerald-200 text-emerald-700"
+                          ? "bg-emerald-600 dark:bg-primary text-white dark:text-primary-foreground border-transparent"
+                          : "bg-white dark:bg-white/5 border-emerald-200 dark:border-white/10 text-emerald-700 dark:text-muted-foreground hover:bg-emerald-50 dark:hover:bg-white/10"
                       }`}
                     >
                       {t(`step_personal.roles.${type}`)}
@@ -351,7 +363,7 @@ export function RequestAccessForm() {
               transition={{ duration: 0.3 }}
               className="space-y-6"
             >
-              <h2 className="text-2xl font-black">
+              <h2 className="text-2xl font-black text-emerald-950 dark:text-foreground">
                 {t("step_security.title")}
               </h2>
 
@@ -376,7 +388,7 @@ export function RequestAccessForm() {
                     onClick={() =>
                       setShowPassword(!showPassword)
                     }
-                    className="absolute right-4 top-1/2 -translate-y-1/2"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-500/60 dark:text-muted-foreground/60"
                   >
                     {showPassword ? (
                       <EyeOff size={18} />
@@ -392,8 +404,8 @@ export function RequestAccessForm() {
                       key={i}
                       className={`flex-1 rounded-full ${
                         i < passwordStrength
-                          ? "bg-emerald-500"
-                          : "bg-emerald-100"
+                          ? "bg-emerald-500 dark:bg-primary"
+                          : "bg-emerald-100 dark:bg-white/5"
                       }`}
                     />
                   ))}
@@ -432,44 +444,44 @@ export function RequestAccessForm() {
               transition={{ duration: 0.3 }}
               className="space-y-6"
             >
-              <h2 className="text-2xl font-black">
+              <h2 className="text-2xl font-black text-emerald-950 dark:text-foreground">
                 {t("step_review.title")}
               </h2>
 
-              <div className="rounded-2xl border border-emerald-200 bg-white p-6">
+              <div className="rounded-2xl border border-emerald-200 dark:border-white/10 bg-white dark:bg-white/5 p-6">
                 <div className="grid grid-cols-2 gap-4 text-[13px]">
                   <div>
-                    <span className="block text-[10px] uppercase opacity-50 mb-1">
+                    <span className="block text-[10px] uppercase opacity-50 dark:text-primary mb-1">
                       {t("step_personal.fullName")}
                     </span>
 
-                    <span className="font-medium">
+                    <span className="font-bold text-emerald-950 dark:text-white">
                       {fullName}
                     </span>
                   </div>
 
                   <div>
-                    <span className="block text-[10px] uppercase opacity-50 mb-1">
+                    <span className="block text-[10px] uppercase opacity-50 dark:text-primary mb-1">
                       {t("step_personal.email")}
                     </span>
 
-                    <span className="font-medium">{email}</span>
+                    <span className="font-bold text-emerald-950 dark:text-white">{email}</span>
                   </div>
 
                   <div>
-                    <span className="block text-[10px] uppercase opacity-50 mb-1">
+                    <span className="block text-[10px] uppercase opacity-50 dark:text-primary mb-1">
                       {t("step_personal.phone")}
                     </span>
 
-                    <span className="font-medium">{phone}</span>
+                    <span className="font-bold text-emerald-950 dark:text-white">{phone}</span>
                   </div>
 
                   <div>
-                    <span className="block text-[10px] uppercase opacity-50 mb-1">
+                    <span className="block text-[10px] uppercase opacity-50 dark:text-primary mb-1">
                       {t("step_personal.roleLabel")}
                     </span>
 
-                    <span className="font-medium">
+                    <span className="font-bold text-emerald-950 dark:text-white">
                       {t(`step_personal.roles.${role}`)}
                     </span>
                   </div>
@@ -479,18 +491,18 @@ export function RequestAccessForm() {
               <button
                 type="button"
                 onClick={() => setAgreeTerms(!agreeTerms)}
-                className="flex items-start gap-4 text-left p-4 rounded-xl border border-emerald-200 bg-white"
+                className="flex items-start gap-4 text-left p-4 rounded-xl border border-emerald-200 dark:border-white/10 bg-white dark:bg-white/5 transition-colors hover:bg-emerald-50 dark:hover:bg-white/10"
               >
-                <div className="w-5 h-5 rounded border-2 border-emerald-400 flex items-center justify-center">
+                <div className="w-5 h-5 rounded border-2 border-emerald-400 dark:border-primary flex items-center justify-center">
                   {agreeTerms && (
                     <CheckCircle2
                       size={14}
-                      className="text-emerald-600"
+                      className="text-emerald-600 dark:text-primary"
                     />
                   )}
                 </div>
 
-                <p className="text-[13px]">
+                <p className="text-[13px] text-emerald-800 dark:text-muted-foreground">
                   {t("step_review.terms")}
                 </p>
               </button>
@@ -501,21 +513,21 @@ export function RequestAccessForm() {
 
       {/* FOOTER */}
       {!modalType && (
-        <div className="border-t border-emerald-200/50 px-6 py-4 flex items-center justify-between">
+        <div className="border-t border-emerald-200/50 dark:border-white/10 px-6 py-5 flex items-center justify-between bg-emerald-50/50 dark:bg-white/[0.02]">
           {/* STEP 1 FOOTER */}
           {step === 1 ? (
             <>
               <div className="flex gap-3">
                 <Link
-                  href={`/${locale}`}
-                  className="h-11 px-5 rounded-xl border border-emerald-200 bg-white inline-flex items-center justify-center text-[11px] uppercase tracking-[0.16em] font-black text-emerald-700"
+                  href={`/`}
+                  className="h-11 px-5 rounded-xl border border-emerald-200 dark:border-white/10 bg-white dark:bg-white/5 inline-flex items-center justify-center text-[11px] uppercase tracking-[0.16em] font-black text-emerald-700 dark:text-primary transition-all hover:scale-105"
                 >
                   Accueil
                 </Link>
 
                 <Link
-                  href={`/${locale}/login`}
-                  className="h-11 px-5 rounded-xl border border-emerald-200 bg-white inline-flex items-center justify-center text-[11px] uppercase tracking-[0.16em] font-black text-emerald-700"
+                  href={`/login`}
+                  className="h-11 px-5 rounded-xl border border-emerald-200 dark:border-white/10 bg-white dark:bg-white/5 inline-flex items-center justify-center text-[11px] uppercase tracking-[0.16em] font-black text-emerald-700 dark:text-primary transition-all hover:scale-105"
                 >
                   {t("header.subtitle")}
                 </Link>
@@ -523,7 +535,7 @@ export function RequestAccessForm() {
 
               <Button
                 onClick={handleNext}
-                className="h-11 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black uppercase tracking-[0.16em] text-[11px]"
+                className="h-11 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-primary dark:hover:bg-primary/90 text-white dark:text-primary-foreground font-black uppercase tracking-[0.16em] text-[11px] shadow-lg dark:shadow-primary/20"
               >
                 {t("step_welcome.continue")}
                 <ArrowRight size={14} className="ml-2" />
@@ -533,7 +545,7 @@ export function RequestAccessForm() {
             <>
               <button
                 onClick={handleBack}
-                className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest text-emerald-700"
+                className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-widest text-emerald-700 dark:text-primary hover:opacity-80 transition-opacity"
               >
                 <ArrowLeft size={16} />
                 {t("step_review.back")}
@@ -543,7 +555,7 @@ export function RequestAccessForm() {
                 <Button
                   onClick={handleNext}
                   disabled={!canGoNext()}
-                  className="h-11 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold uppercase tracking-widest text-[12px]"
+                  className="h-11 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-primary dark:hover:bg-primary/90 text-white dark:text-primary-foreground font-bold uppercase tracking-widest text-[12px]"
                 >
                   {t("step_personal.continue")}
                   <ArrowRight size={14} className="ml-2" />
@@ -552,7 +564,7 @@ export function RequestAccessForm() {
                 <Button
                   onClick={handleSubmit}
                   disabled={!agreeTerms || isSubmitting}
-                  className="h-11 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold uppercase tracking-widest text-[12px]"
+                  className="h-11 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 dark:bg-primary dark:hover:bg-primary/90 text-white dark:text-primary-foreground font-bold uppercase tracking-widest text-[12px]"
                 >
                   {isSubmitting ? (
                     <Loader2
@@ -576,7 +588,7 @@ export function RequestAccessForm() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-xl p-6"
+            className="absolute inset-0 z-50 flex items-center justify-center bg-white/90 dark:bg-[#040D06]/95 backdrop-blur-xl p-6"
           >
             <motion.div
               initial={{ scale: 0.92, opacity: 0 }}
@@ -587,7 +599,7 @@ export function RequestAccessForm() {
               <div
                 className={`mx-auto w-16 h-16 rounded-3xl flex items-center justify-center ${
                   modalType === "success"
-                    ? "bg-emerald-500/10 text-emerald-500"
+                    ? "bg-emerald-500/10 text-emerald-500 dark:text-primary"
                     : "bg-red-500/10 text-red-500"
                 }`}
               >
@@ -599,13 +611,13 @@ export function RequestAccessForm() {
               </div>
 
               <div>
-                <h3 className="text-2xl font-black">
+                <h3 className="text-2xl font-black text-emerald-950 dark:text-foreground">
                   {modalType === "success"
                     ? t("success.title")
                     : t("errors.title")}
                 </h3>
 
-                <p className="mt-3 text-sm text-muted-foreground">
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
                   {modalMessage}
                 </p>
               </div>
@@ -613,7 +625,7 @@ export function RequestAccessForm() {
               {modalType === "success" ? (
                 <Link
                   href="/login"
-                  className="inline-flex w-full items-center justify-center h-12 rounded-xl bg-emerald-600 text-white uppercase tracking-widest font-bold text-[12px]"
+                  className="inline-flex w-full items-center justify-center h-12 rounded-xl bg-emerald-600 dark:bg-primary text-white dark:text-primary-foreground uppercase tracking-widest font-black text-[12px] shadow-lg dark:shadow-primary/20"
                 >
                   {t("success.back")}
                 </Link>
@@ -621,7 +633,7 @@ export function RequestAccessForm() {
                 <Button
                   onClick={() => setModalType(null)}
                   variant="outline"
-                  className="w-full h-12 rounded-xl"
+                  className="w-full h-12 rounded-xl border-emerald-200 dark:border-white/10"
                 >
                   {t("errors.retry")}
                 </Button>
