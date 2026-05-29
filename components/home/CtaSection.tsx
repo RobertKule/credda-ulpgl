@@ -27,7 +27,7 @@ export default function CtaSection() {
             <motion.div style={{ scale }} className="absolute inset-0 z-0">
                 <div
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
-                    style={{ backgroundImage: "url('/images/imgCTA.png')" }}
+                    style={{ backgroundImage: "url('/images/imgCTA.jpg')" }}
                 />
 
                 {/* CLEAN OVERLAY */}
