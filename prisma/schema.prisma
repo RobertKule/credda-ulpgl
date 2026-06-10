@@ -9,18 +9,20 @@ datasource db {
 }
 
 model User {
-  id            String        @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String        @unique
+  email         String         @unique
   password      String
-  role          Role          @default(USER)
-  status        AccountStatus @default(PENDING)
+  role          Role           @default(USER)
+  status        AccountStatus  @default(PENDING)
   phone         String?
   organization  String?
   bio           String?
   image         String?
   requestedRole String?
-  createdAt     DateTime      @default(now())
+  createdAt     DateTime       @default(now())
+  clinicalCases ClinicalCase[]
+  auditLogs     AuditLog[]
 }
 
 model Program {
@@ -96,13 +98,14 @@ model Article {
 }
 
 model ArticleTranslation {
-  id        String  @id @default(cuid())
+  id        String        @id @default(cuid())
   language  String
   title     String
   content   String
   excerpt   String?
+  status    ContentStatus @default(DRAFT)
   articleId String
-  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  article   Article       @relation(fields: [articleId], references: [id], onDelete: Cascade)
 
   @@unique([articleId, language])
 }
@@ -119,14 +122,15 @@ model Publication {
 }
 
 model PublicationTranslation {
-  id            String      @id @default(cuid())
+  id            String        @id @default(cuid())
   language      String
   title         String
   authors       String
   description   String
   content       String?
+  status        ContentStatus @default(DRAFT)
   publicationId String
-  publication   Publication @relation(fields: [publicationId], references: [id], onDelete: Cascade)
+  publication   Publication   @relation(fields: [publicationId], references: [id], onDelete: Cascade)
 
   @@unique([publicationId, language])
 }
@@ -206,15 +210,32 @@ model ClinicalCase {
   expectations  String?
   beneficiaryId String
   clinicianId   String?
+  assignedToId  String?
   trackingCode  String?      @unique
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   notes         CaseNote[]
   beneficiary   Beneficiary  @relation(fields: [beneficiaryId], references: [id])
+  assignedTo    User?        @relation(fields: [assignedToId], references: [id])
   documents     Media[]
 
   @@index([status])
   @@index([urgency])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  action    String
+  entity    String
+  entityId  String?
+  details   String?
+  metadata  Json?
+  timestamp DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([timestamp])
 }
 
 model CaseNote {
@@ -344,15 +365,33 @@ model TestimonialTranslation {
 }
 
 model Announcement {
-  id        String   @id @default(cuid())
-  content   String
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String                    @id @default(cuid())
+  isActive     Boolean                   @default(false)
+  level        AnnouncementLevel         @default(INFO)
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+  announcementTranslations AnnouncementTranslation[]
+}
+
+model AnnouncementTranslation {
+  id             String       @id @default(cuid())
+  language       String
+  title          String?
+  content        String
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+
+  @@unique([announcementId, language])
+}
+
+enum AnnouncementLevel {
+  INFO
+  WARNING
+  URGENT
 }
 
 enum Role {
-  SUPER_ADMIN
+  SUPERADMIN
   ADMIN
   EDITOR
   USER
@@ -383,6 +422,7 @@ enum ContactStatus {
 
 enum CaseStatus {
   NEW
+  IN_PROGRESS
   IN_ANALYSIS
   MEETING_SCHEDULED
   ACTION_ENGAGED
@@ -401,4 +441,10 @@ enum UrgencyLevel {
   MEDIUM
   HIGH
   CRITICAL
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  PENDING
 }

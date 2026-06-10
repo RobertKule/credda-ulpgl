@@ -8,22 +8,30 @@ if (!process.env.DATABASE_URL) {
   throw new Error(
     '❌ DATABASE_URL manquante.\n' +
     'Ajouter dans .env.local:\n' +
-    'DATABASE_URL="postgresql://postgres:[pass]@db.[ref].supabase.co:5432/postgres"'
+    'DATABASE_URL="postgresql://postgres:[pass]@db.[ref].supabase.co:6543/postgres?pgbouncer=true"'
   )
 }
 
-// On laisse la DATABASE_URL telle quelle, sans forcer de limites ici
-// On utilisera celle configurée dans le .env pour plus de flexibilité
-const databaseUrl = process.env.DATABASE_URL
+// Always use the pooler URL (pgbouncer=true, port 6543 = transaction mode).
+// connection_limit is capped at 2 so multiple Next.js HMR workers don't
+// collectively exceed Supabase's pool_size of 15.
+const buildUrl = () => {
+  const base = process.env.DATABASE_URL!;
+  try {
+    const url = new URL(base);
+    url.searchParams.set('pgbouncer', 'true');
+    url.searchParams.set('connection_limit', '2');
+    return url.toString();
+  } catch {
+    return base;
+  }
+};
+
 export const db =
   globalThis.prisma ??
   new PrismaClient({
-    datasources: {
-      db: {
-        url: databaseUrl,
-      },
-    },
-    log: process.env.NODE_ENV === 'production' ? ['error'] : ['query', 'error', 'warn'],
+    datasources: { db: { url: buildUrl() } },
+    log: process.env.NODE_ENV === 'production' ? ['error'] : ['error', 'warn'],
   })
 
 if (process.env.NODE_ENV !== 'production') {
