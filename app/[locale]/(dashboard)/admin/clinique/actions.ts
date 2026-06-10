@@ -2,112 +2,128 @@
 
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { supabaseAdmin } from "@/lib/supabase";
 import { revalidatePath } from "next/cache";
 
-const ALLOWED_CLINIQUE_ROLES = ["ADMIN", "EDITOR", "SUPERADMIN"];
+const ALLOWED_ROLES = ["ADMIN", "EDITOR", "SUPERADMIN"];
 
-/**
- * Récupère la liste des cas cliniques avec traçabilité.
- */
 export async function getClinicalCases() {
   const session = await auth();
-  if (!session || !session.user || !ALLOWED_CLINIQUE_ROLES.includes(session.user.role)) {
-    throw new Error("Acces non autorisé");
-  }
+  if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) throw new Error("Accès non autorisé");
 
-  try {
-    const cases = await db.clinicalCase.findMany({
-      include: {
-        beneficiary: true,
-        documents: true,
-      },
-      orderBy: { createdAt: "desc" },
-    });
-
-    // Logging de l'accès global à la liste
-    await db.auditLog.create({
-      data: {
-        userId: session.user.id,
-        action: "READ_ALL_CASES",
-        entity: "ClinicalCase",
-        details: `Consultation de la liste des ${cases.length} cas cliniques.`,
-      },
-    });
-
-    return cases;
-  } catch (error) {
-    console.error("[GET_CLINICAL_CASES_ERROR]", error);
-    throw new Error("Erreur lors de la récupération des dossiers.");
-  }
-}
-
-/**
- * Génère une URL signée temporaire pour un document privé.
- */
-export async function generateSecureDocumentUrl(caseId: string, fileKey: string) {
-  const session = await auth();
-  if (!session || !session.user || !ALLOWED_CLINIQUE_ROLES.includes(session.user.role)) {
-    throw new Error("Acces non autorisé");
-  }
-
-  try {
-    // 1. Vérifier que le dossier existe
-    const clinicalCase = await db.clinicalCase.findUnique({
-      where: { id: caseId },
-      select: { title: true }
-    });
-
-    if (!clinicalCase) throw new Error("Dossier introuvable");
-
-    // 2. Générer l'URL signée via Supabase (900s = 15min)
-    const { data, error } = await supabaseAdmin.storage
-      .from('clinique-prive')
-      .createSignedUrl(fileKey, 900);
-
-    if (error) throw error;
-
-    // 3. Log d'Audit de consultation de document
-    await db.auditLog.create({
-      data: {
-        userId: session.user.id,
-        action: "GENERATE_SIGNED_URL",
-        entity: "Media",
-        entityId: fileKey,
-        details: `Accès au document ${fileKey} pour le cas: ${clinicalCase.title}`,
-        metadata: { caseId, expires: "900s" }
-      }
-    });
-
-    // Revalider pour rafraîchir le flux d'audit logs dans l'UI
-    revalidatePath("/admin/clinique");
-
-    return { url: data.signedUrl };
-  } catch (error: any) {
-    console.error("[SIGNED_URL_ERROR]", error);
-    throw new Error(`Échec de la génération du lien sécurisé: ${error.message}`);
-  }
-}
-
-/**
- * Récupère les derniers logs d'audit pour le module clinique.
- */
-export async function getClinicalAuditLogs() {
-  const session = await auth();
-  if (!session || !session.user || !ALLOWED_CLINIQUE_ROLES.includes(session.user.role)) {
-    throw new Error("Acces non autorisé");
-  }
-
-  return await db.auditLog.findMany({
-    where: {
-      OR: [
-        { action: { contains: "CASE" } },
-        { action: { contains: "CLINICAL" } },
-        { action: "GENERATE_SIGNED_URL" }
-      ]
+  return db.clinicalCase.findMany({
+    include: {
+      beneficiary: true,
+      documents: { select: { id: true, url: true, type: true, title: true } },
+      notes: { orderBy: { createdAt: "desc" }, take: 5 },
+      assignedTo: { select: { id: true, name: true, image: true } },
     },
-    include: { user: { select: { name: true } } },
-    orderBy: { timestamp: "desc" },
-    take: 10
+    orderBy: { createdAt: "desc" },
   });
+}
+
+export async function createClinicalCase(data: {
+  title: string; problemType: string; location: string; description: string;
+  actionsTaken?: string; expectations?: string; urgency: string; status: string;
+  beneficiaryName: string; beneficiaryPhone: string;
+}) {
+  const session = await auth();
+  if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) throw new Error("Accès non autorisé");
+
+  let beneficiary = await db.beneficiary.findFirst({ where: { name: data.beneficiaryName.trim() } });
+  if (!beneficiary) {
+    beneficiary = await db.beneficiary.create({
+      data: {
+        name: data.beneficiaryName.trim(),
+        phone: data.beneficiaryPhone.trim() || "N/A",
+        location: data.location,
+        type: "LOCAL_COMMUNITY",
+      },
+    });
+  }
+
+  const caseCode = `CR-${new Date().getFullYear()}-${String(Math.floor(Math.random() * 1000)).padStart(3, "0")}`;
+
+  const newCase = await db.clinicalCase.create({
+    data: {
+      title: data.title,
+      description: data.description,
+      problemType: data.problemType,
+      location: data.location,
+      actionsTaken: data.actionsTaken || null,
+      expectations: data.expectations || null,
+      urgency: data.urgency as any,
+      status: data.status as any,
+      trackingCode: caseCode,
+      beneficiaryId: beneficiary.id,
+    },
+  });
+
+  revalidatePath("/admin/clinique");
+  return { success: true, id: newCase.id, trackingCode: caseCode };
+}
+
+export async function updateCaseStatus(id: string, status: string) {
+  const session = await auth();
+  if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) throw new Error("Accès non autorisé");
+  await db.clinicalCase.update({ where: { id }, data: { status: status as any } });
+  revalidatePath("/admin/clinique");
+  return { success: true };
+}
+
+export async function updateClinicalCase(id: string, data: {
+  title: string; problemType: string; location: string; description: string;
+  actionsTaken?: string; expectations?: string; urgency: string; status: string;
+  beneficiaryName: string; beneficiaryPhone: string;
+}) {
+  const session = await auth();
+  if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) throw new Error("Accès non autorisé");
+
+  const existingCase = await db.clinicalCase.findUnique({
+    where: { id },
+    select: { beneficiaryId: true }
+  });
+
+  if (!existingCase) throw new Error("Dossier non trouvé");
+
+  await db.beneficiary.update({
+    where: { id: existingCase.beneficiaryId },
+    data: {
+      name: data.beneficiaryName.trim(),
+      phone: data.beneficiaryPhone.trim() || "N/A",
+      location: data.location,
+    }
+  });
+
+  await db.clinicalCase.update({
+    where: { id },
+    data: {
+      title: data.title,
+      description: data.description,
+      problemType: data.problemType,
+      location: data.location,
+      actionsTaken: data.actionsTaken || null,
+      expectations: data.expectations || null,
+      urgency: data.urgency as any,
+      status: data.status as any,
+    },
+  });
+
+  revalidatePath("/admin/clinique");
+  return { success: true };
+}
+
+export async function deleteClinicalCase(id: string) {
+  const session = await auth();
+  if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) throw new Error("Accès non autorisé");
+  await db.clinicalCase.delete({ where: { id } });
+  revalidatePath("/admin/clinique");
+  return { success: true };
+}
+
+export async function addCaseNote(caseId: string, content: string) {
+  const session = await auth();
+  if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) throw new Error("Accès non autorisé");
+  await db.caseNote.create({ data: { caseId, content, authorId: session.user.id } });
+  revalidatePath("/admin/clinique");
+  return { success: true };
 }
