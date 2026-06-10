@@ -34,7 +34,7 @@ async function main() {
       email,
       password: hashedPassword,
       name,
-      role: "SUPER_ADMIN",
+      role: "SUPERADMIN",
       status: "APPROVED",
     },
   });
