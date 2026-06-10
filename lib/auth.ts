@@ -104,6 +104,13 @@ export const authOptions: NextAuthOptions = {
         session.user.image = token.image as string | null | undefined;
       }
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      // Si on redirige vers la racine ou /admin sans locale, on force /fr/admin
+      if (url === baseUrl || url === `${baseUrl}/admin`) {
+        return `${baseUrl}/fr/admin`;
+      }
+      return url;
     }
   },
   pages: {

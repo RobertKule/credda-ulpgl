@@ -1131,6 +1131,43 @@
     ]
   },
   "AdminDashboard": {
+    "home": {
+      "title": "Administration",
+      "subtitle": "Gestion de la plateforme CREDDA",
+      "kpis": {
+        "publications": "Total Publications",
+        "publications_trend": "+12% ce mois",
+        "cases": "Cas Cliniques Actifs",
+        "cases_trend": "Litiges environnementaux",
+        "members": "Membres de l'Équipe",
+        "members_trend": "Chercheurs actifs",
+        "media": "Médiathèque",
+        "media_trend": "Photos & vidéos stockées"
+      },
+      "quick_actions": {
+        "title": "Actions Rapides",
+        "new_publication": "Nouvelle Publication",
+        "new_case": "Créer un Cas Clinique",
+        "add_media": "Ajouter un Média",
+        "invite_researcher": "Inviter un Chercheur"
+      },
+      "analytics": {
+        "publications_evolution": "Évolution des Publications & Recherches",
+        "cases_distribution": "Répartition des Cas Cliniques",
+        "cases_statuses": {
+          "pending": "En attente",
+          "in_progress": "En cours",
+          "resolved": "Résolus"
+        },
+        "cases_total": "Total Cas",
+        "no_data": "Pas assez de données pour afficher le graphique"
+      },
+      "activity": {
+        "title": "Activité Récente",
+        "empty": "Aucune activité récente.",
+        "you": "Vous"
+      }
+    },
     "overview": {
       "badge": "Système Opérationnel",
       "db": "• Database: Neon PostgreSQL",
@@ -1451,6 +1488,22 @@
       "prev": "Précédent",
       "close": "Fermer",
       "info": "Détails de l'image"
+    },
+    "Dashboard": {
+      "dashboard_title": "Tableau de Bord",
+      "welcome_message": "Bienvenue sur l'espace d'administration CREDDA-ULPGL.",
+      "stats": {
+        "articles": "Articles",
+        "publications": "Publications",
+        "clinical_cases": "Dossiers Cliniques",
+        "audit_logs": "Actions Audit"
+      },
+      "recent_activity": "Activité Récente",
+      "infrastructure": "Infrastructure",
+      "stable": "Stable",
+      "connected": "Connecté",
+      "access_gallery": "Accéder à la Galerie",
+      "no_activity": "Aucune activité récente enregistrée."
     }
   }
 }

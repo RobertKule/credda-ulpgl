@@ -24,8 +24,8 @@ async function main() {
 
     await prisma.user.upsert({
       where: { email: 'rkule880@gmail.com' },
-      update: { password: hashedSuperAdmin, role: 'SUPER_ADMIN', status: 'APPROVED' },
-      create: { email: 'rkule880@gmail.com', name: 'Super Admin', password: hashedSuperAdmin, role: 'SUPER_ADMIN', status: 'APPROVED' }
+      update: { password: hashedSuperAdmin, role: 'SUPERADMIN', status: 'APPROVED' },
+      create: { email: 'rkule880@gmail.com', name: 'Super Admin', password: hashedSuperAdmin, role: 'SUPERADMIN', status: 'APPROVED' }
     });
     console.log('✅ Super admin: rkule880@gmail.com');
 

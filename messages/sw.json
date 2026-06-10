@@ -934,6 +934,43 @@
     }
   },
   "AdminDashboard": {
+    "home": {
+      "title": "Utawala",
+      "subtitle": "Usimamizi wa jukwaa la CREDDA",
+      "kpis": {
+        "publications": "Jumla ya Machapisho",
+        "publications_trend": "+12% mwezi huu",
+        "cases": "Kesi za Kliniki Amilifu",
+        "cases_trend": "Migogoro ya mazingira",
+        "members": "Wanachama wa Timu",
+        "members_trend": "Watafiti amilifu",
+        "media": "Maktaba ya Vyombo vya Habari",
+        "media_trend": "Picha na video zilizohifadhiwa"
+      },
+      "quick_actions": {
+        "title": "Hatua za Haraka",
+        "new_publication": "Chapisho Jipya",
+        "new_case": "Unda Kesi ya Kliniki",
+        "add_media": "Ongeza Picha/Video",
+        "invite_researcher": "Alika Mtafiti"
+      },
+      "analytics": {
+        "publications_evolution": "Mwenendo wa Machapisho & Utafiti",
+        "cases_distribution": "Mgawanyo wa Kesi za Kliniki",
+        "cases_statuses": {
+          "pending": "Zinazosubiri",
+          "in_progress": "Zinaendelea",
+          "resolved": "Zilizotatuliwa"
+        },
+        "cases_total": "Jumla ya Kesi",
+        "no_data": "Hakuna data ya kutosha kuonyesha chati"
+      },
+      "activity": {
+        "title": "Shughuli za Hivi Karibuni",
+        "empty": "Hakuna shughuli za hivi karibuni.",
+        "you": "Wewe"
+      }
+    },
     "overview": {
       "badge": "Mfumo wa Uendeshaji",
       "db": "• Database: Neon PostgreSQL",
@@ -1485,9 +1522,25 @@
     },
     "modal": {
       "next": "Inayofuata",
-      "prev": "Iliyopita",
+      "prev": "Iliyotangulia",
       "close": "Funga",
-      "info": "Maelezo ya picha"
+      "info": "Maelezo ya Picha"
+    },
+    "Dashboard": {
+      "dashboard_title": "Dashibodi",
+      "welcome_message": "Karibu kwenye eneo la utawala la CREDDA-ULPGL.",
+      "stats": {
+        "articles": "Makala",
+        "publications": "Machapisho",
+        "clinical_cases": "Kesi za Kliniki",
+        "audit_logs": "Hatua za Ukaguzi"
+      },
+      "recent_activity": "Shughuli za hivi karibuni",
+      "infrastructure": "Miundombinu",
+      "stable": "Thabiti",
+      "connected": "Imeunganishwa",
+      "access_gallery": "Fungua Matunzio",
+      "no_activity": "Hakuna shughuli ya hivi karibuni iliyorekodiwa."
     }
   }
 }

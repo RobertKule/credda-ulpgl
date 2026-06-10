@@ -12,7 +12,7 @@ import bcrypt from "bcryptjs";
 
 export async function createUser(rawData: unknown): Promise<ApiResponse<SafeUser>> {
   const session = await auth();
-  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPERADMIN)) {
     return { success: false, error: "Non autorisé" };
   }
 
@@ -39,7 +39,7 @@ export async function createUser(rawData: unknown): Promise<ApiResponse<SafeUser
 
 export async function deleteUser(id: string): Promise<ApiResponse<{ id: string }>> {
   const session = await auth();
-  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPERADMIN)) {
     return { success: false, error: "Non autorisé" };
   }
 
@@ -52,7 +52,7 @@ export async function deleteUser(id: string): Promise<ApiResponse<{ id: string }
 
 export async function bulkDeleteUsers(ids: string[]): Promise<ApiResponse<{ count: number }>> {
   const session = await auth();
-  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPERADMIN)) {
     return { success: false, error: "Non autorisé" };
   }
 
@@ -67,7 +67,7 @@ export async function bulkDeleteUsers(ids: string[]): Promise<ApiResponse<{ coun
 
 export async function updateUserStatus(id: string, rawStatus: unknown): Promise<ApiResponse<SafeUser>> {
   const session = await auth();
-  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPERADMIN)) {
     return { success: false, error: "Non autorisé" };
   }
 
@@ -93,7 +93,7 @@ export async function updateUserStatus(id: string, rawStatus: unknown): Promise<
 
 export async function updateUserRole(id: string, rawRole: unknown): Promise<ApiResponse<SafeUser>> {
   const session = await auth();
-  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+  if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPERADMIN)) {
     return { success: false, error: "Non autorisé" };
   }
 

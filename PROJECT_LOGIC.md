@@ -26,7 +26,7 @@ Le système permet de diffuser des messages critiques ou institutionnels de mani
 
 ## 👤 Gestion des Utilisateurs & Rôles
 L'accès au backend est sécurisé via NextAuth.js.
-- **SUPER_ADMIN** : Accès complet au système, incluant la gestion des administrateurs et la configuration système globale.
+- **SUPERADMIN** : Accès complet au système, incluant la gestion des administrateurs et la configuration système globale.
 - **ADMIN** : Accès à la gestion des contenus (Research, Clinical Cases, Publications, Announcements).
 
 ## 🏢 Identité Visuelle Institutionnelle

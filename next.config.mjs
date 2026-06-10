@@ -26,7 +26,7 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: 3600, // Augmenté à 1h pour éviter les re-fetch incessants
   },
 
   webpack: (config) => {
