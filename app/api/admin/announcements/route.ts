@@ -32,7 +32,15 @@ export async function POST(req: Request) {
     }
 
     const announcement = await prisma.announcement.create({
-      data: { content, isActive }
+      data: { 
+        isActive,
+        announcementTranslations: {
+          create: {
+            language: "fr", // Default language
+            content,
+          }
+        }
+      }
     });
     return NextResponse.json(announcement);
   } catch (error) {

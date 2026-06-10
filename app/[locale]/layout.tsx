@@ -36,12 +36,13 @@ export default async function RootLayout({
 
   const messages = await getMessages({ locale });
 
-  // Fetch active announcements
+  // Fetch active announcements (with trilingual support)
   const announcements = (await sql`
-    SELECT id, content, "isActive"
-    FROM "Announcement"
-    WHERE "isActive" = true
-    ORDER BY "createdAt" DESC
+    SELECT a.id, t.content, a."isActive"
+    FROM "Announcement" a
+    JOIN "AnnouncementTranslation" t ON t."announcementId" = a.id
+    WHERE a."isActive" = true AND t.language = ${locale}
+    ORDER BY a."createdAt" DESC
   `.catch(() => [])) as { id: string; content: string; isActive: boolean }[];
 
   return (
