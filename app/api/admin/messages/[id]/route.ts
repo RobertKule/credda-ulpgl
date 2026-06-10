@@ -20,7 +20,7 @@ export async function PATCH(
 ) {
   try {
     const session = await auth();
-    if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+    if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPERADMIN)) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
@@ -55,7 +55,7 @@ export async function DELETE(
 ) {
   try {
     const session = await auth();
-    if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+    if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPERADMIN)) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 

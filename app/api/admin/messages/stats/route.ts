@@ -7,7 +7,7 @@ import { Role } from "@/types/user";
 export async function GET() {
   try {
     const session = await auth();
-    if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPER_ADMIN)) {
+    if (!session || (session.user.role !== Role.ADMIN && session.user.role !== Role.SUPERADMIN)) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
