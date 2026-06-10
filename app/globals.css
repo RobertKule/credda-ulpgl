@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
 @import "./shadcn.css";
 
 /* 1. CONFIGURATION DU THÈME (Tailwind v4 style) */

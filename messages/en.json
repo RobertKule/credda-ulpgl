@@ -1273,6 +1273,43 @@
     ]
   },
   "AdminDashboard": {
+    "home": {
+      "title": "Administration",
+      "subtitle": "CREDDA platform management",
+      "kpis": {
+        "publications": "Total Publications",
+        "publications_trend": "+12% this month",
+        "cases": "Active Clinical Cases",
+        "cases_trend": "Environmental litigation",
+        "members": "Team Members",
+        "members_trend": "Active researchers",
+        "media": "Media Library",
+        "media_trend": "Photos & videos stored"
+      },
+      "quick_actions": {
+        "title": "Quick Actions",
+        "new_publication": "New Publication",
+        "new_case": "Create Clinical Case",
+        "add_media": "Add Media",
+        "invite_researcher": "Invite Researcher"
+      },
+      "analytics": {
+        "publications_evolution": "Evolution of Publications & Research",
+        "cases_distribution": "Distribution of Clinical Cases",
+        "cases_statuses": {
+          "pending": "Pending",
+          "in_progress": "In Progress",
+          "resolved": "Resolved"
+        },
+        "cases_total": "Total Cases",
+        "no_data": "Not enough data to display the chart"
+      },
+      "activity": {
+        "title": "Recent Activity",
+        "empty": "No recent activity.",
+        "you": "You"
+      }
+    },
     "overview": {
       "badge": "Operational System",
       "db": "• Database: Neon PostgreSQL",
@@ -1490,6 +1527,22 @@
       "prev": "Previous",
       "close": "Close",
       "info": "Image Details"
+    },
+    "Dashboard": {
+      "dashboard_title": "Dashboard",
+      "welcome_message": "Welcome to the CREDDA-ULPGL administration area.",
+      "stats": {
+        "articles": "Articles",
+        "publications": "Publications",
+        "clinical_cases": "Clinical Cases",
+        "audit_logs": "Audit Actions"
+      },
+      "recent_activity": "Recent Activity",
+      "infrastructure": "Infrastructure",
+      "stable": "Stable",
+      "connected": "Connected",
+      "access_gallery": "Access Gallery",
+      "no_activity": "No recent activity recorded."
     }
   }
 }
