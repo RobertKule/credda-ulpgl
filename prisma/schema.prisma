@@ -365,11 +365,15 @@ model TestimonialTranslation {
 }
 
 model Announcement {
-  id           String                    @id @default(cuid())
-  isActive     Boolean                   @default(false)
-  level        AnnouncementLevel         @default(INFO)
-  createdAt    DateTime                  @default(now())
-  updatedAt    DateTime                  @updatedAt
+  id             String                    @id @default(cuid())
+  isActive       Boolean                   @default(false)
+  level          AnnouncementLevel         @default(INFO)
+  targetAudience String                    @default("ALL")
+  isPersistent   Boolean                   @default(false)
+  expiresAt      DateTime?
+  status         String                    @default("ACTIVE")
+  createdAt      DateTime                  @default(now())
+  updatedAt      DateTime                  @updatedAt
   announcementTranslations AnnouncementTranslation[]
 }
 
