@@ -5,13 +5,21 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import DashboardClient from "./DashboardClient";
 
+interface SessionUser {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  role: string;
+}
+
 export default async function AdminDashboardPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const session = await getServerSession(authOptions);
 
   if (!session?.user) redirect(`/${locale}/login`);
 
-  const user = session.user as any;
+  const user = session.user as SessionUser;
   const isResearcher = user.role === "RESEARCHER";
 
   // ── 6-month window ─────────────────────────────────────────────────────────
@@ -78,7 +86,14 @@ export default async function AdminDashboardPage({ params }: { params: Promise<{
   ]);
 
   // ── Serialise audit logs ────────────────────────────────────────────────────
-  const serializedLogs = auditLogs.map((l: any) => ({
+  interface AuditLog {
+    action: string;
+    entity: string;
+    timestamp: Date;
+    user: { name: string | null } | null;
+  }
+
+  const serializedLogs = auditLogs.map((l: AuditLog) => ({
     action: l.action,
     entity: l.entity,
     timestamp: l.timestamp.toISOString(),

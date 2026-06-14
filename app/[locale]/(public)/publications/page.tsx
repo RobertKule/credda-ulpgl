@@ -19,6 +19,14 @@ export async function generateMetadata({
   return localePageMetadata(locale, "publications");
 }
 
+interface ArticleTranslation {
+  language: string;
+  title: string;
+  content: string;
+  excerpt: string | null;
+  status: string;
+}
+
 interface RawArticle {
   id: string;
   slug: string;
@@ -30,9 +38,14 @@ interface RawArticle {
   categoryId: string;
   createdAt: Date;
   updatedAt: Date;
-  translations: any[] | null;
+  translations: ArticleTranslation[] | null;
   categoryName?: string;
   publishedAt?: Date;
+}
+
+interface RawCategory {
+  id: string;
+  name: string | null;
 }
 
 export default async function PublicationsPage({ 
@@ -64,15 +77,17 @@ export default async function PublicationsPage({
   ]);
 
   // Transform data
-  const mappedArticles: EditorialItem[] = (articlesData as any[]).map(mapArticleToEditorial);
-  
+  const mappedArticles: EditorialItem[] = (articlesData as RawArticle[]).map(mapArticleToEditorial);
+
   // Only use articles for the new architecture
-  const allEditorials = [...mappedArticles].sort((a, b) => 
+  const allEditorials = [...mappedArticles].sort((a, b) =>
     b.createdAt.getTime() - a.createdAt.getTime()
   );
 
   // Clean data
-  const filteredCategories = (categoriesData as any[]).filter(c => c.name);
+  const filteredCategories = (categoriesData as RawCategory[])
+    .filter(c => c.name)
+    .map(c => ({ id: c.id, name: c.name as string }));
 
   return (
     <main className="min-h-screen bg-background selection:bg-primary selection:text-primary-foreground overflow-x-hidden">

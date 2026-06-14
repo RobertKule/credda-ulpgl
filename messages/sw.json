@@ -1311,6 +1311,11 @@
       "confirmPassword": "Thibitisha jipya",
       "submit": "Weka upya Funguo za Ufikiaji"
     },
+    "preferences": {
+      "title": "Mapendeleo",
+      "language": "Lugha iliyopendelewa",
+      "languageLabel": "Chagua lugha"
+    },
     "messages": {
       "loadingProfile": "Tunatayarisha wasifu wako...",
       "successProfile": "Wasifu umesasishwa kikamilifu",
@@ -1319,6 +1324,93 @@
       "errorUpdate": "Hitilafu imetokea",
       "errorConn": "Hitilafu ya unganisho",
       "errorMatch": "Maneno ya siri hayalingani"
+    },
+    "welcome": {
+      "morning": "Habari za asubuhi",
+      "afternoon": "Habari za mchana",
+      "evening": "Habari za jioni"
+    }
+  },
+  "Profile": {
+    "header": {
+      "subtitle": "\"Uadilifu wa data yako ndio msingi wa usalama wa taasisi yetu.\"",
+      "protected": "Inalindwa na Auth.js"
+    },
+    "card": {
+      "certified": "Akaunti Iliyothibitishwa",
+      "securityTitle": "Usalama wa Kipindi",
+      "securityDesc": "Kipindi chako cha admin kinalindwa na itifaki ya SSL. Ukiona shughuli yoyote ya kutiliwa shaka, badilisha neno lako la siri mara moja na uondoke."
+    },
+    "tabs": {
+      "personal": "Maelezo ya Kibinafsi",
+      "security": "Usalama wa Akaunti",
+      "preferences": "Mapendeleo"
+    },
+    "personal": {
+      "name": "Jina Kamili",
+      "email": "Barua pepe ya Kitaalamu",
+      "phone": "Simu ya Mawasiliano",
+      "bio": "Wasifu Mfupi",
+      "bioPlaceholder": "Utaalamu, vyeo vya kitaaluma..."
+    },
+    "security": {
+      "currentPassword": "Neno la siri la sasa",
+      "newPassword": "Neno la siri jipya",
+      "confirmPassword": "Thibitisha jipya"
+    },
+    "preferences": {
+      "title": "Mapendeleo",
+      "language": "Lugha iliyopendelewa"
+    },
+    "buttons": {
+      "save": "Hifadhi Mabadiliko"
+    },
+    "messages": {
+      "loading": "Inahifadhi...",
+      "successProfile": "Wasifu umesasishwa kikamilifu",
+      "successPassword": "Neno la siri limebadilishwa",
+      "errorUpdate": "Hitilafu imetokea",
+      "errorConn": "Hitilafu ya unganisho",
+      "errorMatch": "Maneno ya siri hayalingani"
+    },
+    "welcome": {
+      "morning": "Habari za asubuhi",
+      "afternoon": "Habari za mchana",
+      "evening": "Habari za jioni"
+    }
+  },
+  "MessagesInbox": {
+    "title": "Ujumbe",
+    "search": {
+      "placeholder": "Tafuta ujumbe..."
+    },
+    "filters": {
+      "all": "Yote",
+      "unread": "Bado",
+      "archived": "Ilivyohifadhiwa",
+      "yesterday": "Jana"
+    },
+    "empty": {
+      "noMessages": "Hakuna ujumbe ulionao",
+      "title": "Chagua ujumbe",
+      "description": "Bonyeza kwenye ujumbe kutoka kwenye orodha ili kuusoma"
+    },
+    "actions": {
+      "markRead": "Weka kama imesomwa",
+      "markUnread": "Weka kama bado",
+      "archive": "Hifadhi",
+      "reply": "Jibu"
+    },
+    "messages": {
+      "archived": "Ujumbe umehifadhiwa",
+      "replied": "Jibu limepelekwa",
+      "emptyReply": "Andika jibu lako kwanza"
+    },
+    "reply": {
+      "title": "Jibu ujumbe huu",
+      "placeholder": "Andika jibu lako hapa...",
+      "cancel": "Ghairi",
+      "send": "Tuma"
     }
   },
   "RegisterPage": {

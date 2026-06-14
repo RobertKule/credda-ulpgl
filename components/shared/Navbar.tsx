@@ -8,8 +8,16 @@ import { useState, useEffect } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useTheme } from "./ThemeProvider";
+import AnnouncementBell from "./AnnouncementBell";
 
-export default function Navbar() {
+interface Announcement {
+  id: string;
+  content: string;
+  title?: string | null;
+  level: "INFO" | "WARNING" | "URGENT";
+}
+
+export default function Navbar({ announcements = [] }: { announcements?: Announcement[] }) {
   const locale = useLocale();
   const pathname = usePathname();
   const t = useTranslations("Navigation");
@@ -180,6 +188,9 @@ export default function Navbar() {
             </div>
 
             <div className="w-[1px] h-4 bg-border/20 mx-1" />
+
+            {/* Announcement Bell */}
+            <AnnouncementBell announcements={announcements} />
 
             <button
                 onClick={toggleTheme}

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Megaphone, Save, AlertCircle, Bell, Info, ShieldAlert, Globe } from "lucide-react";
-import { createOrUpdateAnnouncement } from "./actions";
+import { createAnnouncement } from "./actions";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -33,18 +33,23 @@ export default function AnnouncementForm() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const res = await createOrUpdateAnnouncement({
-        level,
-        isActive,
-        translations
+      const res = await createAnnouncement({
+        titleFr: translations.fr.title,
+        titleEn: translations.en.title,
+        titleSw: translations.sw.title,
+        contentFr: translations.fr.content,
+        contentEn: translations.en.content,
+        contentSw: translations.sw.content,
+        priority: level === "URGENT" ? "CRITICAL" : level,
+        targetAudience: "ALL",
+        isPersistent: true,
+        status: isActive ? "ACTIVE" : "INACTIVE"
       });
       if (res.success) {
         alert("Annonce enregistrée avec succès !");
-      } else {
-        alert(res.error);
       }
-    } catch (error) {
-      alert("Erreur de connexion.");
+    } catch (error: any) {
+      alert(error.message || "Erreur de connexion.");
     } finally {
       setIsSubmitting(false);
     }

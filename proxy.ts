@@ -18,7 +18,6 @@ export async function proxy(req: NextRequest) {
   }
 
   // 2. Protection du Dashboard
-  // On vérifie si l'URL contient /admin après la locale
   const isDashboardRoute = pathname.match(/\/(fr|en|sw)\/admin/);
   
   if (isDashboardRoute) {
@@ -31,7 +30,7 @@ export async function proxy(req: NextRequest) {
       return NextResponse.redirect(loginUrl);
     }
 
-    // RBAC Basique
+    // RBAC
     const role = token.role as string;
     const pathNoLocale = pathname.replace(/^\/[a-z]{2}/, '');
 
@@ -42,13 +41,13 @@ export async function proxy(req: NextRequest) {
     }
     
     if (role === 'EDITOR') {
-      const allowed = ['/admin', '/admin/articles', '/admin/gallery', '/admin/resources', '/admin/profile'];
+      const allowed = ['/admin', '/admin/articles', '/admin/gallery', '/admin/publications', '/admin/clinique', '/admin/resources', '/admin/profile'];
       const isAllowed = allowed.some(p => pathNoLocale === p || pathNoLocale.startsWith(p + '/'));
       if (!isAllowed) return NextResponse.redirect(new URL(`/${locale}/admin`, req.url));
     }
   }
 
-  // 3. Laisser next-intl gérer le routage i18n final
+  // 3. next-intl gère le routage i18n — change de locale si nécessaire
   return intlMiddleware(req);
 }
 

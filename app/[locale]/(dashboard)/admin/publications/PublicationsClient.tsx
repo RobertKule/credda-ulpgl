@@ -4,6 +4,7 @@ import React, { useState, useMemo, useRef, useTransition } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/navigation";
+import { Domain, ContentStatus } from "@prisma/client";
 import { createArticleAction, updateArticleAction, deleteArticleAction, uploadPublicationMedia } from "./actions";
 import {
   Search,
@@ -37,13 +38,13 @@ import { cn } from "@/lib/utils";
 interface PublicationItem {
   id: string;
   title: string;
-  type: string; // "RESEARCH" | "CLINICAL"
+  type: Domain;
   category: string;
   shortDescription: string;
   content: string;
   imageUrl?: string;
   pdfUrl?: string;
-  status: string;
+  status: ContentStatus;
   createdAt: string;
 }
 
@@ -75,9 +76,28 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
   const pdfInputRef = useRef<HTMLInputElement>(null);
 
   // Controlled Form Data
-  const emptyForm = { title: "", type: "RESEARCH", categorySlug: "", shortDescription: "", content: "", status: "DRAFT", imageUrl: "", pdfUrl: "" };
-  const [formData, setFormData] = useState(emptyForm);
-  const setField = (field: string, value: string) => setFormData(prev => ({ ...prev, [field]: value }));
+  type FormData = {
+    title: string;
+    type: Domain;
+    categorySlug: string;
+    shortDescription: string;
+    content: string;
+    status: ContentStatus;
+    imageUrl: string;
+    pdfUrl: string;
+  };
+  const emptyForm = {
+    title: "",
+    type: Domain.RESEARCH,
+    categorySlug: "",
+    shortDescription: "",
+    content: "",
+    status: ContentStatus.DRAFT,
+    imageUrl: "",
+    pdfUrl: ""
+  } as FormData;
+  const [formData, setFormData] = useState<FormData>(emptyForm);
+  const setField = (field: string, value: string | Domain | ContentStatus) => setFormData(prev => ({ ...prev, [field]: value }));
 
   // Form Step & Editor
   const [formStep, setFormStep] = useState<1 | 2 | 3>(1);
@@ -109,9 +129,9 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
   // Filtering Data
   const filteredData = useMemo(() => {
     let result = [...initialData];
-    
+
     if (activeTab !== "ALL") {
-      result = result.filter(item => item.type === activeTab);
+      result = result.filter(item => item.type === (activeTab as Domain));
     }
     
     if (searchQuery.trim() !== "") {
@@ -248,9 +268,9 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
   const stats = useMemo(() => {
     return {
       total: initialData.length,
-      published: initialData.filter(i => i.status === "PUBLISHED").length,
-      drafts: initialData.filter(i => i.status === "DRAFT").length,
-      clinic: initialData.filter(i => i.type === "CLINICAL").length
+      published: initialData.filter(i => i.status === ContentStatus.PUBLISHED).length,
+      drafts: initialData.filter(i => i.status === ContentStatus.DRAFT).length,
+      clinic: initialData.filter(i => i.type === Domain.CLINICAL).length
     };
   }, [initialData]);
 
@@ -432,12 +452,12 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
                     <td className="p-4">
                       <span className={cn(
                         "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider",
-                        item.type === "RESEARCH" 
+                        item.type === Domain.RESEARCH
                           ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
                           : "bg-[#D4AF37]/10 text-[#b8932a] dark:text-[#D4AF37]"
                       )}>
-                        {item.type === "RESEARCH" ? <FileText className="w-3 h-3" /> : <Scale className="w-3 h-3" />}
-                        {item.type === "RESEARCH" ? "Recherche" : "Clinique"}
+                        {item.type === Domain.RESEARCH ? <FileText className="w-3 h-3" /> : <Scale className="w-3 h-3" />}
+                        {item.type === Domain.RESEARCH ? "Recherche" : "Clinique"}
                       </span>
                     </td>
                     <td className="p-4 text-sm text-slate-600 dark:text-zinc-400">
@@ -448,13 +468,13 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
                     <td className="p-4">
                       <span className={cn(
                         "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border",
-                        item.status === "PUBLISHED"
+                        item.status === ContentStatus.PUBLISHED
                           ? "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/30"
                           : "bg-slate-100 text-slate-600 border-slate-200 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700"
                       )}>
-                        {item.status === "PUBLISHED" && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />}
-                        {item.status === "DRAFT" && <div className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-zinc-500" />}
-                        {item.status === "PUBLISHED" ? "Publié" : "Brouillon"}
+                        {item.status === ContentStatus.PUBLISHED && <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />}
+                        {item.status === ContentStatus.DRAFT && <div className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-zinc-500" />}
+                        {item.status === ContentStatus.PUBLISHED ? "Publié" : "Brouillon"}
                       </span>
                     </td>
                     <td className="p-4 text-right">
@@ -569,7 +589,7 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
                             <label className="block text-xs font-bold text-slate-700 dark:text-zinc-300 uppercase tracking-wider mb-2">Type *</label>
                             <select
                               value={formData.type}
-                              onChange={(e) => setField("type", e.target.value)}
+                              onChange={(e) => setField("type", e.target.value as Domain)}
                               className="w-full px-4 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:ring-2 focus:ring-green-600/20 focus:border-green-600 transition-all dark:text-white outline-none appearance-none"
                             >
                               <option value="RESEARCH">Recherche (Article)</option>
@@ -805,8 +825,8 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
                                  type="radio"
                                  name="pub-status"
                                  value="PUBLISHED"
-                                 checked={formData.status === "PUBLISHED"}
-                                 onChange={() => setField("status", "PUBLISHED")}
+                                 checked={formData.status === ContentStatus.PUBLISHED}
+                                 onChange={() => setField("status", ContentStatus.PUBLISHED)}
                                  className="text-green-600 focus:ring-green-600"
                                />
                                <span className="text-sm font-medium dark:text-zinc-300">Publier immédiatement</span>
@@ -816,8 +836,8 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
                                  type="radio"
                                  name="pub-status"
                                  value="DRAFT"
-                                 checked={formData.status === "DRAFT"}
-                                 onChange={() => setField("status", "DRAFT")}
+                                 checked={formData.status === ContentStatus.DRAFT}
+                                 onChange={() => setField("status", ContentStatus.DRAFT)}
                                  className="text-green-600 focus:ring-green-600"
                                />
                                <span className="text-sm font-medium dark:text-zinc-300">Garder en brouillon</span>
@@ -834,7 +854,7 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
               {/* Footer Actions */}
               <div className="p-6 border-t border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-900/50 flex items-center justify-between">
                 <button 
-                  onClick={() => formStep > 1 ? setFormStep((s) => (s - 1) as any) : setIsFormOpen(false)}
+                  onClick={() => formStep > 1 ? setFormStep((s) => (s - 1) as 1 | 2 | 3) : setIsFormOpen(false)}
                   disabled={isPending}
                   className="px-6 py-2.5 rounded-xl text-sm font-bold text-slate-600 dark:text-zinc-400 hover:bg-slate-200 dark:hover:bg-zinc-800 transition-colors disabled:opacity-50"
                 >
@@ -843,7 +863,7 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
                 
                 <button 
                   onClick={() => {
-                    if (formStep < 3) setFormStep((s) => (s + 1) as any);
+                    if (formStep < 3) setFormStep((s) => (s + 1) as 1 | 2 | 3);
                     else handleSubmit();
                   }}
                   disabled={isPending}
@@ -947,11 +967,11 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
                     <div className="flex items-center gap-2 mb-2">
                       <span className={cn(
                         "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider",
-                        previewItem.type === "RESEARCH" 
+                        previewItem.type === Domain.RESEARCH
                           ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
                           : "bg-[#D4AF37]/10 text-[#b8932a] dark:text-[#D4AF37]"
                       )}>
-                        {previewItem.type === "RESEARCH" ? "Recherche" : "Clinique"}
+                        {previewItem.type === Domain.RESEARCH ? "Recherche" : "Clinique"}
                       </span>
                       <span className="text-xs text-slate-500 font-bold uppercase">{previewItem.category}</span>
                     </div>

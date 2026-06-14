@@ -68,9 +68,7 @@ export async function replyToContactMessage(id: string, replyText: string): Prom
     const updatedMessage = await db.contactMessage.update({
       where: { id: data.id },
       data: {
-        status: ContactStatus.READ,
-        replyContent: data.replyText,
-        repliedAt: new Date()
+        status: ContactStatus.READ
       }
     });
 
@@ -148,7 +146,7 @@ export async function getMessageStats(): Promise<ApiResponse<ContactStats>> {
       db.contactMessage.count({ where: { status: ContactStatus.UNREAD } }),
       db.contactMessage.count({ where: { status: ContactStatus.READ } }),
       db.contactMessage.count({ where: { status: ContactStatus.ARCHIVED } }),
-      db.contactMessage.count({ where: { NOT: { repliedAt: null } } }),
+      db.contactMessage.count({ where: { status: ContactStatus.READ } }),
     ]);
 
     return {

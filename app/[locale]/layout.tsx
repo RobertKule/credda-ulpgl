@@ -2,7 +2,6 @@ import { getMessages } from "next-intl/server";
 import { Lora, Inter } from 'next/font/google'
 import Providers from "@/components/shared/Providers";
 import MainLayoutWrapper from "@/components/shared/MainLayoutWrapper";
-import AnnouncementBar from "@/components/layout/AnnouncementBar";
 import { sql } from "@/lib/db";
 import "../globals.css";
 
@@ -23,8 +22,6 @@ const inter = Inter({
   preload: true,
 })
 
-import SystemBanner from "@/components/shared/SystemBanner";
-
 export default async function RootLayout({
   children,
   params,
@@ -36,17 +33,24 @@ export default async function RootLayout({
 
   const messages = await getMessages({ locale });
 
-  // Fetch active announcements (with trilingual support)
-  const announcements = (await sql`
-    SELECT a.id, t.content, a."isActive"
-    FROM "Announcement" a
+  // Fetch active announcements with title and level for the current locale
+  const announcementsRaw = (await sql`
+    SELECT a.id, a.priority, t.title, t.content
+    FROM "announcements" a
     JOIN "AnnouncementTranslation" t ON t."announcementId" = a.id
     WHERE a."isActive" = true AND t.language = ${locale}
     ORDER BY a."createdAt" DESC
-  `.catch(() => [])) as { id: string; content: string; isActive: boolean }[];
+  `.catch(() => [])) as { id: string; level: string; title: string | null; content: string }[];
+
+  const announcements = announcementsRaw.map(a => ({
+    id: a.id,
+    level: (a.level === "URGENT" ? "URGENT" : a.level === "WARNING" ? "WARNING" : "INFO") as "INFO" | "WARNING" | "URGENT",
+    title: a.title,
+    content: a.content,
+  }));
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${lora.variable} ${inter.variable} scroll-smooth`}>
+    <html lang={locale} suppressHydrationWarning className={`${lora.variable} ${inter.variable} scroll-smooth overflow-x-hidden`}>
       <head>
         <script
           id="theme-script"
@@ -64,10 +68,9 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="font-sans antialiased text-foreground bg-background relative">
-        {announcements && announcements.length > 0 && <AnnouncementBar announcements={announcements} />}
+      <body className="font-sans antialiased text-foreground bg-background relative overflow-x-hidden">
         <Providers locale={locale} messages={messages}>
-          <MainLayoutWrapper>
+          <MainLayoutWrapper announcements={announcements}>
             {children}
           </MainLayoutWrapper>
         </Providers>

@@ -3,30 +3,19 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { m as motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Images } from "lucide-react";
+import { ArrowUpRight, Images, Loader2 } from "lucide-react";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
 
-const FALLBACK_IMAGES = [
-  { id: "g1",  src: "/images/gallery/conference.webp",          title: "Conférence Régionale" },
-  { id: "g2",  src: "/images/gallery/clinic.webp",              title: "Consultation Clinique" },
-  { id: "g3",  src: "/images/gallery/library.webp",             title: "Médiathèque" },
-  { id: "g4",  src: "/images/gallery/research.webp",            title: "Recherche Terrain" },
-  { id: "g5",  src: "/images/gallery/workshop.webp",            title: "Atelier" },
-  { id: "g6",  src: "/images/gallery/field.webp",               title: "Terrain" },
-  { id: "g7",  src: "/images/gallery/partners.webp",            title: "Partenaires" },
-  { id: "g8",  src: "/images/gallery/legal-clinic-session.png", title: "Session Clinique Juridique" },
-  { id: "g9",  src: "/images/gallery/research-field.png",       title: "Recherche sur le Terrain" },
-  { id: "g10", src: "/images/gallery/conference.webp",          title: "Excellence Académique" },
-];
-
-const PAGE_SIZE = 6; // 6 images per "slide"
+const PAGE_SIZE = 6;
 
 interface GalleryImage {
   id?: string | number;
   src?: string;
   imageUrl?: string;
   title?: string;
+  description?: string;
+  category?: string;
 }
 
 export default function GalleryGrid({
@@ -39,18 +28,20 @@ export default function GalleryGrid({
   const t = useTranslations("HomePage");
   const [page, setPage] = useState(0);
 
-  // Normalize
-  const allImages = ((images.length > 0 ? images : FALLBACK_IMAGES) as GalleryImage[])
-    .slice(0, 10)
+  // Normalize images from backend (no hardcoded fallbacks)
+  const allImages = (images as GalleryImage[])
+    .filter((img) => img.src || img.imageUrl) // only real images
     .map((img, idx) => ({
-      id:    img.id ?? idx,
-      src:   img.src || img.imageUrl || FALLBACK_IMAGES[idx % FALLBACK_IMAGES.length].src,
-      title: img.title || FALLBACK_IMAGES[idx % FALLBACK_IMAGES.length].title,
+      id: img.id ?? idx,
+      src: img.src || img.imageUrl || "",
+      title: img.title || "",
+      description: img.description || "",
+      category: img.category || "",
     }));
 
   const totalPages = Math.ceil(allImages.length / PAGE_SIZE);
 
-  // Auto-rotate every 5 seconds
+  // Auto-rotate every 5s if multiple pages
   useEffect(() => {
     if (totalPages <= 1) return;
     const timer = setInterval(() => {
@@ -59,7 +50,25 @@ export default function GalleryGrid({
     return () => clearInterval(timer);
   }, [totalPages]);
 
+  // Reset page if images change
+  useEffect(() => {
+    setPage(0);
+  }, [images.length]);
+
   const current = allImages.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
+  const displayTotal = totalCount || allImages.length;
+
+  // Empty state — no data from DB yet
+  if (allImages.length === 0) {
+    return (
+      <div className="w-full px-5 sm:px-8 lg:px-12 xl:px-16 py-16 lg:py-24">
+        <div className="flex flex-col items-center justify-center py-24 gap-4 text-muted-foreground">
+          <Loader2 size={28} className="animate-spin opacity-40" />
+          <p className="text-sm font-medium opacity-60">Galerie en cours de chargement…</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full px-5 sm:px-8 lg:px-12 xl:px-16 py-16 lg:py-24">
@@ -80,9 +89,10 @@ export default function GalleryGrid({
             <span className="text-primary italic">{t("Gallery.title_highlight")}</span>
           </h2>
         </div>
-        {/* Dot indicators */}
+
+        {/* Page indicators + count */}
         <div className="flex items-center gap-3">
-          {Array.from({ length: totalPages }).map((_, i) => (
+          {totalPages > 1 && Array.from({ length: totalPages }).map((_, i) => (
             <button
               key={i}
               onClick={() => setPage(i)}
@@ -96,66 +106,69 @@ export default function GalleryGrid({
           ))}
           <span className="ml-2 flex items-center gap-2 text-muted-foreground text-xs font-medium">
             <Images size={14} className="text-primary" />
-            {totalCount || allImages.length}+
+            {displayTotal}+
           </span>
         </div>
       </motion.div>
 
       {/* Grid — 6 images, 3 cols on desktop, 2 on tablet, 1 on mobile */}
-      <div className="overflow-visible relative min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
+      <div className="overflow-hidden relative min-h-[400px] sm:min-h-[500px] lg:min-h-[600px]">
         <AnimatePresence mode="popLayout" initial={false}>
           <motion.div
             key={page}
-            initial={{ opacity: 0, x: -100 }}
+            initial={{ opacity: 0, x: -60 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 100 }}
-            transition={{ 
-              duration: 1.2, 
-              ease: [0.16, 1, 0.3, 1] // Custom ease-out expo for fluidity
-            }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 overflow-visible"
+            exit={{ opacity: 0, x: 60 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           >
             {current.map((img, idx) => (
               <motion.div
                 key={img.id}
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ 
-                  delay: 0.1 + idx * 0.05, 
-                  duration: 0.8,
-                  ease: "easeOut"
+                transition={{
+                  delay: 0.05 + idx * 0.06,
+                  duration: 0.7,
+                  ease: "easeOut",
                 }}
                 whileHover={{
-                  scale: 1.05,
-                  zIndex: 50,
-                  boxShadow: "0 20px 48px -8px rgba(0,0,0,0.28)",
+                  scale: 1.04,
+                  zIndex: 10,
+                  boxShadow: "0 24px 56px -8px rgba(0,0,0,0.3)",
                   transition: { duration: 0.3 },
                 }}
                 className="relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer
-                           border border-border/20 dark:border-border/10 bg-card z-0"
-                style={{ transformOrigin: "center center" }}
+                           border border-border/20 dark:border-border/10 bg-card"
               >
                 <Image
                   src={img.src}
-                  alt={img.title}
+                  alt={img.title || "Galerie CREDDA"}
                   fill
                   unoptimized
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover object-center"
+                  className="object-cover object-center transition-transform duration-700 hover:scale-105"
                 />
 
                 {/* Hover overlay */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent pointer-events-none"
+                  className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none"
                   initial={{ opacity: 0 }}
                   whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.25 }}
+                  transition={{ duration: 0.3 }}
                 />
 
-                {/* Label */}
+                {/* Category badge */}
+                {img.category && (
+                  <span className="absolute top-3 left-3 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-black/40 text-white/80 backdrop-blur-sm border border-white/10">
+                    {img.category}
+                  </span>
+                )}
+
+                {/* Title on hover */}
                 <motion.p
                   className="absolute bottom-3 left-4 right-4 text-white text-[11px] font-bold uppercase tracking-widest line-clamp-1 pointer-events-none"
-                  initial={{ opacity: 0, y: 4 }}
+                  initial={{ opacity: 0, y: 6 }}
                   whileHover={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.2, delay: 0.05 }}
                 >
