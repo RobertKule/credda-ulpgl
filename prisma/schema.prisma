@@ -168,17 +168,16 @@ model MemberTranslation {
 }
 
 model ContactMessage {
-  id           String        @id @default(cuid())
-  name         String
-  email        String
-  subject      String
-  message      String
-  status       ContactStatus @default(UNREAD)
-  replyContent String?
-  repliedAt    DateTime?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  status    String   @default("UNREAD") // "UNREAD" | "READ" | "ARCHIVED"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
+  @@map("contact_messages")
   @@index([status])
   @@index([createdAt])
   @@index([email])
@@ -365,16 +364,18 @@ model TestimonialTranslation {
 }
 
 model Announcement {
-  id             String                    @id @default(cuid())
-  isActive       Boolean                   @default(false)
-  level          AnnouncementLevel         @default(INFO)
-  targetAudience String                    @default("ALL")
+  id             String                    @id @default(uuid())
+  priority       String                    @default("INFO") // "INFO" | "WARNING" | "CRITICAL"
+  targetAudience String                    @default("ALL")  // "ALL" | "RESEARCHERS" | "PUBLIC"
   isPersistent   Boolean                   @default(false)
   expiresAt      DateTime?
-  status         String                    @default("ACTIVE")
+  status         String                    @default("ACTIVE") // "ACTIVE" | "ARCHIVED" | "SCHEDULED"
+  isActive       Boolean                   @default(true)
   createdAt      DateTime                  @default(now())
   updatedAt      DateTime                  @updatedAt
   announcementTranslations AnnouncementTranslation[]
+
+  @@map("announcements")
 }
 
 model AnnouncementTranslation {
@@ -386,6 +387,20 @@ model AnnouncementTranslation {
   announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
 
   @@unique([announcementId, language])
+}
+
+model MediaItem {
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+  type         String   // "IMAGE" | "VIDEO"
+  source       String   // "LOCAL" (Supabase Storage) | "EXTERNAL" (YouTube/Vimeo)
+  url          String
+  thumbnailUrl String?
+  category     String   // "Conférence" | "Terrain" | "Recherche"
+  createdAt    DateTime @default(now())
+
+  @@map("media_items")
 }
 
 enum AnnouncementLevel {
