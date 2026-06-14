@@ -148,12 +148,37 @@ export default function Hero({
               {/* TITLE */}
               <h1 className="font-serif text-3xl md:text-5xl font-black leading-tight text-white mb-4 md:mb-6">
                 <span>{t("hero.title_prefix")}</span>{" "}
-                <span className="text-primary block sm:inline">
-                  <AnimatePresence mode="wait">
-                    <motion.span key={titleWordIndex}>
-                      <Typewriter text={titleWords[titleWordIndex]} />
-                    </motion.span>
-                  </AnimatePresence>
+                {/*
+                  Ghost spacer technique: the invisible span always occupies the
+                  width/height of the longest word, preventing any layout shift.
+                  The visible typewriter is layered on top via absolute positioning.
+                */}
+                <span className="text-primary block relative">
+                  {/* Invisible ghost — reserves space for the longest word */}
+                  <span
+                    aria-hidden
+                    className="invisible select-none pointer-events-none whitespace-pre-wrap"
+                  >
+                    {titleWords.reduce(
+                      (a: string, b: string) => (a.length >= b.length ? a : b),
+                      ""
+                    )}
+                  </span>
+
+                  {/* Actual typewriter — floats above ghost, never disturbs layout */}
+                  <span className="absolute inset-0 flex items-start">
+                    <AnimatePresence mode="wait">
+                      <motion.span
+                        key={titleWordIndex}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.25 }}
+                      >
+                        <Typewriter text={titleWords[titleWordIndex]} />
+                      </motion.span>
+                    </AnimatePresence>
+                  </span>
                 </span>
               </h1>
 

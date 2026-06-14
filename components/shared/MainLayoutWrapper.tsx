@@ -1,21 +1,29 @@
 "use client";
 
-import { usePathname } from "@/navigation"; // Supposant que /navigation exporte usePathname
 import { usePathname as useNextPathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import dynamic from "next/dynamic";
 import PersistentGlobeBackground from "@/components/home/PersistentGlobeBackground";
+import FooterTickerBar from "./FooterTickerBar";
 
 import { useState, useEffect } from "react";
-import GlobalLoader from "./GlobalLoader";
-const SystemBanner = dynamic(() => import("./SystemBanner"), { ssr: false });
 import { AnimatePresence } from "framer-motion";
+import GlobalLoader from "./GlobalLoader";
+
+interface Announcement {
+  id: string;
+  content: string;
+  title?: string | null;
+  level: "INFO" | "WARNING" | "URGENT";
+}
 
 export default function MainLayoutWrapper({
   children,
+  announcements = [],
 }: {
   children: React.ReactNode;
+  announcements?: Announcement[];
 }) {
   const pathname = useNextPathname();
   const isAdmin = pathname?.includes("/admin") || pathname?.split('/').includes("admin");
@@ -36,12 +44,12 @@ export default function MainLayoutWrapper({
       <AnimatePresence>
         {!mounted && <GlobalLoader />}
       </AnimatePresence>
-      <SystemBanner />
-      <Navbar />
+      <Navbar announcements={announcements} />
       {!isHome && !isAuthPage && <PersistentGlobeBackground />}
-      <div className="relative z-10 m-0 p-0 mt-20 min-h-screen bg-transparent text-foreground transition-all duration-500">
+      <div className="relative z-10 m-0 p-0 mt-20 min-h-screen bg-transparent text-foreground transition-all duration-500 overflow-x-hidden">
         {children}
       </div>
+      <FooterTickerBar announcements={announcements} />
       <Footer />
     </>
   );

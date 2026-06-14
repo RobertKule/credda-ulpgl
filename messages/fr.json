@@ -1279,6 +1279,107 @@
       "newPassword": "Nouveau mot de passe",
       "confirmPassword": "Confirmer le nouveau",
       "submit": "Réinitialiser les Clés d'Accès"
+    },
+    "preferences": {
+      "title": "Préférences",
+      "language": "Langue préférée",
+      "languageLabel": "Choisir la langue"
+    },
+    "messages": {
+      "loadingProfile": "Mise à jour de votre profil...",
+      "successProfile": "Profil mis à jour avec succès",
+      "loadingPassword": "Sécurisation de votre nouveau mot de passe...",
+      "successPassword": "Mot de passe modifié",
+      "errorUpdate": "Une erreur est survenue",
+      "errorConn": "Erreur de connexion",
+      "errorMatch": "Les mots de passe ne correspondent pas"
+    },
+    "welcome": {
+      "morning": "Bonjour",
+      "afternoon": "Bon après-midi",
+      "evening": "Bonsoir"
+    }
+  },
+  "Profile": {
+    "header": {
+      "subtitle": "\"L'intégrité de vos données est la fondation de notre sécurité institutionnelle.\"",
+      "protected": "Protégé par Auth.js"
+    },
+    "card": {
+      "certified": "Compte Certifié",
+      "securityTitle": "Sécurité de Session",
+      "securityDesc": "Votre session admin est protégée par un protocole SSL. Si vous remarquez une activité suspecte, changez immédiatement votre mot de passe et déconnectez-vous."
+    },
+    "tabs": {
+      "personal": "Informations Personnelles",
+      "security": "Sécurité du Compte",
+      "preferences": "Préférences"
+    },
+    "personal": {
+      "name": "Nom complet",
+      "email": "Email professionnel",
+      "phone": "Téléphone de liaison",
+      "bio": "Biographie Courte",
+      "bioPlaceholder": "Expertise, titres académiques..."
+    },
+    "security": {
+      "currentPassword": "Mot de passe actuel",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le nouveau"
+    },
+    "preferences": {
+      "title": "Préférences",
+      "language": "Langue préférée"
+    },
+    "buttons": {
+      "save": "Enregistrer les modifications"
+    },
+    "messages": {
+      "loading": "Enregistrement...",
+      "successProfile": "Profil mis à jour avec succès",
+      "successPassword": "Mot de passe modifié",
+      "errorUpdate": "Une erreur est survenue",
+      "errorConn": "Erreur de connexion",
+      "errorMatch": "Les mots de passe ne correspondent pas"
+    },
+    "welcome": {
+      "morning": "Bonjour",
+      "afternoon": "Bon après-midi",
+      "evening": "Bonsoir"
+    }
+  },
+  "MessagesInbox": {
+    "title": "Messages",
+    "search": {
+      "placeholder": "Rechercher un message..."
+    },
+    "filters": {
+      "all": "Tous",
+      "unread": "Non lus",
+      "archived": "Archivés",
+      "yesterday": "Hier"
+    },
+    "empty": {
+      "noMessages": "Aucun message disponible",
+      "title": "Sélectionnez un message",
+      "description": "Cliquez sur un message de la liste pour le lire"
+    },
+    "actions": {
+      "markRead": "Marquer comme lu",
+      "markUnread": "Marquer comme non lu",
+      "archive": "Archiver",
+      "reply": "Répondre"
+    },
+    "messages": {
+      "archived": "Message archivé",
+      "replied": "Réponse envoyée",
+      "emptyReply": "Veuillez écrire votre réponse d'abord"
+    },
+    "reply": {
+      "title": "Répondre à ce message",
+      "placeholder": "Écrivez votre réponse ici...",
+      "cancel": "Annuler",
+      "send": "Envoyer"
     }
   },
   "AdminUsers": {

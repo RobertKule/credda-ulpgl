@@ -41,8 +41,6 @@ export async function POST(
     await db.contactMessage.update({
       where: { id },
       data: {
-        replyContent: replyMessage,
-        repliedAt: new Date(),
         status: "READ"
       }
     });

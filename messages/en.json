@@ -1444,6 +1444,11 @@
       "confirmPassword": "Confirm New",
       "submit": "Reset Access Keys"
     },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Preferred Language",
+      "languageLabel": "Select language"
+    },
     "messages": {
       "loadingProfile": "Updating your profile...",
       "successProfile": "Profile updated successfully",
@@ -1452,6 +1457,93 @@
       "errorUpdate": "An error occurred",
       "errorConn": "Connection error",
       "errorMatch": "Passwords do not match"
+    },
+    "welcome": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    }
+  },
+  "Profile": {
+    "header": {
+      "subtitle": "\"The integrity of your data is the foundation of our institutional security.\"",
+      "protected": "Protected by Auth.js"
+    },
+    "card": {
+      "certified": "Certified Account",
+      "securityTitle": "Session Security",
+      "securityDesc": "Your admin session is protected by an SSL protocol. If you notice any suspicious activity, change your password immediately and log out."
+    },
+    "tabs": {
+      "personal": "Personal Information",
+      "security": "Account Security",
+      "preferences": "Preferences"
+    },
+    "personal": {
+      "name": "Full Name",
+      "email": "Professional Email",
+      "phone": "Contact Phone",
+      "bio": "Short Biography",
+      "bioPlaceholder": "Expertise, academic titles..."
+    },
+    "security": {
+      "currentPassword": "Current Password",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm New"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Preferred Language"
+    },
+    "buttons": {
+      "save": "Save Changes"
+    },
+    "messages": {
+      "loading": "Saving...",
+      "successProfile": "Profile updated successfully",
+      "successPassword": "Password modified",
+      "errorUpdate": "An error occurred",
+      "errorConn": "Connection error",
+      "errorMatch": "Passwords do not match"
+    },
+    "welcome": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    }
+  },
+  "MessagesInbox": {
+    "title": "Messages",
+    "search": {
+      "placeholder": "Search messages..."
+    },
+    "filters": {
+      "all": "All",
+      "unread": "Unread",
+      "archived": "Archived",
+      "yesterday": "Yesterday"
+    },
+    "empty": {
+      "noMessages": "No messages available",
+      "title": "Select a message",
+      "description": "Click on a message from the list to read it"
+    },
+    "actions": {
+      "markRead": "Mark as read",
+      "markUnread": "Mark as unread",
+      "archive": "Archive",
+      "reply": "Reply"
+    },
+    "messages": {
+      "archived": "Message archived",
+      "replied": "Reply sent",
+      "emptyReply": "Please write your reply first"
+    },
+    "reply": {
+      "title": "Reply to this message",
+      "placeholder": "Write your reply here...",
+      "cancel": "Cancel",
+      "send": "Send"
     }
   },
   "AdminUsers": {

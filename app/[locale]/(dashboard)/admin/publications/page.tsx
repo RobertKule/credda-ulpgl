@@ -4,8 +4,22 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import PublicationsClient from "./PublicationsClient";
+import { Domain, ContentStatus } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
+
+interface PublicationItem {
+  id: string;
+  title: string;
+  type: Domain;
+  category: string;
+  shortDescription: string;
+  content: string;
+  imageUrl?: string;
+  pdfUrl?: string;
+  status: ContentStatus;
+  createdAt: string;
+}
 
 export default async function PublicationsPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -27,7 +41,7 @@ export default async function PublicationsPage({ params }: { params: Promise<{ l
   });
 
   // Map to the PublicationItem format expected by the frontend
-  const initialData = rawArticles.map(article => {
+  const initialData: PublicationItem[] = rawArticles.map(article => {
     // Find the translation for the current locale, fallback to 'fr', then first available
     const translation = article.translations.find(t => t.language === locale) 
       || article.translations.find(t => t.language === "fr") 
@@ -64,7 +78,7 @@ export default async function PublicationsPage({ params }: { params: Promise<{ l
         </div>
       </div>
 
-      <PublicationsClient locale={locale} initialData={initialData as any} />
+      <PublicationsClient locale={locale} initialData={initialData} />
     </div>
   );
 }
