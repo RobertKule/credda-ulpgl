@@ -61,6 +61,11 @@ export default function GalleryGrid({
     setPage(0);
   }, [images.length]);
 
+  // Reset page if images change
+  useEffect(() => {
+    setPage(0);
+  }, [images.length]);
+
   const current = allImages.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE);
   const displayTotal = totalCount || allImages.length;
 
