@@ -10,7 +10,6 @@ import {
   Loader2,
   ExternalLink
 } from "lucide-react";
-import { generateSecureDocumentUrl } from "./actions";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -24,12 +23,9 @@ export default function ClinicalTable({ initialCases }: { initialCases: any[] })
   const handleOpenSecureDoc = async (caseId: string, fileKey: string) => {
     try {
       setLoadingFile(fileKey);
-      const { url } = await generateSecureDocumentUrl(caseId, fileKey);
-      if (url) {
-        window.open(url, '_blank');
-      }
+      window.open(fileKey, '_blank');
     } catch (error) {
-      alert("Erreur lors de la récupération du document sécurisé.");
+      alert("Erreur lors de l'ouverture du document.");
     } finally {
       setLoadingFile(null);
     }
