@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useTransition } from "react";
 import { m as motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import {
   Search,
   UploadCloud,
@@ -10,6 +11,7 @@ import {
   Image as ImageIcon,
   Video,
   FolderOpen,
+  Loader2,
 } from "lucide-react";
 import type { MediaItem, MediaTab } from "@/lib/mediatheque/types";
 import { MEDIA_CATEGORIES } from "@/lib/mediatheque/types";
@@ -21,6 +23,8 @@ import MediaImportSlideOver, {
   type MediaFormData,
 } from "@/components/admin/mediatheque/MediaImportSlideOver";
 import { cn } from "@/lib/utils";
+import { createGalleryImage, updateGalleryImage, deleteGalleryImage } from "@/services/gallery-actions";
+import { uploadFileAction } from "@/services/storage-actions";
 
 const TABS: { id: MediaTab; label: string; icon: React.ElementType }[] = [
   { id: "ALL", label: "Tous les fichiers", icon: Files },
@@ -33,6 +37,8 @@ interface MediathequeClientProps {
 }
 
 export default function MediathequeClient({ initialItems }: MediathequeClientProps) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const [items, setItems] = useState<MediaItem[]>(initialItems);
   const [activeTab, setActiveTab] = useState<MediaTab>("ALL");
   const [searchQuery, setSearchQuery] = useState("");
@@ -41,6 +47,7 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
   const [previewMedia, setPreviewMedia] = useState<MediaItem | null>(null);
   const [deletingMedia, setDeletingMedia] = useState<MediaItem | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [editingMedia, setEditingMedia] = useState<MediaItem | null>(null);
@@ -71,48 +78,146 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
   const handleDelete = () => {
     if (!deletingMedia) return;
     setIsDeleting(true);
-    setTimeout(() => {
-      setItems((prev) => prev.filter((i) => i.id !== deletingMedia.id));
-      setDeletingMedia(null);
-      setIsDeleting(false);
-      if (previewMedia?.id === deletingMedia.id) setPreviewMedia(null);
-    }, 400);
+    startTransition(async () => {
+      try {
+        await deleteGalleryImage(deletingMedia.id);
+        setItems((prev) => prev.filter((i) => i.id !== deletingMedia.id));
+        setDeletingMedia(null);
+        if (previewMedia?.id === deletingMedia.id) setPreviewMedia(null);
+        router.refresh();
+      } catch (error) {
+        console.error("Error deleting media:", error);
+      } finally {
+        setIsDeleting(false);
+      }
+    });
   };
 
-  const handleFormSubmit = (data: MediaFormData) => {
-    if (editingMedia) {
-      setItems((prev) =>
-        prev.map((item) =>
-          item.id === editingMedia.id
-            ? {
-                ...item,
-                title: data.title,
-                description: data.description || undefined,
-                category: data.category,
-                type: data.type,
-                source: data.source,
-                url: data.url || item.url,
-                thumbnailUrl: data.thumbnailUrl || item.thumbnailUrl,
-                fileSize: data.fileSize,
-              }
-            : item
-        )
-      );
-      setEditingMedia(null);
-    } else {
-      const newItem: MediaItem = {
-        id: crypto.randomUUID(),
-        title: data.title,
-        description: data.description || undefined,
-        type: data.type,
-        source: data.source,
-        url: data.url,
-        thumbnailUrl: data.thumbnailUrl || data.url,
-        category: data.category,
-        fileSize: data.fileSize,
-        createdAt: new Date().toISOString(),
-      };
-      setItems((prev) => [newItem, ...prev]);
+  const handleFormSubmit = async (data: MediaFormData) => {
+    setIsSubmitting(true);
+    try {
+      let uploadedUrl = data.url;
+
+      // Upload file to Supabase if it's a local file (blob URL)
+      if (data.source === "LOCAL" && data.url.startsWith("blob:")) {
+        try {
+          const response = await fetch(data.url);
+          const blob = await response.blob();
+          const fileExtension = data.type === "IMAGE" ? "jpg" : "mp4";
+          const mimeType = data.type === "IMAGE" ? "image/jpeg" : "video/mp4";
+
+          const formData = new FormData();
+          formData.append("file", new File([blob], `${data.title}.${fileExtension}`, { type: mimeType }));
+
+          const uploadResult = await uploadFileAction(formData);
+          if (uploadResult.error) {
+            throw new Error(uploadResult.error);
+          }
+          uploadedUrl = uploadResult.url || data.url;
+        } catch (error) {
+          console.error("Error uploading file to Supabase:", error);
+          throw new Error("Erreur lors de l'upload du fichier");
+        }
+      }
+
+      if (editingMedia) {
+        // Update existing media
+        const result = await updateGalleryImage({
+          id: editingMedia.id,
+          src: uploadedUrl,
+          category: data.category,
+          featured: false,
+          translations: [
+            {
+              language: "fr",
+              title: data.title,
+              description: data.description || "",
+            },
+            {
+              language: "en",
+              title: data.title,
+              description: data.description || "",
+            },
+            {
+              language: "sw",
+              title: data.title,
+              description: data.description || "",
+            },
+          ],
+        });
+
+        if (result.error) {
+          throw new Error(result.error);
+        }
+
+        setItems((prev) =>
+          prev.map((item) =>
+            item.id === editingMedia.id
+              ? {
+                  ...item,
+                  title: data.title,
+                  description: data.description || undefined,
+                  category: data.category,
+                  type: data.type,
+                  source: data.source,
+                  url: uploadedUrl,
+                  thumbnailUrl: uploadedUrl,
+                  fileSize: data.fileSize,
+                }
+              : item
+          )
+        );
+        setEditingMedia(null);
+      } else {
+        // Create new media
+        const result = await createGalleryImage({
+          src: uploadedUrl,
+          category: data.category,
+          featured: false,
+          translations: [
+            {
+              language: "fr",
+              title: data.title,
+              description: data.description || "",
+            },
+            {
+              language: "en",
+              title: data.title,
+              description: data.description || "",
+            },
+            {
+              language: "sw",
+              title: data.title,
+              description: data.description || "",
+            },
+          ],
+        });
+
+        if (result.error) {
+          throw new Error(result.error);
+        }
+
+        const newItem: MediaItem = {
+          id: result.data?.id || crypto.randomUUID(),
+          title: data.title,
+          description: data.description || undefined,
+          type: data.type,
+          source: data.source,
+          url: uploadedUrl,
+          thumbnailUrl: uploadedUrl,
+          category: data.category,
+          fileSize: data.fileSize,
+          createdAt: new Date().toISOString(),
+        };
+        setItems((prev) => [newItem, ...prev]);
+      }
+
+      router.refresh();
+    } catch (error) {
+      console.error("Error saving media:", error);
+      alert("Erreur lors de la sauvegarde du média");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -307,6 +412,7 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
         }}
         onSubmit={handleFormSubmit}
         editingMedia={editingMedia}
+        isSubmitting={isSubmitting}
       />
     </div>
   );

@@ -45,10 +45,10 @@ interface AnnouncementTranslation {
 interface DBAnnouncement {
   id: string;
   level: "INFO" | "WARNING" | "URGENT";
-  targetAudience: string;
+  targetAudience: "ALL" | "RESEARCHERS" | "PUBLIC";
   isPersistent: boolean;
   expiresAt: Date | null;
-  status: string;
+  status: "ACTIVE" | "ARCHIVED" | "SCHEDULED";
   createdAt: Date;
   announcementTranslations: AnnouncementTranslation[];
 }
@@ -158,10 +158,10 @@ export default function AnnouncementsClient({
       contentEn: en?.content || "",
       contentSw: sw?.content || "",
       priority: item.level === "URGENT" ? "CRITICAL" : item.level,
-      targetAudience: item.targetAudience as any,
+      targetAudience: item.targetAudience,
       isPersistent: item.isPersistent,
       expiresAt: item.expiresAt ? new Date(item.expiresAt).toISOString().slice(0, 16) : "",
-      status: item.status as any
+      status: item.status
     });
     setFormStep(1);
     setFormLang("fr");

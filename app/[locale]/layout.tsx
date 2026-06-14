@@ -35,8 +35,8 @@ export default async function RootLayout({
 
   // Fetch active announcements with title and level for the current locale
   const announcementsRaw = (await sql`
-    SELECT a.id, a.level, t.title, t.content
-    FROM "Announcement" a
+    SELECT a.id, a.priority, t.title, t.content
+    FROM "announcements" a
     JOIN "AnnouncementTranslation" t ON t."announcementId" = a.id
     WHERE a."isActive" = true AND t.language = ${locale}
     ORDER BY a."createdAt" DESC

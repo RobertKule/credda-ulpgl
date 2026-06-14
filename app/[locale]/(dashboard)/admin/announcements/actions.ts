@@ -106,7 +106,7 @@ export async function getAnnouncements() {
       try {
         await db.announcement.create({
           data: {
-            level: (item.priority === "CRITICAL" ? "URGENT" : item.priority) as any,
+            priority: item.priority,
             targetAudience: item.targetAudience,
             isPersistent: item.isPersistent,
             expiresAt: item.expiresAt ? new Date(item.expiresAt) : null,
@@ -153,12 +153,11 @@ export async function createAnnouncement(data: {
     throw new Error("Accès non autorisé");
   }
 
-  const levelMapped = data.priority === "CRITICAL" ? "URGENT" : data.priority;
   const isActive = data.status === "ACTIVE";
 
   const newAnn = await db.announcement.create({
     data: {
-      level: levelMapped as any,
+      priority: data.priority,
       targetAudience: data.targetAudience,
       isPersistent: data.isPersistent,
       expiresAt: data.expiresAt ? new Date(data.expiresAt) : null,
@@ -195,13 +194,12 @@ export async function updateAnnouncement(id: string, data: {
     throw new Error("Accès non autorisé");
   }
 
-  const levelMapped = data.priority === "CRITICAL" ? "URGENT" : data.priority;
   const isActive = data.status === "ACTIVE";
 
   await db.announcement.update({
     where: { id },
     data: {
-      level: levelMapped as any,
+      priority: data.priority,
       targetAudience: data.targetAudience,
       isPersistent: data.isPersistent,
       expiresAt: data.expiresAt ? new Date(data.expiresAt) : null,
@@ -273,7 +271,7 @@ export async function getActiveAnnouncement(locale: string) {
 
     return {
       id: announcement.id,
-      level: announcement.level,
+      level: announcement.priority,
       title: announcement.announcementTranslations[0].title,
       content: announcement.announcementTranslations[0].content,
       updatedAt: announcement.updatedAt

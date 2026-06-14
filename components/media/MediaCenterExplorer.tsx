@@ -203,7 +203,7 @@ export default function MediaCenterExplorer({ events, media }: MediaCenterExplor
     <div className="space-y-24">
       {/* FILTER & PAGINATION BAR */}
       <motion.div 
-        style={{ opacity: filterBarOpacity, pointerEvents: filterBarPointerEvents as any }}
+        style={{ opacity: filterBarOpacity, pointerEvents: filterBarPointerEvents }}
         className="sticky top-28 z-40 mx-auto max-w-5xl w-full px-4"
       >
          <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-card/40 backdrop-blur-xl px-2 lg:px-10 py-6 rounded-[2rem] lg:rounded-full border border-border/50 shadow-xl shadow-black/10">

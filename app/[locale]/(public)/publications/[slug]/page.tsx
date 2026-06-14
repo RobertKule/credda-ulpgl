@@ -48,9 +48,22 @@ export default async function PublicationDetailPage({
   const t_res = await getTranslations("ResearchDetailPage");
   const t_common = await getTranslations("Navigation");
 
-  type PublicationSqlResult = ArticleWithTranslations & { 
-    category_translations: any[];
-    medias: any[];
+  interface CategoryTranslation {
+    language: string;
+    name: string;
+    categoryId: string;
+  }
+
+  interface Media {
+    id: string;
+    type: string;
+    url: string;
+    title: string | null;
+  }
+
+  type PublicationSqlResult = ArticleWithTranslations & {
+    category_translations: CategoryTranslation[];
+    medias: Media[];
   };
 
   const [articleResult] = (await sql`
@@ -67,7 +80,7 @@ export default async function PublicationDetailPage({
   
   const translations = article.translations || [];
   const content = translations[0];
-  const categoryName = (article.category_translations as any[])?.[0]?.name || t_ui("badge.research");
+  const categoryName = article.category_translations?.[0]?.name || t_ui("badge.research");
   const date = article.createdAt ? new Date(article.createdAt).toLocaleDateString(locale, {
     year: 'numeric',
     month: 'long',

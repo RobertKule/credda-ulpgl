@@ -124,7 +124,7 @@ export default function PublicationExplorer({
           <div className="relative">
              <select
                value={sortBy}
-               onChange={(e) => setSortBy(e.target.value as any)}
+               onChange={(e) => setSortBy(e.target.value as "newest" | "oldest" | "title")}
                className="appearance-none bg-background/50 border border-border/60 rounded-full py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
              >
                <option value="newest">Newest First</option>

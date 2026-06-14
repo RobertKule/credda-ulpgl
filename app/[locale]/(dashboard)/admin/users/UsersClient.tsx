@@ -278,20 +278,40 @@ export default function UsersClient({
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
+    const file = files[0];
+
+    // Vérifier la taille du fichier (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      showToast("L'image est trop volumineuse (max 5MB).", "error");
+      return;
+    }
+
+    // Vérifier le type de fichier
+    if (!file.type.startsWith('image/')) {
+      showToast("Le fichier doit être une image.", "error");
+      return;
+    }
+
     setUploadProgress(true);
     const uploadData = new FormData();
-    uploadData.append("file", files[0]);
+    uploadData.append("file", file);
 
     try {
+      console.log("Uploading file:", file.name, file.size, file.type);
       const res = await uploadTeamMemberImage(uploadData);
+      console.log("Upload response:", res);
+
       if (res.error) {
         showToast(res.error, "error");
       } else if (res.url) {
         setMemberField("imageUrl", res.url);
         showToast("Image importée avec succès !");
+      } else {
+        showToast("Erreur lors de l'upload: réponse invalide", "error");
       }
     } catch (err: any) {
-      showToast("Erreur lors de l'envoi de l'image.", "error");
+      console.error("Upload error:", err);
+      showToast(err.message || "Erreur lors de l'envoi de l'image.", "error");
     } finally {
       setUploadProgress(false);
     }
@@ -977,7 +997,7 @@ export default function UsersClient({
                 {[1, 2, 3].map(step => (
                   <button
                     key={step}
-                    onClick={() => setMemberFormStep(step as any)}
+                    onClick={() => setMemberFormStep(step as 1 | 2 | 3)}
                     className="flex items-center gap-2 text-left focus:outline-none cursor-pointer"
                   >
                     <span className={cn(
@@ -1286,7 +1306,7 @@ export default function UsersClient({
                 {memberFormStep > 1 ? (
                   <button
                     type="button"
-                    onClick={() => setMemberFormStep((memberFormStep - 1) as any)}
+                    onClick={() => setMemberFormStep((memberFormStep - 1) as 1 | 2 | 3)}
                     className="px-5 py-2.5 border border-slate-200 dark:border-zinc-800 rounded-xl text-xs font-bold text-slate-600 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-900/50 transition-all cursor-pointer"
                   >
                     Précédent
@@ -1299,7 +1319,7 @@ export default function UsersClient({
                   {memberFormStep < 3 ? (
                     <button
                       type="button"
-                      onClick={() => setMemberFormStep((memberFormStep + 1) as any)}
+                      onClick={() => setMemberFormStep((memberFormStep + 1) as 1 | 2 | 3)}
                       className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 cursor-pointer"
                     >
                       <span>Suivant</span>

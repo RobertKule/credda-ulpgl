@@ -6,6 +6,9 @@ import { revalidatePath } from "next/cache";
 
 const ALLOWED_ROLES = ["ADMIN", "EDITOR", "SUPERADMIN"];
 
+type UrgencyLevel = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+type CaseStatus = "NEW" | "IN_PROGRESS" | "IN_ANALYSIS" | "MEETING_SCHEDULED" | "ACTION_ENGAGED" | "RESOLVED" | "CLOSED";
+
 export async function getClinicalCases() {
   const session = await auth();
   if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) throw new Error("Accès non autorisé");
@@ -23,7 +26,7 @@ export async function getClinicalCases() {
 
 export async function createClinicalCase(data: {
   title: string; problemType: string; location: string; description: string;
-  actionsTaken?: string; expectations?: string; urgency: string; status: string;
+  actionsTaken?: string; expectations?: string; urgency: UrgencyLevel; status: CaseStatus;
   beneficiaryName: string; beneficiaryPhone: string;
 }) {
   const session = await auth();
@@ -51,8 +54,8 @@ export async function createClinicalCase(data: {
       location: data.location,
       actionsTaken: data.actionsTaken || null,
       expectations: data.expectations || null,
-      urgency: data.urgency as any,
-      status: data.status as any,
+      urgency: data.urgency,
+      status: data.status,
       trackingCode: caseCode,
       beneficiaryId: beneficiary.id,
     },
@@ -62,17 +65,17 @@ export async function createClinicalCase(data: {
   return { success: true, id: newCase.id, trackingCode: caseCode };
 }
 
-export async function updateCaseStatus(id: string, status: string) {
+export async function updateCaseStatus(id: string, status: CaseStatus) {
   const session = await auth();
   if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) throw new Error("Accès non autorisé");
-  await db.clinicalCase.update({ where: { id }, data: { status: status as any } });
+  await db.clinicalCase.update({ where: { id }, data: { status } });
   revalidatePath("/admin/clinique");
   return { success: true };
 }
 
 export async function updateClinicalCase(id: string, data: {
   title: string; problemType: string; location: string; description: string;
-  actionsTaken?: string; expectations?: string; urgency: string; status: string;
+  actionsTaken?: string; expectations?: string; urgency: UrgencyLevel; status: CaseStatus;
   beneficiaryName: string; beneficiaryPhone: string;
 }) {
   const session = await auth();
@@ -103,8 +106,8 @@ export async function updateClinicalCase(id: string, data: {
       location: data.location,
       actionsTaken: data.actionsTaken || null,
       expectations: data.expectations || null,
-      urgency: data.urgency as any,
-      status: data.status as any,
+      urgency: data.urgency,
+      status: data.status,
     },
   });
 

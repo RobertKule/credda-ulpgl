@@ -18,7 +18,8 @@ import {
   Sun,
   Moon,
   ChevronDown,
-  Globe
+  Globe,
+  Mail
 } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
@@ -43,6 +44,7 @@ const NAV_ITEMS: NavItem[] = [
   { name: "Clinique Juridique", href: "/admin/clinique", icon: Scale, roles: ["ADMIN", "EDITOR", "SUPERADMIN"] },
   { name: "Annonces", href: "/admin/announcements", icon: Megaphone, roles: ["ADMIN", "EDITOR", "SUPERADMIN"] },
   { name: "Galerie", href: "/admin/gallery", icon: ImageIcon, roles: ["ADMIN", "EDITOR", "SUPERADMIN"] },
+  { name: "Messages", href: "/admin/messages", icon: Mail, roles: ["ADMIN", "SUPERADMIN"] },
   { name: "Gestion des Accès", href: "/admin/users", icon: Users, roles: ["SUPERADMIN"] },
   { name: "Mon Profil", href: "/admin/profile", icon: UserCircle, roles: ["RESEARCHER", "ADMIN", "EDITOR", "SUPERADMIN"] },
 ];

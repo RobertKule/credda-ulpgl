@@ -6,6 +6,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import CaseDetailPanel from "./CaseDetailPanel";
 import { deleteClinicalCase, updateCaseStatus, createClinicalCase, updateClinicalCase } from "./actions";
+import { UrgencyLevel, CaseStatus } from "@prisma/client";
 
 function cn(...i: ClassValue[]) { return twMerge(clsx(i)); }
 
@@ -39,6 +40,19 @@ const TABS: { id: TabType; label: string }[] = [
   { id: "RESOLVED",      label: "Résolus" },
 ];
 
+interface FormData {
+  title: string;
+  problemType: string;
+  location: string;
+  description: string;
+  actionsTaken: string;
+  expectations: string;
+  urgency: UrgencyLevel;
+  status: CaseStatus;
+  beneficiaryName: string;
+  beneficiaryPhone: string;
+}
+
 export default function CliniqueClient({ locale, initialData }: { locale: string; initialData: any[] }) {
   const [tab, setTab]             = useState<TabType>("ALL");
   const [search, setSearch]       = useState("");
@@ -50,10 +64,10 @@ export default function CliniqueClient({ locale, initialData }: { locale: string
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formStep, setFormStep]   = useState<1|2|3>(1);
   const [isSaving, setIsSaving]   = useState(false);
-  const [formData, setFormData]   = useState({ title: "", problemType: "", location: "", description: "", actionsTaken: "", expectations: "", urgency: "MEDIUM", status: "NEW", beneficiaryName: "", beneficiaryPhone: "" });
+  const [formData, setFormData]   = useState<FormData>({ title: "", problemType: "", location: "", description: "", actionsTaken: "", expectations: "", urgency: "MEDIUM" as UrgencyLevel, status: "NEW" as CaseStatus, beneficiaryName: "", beneficiaryPhone: "" });
   const [toast, setToast]         = useState<{ msg: string; type: "success"|"error" } | null>(null);
 
-  const setField = (k: string, v: string) => setFormData(p => ({ ...p, [k]: v }));
+  const setField = (k: keyof FormData, v: any) => setFormData(p => ({ ...p, [k]: v }));
 
   const showToast = (msg: string, type: "success"|"error" = "success") => {
     setToast({ msg, type });
@@ -359,7 +373,7 @@ export default function CliniqueClient({ locale, initialData }: { locale: string
                       ].map(f => (
                         <div key={f.key}>
                           <label className="block text-xs font-bold text-slate-600 dark:text-zinc-400 uppercase tracking-wider mb-1.5">{f.label}</label>
-                          <input value={(formData as any)[f.key]} onChange={e => setField(f.key, e.target.value)} placeholder={f.placeholder}
+                          <input value={formData[f.key as keyof FormData] as string} onChange={e => setField(f.key as keyof FormData, e.target.value)} placeholder={f.placeholder}
                             className="w-full px-4 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-800/20 focus:border-green-800 transition-all" />
                         </div>
                       ))}

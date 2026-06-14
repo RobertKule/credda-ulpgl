@@ -12,6 +12,7 @@ import {
   Video,
   Link2,
   CheckCircle2,
+  Loader2,
 } from "lucide-react";
 import type { MediaItem, MediaSource, MediaType } from "@/lib/mediatheque/types";
 import { MEDIA_CATEGORIES } from "@/lib/mediatheque/types";
@@ -41,8 +42,9 @@ const EMPTY_FORM: MediaFormData = {
 interface MediaImportSlideOverProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: MediaFormData) => void;
+  onSubmit: (data: MediaFormData) => void | Promise<void>;
   editingMedia?: MediaItem | null;
+  isSubmitting?: boolean;
 }
 
 export default function MediaImportSlideOver({
@@ -50,6 +52,7 @@ export default function MediaImportSlideOver({
   onClose,
   onSubmit,
   editingMedia,
+  isSubmitting = false,
 }: MediaImportSlideOverProps) {
   const [step, setStep] = useState<1 | 2>(1);
   const [form, setForm] = useState<MediaFormData>(EMPTY_FORM);
@@ -129,9 +132,9 @@ export default function MediaImportSlideOver({
     form.title.trim().length > 0 &&
     (form.source === "EXTERNAL" ? form.url.trim().length > 0 : form.url.trim().length > 0);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!canSubmit) return;
-    onSubmit(form);
+    await onSubmit(form);
     onClose();
     setForm(EMPTY_FORM);
     setStep(1);
@@ -441,10 +444,19 @@ export default function MediaImportSlideOver({
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  disabled={!canSubmit}
+                  disabled={!canSubmit || isSubmitting}
                   className="flex items-center gap-1.5 px-6 py-3 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  {editingMedia ? "Enregistrer" : "Ajouter à la médiathèque"}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      Traitement en cours...
+                    </>
+                  ) : editingMedia ? (
+                    "Enregistrer"
+                  ) : (
+                    "Ajouter à la médiathèque"
+                  )}
                 </button>
               )}
             </footer>

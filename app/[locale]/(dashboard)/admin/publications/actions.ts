@@ -3,6 +3,7 @@
 import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { uploadFile } from "@/lib/storage";
+import { Domain, ContentStatus } from "@prisma/client";
 
 // ─── File Upload ─────────────────────────────────────────────────────────────
 export async function uploadPublicationMedia(formData: FormData): Promise<{ url?: string; error?: string }> {
@@ -21,11 +22,11 @@ export async function uploadPublicationMedia(formData: FormData): Promise<{ url?
 // ─── Shared Types ────────────────────────────────────────────────────────────
 export interface PublicationFormData {
   title: string;
-  type: string;         // "RESEARCH" | "CLINICAL"
+  type: Domain;         // "RESEARCH" | "CLINICAL"
   categorySlug: string;
   shortDescription: string;
   content: string;
-  status: string;       // "PUBLISHED" | "DRAFT"
+  status: ContentStatus;       // "PUBLISHED" | "DRAFT"
   imageUrl?: string;
   pdfUrl?: string;
 }
@@ -71,8 +72,8 @@ export async function createArticleAction(data: PublicationFormData) {
   const article = await db.article.create({
     data: {
       slug,
-      domain: data.type as any,
-      published: data.status === "PUBLISHED",
+      domain: data.type,
+      published: data.status === ContentStatus.PUBLISHED,
       mainImage: data.imageUrl ?? null,
       videoUrl: data.pdfUrl ?? null,
       categoryId: category.id,
@@ -83,21 +84,21 @@ export async function createArticleAction(data: PublicationFormData) {
             title: data.title,
             content: data.content,
             excerpt: data.shortDescription,
-            status: data.status as any,
+            status: data.status,
           },
           {
             language: "en",
             title: data.title,
             content: data.content,
             excerpt: data.shortDescription,
-            status: data.status as any,
+            status: data.status,
           },
           {
             language: "sw",
             title: data.title,
             content: data.content,
             excerpt: data.shortDescription,
-            status: data.status as any,
+            status: data.status,
           },
         ],
       },
@@ -119,8 +120,8 @@ export async function updateArticleAction(
   await db.article.update({
     where: { id },
     data: {
-      domain: data.type as any,
-      published: data.status === "PUBLISHED",
+      domain: data.type,
+      published: data.status === ContentStatus.PUBLISHED,
       mainImage: data.imageUrl ?? undefined,
       videoUrl: data.pdfUrl ?? undefined,
       categoryId: category.id,
@@ -137,13 +138,13 @@ export async function updateArticleAction(
         title: data.title,
         content: data.content,
         excerpt: data.shortDescription,
-        status: data.status as any,
+        status: data.status,
       },
       update: {
         title: data.title,
         content: data.content,
         excerpt: data.shortDescription,
-        status: data.status as any,
+        status: data.status,
       },
     });
   }
