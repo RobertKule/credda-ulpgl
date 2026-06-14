@@ -10,7 +10,7 @@ import { GalleryImage } from "@prisma/client";
 export async function createGalleryImage(rawData: unknown): Promise<ApiResponse<GalleryImage>> {
   return withSafeAction("createGalleryImage", async () => {
     const data = galleryImageSchema.parse(rawData);
-    const { src, category, featured, translations } = data;
+    const { src, category, featured, translations, files } = data;
 
     const image = await db.galleryImage.create({
       data: {
@@ -20,7 +20,10 @@ export async function createGalleryImage(rawData: unknown): Promise<ApiResponse<
         order: 0,
         translations: {
           create: translations
-        }
+        },
+        files: files?.length ? {
+          create: files
+        } : undefined
       }
     });
 
@@ -33,7 +36,7 @@ export async function createGalleryImage(rawData: unknown): Promise<ApiResponse<
 export async function updateGalleryImage(rawData: unknown): Promise<ApiResponse<GalleryImage>> {
   return withSafeAction("updateGalleryImage", async () => {
     const data = updateGalleryImageSchema.parse(rawData);
-    const { id, src, category, featured, translations } = data;
+    const { id, src, category, featured, translations, files } = data;
 
     const image = await db.galleryImage.update({
       where: { id },
@@ -44,7 +47,11 @@ export async function updateGalleryImage(rawData: unknown): Promise<ApiResponse<
         translations: {
           deleteMany: {},
           create: translations
-        }
+        },
+        files: files?.length ? {
+          deleteMany: {},
+          create: files
+        } : undefined
       }
     });
 

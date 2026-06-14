@@ -296,9 +296,18 @@ model GalleryImage {
   updatedAt    DateTime                  @updatedAt
   event        Event?                    @relation(fields: [eventId], references: [id])
   translations GalleryImageTranslation[]
+  files        GalleryImageFile[]
 
   @@index([order])
   @@index([featured])
+}
+
+model GalleryImageFile {
+  id             String       @id @default(cuid())
+  url            String
+  fileType       String
+  galleryImageId String
+  galleryImage   GalleryImage @relation(fields: [galleryImageId], references: [id], onDelete: Cascade)
 }
 
 model GalleryImageTranslation {

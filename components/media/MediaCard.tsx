@@ -2,7 +2,7 @@
 
 import React from "react";
 import { m as motion } from "framer-motion";
-import { Play, ZoomIn, Film } from "lucide-react";
+import { Play, ZoomIn, Film, Images } from "lucide-react";
 import Image from "next/image";
 
 interface MediaCardProps {
@@ -12,11 +12,26 @@ interface MediaCardProps {
     title: string;
     category: string;
     type: "IMAGE" | "VIDEO";
+    files?: { url: string; fileType: string }[];
   };
   onClick: () => void;
 }
 
 export default function MediaCard({ media, onClick }: MediaCardProps) {
+  const isAlbum = media.files && media.files.length > 1;
+
+  const getThumbnailUrl = (url: string) => {
+    if (!url) return "";
+    const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+    const match = url.match(ytRegex);
+    if (match && match[1]) {
+      return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+    }
+    return url;
+  };
+
+  const thumbnailUrl = getThumbnailUrl(media.src);
+
   return (
     <motion.div
       layoutId={`media-${media.id}`}
@@ -27,7 +42,7 @@ export default function MediaCard({ media, onClick }: MediaCardProps) {
       className="group relative aspect-square overflow-hidden rounded-2xl cursor-pointer bg-card/40 border border-border/50 hover:border-primary/40 transition-all duration-700 shadow-lg shadow-black/5"
     >
       <Image
-        src={media.src}
+        src={thumbnailUrl}
         alt={media.title}
         fill
         className="object-cover transition-transform duration-1000 ease-out group-hover:scale-110"
@@ -39,6 +54,15 @@ export default function MediaCard({ media, onClick }: MediaCardProps) {
           {media.type === "VIDEO" ? (
             <div className="w-14 h-14 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/40">
               <Play size={24} className="text-white fill-white ml-1" />
+            </div>
+          ) : isAlbum ? (
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center shadow-2xl shadow-blue-600/40 border border-white/20">
+                <Images size={24} className="text-white" />
+              </div>
+              <span className="text-[10px] font-black uppercase text-white tracking-widest bg-black/50 px-3 py-1 rounded-full backdrop-blur-md">
+                Voir l'album
+              </span>
             </div>
           ) : (
             <div className="w-14 h-14 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20">
@@ -53,8 +77,14 @@ export default function MediaCard({ media, onClick }: MediaCardProps) {
         </div>
       </div>
 
-      {/* VIDEO INDICATOR (SMALL) */}
-      {media.type === "VIDEO" && (
+      {/* INDICATORS (SMALL) */}
+      {isAlbum && (
+        <div className="absolute top-4 right-4 z-10 px-3 py-1.5 rounded-xl bg-black/60 backdrop-blur-md flex items-center gap-1.5 text-white border border-white/10 group-hover:opacity-0 transition-all duration-500">
+          <Images size={14} />
+          <span className="text-[10px] font-bold">{media.files?.length}</span>
+        </div>
+      )}
+      {!isAlbum && media.type === "VIDEO" && (
         <div className="absolute top-4 right-4 z-10 w-10 h-10 rounded-xl bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/10 group-hover:opacity-0 transition-all duration-500">
           <Film size={18} />
         </div>

@@ -12,6 +12,10 @@ export const galleryImageSchema = z.object({
   category: z.string().min(1, "Catégorie requise"),
   featured: z.boolean().default(false),
   translations: z.array(galleryImageTranslationSchema).min(1, "Au moins une traduction est requise"),
+  files: z.array(z.object({
+    url: z.string().url(),
+    fileType: z.string()
+  })).optional()
 });
 
 export const updateGalleryImageSchema = galleryImageSchema.extend({

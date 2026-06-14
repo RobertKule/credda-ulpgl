@@ -98,11 +98,17 @@ export default function GalleryForm() {
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
-        className={`relative border-2 border-dashed rounded-xl p-8 text-center min-h-[180px] flex flex-col items-center justify-center ${
-          isDragging ? "border-blue-500 bg-blue-50/50" : "border-gray-300 bg-gray-50/50"
+        className={`relative border-2 border-dashed rounded-xl p-8 text-center min-h-[180px] flex flex-col items-center justify-center transition-colors duration-200 group ${
+          isDragging ? "border-blue-500 bg-blue-50/50" : "border-gray-300 bg-gray-50/50 hover:border-blue-400 hover:bg-blue-50/30"
         }`}
       >
-        <p className="text-sm text-gray-600">Drag & drop files here, or click to choose files</p>
+        <div className="w-16 h-16 mb-4 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+          <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+        </div>
+        <p className="text-base font-medium text-gray-700">Glissez-déposez vos fichiers ici</p>
+        <p className="text-sm text-gray-500 mt-1">ou cliquez pour parcourir vos fichiers (Images & Vidéos)</p>
         <input
           type="file"
           multiple

@@ -11,12 +11,31 @@ async function getMediaItems(): Promise<MediaItem[]> {
   const galleryImages = await db.galleryImage.findMany({
     include: {
       translations: true,
+      files: true,
     },
     orderBy: { order: "asc" },
   });
 
   return galleryImages.map((img) => {
     const translation = img.translations[0];
+    
+    // Legacy support: src is the primary image if there are no files, or if files exist, we still treat src as primary
+    const allFiles = img.files.map(f => ({
+      url: f.url,
+      thumbnailUrl: f.url,
+      fileName: f.url.split('/').pop(),
+      fileType: f.fileType
+    }));
+
+    if (img.src && allFiles.length === 0) {
+      allFiles.push({
+        url: img.src,
+        thumbnailUrl: img.src,
+        fileName: img.src.split('/').pop(),
+        fileType: "IMAGE"
+      });
+    }
+
     return {
       id: img.id,
       title: translation?.title || img.category,
@@ -28,6 +47,7 @@ async function getMediaItems(): Promise<MediaItem[]> {
       category: img.category,
       fileSize: undefined,
       createdAt: img.createdAt.toISOString(),
+      files: allFiles
     };
   });
 }

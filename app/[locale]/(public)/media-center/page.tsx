@@ -43,6 +43,7 @@ interface GalleryImage {
   createdAt: Date;
   updatedAt: Date;
   translations: GalleryImageTranslation[] | null;
+  files?: { url: string; fileType: string }[] | null;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -57,24 +58,13 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function MediaCenterPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
 
-  // FETCH EVENTS WITH TRANSLATIONS
-  const eventsData = await db.event.findMany({
-    include: {
-      translations: {
-        where: { language: locale },
-      },
-    },
-    orderBy: { date: 'desc' },
-  });
-
-  const events = eventsData as unknown as Event[];
-
   // FETCH GALLERY IMAGES WITH TRANSLATIONS
   const galleryImagesData = await db.galleryImage.findMany({
     include: {
       translations: {
         where: { language: locale },
       },
+      files: true,
     },
     orderBy: [
       { order: 'asc' },
@@ -85,21 +75,16 @@ export default async function MediaCenterPage({ params }: { params: Promise<{ lo
   const galleryImages = galleryImagesData as unknown as GalleryImage[];
 
   // MAPPING DATA FOR EXPLORER
-  const mappedEvents = events.map(e => ({
-    ...e,
-    title: e.translations?.[0]?.title || e.slug,
-    description: e.translations?.[0]?.description,
-  }));
-
   const mappedMedia = galleryImages.map(gi => ({
     ...gi,
     title: gi.translations?.[0]?.title || `Média ${gi.category}`,
     description: gi.translations?.[0]?.description,
-    type: (gi.src?.includes("youtube.com") || gi.src?.includes("vimeo.com")) ? "VIDEO" : "IMAGE"
+    type: (gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com")) ? "VIDEO" : "IMAGE",
+    files: gi.files || []
   }));
 
   const stats = {
-    events: events.length,
+    events: 0,
     media: galleryImages.length,
     videos: mappedMedia.filter(m => m.type === "VIDEO").length
   };
@@ -111,7 +96,7 @@ export default async function MediaCenterPage({ params }: { params: Promise<{ lo
 
       {/* EXPLORER SECTION - Filters, Grid, Pagination */}
       <section className="relative py-24 bg-background">
-        <MediaCenterExplorer events={mappedEvents} media={mappedMedia} />
+        <MediaCenterExplorer media={mappedMedia} />
       </section>
 
       {/* INSTITUTIONAL FOOTER ACCENT */}

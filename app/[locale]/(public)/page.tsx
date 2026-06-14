@@ -75,7 +75,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       // gallery (Institutional Hero Carousel)
       sql`
         SELECT gi.id, gi.src, gi.category, gi.featured, gi."order", gi."createdAt",
-          (SELECT json_agg(t) FROM "GalleryImageTranslation" t WHERE t."galleryImageId" = gi.id AND t.language = ${locale}) as translations
+          (SELECT json_agg(t) FROM "GalleryImageTranslation" t WHERE t."galleryImageId" = gi.id AND t.language = ${locale}) as translations,
+          (SELECT json_agg(f) FROM "GalleryImageFile" f WHERE f."galleryImageId" = gi.id) as files
         FROM "GalleryImage" gi
         ORDER BY gi."createdAt" DESC LIMIT 15
       `,
@@ -128,7 +129,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         src,
         title: img.translations?.[0]?.title || "",
         description: img.translations?.[0]?.description || "",
-        category: img.category || "Gallery"
+        category: img.category || "Gallery",
+        type: (src?.includes("youtube.com") || src?.includes("youtu.be") || src?.includes("vimeo.com")) ? "VIDEO" : "IMAGE",
+        files: img.files || []
       };
     }).filter((img: any) => img.src !== '');
 

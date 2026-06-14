@@ -12,6 +12,7 @@ export interface MediaItem {
   category: string;
   fileSize?: string;
   createdAt: string;
+  files?: any[];
 }
 
 export type MediaTab = "ALL" | "IMAGE" | "VIDEO";
