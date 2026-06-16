@@ -7,11 +7,12 @@ import { useTranslations } from "next-intl";
 import MediaCard from "./MediaCard";
 import MediaLightbox from "./MediaLightbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import type { MediaItem } from "@/lib/mediatheque/types";
 
 type FilterType = "all" | "gallery" | "videos";
 
 interface MediaCenterExplorerProps {
-  media: any[];
+  media: MediaItem[];
 }
 
 export default function MediaCenterExplorer({ media }: MediaCenterExplorerProps) {
@@ -20,7 +21,7 @@ export default function MediaCenterExplorer({ media }: MediaCenterExplorerProps)
   const [itemsPerPage, setItemsPerPage] = useState("10");
   const [videoPage, setVideoPage] = useState(1);
   const [galleryPage, setGalleryPage] = useState(1);
-  const [lightboxList, setLightboxList] = useState<any[]>([]);
+  const [lightboxList, setLightboxList] = useState<MediaItem[]>([]);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const ITEMS_PER_PAGE = parseInt(itemsPerPage);
@@ -29,7 +30,7 @@ export default function MediaCenterExplorer({ media }: MediaCenterExplorerProps)
   const normalizedMedia = useMemo(() => media.map((m, i) => ({
     ...m,
     id: m.id || `m-${i}`,
-    type: m.type || (m.src?.includes("youtube") || m.src?.includes("vimeo") ? "VIDEO" : "IMAGE"),
+    type: m.type || (m.url?.includes("youtube") || m.url?.includes("vimeo") ? "VIDEO" : "IMAGE"),
     itemType: "media",
     title: m.title || `Media #${i + 1}`,
     category: m.category || "General"
