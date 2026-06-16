@@ -114,3 +114,4 @@ Ce logiciel est une œuvre originale développée pour le **CREDDA - ULPGL**.
   <p><em>"Building the digital foundation for African Academic Excellence."</em></p>
 </div>
 # check-point-1
+# check-point-2
