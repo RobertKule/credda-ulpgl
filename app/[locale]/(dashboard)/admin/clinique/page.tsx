@@ -29,7 +29,7 @@ export default async function CliniquePage({ params }: { params: Promise<{ local
         </div>
       </div>
 
-      <CliniqueClient locale={locale} initialData={cases} />
+      <CliniqueClient locale={locale} initialData={cases as unknown as import("./CliniqueClient").ClinicalCase[]} />
     </div>
   );
 }

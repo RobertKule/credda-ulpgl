@@ -88,7 +88,13 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       sql`SELECT count(*) FROM "Article" WHERE domain = 'CLINICAL' AND published = true`,
       sql`SELECT count(*) FROM "ClinicalCase"`,
       sql`SELECT count(*) FROM "GalleryImage"`
-    ])) as [any[], any[], any[], any[], { count: string }[], { count: string }[], { count: string }[], { count: string }[], { count: string }[], { count: string }[], { count: string }[]];
+    ])) as [
+      (Record<string, unknown> & { image?: string; translations?: unknown[] })[],
+      (Record<string, unknown> & { src?: string; translations?: { title?: string; description?: string }[]; category?: string; files?: unknown[] })[],
+      (Record<string, unknown> & { translations?: unknown[]; category_translations?: unknown[] })[],
+      (Record<string, unknown> & { translations?: unknown[] })[],
+      { count: string }[], { count: string }[], { count: string }[], { count: string }[], { count: string }[], { count: string }[], { count: string }[]
+    ];
 
     const totalArticles = parseInt(totalArticlesResult[0].count, 10);
     const totalPubs = parseInt(totalPubsResult[0].count, 10);
@@ -107,8 +113,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       clinicalCases: clinicalCaseCount
     };
 
-    const sanitizedTeam = team.map((member: any) => {
-      let image = member.image ? member.image.replace(/\\/g, '/') : null;
+    const sanitizedTeam = team.map((member) => {
+      let image = member.image ? (member.image as string).replace(/\\/g, '/') : null;
       if (image && !image.startsWith('http')) {
         image = image.replace(/^\/?public\//, '/').replace(/^\/?/, '/');
       }
@@ -117,23 +123,23 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         image,
         translations: member.translations || []
       };
-    });
+    }) as import("@/components/home/TeamSection").TeamMember[];
 
-    let sanitizedGalleryImages = galleryImages.map((img: any) => {
-      let src = img.src ? img.src.replace(/\\/g, '/') : '';
+    let sanitizedGalleryImages = galleryImages.map((img) => {
+      let src = img.src ? (img.src as string).replace(/\\/g, '/') : '';
       if (src && !src.startsWith('http')) {
         src = src.replace(/^\/?public\//, '/').replace(/^\/?/, '/');
       }
       return {
         ...img,
         src,
-        title: img.translations?.[0]?.title || "",
-        description: img.translations?.[0]?.description || "",
+        title: (img.translations?.[0] as { title?: string })?.title || "",
+        description: (img.translations?.[0] as { description?: string })?.description || "",
         category: img.category || "Gallery",
         type: (src?.includes("youtube.com") || src?.includes("youtu.be") || src?.includes("vimeo.com")) ? "VIDEO" : "IMAGE",
         files: img.files || []
       };
-    }).filter((img: any) => img.src !== '');
+    }).filter((img: { src?: string }) => img.src !== '') as import("@/components/home/GalleryGrid").GalleryImage[];
 
     // Fallback to local filesystem images if DB is empty (Real images from public/images/gallery)
     if (sanitizedGalleryImages.length === 0) {
@@ -146,7 +152,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             src: `/images/gallery/${file}`,
             title: file.split('.')[0].charAt(0).toUpperCase() + file.split('.')[0].slice(1),
             description: "Archive CREDDA-ULPGL",
-            category: "Archive"
+            category: "Archive",
+            type: "IMAGE",
+            files: []
           }));
         }
       } catch (err) {
@@ -154,15 +162,15 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       }
     }
 
-    const formattedFeaturedResearch = featuredResearch.map((item: any) => ({
+    const formattedFeaturedResearch = featuredResearch.map((item) => ({
       ...item,
       translations: item.translations || [],
       category: {
         translations: item.category_translations || []
       }
-    }));
+    })) as import("@/components/home/ResearchSection").ResearchArticle[];
 
-    const formattedLatestReports = latestReports.map((p: any) => ({
+    const formattedLatestReports = latestReports.map((p) => ({
       ...p,
       translations: p.translations || []
     }));
@@ -176,7 +184,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <HomeClient
         locale={locale}
         featuredResearch={formattedFeaturedResearch}
-        latestReports={formattedLatestReports}
         team={sanitizedTeam}
         galleryImages={sanitizedGalleryImages}
         totalGalleryImages={totalCountToDisplay}
@@ -185,18 +192,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         dbStats={stats}
       />
     );
-  } catch (error: any) {
-    console.error("[HOME] error:", error.message);
+  } catch (error: unknown) {
+    console.error("[HOME] error:", error instanceof Error ? error.message : String(error));
     return (
       <HomeClient
-        locale={locale}
         featuredResearch={[]}
-        latestReports={[]}
         team={[]}
         galleryImages={[]}
         testimonials={TESTIMONIALS}
         partners={PARTNERS}
-        dbStats={{}}
+        dbStats={{ totalResources: 0, clinicalCases: 0 }}
       />
     );
   }

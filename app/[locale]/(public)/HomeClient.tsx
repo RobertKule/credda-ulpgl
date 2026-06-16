@@ -39,7 +39,16 @@ export default function HomeClient({
   galleryImages = [],
   totalGalleryImages = 0,
   dbStats = { totalResources: 0, clinicalCases: 0 }
-}: any) {
+}: {
+  locale?: string;
+  featuredResearch?: import("@/components/home/ResearchSection").ResearchArticle[];
+  team?: import("@/components/home/TeamSection").TeamMember[];
+  partners?: string[];
+  testimonials?: { name: string; role: string; image: string; text: string; location?: string; }[];
+  galleryImages?: import("@/components/home/GalleryGrid").GalleryImage[];
+  totalGalleryImages?: number;
+  dbStats?: { totalResources: number; clinicalCases: number };
+}) {
   const t = useTranslations('HomePage');
 
   return (

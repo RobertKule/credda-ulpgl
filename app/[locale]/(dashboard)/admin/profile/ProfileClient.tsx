@@ -17,13 +17,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-hot-toast";
 import { updateUserProfile, updateUserPassword } from "@/services/user-actions";
 
-const createProfileSchema = (t: any) => z.object({
+const createProfileSchema = (t: (key: string) => string) => z.object({
   name: z.string().min(2, t('messages.errorUpdate')),
   phone: z.string().optional(),
   bio: z.string().optional(),
 });
 
-const createPasswordSchema = (t: any) => z.object({
+const createPasswordSchema = (t: (key: string) => string) => z.object({
   currentPassword: z.string().min(1, t('messages.errorUpdate')),
   newPassword: z.string().min(6, t('messages.errorUpdate')),
   confirmPassword: z.string().min(6, t('messages.errorUpdate')),

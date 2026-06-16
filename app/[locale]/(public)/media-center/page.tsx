@@ -76,10 +76,15 @@ export default async function MediaCenterPage({ params }: { params: Promise<{ lo
 
   // MAPPING DATA FOR EXPLORER
   const mappedMedia = galleryImages.map(gi => ({
-    ...gi,
+    id: gi.id,
     title: gi.translations?.[0]?.title || `Média ${gi.category}`,
-    description: gi.translations?.[0]?.description,
-    type: (gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com")) ? "VIDEO" : "IMAGE",
+    description: gi.translations?.[0]?.description || undefined,
+    type: ((gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com")) ? "VIDEO" : "IMAGE") as "VIDEO" | "IMAGE",
+    source: "LOCAL" as "LOCAL" | "EXTERNAL",
+    url: gi.src,
+    thumbnailUrl: gi.src,
+    category: gi.category || "General",
+    createdAt: gi.createdAt,
     files: gi.files || []
   }));
 
