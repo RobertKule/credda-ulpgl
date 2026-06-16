@@ -10,7 +10,7 @@ import MediaLightbox from "@/components/media/MediaLightbox";
 
 const PAGE_SIZE = 6;
 
-interface GalleryImage {
+export interface GalleryImage {
   id?: string | number;
   src?: string;
   imageUrl?: string;
@@ -18,7 +18,7 @@ interface GalleryImage {
   description?: string;
   category?: string;
   type?: "IMAGE" | "VIDEO";
-  files?: any[];
+  files?: { url: string; fileType: string; thumbnailUrl?: string; }[];
 }
 
 export default function GalleryGrid({
@@ -35,15 +35,21 @@ export default function GalleryGrid({
   // Normalize images from backend (no hardcoded fallbacks)
   const allImages = (images as GalleryImage[])
     .filter((img) => img.src || img.imageUrl) // only real images
-    .map((img, idx) => ({
-      id: img.id ?? idx,
-      src: img.src || img.imageUrl || "",
-      title: img.title || "",
-      description: img.description || "",
-      category: img.category || "",
-      type: img.type || "IMAGE",
-      files: img.files || []
-    }));
+    .map((img, idx) => {
+      const url = img.src || img.imageUrl || "";
+      return {
+        id: String(img.id ?? idx),
+        url: url,
+        thumbnailUrl: url,
+        source: "LOCAL" as "LOCAL" | "EXTERNAL",
+        createdAt: new Date().toISOString(),
+        title: img.title || "",
+        description: img.description || undefined,
+        category: img.category || "",
+        type: img.type || "IMAGE",
+        files: img.files || []
+      };
+    });
 
   const totalPages = Math.ceil(allImages.length / PAGE_SIZE);
 
@@ -146,7 +152,7 @@ export default function GalleryGrid({
             {current.map((img, idx) => {
               const isAlbum = img.files && img.files.length > 1;
               const globalIdx = page * PAGE_SIZE + idx;
-              const thumbnailUrl = getThumbnailUrl(img.src);
+              const thumbnailUrl = img.thumbnailUrl || getThumbnailUrl(img.url);
               return (
               <motion.div
                 key={img.id}
@@ -255,7 +261,7 @@ export default function GalleryGrid({
       <MediaLightbox 
         isOpen={selectedMediaIndex !== null}
         onClose={() => setSelectedMediaIndex(null)}
-        media={selectedMediaIndex !== null ? (allImages[selectedMediaIndex] as any) : null}
+        media={selectedMediaIndex !== null ? allImages[selectedMediaIndex] : null}
         onNext={() => setSelectedMediaIndex(prev => prev !== null ? (prev + 1) % allImages.length : null)}
         onPrev={() => setSelectedMediaIndex(prev => prev !== null ? (prev - 1 + allImages.length) % allImages.length : null)}
       />
