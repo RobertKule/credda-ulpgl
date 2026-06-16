@@ -8,7 +8,7 @@ import { safeQuery } from "@/lib/db-safe";
 export interface ClinicSessionResult {
   success: boolean;
   error?: string;
-  data?: any;
+  data?: unknown;
 }
 
 export async function getAllClinicSessions(): Promise<ClinicSessionResult> {
