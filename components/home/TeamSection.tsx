@@ -8,7 +8,16 @@ import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
 import GSAPReveal from "@/components/shared/GSAPReveal";
 
-export default function TeamSection({ team }: { team: any[] }) {
+export interface TeamMember {
+  name: string;
+  image?: string | null;
+  slug?: string | null;
+  translations?: {
+    role?: string | null;
+  }[];
+}
+
+export default function TeamSection({ team }: { team: TeamMember[] }) {
   const t = useTranslations('HomePage');
 
   if (!team || team.length === 0) return null;
@@ -51,7 +60,7 @@ export default function TeamSection({ team }: { team: any[] }) {
 
       {/* TEAM GRID — Overlapping Layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16 md:gap-y-20 p-4 md:p-0">
-        {displayTeam.map((member: any, idx: number) => (
+        {displayTeam.map((member: TeamMember, idx: number) => (
           <GSAPReveal key={idx} direction="up" delay={idx * 0.1}>
             <div className="relative group flex flex-col md:block">
               {/* Text Card (Behind/Left on Desktop, Below Image on Mobile) */}
