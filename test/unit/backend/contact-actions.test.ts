@@ -3,7 +3,7 @@ import { sendContactMessage, markMessageAsRead } from '@/services/contact-action
 import { db } from '@/lib/db';
 import { ContactStatus } from '@/types/contact';
 
-const mockDb = db as any;
+const mockDb = db as unknown as Record<string, { create: ReturnType<typeof vi.fn> }>;
 
 // Mock the email notification to avoid sending actual emails locally
 vi.mock('@/services/mail-service', () => ({
@@ -35,7 +35,7 @@ describe('Contact Actions', () => {
     const res = await sendContactMessage(validData);
     
     expect(res.success).toBe(true);
-    expect((res as any).data.id).toBe('msg1');
+    expect((res as unknown as { data: { id: string } }).data.id).toBe('msg1');
     expect(mockDb.contactMessage.create).toHaveBeenCalledWith({
       data: {
         name: 'John Doe',
