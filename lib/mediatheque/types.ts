@@ -11,8 +11,8 @@ export interface MediaItem {
   thumbnailUrl: string;
   category: string;
   fileSize?: string;
-  createdAt: string;
-  files?: any[];
+  createdAt: string | Date;
+  files?: { url: string; fileType: string; thumbnailUrl?: string; fileName?: string; }[];
 }
 
 export type MediaTab = "ALL" | "IMAGE" | "VIDEO";
