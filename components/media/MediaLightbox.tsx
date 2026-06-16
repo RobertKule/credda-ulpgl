@@ -5,19 +5,12 @@ import { m as motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, Info } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import type { MediaItem } from "@/lib/mediatheque/types";
 
 interface MediaLightboxProps {
   isOpen: boolean;
   onClose: () => void;
-  media: {
-    id: string;
-    src: string;
-    title: string;
-    category: string;
-    type: "IMAGE" | "VIDEO";
-    description?: string;
-    files?: { url: string; fileType: string }[];
-  } | null;
+  media: MediaItem | null;
   onNext?: () => void;
   onPrev?: () => void;
 }
@@ -32,7 +25,7 @@ export default function MediaLightbox({ isOpen, onClose, media, onNext, onPrev }
 
   if (!media) return null;
 
-  const files = media.files && media.files.length > 0 ? media.files : [{ url: media.src, fileType: media.type }];
+  const files = media.files && media.files.length > 0 ? media.files : [{ url: media.url, fileType: media.type }];
   const currentFile = files[currentFileIndex];
 
   const handleNextFile = () => {
@@ -156,7 +149,7 @@ export default function MediaLightbox({ isOpen, onClose, media, onNext, onPrev }
                 <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar border-t border-white/10 pt-6 mt-2">
                   <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-4">Contenu de l'album</p>
                   <div className="grid grid-cols-3 gap-3">
-                    {files.map((f: any, i: number) => (
+                    {files.map((f: { url: string; fileType: string }, i: number) => (
                       <button
                         key={i}
                         type="button"
