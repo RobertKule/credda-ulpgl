@@ -7,7 +7,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 interface ResearchSectionProps {
-    articles: any[];
+    articles: import("@/components/home/ResearchSection").ResearchArticle[];
 }
 
 export default function ResearchSection({ articles = [] }: ResearchSectionProps) {
