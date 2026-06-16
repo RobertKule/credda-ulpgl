@@ -7,7 +7,7 @@ import { revalidatePath } from "next/cache";
 export interface ResourceResult {
   success: boolean;
   error?: string;
-  data?: any;
+  data?: unknown;
 }
 
 export async function getAllLegalResources(locale: string): Promise<ResourceResult> {
