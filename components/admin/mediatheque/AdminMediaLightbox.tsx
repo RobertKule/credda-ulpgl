@@ -196,7 +196,7 @@ export default function AdminMediaLightbox({
                 <div className="mt-6 flex-1 overflow-y-auto pr-2 custom-scrollbar border-t border-white/10 pt-4">
                   <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-3">Tous les médias de cet album</p>
                   <div className="grid grid-cols-3 gap-2">
-                    {files.map((f: any, i: number) => (
+                    {files.map((f: { url: string; fileType: string; thumbnailUrl?: string; }, i: number) => (
                       <button
                         key={i}
                         type="button"
