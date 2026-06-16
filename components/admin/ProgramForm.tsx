@@ -19,7 +19,30 @@ const LANGUAGES = [
   { code: "sw", label: "Kiswahili" }
 ]
 
-export function ProgramForm({ initialData, isEditing = false }: any) {
+interface ProgramTranslation {
+  language: string;
+  title: string;
+  description: string;
+  content?: string;
+}
+
+interface ProgramData {
+  id?: string;
+  slug?: string;
+  order?: number;
+  icon?: string;
+  mainImage?: string;
+  published?: boolean;
+  featured?: boolean;
+  translations?: ProgramTranslation[];
+}
+
+interface ProgramFormProps {
+  initialData?: ProgramData;
+  isEditing?: boolean;
+}
+
+export function ProgramForm({ initialData, isEditing = false }: ProgramFormProps) {
   const router = useRouter()
   
   const [baseData, setBaseData] = useState({
@@ -30,9 +53,9 @@ export function ProgramForm({ initialData, isEditing = false }: any) {
   })
 
   const [translations, setTranslations] = useState(() => {
-    const t: any = {}
+    const t: Record<string, { title: string; description: string; content: string }> = {}
     LANGUAGES.forEach(l => {
-      const existing = initialData?.translations?.find((ex: any) => ex.language === l.code)
+      const existing = initialData?.translations?.find((ex) => ex.language === l.code)
       t[l.code] = {
         title: existing?.title || "",
         description: existing?.description || "",
