@@ -45,8 +45,8 @@ export default function Hero({
   testimonials = [],
   team = [],
 }: {
-  testimonials?: any[];
-  team?: any[];
+  testimonials?: unknown[];
+  team?: unknown[];
 }) {
   const t = useTranslations("HomePage");
   const locale = useLocale();
