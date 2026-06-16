@@ -30,7 +30,34 @@ const STEPS = [
   { id: 4, label: "Révision", description: "Finalisation" }
 ]
 
-export function UnifiedContentForm({ categories, initialData, isEditing = false, initialType = "ARTICLE" }: any) {
+interface Category {
+  id: string;
+  slug: string;
+  translations: { language: string; name: string }[];
+}
+
+interface ContentData {
+  id?: string;
+  slug?: string;
+  domain?: "RESEARCH" | "CLINICAL";
+  categoryId?: string;
+  videoUrl?: string;
+  mainImage?: string;
+  published?: boolean;
+  year?: number;
+  doi?: string;
+  pdfUrl?: string;
+  translations?: { language: string; title?: string; excerpt?: string; description?: string; content?: string }[];
+}
+
+interface UnifiedContentFormProps {
+  categories: Category[];
+  initialData?: ContentData;
+  isEditing?: boolean;
+  initialType?: string;
+}
+
+export function UnifiedContentForm({ categories, initialData, isEditing = false, initialType = "ARTICLE" }: UnifiedContentFormProps) {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const [contentType, setContentType] = useState(initialType) // ARTICLE or PUBLICATION
@@ -49,9 +76,9 @@ export function UnifiedContentForm({ categories, initialData, isEditing = false,
   })
 
   const [translations, setTranslations] = useState(() => {
-    const t: any = {}
+    const t: Record<string, { title: string; excerpt: string; content: string }> = {}
     LANGUAGES.forEach(l => {
-      const existing = initialData?.translations?.find((ex: any) => ex.language === l.code)
+      const existing = initialData?.translations?.find((ex) => ex.language === l.code)
       t[l.code] = {
         title: existing?.title || "",
         excerpt: existing?.excerpt || (existing?.description || ""),
@@ -79,7 +106,7 @@ export function UnifiedContentForm({ categories, initialData, isEditing = false,
       if (contentType === "ARTICLE") {
         res = isEditing ? await updateArticle(payload) : await createArticle(payload)
       } else {
-        res = isEditing ? await updatePublication(initialData.id, payload) : await createPublication(payload)
+        res = isEditing ? await updatePublication(initialData?.id as string, payload as unknown as Parameters<typeof updatePublication>[1]) : await createPublication(payload as unknown as Parameters<typeof createPublication>[0])
       }
 
       if (res.success) {
@@ -140,7 +167,7 @@ export function UnifiedContentForm({ categories, initialData, isEditing = false,
                       <select 
                          className="w-full h-14 bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 px-4 text-xs font-black uppercase tracking-widest rounded-xl outline-none focus:border-[#C9A84C]"
                          value={baseData.domain}
-                         onChange={(e) => setBaseData({...baseData, domain: e.target.value})}
+                         onChange={(e) => setBaseData({...baseData, domain: e.target.value as "RESEARCH" | "CLINICAL"})}
                       >
                          <option value="RESEARCH">Recherche Scientifique</option>
                          <option value="CLINICAL">Clinique Juridique</option>
@@ -154,9 +181,9 @@ export function UnifiedContentForm({ categories, initialData, isEditing = false,
                            value={baseData.categoryId}
                            onChange={(e) => setBaseData({...baseData, categoryId: e.target.value})}
                         >
-                           {categories.map((c: any) => (
+                           {categories.map((c) => (
                              <option key={c.id} value={c.id}>
-                               {c.translations.find((t: any) => t.language === 'fr')?.name || c.slug}
+                               {c.translations.find((t) => t.language === 'fr')?.name || c.slug}
                              </option>
                            ))}
                         </select>
