@@ -5,15 +5,10 @@ import { m as motion } from "framer-motion";
 import { Play, ZoomIn, Film, Images } from "lucide-react";
 import Image from "next/image";
 
+import type { MediaItem } from "@/lib/mediatheque/types";
+
 interface MediaCardProps {
-  media: {
-    id: string;
-    src: string;
-    title: string;
-    category: string;
-    type: "IMAGE" | "VIDEO";
-    files?: { url: string; fileType: string }[];
-  };
+  media: MediaItem;
   onClick: () => void;
 }
 
@@ -30,7 +25,7 @@ export default function MediaCard({ media, onClick }: MediaCardProps) {
     return url;
   };
 
-  const thumbnailUrl = getThumbnailUrl(media.src);
+  const thumbnailUrl = media.thumbnailUrl || getThumbnailUrl(media.url);
 
   return (
     <motion.div
