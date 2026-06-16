@@ -18,10 +18,27 @@ import { fr, enUS } from 'date-fns/locale'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
+interface ArticleTranslation {
+  language: string;
+  title: string;
+  excerpt?: string;
+  content?: string;
+}
+
+interface ArticleDetail {
+  id: string;
+  domain?: string;
+  published?: boolean;
+  createdAt: string | Date;
+  mainImage?: string;
+  translations?: ArticleTranslation[];
+  [key: string]: unknown;
+}
+
 interface ArticleDetailModalProps {
   isOpen: boolean
   onClose: () => void
-  article: any
+  article: ArticleDetail | null
   locale: string
 }
 
@@ -51,7 +68,7 @@ export function ArticleDetailModal({ isOpen, onClose, article, locale }: Article
               </button>
             </div>
             <h2 className="text-3xl font-serif font-bold italic leading-tight">
-              {article.translations?.find((t: any) => t.language === locale)?.title || "Untitled Document"}
+              {article.translations?.find((t) => t.language === locale)?.title || "Untitled Document"}
             </h2>
             <div className="flex items-center gap-6 text-[10px] font-bold uppercase tracking-widest text-slate-400">
               <span className="flex items-center gap-2"><Calendar size={14} /> {new Date(article.createdAt).toLocaleDateString()}</span>
@@ -68,7 +85,7 @@ export function ArticleDetailModal({ isOpen, onClose, article, locale }: Article
                </TabsList>
 
                {['fr', 'en', 'sw'].map(lang => {
-                 const trans = article.translations?.find((t: any) => t.language === lang)
+                 const trans = article.translations?.find((t) => t.language === lang)
                  return (
                    <TabsContent key={lang} value={lang} className="space-y-8 animate-in slide-in-from-bottom-2">
                      {trans ? (
