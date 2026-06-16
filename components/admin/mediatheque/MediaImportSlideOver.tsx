@@ -534,7 +534,7 @@ export default function MediaImportSlideOver({
               {step > 1 && (
                 <button
                   type="button"
-                  onClick={() => setStep(step - 1 as any)}
+                  onClick={() => setStep((step - 1) as 1 | 2 | 3)}
                   className="flex items-center gap-1.5 px-4 py-3 rounded-2xl border border-slate-200 dark:border-zinc-700 text-sm font-bold text-slate-600 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-900 transition-colors"
                 >
                   <ChevronLeft size={16} />
@@ -545,7 +545,7 @@ export default function MediaImportSlideOver({
               {step < 3 ? (
                 <button
                   type="button"
-                  onClick={() => setStep(step + 1 as any)}
+                  onClick={() => setStep((step + 1) as 1 | 2 | 3)}
                   disabled={step === 1 ? !canProceedStep1 : !canProceedStep2}
                   className="flex items-center gap-1.5 px-6 py-3 rounded-2xl bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
