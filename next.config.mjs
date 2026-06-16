@@ -20,6 +20,7 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.org', pathname: '/**' },
       { protocol: 'https', hostname: '**.net', pathname: '/**' },
       { protocol: 'https', hostname: 'www.google.com', pathname: '/**' },
+      { protocol: 'https', hostname: 'img.youtube.com', pathname: '/**' },
     ],
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',

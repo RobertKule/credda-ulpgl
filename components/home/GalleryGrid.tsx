@@ -3,19 +3,22 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { m as motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, Images, Loader2 } from "lucide-react";
+import { ArrowUpRight, Images, Loader2, Play, ZoomIn } from "lucide-react";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
+import MediaLightbox from "@/components/media/MediaLightbox";
 
 const PAGE_SIZE = 6;
 
-interface GalleryImage {
+export interface GalleryImage {
   id?: string | number;
   src?: string;
   imageUrl?: string;
   title?: string;
   description?: string;
   category?: string;
+  type?: "IMAGE" | "VIDEO";
+  files?: { url: string; fileType: string; thumbnailUrl?: string; }[];
 }
 
 export default function GalleryGrid({
@@ -27,28 +30,42 @@ export default function GalleryGrid({
 }) {
   const t = useTranslations("HomePage");
   const [page, setPage] = useState(0);
+  const [selectedMediaIndex, setSelectedMediaIndex] = useState<number | null>(null);
 
   // Normalize images from backend (no hardcoded fallbacks)
   const allImages = (images as GalleryImage[])
     .filter((img) => img.src || img.imageUrl) // only real images
-    .map((img, idx) => ({
-      id: img.id ?? idx,
-      src: img.src || img.imageUrl || "",
-      title: img.title || "",
-      description: img.description || "",
-      category: img.category || "",
-    }));
+    .map((img, idx) => {
+      const url = img.src || img.imageUrl || "";
+      return {
+        id: String(img.id ?? idx),
+        url: url,
+        thumbnailUrl: url,
+        source: "LOCAL" as "LOCAL" | "EXTERNAL",
+        createdAt: new Date().toISOString(),
+        title: img.title || "",
+        description: img.description || undefined,
+        category: img.category || "",
+        type: img.type || "IMAGE",
+        files: img.files || []
+      };
+    });
 
   const totalPages = Math.ceil(allImages.length / PAGE_SIZE);
 
   // Auto-rotate every 5s if multiple pages
   useEffect(() => {
-    if (totalPages <= 1) return;
+    if (totalPages <= 1 || selectedMediaIndex !== null) return;
     const timer = setInterval(() => {
       setPage((p) => (p + 1) % totalPages);
     }, 5000);
     return () => clearInterval(timer);
-  }, [totalPages]);
+  }, [totalPages, selectedMediaIndex]);
+
+  // Reset page if images change
+  useEffect(() => {
+    setPage(0);
+  }, [images.length]);
 
   // Reset page if images change
   useEffect(() => {
@@ -69,6 +86,16 @@ export default function GalleryGrid({
       </div>
     );
   }
+
+  const getThumbnailUrl = (url: string) => {
+    if (!url) return "";
+    const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+    const match = url.match(ytRegex);
+    if (match && match[1]) {
+      return `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg`;
+    }
+    return url;
+  };
 
   return (
     <div className="w-full px-5 sm:px-8 lg:px-12 xl:px-16 py-16 lg:py-24">
@@ -122,9 +149,14 @@ export default function GalleryGrid({
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           >
-            {current.map((img, idx) => (
+            {current.map((img, idx) => {
+              const isAlbum = img.files && img.files.length > 1;
+              const globalIdx = page * PAGE_SIZE + idx;
+              const thumbnailUrl = img.thumbnailUrl || getThumbnailUrl(img.url);
+              return (
               <motion.div
                 key={img.id}
+                onClick={() => setSelectedMediaIndex(globalIdx)}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{
@@ -138,25 +170,46 @@ export default function GalleryGrid({
                   boxShadow: "0 24px 56px -8px rgba(0,0,0,0.3)",
                   transition: { duration: 0.3 },
                 }}
-                className="relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer
+                className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer
                            border border-border/20 dark:border-border/10 bg-card"
               >
                 <Image
-                  src={img.src}
+                  src={thumbnailUrl}
                   alt={img.title || "Galerie CREDDA"}
                   fill
                   unoptimized
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover object-center transition-transform duration-700 hover:scale-105"
+                  className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                 />
 
                 {/* Hover overlay */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent pointer-events-none"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
+                  className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center p-8 text-center"
+                >
+                  <div className="mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                    {img.type === "VIDEO" ? (
+                      <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-2xl shadow-primary/40">
+                        <Play size={20} className="text-white fill-white ml-1" />
+                      </div>
+                    ) : isAlbum ? (
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-2xl shadow-blue-600/40 border border-white/20">
+                          <Images size={20} className="text-white" />
+                        </div>
+                        <span className="text-[9px] font-black uppercase text-white tracking-widest bg-black/50 px-2 py-1 rounded-full backdrop-blur-md">
+                          Voir l'album
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20">
+                        <ZoomIn size={20} className="text-white" />
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+
+                {/* Always visible overlay bottom */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
                 {/* Category badge */}
                 {img.category && (
@@ -165,17 +218,22 @@ export default function GalleryGrid({
                   </span>
                 )}
 
+                {/* Indicators (Small) */}
+                {isAlbum && (
+                  <div className="absolute top-3 right-3 z-10 px-2 py-1 rounded-lg bg-black/60 backdrop-blur-md flex items-center gap-1.5 text-white border border-white/10 group-hover:opacity-0 transition-all duration-500">
+                    <Images size={12} />
+                    <span className="text-[9px] font-bold">{img.files?.length}</span>
+                  </div>
+                )}
+
                 {/* Title on hover */}
                 <motion.p
-                  className="absolute bottom-3 left-4 right-4 text-white text-[11px] font-bold uppercase tracking-widest line-clamp-1 pointer-events-none"
-                  initial={{ opacity: 0, y: 6 }}
-                  whileHover={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.2, delay: 0.05 }}
+                  className="absolute bottom-3 left-4 right-4 text-white text-[11px] font-bold uppercase tracking-widest line-clamp-1 pointer-events-none opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-300"
                 >
                   {img.title}
                 </motion.p>
               </motion.div>
-            ))}
+            )})}
           </motion.div>
         </AnimatePresence>
       </div>
@@ -198,6 +256,15 @@ export default function GalleryGrid({
           </div>
         </Link>
       </motion.div>
+
+      {/* LIGHTBOX */}
+      <MediaLightbox 
+        isOpen={selectedMediaIndex !== null}
+        onClose={() => setSelectedMediaIndex(null)}
+        media={selectedMediaIndex !== null ? allImages[selectedMediaIndex] : null}
+        onNext={() => setSelectedMediaIndex(prev => prev !== null ? (prev + 1) % allImages.length : null)}
+        onPrev={() => setSelectedMediaIndex(prev => prev !== null ? (prev - 1 + allImages.length) % allImages.length : null)}
+      />
     </div>
   );
 }

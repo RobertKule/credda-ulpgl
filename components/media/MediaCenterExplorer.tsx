@@ -1,37 +1,28 @@
 "use client";
 
-import React, { useState, useMemo, useEffect, useRef } from "react";
-import { m as motion, AnimatePresence, useScroll, useTransform, useSpring } from "framer-motion";
-import { Calendar, Image as ImageIcon, LayoutGrid, ChevronLeft, ChevronRight, Play } from "lucide-react";
+import React, { useState, useMemo } from "react";
+import { m as motion, AnimatePresence } from "framer-motion";
+import { Image as ImageIcon, LayoutGrid, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { useTranslations } from "next-intl";
-import EventCard from "./EventCard";
 import MediaCard from "./MediaCard";
 import MediaLightbox from "./MediaLightbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import type { MediaItem } from "@/lib/mediatheque/types";
 
-type FilterType = "all" | "events" | "gallery" | "videos";
+type FilterType = "all" | "gallery" | "videos";
 
 interface MediaCenterExplorerProps {
-  events: any[];
-  media: any[];
+  media: MediaItem[];
 }
 
-export default function MediaCenterExplorer({ events, media }: MediaCenterExplorerProps) {
+export default function MediaCenterExplorer({ media }: MediaCenterExplorerProps) {
   const t = useTranslations("MediaCenter");
   const [filter, setFilter] = useState<FilterType>("all");
   const [itemsPerPage, setItemsPerPage] = useState("10");
-  const [eventPage, setEventPage] = useState(1);
   const [videoPage, setVideoPage] = useState(1);
   const [galleryPage, setGalleryPage] = useState(1);
-  const [selectedMediaIndex, setSelectedMediaIndex] = useState<number | null>(null);
-  const [maxTranslate, setMaxTranslate] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const [progressText, setProgressText] = useState(0);
-  const [contentWidth, setContentWidth] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(0);
-
-  const horizontalRef = useRef<HTMLDivElement>(null);
-  const scrollTarget = useRef<HTMLDivElement>(null);
+  const [lightboxList, setLightboxList] = useState<MediaItem[]>([]);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const ITEMS_PER_PAGE = parseInt(itemsPerPage);
 
@@ -39,7 +30,7 @@ export default function MediaCenterExplorer({ events, media }: MediaCenterExplor
   const normalizedMedia = useMemo(() => media.map((m, i) => ({
     ...m,
     id: m.id || `m-${i}`,
-    type: m.type || (m.src?.includes("youtube") || m.src?.includes("vimeo") ? "VIDEO" : "IMAGE"),
+    type: m.type || (m.url?.includes("youtube") || m.url?.includes("vimeo") ? "VIDEO" : "IMAGE"),
     itemType: "media",
     title: m.title || `Media #${i + 1}`,
     category: m.category || "General"
@@ -49,26 +40,8 @@ export default function MediaCenterExplorer({ events, media }: MediaCenterExplor
   const videoReports = useMemo(() => normalizedMedia.filter(m => m.type === "VIDEO"), [normalizedMedia]);
   const galleryImagesOnly = useMemo(() => normalizedMedia.filter(m => m.type === "IMAGE"), [normalizedMedia]);
 
-  // Normalize events
-  const normalizedEvents = useMemo(() => events.map((e, i) => ({
-    ...e,
-    id: e.id || `e-${i}`,
-    itemType: "event",
-    title: e.slug || e.title || "Evénement CREDDA",
-    date: e.date ? new Date(e.date).toLocaleDateString("fr-FR") : "Recent",
-    createdAt: e.createdAt || new Date().toISOString(),
-    category: e.type || "Expertise",
-    description: e.translations?.[0]?.description || e.description || "Aucune description disponible pour cet événement.",
-  })), [events]);
-
-  const eventTotalPages = Math.ceil(normalizedEvents.length / ITEMS_PER_PAGE);
   const videoTotalPages = Math.ceil(videoReports.length / ITEMS_PER_PAGE);
   const galleryTotalPages = Math.ceil(galleryImagesOnly.length / ITEMS_PER_PAGE);
-
-  const paginatedEvents = useMemo(() => {
-    const start = (eventPage - 1) * ITEMS_PER_PAGE;
-    return normalizedEvents.slice(start, start + ITEMS_PER_PAGE);
-  }, [normalizedEvents, eventPage, ITEMS_PER_PAGE]);
 
   const paginatedVideos = useMemo(() => {
     const start = (videoPage - 1) * ITEMS_PER_PAGE;
@@ -80,51 +53,14 @@ export default function MediaCenterExplorer({ events, media }: MediaCenterExplor
     return galleryImagesOnly.slice(start, start + ITEMS_PER_PAGE);
   }, [galleryImagesOnly, galleryPage, ITEMS_PER_PAGE]);
 
-  const stats = {
-    events: events.length,
-    media: media.length,
-    videos: videoReports.length
-  };
-
-  // Pre-load images for lightbox & calculate scroll distances
-  useEffect(() => {
-    if (selectedMediaIndex !== null) {
+  // Pre-load images for lightbox & body scroll lock
+  React.useEffect(() => {
+    if (lightboxIndex !== null) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-  }, [selectedMediaIndex]);
-
-  useEffect(() => {
-    const updateWidth = () => {
-      const viewportWidth = window.innerWidth;
-      const currentIsMobile = viewportWidth < 1024;
-      
-      setIsMobile(currentIsMobile);
-      setWindowWidth(viewportWidth);
-
-      if (horizontalRef.current) {
-        const scrollWidth = horizontalRef.current.scrollWidth;
-        
-        // Calculate the actual content width (excluding spacers if any)
-        // Since we are removing spacers, scrollWidth is contentWidth
-        setContentWidth(scrollWidth);
-        
-        const cardW = currentIsMobile ? 360 : 440;
-        setMaxTranslate(scrollWidth - cardW);
-      }
-    };
-
-    updateWidth();
-    window.addEventListener("resize", updateWidth);
-    // Extra timeout to ensure min-w-max content is fully rendered
-    const timeout = setTimeout(updateWidth, 500);
-    
-    return () => {
-      window.removeEventListener("resize", updateWidth);
-      clearTimeout(timeout);
-    };
-  }, [normalizedEvents.length, filter]);
+  }, [lightboxIndex]);
 
   const Pagination = ({ page, setPage, totalPages }: { page: number, setPage: (p: number | ((prev: number) => number)) => void, totalPages: number }) => {
     if (totalPages <= 1) return null;
@@ -165,58 +101,22 @@ export default function MediaCenterExplorer({ events, media }: MediaCenterExplor
     );
   };
 
-  const { scrollYProgress } = useScroll({
-    target: scrollTarget,
-    offset: ["start start", "end end"]
-  });
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 60, // Lighter, more fluid feel
-    damping: 25,
-    restDelta: 0.001
-  });
-
-  // Keep the percentage text synchronized with the animation
-  useEffect(() => {
-    const unsubscribe = smoothProgress.on("change", (v) => {
-      setProgressText(Math.round(v * 100));
-    });
-    return () => unsubscribe();
-  }, [smoothProgress]);
-
-  const cardWidth = isMobile ? 360 : 440;
-  const xTranslate = useTransform(
-    smoothProgress, 
-    [0, 1],
-    [
-      (windowWidth ? windowWidth / 2 - cardWidth / 2 : 0),
-      (windowWidth ? windowWidth / 2 - (contentWidth - cardWidth / 2) : 0)
-    ]
-  );
-
-  // Calculate dynamic values for the immersive section
-  const filterBarOpacity = useTransform(smoothProgress, [0, 0.05, 0.95, 1], [1, 0, 0, 1]);
-  const eventsTitleOpacity = useTransform(smoothProgress, [0, 0.05, 0.95, 1], [0, 1, 1, 0]);
-  const filterBarPointerEvents = useTransform(smoothProgress, [0, 0.02, 0.98, 1], ["auto", "none", "none", "auto"]);
-
   return (
     <div className="space-y-24">
       {/* FILTER & PAGINATION BAR */}
       <motion.div 
-        style={{ opacity: filterBarOpacity, pointerEvents: filterBarPointerEvents }}
         className="sticky top-28 z-40 mx-auto max-w-5xl w-full px-4"
       >
          <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-card/40 backdrop-blur-xl px-2 lg:px-10 py-6 rounded-[2rem] lg:rounded-full border border-border/50 shadow-xl shadow-black/10">
             <div className="flex items-center bg-muted/30 p-1 rounded-full border border-border/20">
                {[
                  { id: "all", label: t("filters.all"), icon: LayoutGrid },
-                 { id: "events", label: t("filters.events"), icon: Calendar },
                  { id: "videos", label: t("filters.videos"), icon: Play },
                  { id: "gallery", label: t("filters.gallery"), icon: ImageIcon }
                ].map((item) => (
                  <button
                    key={item.id}
-                   onClick={() => { setFilter(item.id as FilterType); setEventPage(1); setVideoPage(1); setGalleryPage(1); }}
+                   onClick={() => { setFilter(item.id as FilterType); setVideoPage(1); setGalleryPage(1); }}
                    className={`relative flex items-center gap-2 px-4 lg:px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
                      filter === item.id ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
                    }`}
@@ -236,7 +136,7 @@ export default function MediaCenterExplorer({ events, media }: MediaCenterExplor
 
             <div className="flex items-center gap-4">
                <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/60">{t("explorer.itemsPerPage")}</span>
-               <Select value={itemsPerPage} onValueChange={(val) => { setItemsPerPage(val); setEventPage(1); setVideoPage(1); setGalleryPage(1); }}>
+               <Select value={itemsPerPage} onValueChange={(val) => { setItemsPerPage(val); setVideoPage(1); setGalleryPage(1); }}>
                  <SelectTrigger className="w-20 lg:w-24 bg-background/50 border-border/30 rounded-full h-11 text-[10px] font-bold uppercase tracking-widest focus:ring-0">
                    <SelectValue />
                  </SelectTrigger>
@@ -249,93 +149,6 @@ export default function MediaCenterExplorer({ events, media }: MediaCenterExplor
             </div>
          </div>
       </motion.div>
-
-      {/* EVENTS SECTION - IMMERSIVE STICKY SCROLL */}
-      {(filter === "all" || filter === "events") && (
-        <section ref={scrollTarget} className="relative h-[450vh] w-full z-10">
-          <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-background z-50">
-            
-            {/* Header Content - Fixed at the top */}
-            <div className="absolute top-[10vh] left-0 w-full z-40 pointer-events-none">
-              <div className="container mx-auto px-6 text-center">
-                <motion.h2 
-                  style={{ opacity: eventsTitleOpacity }}
-                  className="text-4xl md:text-7xl font-serif font-black mb-6 tracking-tight"
-                >
-                  {t("explorer.events_title")}
-                </motion.h2>
-                <div className="h-1.5 w-32 bg-primary/40 mx-auto rounded-full mb-8" />
-              </div>
-            </div>
-            
-            <div className="relative w-full z-20 my-16 overflow-hidden">
-               {isMobile ? (
-                 <div className="flex gap-6 px-6 overflow-x-auto snap-x no-scrollbar pb-12">
-                   {normalizedEvents.length === 0 ? (
-                     <p className="mx-auto text-muted-foreground italic font-serif text-xl">Aucun événement disponible.</p>
-                   ) : (
-                     normalizedEvents.map((item) => (
-                       <div key={item.id} className="w-[85vw] shrink-0 snap-center p-4">
-                         <EventCard event={item} />
-                       </div>
-                     ))
-                   )}
-                 </div>
-               ) : (
-                 <motion.div 
-                    ref={horizontalRef}
-                    style={{ x: xTranslate }}
-                    className="flex gap-16 min-w-max items-center h-[500px] relative pointer-events-auto left-0"
-                  >
-                    {normalizedEvents.length === 0 ? (
-                      <p className="mx-auto text-muted-foreground italic font-serif text-xl">Aucun événement disponible.</p>
-                    ) : (
-                      normalizedEvents.map((item, idx) => (
-                        <motion.div
-                          key={item.id}
-                          className="relative w-[360px] md:w-[440px] shrink-0 p-8"
-                        >
-                          <EventCard event={item} />
-                        </motion.div>
-                      ))
-                    )}
-                  </motion.div>
-               )}
-            </div>
-
-            {/* Scroll Progress & Bottom Metadata */}
-            <div className="absolute bottom-[10vh] inset-x-0 flex flex-col items-center gap-6 z-30">
-               <div className="w-80 h-1 bg-primary/10 rounded-full overflow-hidden">
-                  <motion.div 
-                    style={{ scaleX: smoothProgress }} 
-                    className="h-full w-full bg-primary origin-left" 
-                  />
-               </div>
-               <div className="flex items-center gap-12 text-[9px] font-black uppercase tracking-[0.6em] text-muted-foreground/40">
-                 <span>TIMELINE NAVIGATION</span>
-                 <span className="w-1.5 h-1.5 bg-primary/30 rounded-full" />
-                 <span>{progressText}%</span>
-               </div>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* SEPARATOR 1 */}
-      {filter === "all" && normalizedEvents.length > 0 && videoReports.length > 0 && (
-        <div className="container mx-auto px-6">
-          <div className="relative py-12">
-            <div className="absolute inset-0 flex items-center" aria-hidden="true">
-              <div className="w-full border-t border-border/50"></div>
-            </div>
-            <div className="relative flex justify-center">
-              <span className="bg-background px-6">
-                <Play className="h-6 w-6 text-primary/30" />
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* VIDEO REPORTS SECTION */}
       {(filter === "all" || filter === "videos") && (
@@ -361,7 +174,10 @@ export default function MediaCenterExplorer({ events, media }: MediaCenterExplor
                 >
                   <MediaCard 
                     media={item} 
-                    onClick={() => setSelectedMediaIndex(normalizedMedia.findIndex(m => m.id === item.id))} 
+                    onClick={() => {
+                      setLightboxList(videoReports);
+                      setLightboxIndex(videoReports.findIndex(m => m.id === item.id));
+                    }} 
                   />
                 </motion.div>
               ))}
@@ -414,7 +230,10 @@ export default function MediaCenterExplorer({ events, media }: MediaCenterExplor
                 >
                   <MediaCard 
                     media={item} 
-                    onClick={() => setSelectedMediaIndex(normalizedMedia.findIndex(m => m.id === item.id))} 
+                    onClick={() => {
+                      setLightboxList(galleryImagesOnly);
+                      setLightboxIndex(galleryImagesOnly.findIndex(m => m.id === item.id));
+                    }} 
                   />
                 </motion.div>
               ))}
@@ -429,11 +248,11 @@ export default function MediaCenterExplorer({ events, media }: MediaCenterExplor
 
       {/* LIGHTBOX MODAL */}
       <MediaLightbox 
-        isOpen={selectedMediaIndex !== null}
-        onClose={() => setSelectedMediaIndex(null)}
-        media={selectedMediaIndex !== null ? normalizedMedia[selectedMediaIndex] : null}
-        onNext={() => setSelectedMediaIndex(prev => prev !== null ? (prev + 1) % normalizedMedia.length : null)}
-        onPrev={() => setSelectedMediaIndex(prev => prev !== null ? (prev - 1 + normalizedMedia.length) % normalizedMedia.length : null)}
+        isOpen={lightboxIndex !== null && lightboxList.length > 0}
+        onClose={() => setLightboxIndex(null)}
+        media={lightboxIndex !== null && lightboxList.length > 0 ? lightboxList[lightboxIndex] : null}
+        onNext={() => setLightboxIndex(prev => prev !== null ? (prev + 1) % lightboxList.length : null)}
+        onPrev={() => setLightboxIndex(prev => prev !== null ? (prev - 1 + lightboxList.length) % lightboxList.length : null)}
       />
     </div>
   );

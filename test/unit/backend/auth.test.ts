@@ -12,7 +12,7 @@ vi.mock('@/lib/rate-limit', () => ({
   resetRateLimit: vi.fn()
 }));
 
-const mockDb = db as any;
+const mockDb = db as unknown as Record<string, { findUnique: ReturnType<typeof vi.fn> }>;
 
 describe('Authentication Credentials Provider', () => {
   const credentialsProvider: any = authOptions.providers[0];
@@ -22,28 +22,28 @@ describe('Authentication Credentials Provider', () => {
   });
 
   it('rejects login if rate limit throws', async () => {
-    (rateLimit as any).mockResolvedValue({ success: false });
+    (rateLimit as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({ success: false });
     const res = await credentialsProvider.authorize({ email: 'test@mail.com', password: 'pas' });
     expect(res).toBeNull();
   });
 
   it('rejects if user does not exist', async () => {
-    (rateLimit as any).mockResolvedValue({ success: true });
+    (rateLimit as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({ success: true });
     mockDb.user.findUnique.mockResolvedValue(null);
     const res = await credentialsProvider.authorize({ email: 'test@mail.com', password: 'pas' });
     expect(res).toBeNull();
   });
 
   it('rejects if password does not match', async () => {
-    (rateLimit as any).mockResolvedValue({ success: true });
+    (rateLimit as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({ success: true });
     mockDb.user.findUnique.mockResolvedValue({ status: 'APPROVED', password: 'hash' });
-    (bcrypt.compare as any).mockResolvedValue(false);
+    (bcrypt.compare as unknown as ReturnType<typeof vi.fn>).mockResolvedValue(false);
     const res = await credentialsProvider.authorize({ email: 'test@mail.com', password: 'pas' });
     expect(res).toBeNull();
   });
 
   it('rejects if account is PENDING', async () => {
-    (rateLimit as any).mockResolvedValue({ success: true });
+    (rateLimit as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({ success: true });
     mockDb.user.findUnique.mockResolvedValue({ status: 'PENDING', password: 'hash' });
     const res = await credentialsProvider.authorize({ email: 'test@mail.com', password: 'pas' });
     expect(res).toBeNull();

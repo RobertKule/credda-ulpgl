@@ -8,7 +8,7 @@ export async function searchEverything(query: string, locale: string) {
 
   const pattern = `%${query}%`;
 
-  const [articles, publications, members]: any = await Promise.all([
+  const [articles, publications, members] = (await Promise.all([
     sql`
       SELECT a.id, a.slug, a."mainImage",
         (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations
@@ -46,7 +46,7 @@ export async function searchEverything(query: string, locale: string) {
       )
       LIMIT 3
     `.catch(() => [])
-  ]);
+  ])) as [unknown[], unknown[], unknown[]];
 
   return { articles, publications, members };
 }

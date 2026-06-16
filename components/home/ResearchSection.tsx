@@ -10,7 +10,23 @@ import { useTranslations } from "next-intl";
 import { FormattedHTML } from "@/components/ui/FormattedHTML";
 import GSAPReveal from "@/components/shared/GSAPReveal";
 
-export default function ResearchSection({ articles = [] }: { articles: any[] }) {
+export interface ResearchArticle {
+    id: string;
+    mainImage?: string | null;
+    slug?: string | null;
+    createdAt?: string | Date;
+    translations?: {
+        title: string;
+        excerpt?: string | null;
+    }[];
+    category?: {
+        translations?: {
+            name: string;
+        }[];
+    };
+}
+
+export default function ResearchSection({ articles = [] }: { articles: ResearchArticle[] }) {
     const t = useTranslations('HomePage');
 
     return (
@@ -67,7 +83,7 @@ export default function ResearchSection({ articles = [] }: { articles: any[] }) 
 
                 {/* GRILLE D'ARTICLES - RESPONSIVE OPTIMISÉ */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-                    {articles?.slice(0, 4).map((article: any, idx: number) => (
+                    {articles?.slice(0, 4).map((article: ResearchArticle, idx: number) => (
                         <motion.div
                             key={article?.id || idx}
                             initial={{ opacity: 0, y: 40 }}

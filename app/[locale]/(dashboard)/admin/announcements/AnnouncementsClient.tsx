@@ -109,7 +109,7 @@ export default function AnnouncementsClient({
     setTimeout(() => setToast(null), 3000);
   };
 
-  const setField = (key: string, val: any) => {
+  const setField = (key: string, val: unknown) => {
     setFormData(prev => ({ ...prev, [key]: val }));
   };
 
@@ -192,8 +192,8 @@ export default function AnnouncementsClient({
             router.refresh();
           }
         }
-      } catch (e: any) {
-        showToast(e.message || "Erreur de connexion", "error");
+      } catch (e: unknown) {
+        showToast(e instanceof Error ? e.message : "Erreur de sauvegarde", "error");
       }
     });
   };

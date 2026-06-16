@@ -10,7 +10,7 @@ export async function uploadFileAction(formData: FormData): Promise<{ url?: stri
     const buffer = Buffer.from(await file.arrayBuffer());
     const url = await uploadToSupabase(buffer, file.name, file.type, "gallery");
     return { url };
-  } catch (error: any) {
-    return { error: error.message };
+  } catch (error: unknown) {
+    return { error: error instanceof Error ? error.message : "Erreur de téléchargement" };
   }
 }

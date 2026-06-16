@@ -146,14 +146,14 @@ export default function UsersClient({
   };
 
   // Field setters
-  const setUserField = (key: string, val: any) => {
+  const setUserField = <K extends keyof typeof userFormData>(key: K, val: typeof userFormData[K]) => {
     setUserFormData(prev => ({ ...prev, [key]: val }));
   };
 
-  const setMemberField = (key: string, val: any) => {
+  const setMemberField = <K extends keyof typeof memberFormData>(key: K, val: typeof memberFormData[K]) => {
     setMemberFormData(prev => {
       const next = { ...prev, [key]: val };
-      if (key === "name" && !editingMemberId) {
+      if (key === "name" && !editingMemberId && typeof val === "string") {
         next.slug = val
           .toLowerCase()
           .trim()
@@ -205,8 +205,8 @@ export default function UsersClient({
             router.refresh();
           }
         }
-      } catch (err: any) {
-        showToast(err.message || "Erreur lors de la sauvegarde.", "error");
+      } catch (err: unknown) {
+        showToast(err instanceof Error ? err.message : "Erreur lors de la sauvegarde.", "error");
       }
     });
   };
@@ -250,8 +250,8 @@ export default function UsersClient({
           }
           router.refresh();
         }
-      } catch (err: any) {
-        showToast(err.message || "Erreur de mise à jour.", "error");
+      } catch (err: unknown) {
+        showToast(err instanceof Error ? err.message : "Erreur de mise à jour.", "error");
       }
     });
   };
@@ -267,8 +267,8 @@ export default function UsersClient({
           setDeletingUserId(null);
           router.refresh();
         }
-      } catch (err: any) {
-        showToast(err.message || "Erreur de suppression.", "error");
+      } catch (err: unknown) {
+        showToast(err instanceof Error ? err.message : "Erreur de suppression.", "error");
       }
     });
   };
@@ -309,9 +309,9 @@ export default function UsersClient({
       } else {
         showToast("Erreur lors de l'upload: réponse invalide", "error");
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Upload error:", err);
-      showToast(err.message || "Erreur lors de l'envoi de l'image.", "error");
+      showToast(err instanceof Error ? err.message : "Erreur lors de l'envoi de l'image.", "error");
     } finally {
       setUploadProgress(false);
     }
@@ -343,8 +343,8 @@ export default function UsersClient({
             router.refresh();
           }
         }
-      } catch (err: any) {
-        showToast(err.message || "Erreur de sauvegarde.", "error");
+      } catch (err: unknown) {
+        showToast(err instanceof Error ? err.message : String(err) || "Erreur.", "error");
       }
     });
   };
@@ -401,8 +401,8 @@ export default function UsersClient({
           setDeletingMemberId(null);
           router.refresh();
         }
-      } catch (err: any) {
-        showToast(err.message || "Erreur de suppression.", "error");
+      } catch (err: unknown) {
+        showToast(err instanceof Error ? err.message : "Erreur de suppression.", "error");
       }
     });
   };
@@ -904,7 +904,7 @@ export default function UsersClient({
                   </label>
                   <select
                     value={userFormData.role}
-                    onChange={e => setUserField("role", e.target.value)}
+                    onChange={e => setUserField("role", e.target.value as "SUPERADMIN" | "ADMIN" | "EDITOR" | "USER")}
                     className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white font-semibold"
                   >
                     <option value="SUPERADMIN">Super-Admin</option>
@@ -920,7 +920,7 @@ export default function UsersClient({
                   </label>
                   <select
                     value={userFormData.status}
-                    onChange={e => setUserField("status", e.target.value)}
+                    onChange={e => setUserField("status", e.target.value as "PENDING" | "ACTIVE" | "SUSPENDED")}
                     className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white font-semibold"
                   >
                     <option value="PENDING">En attente d'approbation</option>

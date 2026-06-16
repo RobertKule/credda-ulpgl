@@ -22,7 +22,30 @@ const LANGUAGES = [
   { code: "sw", label: "Kiswahili" }
 ]
 
-export function ArticleForm({ categories, initialData, isEditing = false }: any) {
+interface Category {
+  id: string;
+  slug: string;
+  translations: { language: string; name: string }[];
+}
+
+interface ArticleData {
+  id?: string;
+  slug?: string;
+  domain?: string;
+  categoryId?: string;
+  videoUrl?: string;
+  mainImage?: string;
+  published?: boolean;
+  translations?: { language: string; title?: string; excerpt?: string; content?: string }[];
+}
+
+interface ArticleFormProps {
+  categories: Category[];
+  initialData?: ArticleData;
+  isEditing?: boolean;
+}
+
+export function ArticleForm({ categories, initialData, isEditing = false }: ArticleFormProps) {
   const router = useRouter()
   
   const [baseData, setBaseData] = useState({
@@ -35,9 +58,9 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
   })
 
   const [translations, setTranslations] = useState(() => {
-    const t: any = {}
+    const t: Record<string, { title: string; excerpt: string; content: string }> = {}
     LANGUAGES.forEach(l => {
-      const existing = initialData?.translations?.find((ex: any) => ex.language === l.code)
+      const existing = initialData?.translations?.find((ex) => ex.language === l.code)
       t[l.code] = {
         title: existing?.title || "",
         excerpt: existing?.excerpt || "",
@@ -170,9 +193,9 @@ export function ArticleForm({ categories, initialData, isEditing = false }: any)
                 value={baseData.categoryId}
                 onChange={(e) => setBaseData({...baseData, categoryId: e.target.value})}
               >
-                {categories.map((c: any) => (
+                {categories.map((c) => (
                   <option key={c.id} value={c.id}>
-                    {c.translations.find((t: any) => t.language === 'fr')?.name || c.slug}
+                    {c.translations.find((t) => t.language === 'fr')?.name || c.slug}
                   </option>
                 ))}
               </select>

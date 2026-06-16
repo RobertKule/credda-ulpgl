@@ -43,15 +43,22 @@ export default function AdminMediaCard({
         <div
           className={cn(
             "absolute top-3 left-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest backdrop-blur-md border",
-            media.type === "VIDEO"
+            media.files && media.files.length > 1
+              ? "bg-blue-500/20 border-blue-400/30 text-blue-100"
+              : media.type === "VIDEO"
               ? "bg-violet-500/20 border-violet-400/30 text-violet-100"
               : "bg-emerald-500/20 border-emerald-400/30 text-emerald-100"
           )}
         >
-          {media.type === "VIDEO" ? (
+          {media.files && media.files.length > 1 ? (
+            <>
+              <ImageIcon size={10} />
+              Album ({media.files.length})
+            </>
+          ) : media.type === "VIDEO" ? (
             <>
               <Play size={10} className="fill-current" />
-              Video
+              Vidéo
             </>
           ) : (
             <>
@@ -72,10 +79,10 @@ export default function AdminMediaCard({
               type="button"
               onClick={() => onPreview(media)}
               className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold backdrop-blur-sm transition-colors"
-              title="Aperçu"
+              title={media.files && media.files.length > 1 ? "Voir l'album" : "Aperçu"}
             >
               <Eye size={14} />
-              Aperçu
+              {media.files && media.files.length > 1 ? "Voir l'album" : "Aperçu"}
             </button>
             <button
               type="button"
