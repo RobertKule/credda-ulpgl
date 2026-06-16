@@ -20,7 +20,27 @@ const LANGUAGES = [
   { code: "sw", label: "Kiswahili" }
 ]
 
-export function GalleryForm({ initialData, isEditing = false }: any) {
+interface GalleryTranslation {
+  language: string;
+  title: string;
+  description: string;
+}
+
+interface GalleryData {
+  id?: string;
+  src?: string;
+  category?: string;
+  order?: number;
+  featured?: boolean;
+  translations?: GalleryTranslation[];
+}
+
+interface GalleryFormProps {
+  initialData?: GalleryData;
+  isEditing?: boolean;
+}
+
+export function GalleryForm({ initialData, isEditing = false }: GalleryFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   
@@ -31,9 +51,9 @@ export function GalleryForm({ initialData, isEditing = false }: any) {
   })
 
   const [translations, setTranslations] = useState(() => {
-    const t: any = {}
+    const t: Record<string, { title: string; description: string }> = {}
     LANGUAGES.forEach(l => {
-      const existing = initialData?.translations?.find((ex: any) => ex.language === l.code)
+      const existing = initialData?.translations?.find((ex) => ex.language === l.code)
       t[l.code] = {
         title: existing?.title || "",
         description: existing?.description || ""

@@ -193,8 +193,8 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
         else setField("pdfUrl", res.url);
         showToast("Fichier uploadé avec succès !", "success");
       }
-    } catch (err: any) {
-      showToast(err.message || "Erreur lors de l'upload", "error");
+    } catch (err: unknown) {
+      showToast(err instanceof Error ? err.message : "Erreur lors de l'upload", "error");
     } finally {
       if (type === "image") setIsUploadingImage(false);
       else setIsUploadingPdf(false);

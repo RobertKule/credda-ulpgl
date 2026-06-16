@@ -9,10 +9,32 @@ import { Link } from "@/navigation";
 import { searchEverything } from "@/services/search-actions";
 import { useTranslations } from "next-intl";
 
+interface SearchTranslation {
+  language: string;
+  title: string;
+}
+
+interface SearchArticle {
+  id: string;
+  slug: string;
+  translations: SearchTranslation[];
+}
+
+interface SearchPublication {
+  id: string;
+  year: number;
+  translations: SearchTranslation[];
+}
+
+interface SearchResults {
+  articles: SearchArticle[];
+  publications: SearchPublication[];
+}
+
 export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boolean; onClose: () => void; locale: string }) {
   const t = useTranslations('Search');
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<SearchResults | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -36,7 +58,7 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
     const delayDebounce = setTimeout(async () => {
       setLoading(true);
       const data = await searchEverything(query, locale);
-      setResults(data);
+      setResults(data as unknown as SearchResults);
       setLoading(false);
     }, 300);
 
@@ -112,8 +134,8 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
                     <div>
                       <h3 className="text-[10px] font-black text-[#C9A84C] uppercase tracking-[0.4em] mb-6 px-4">{t('sections.articles') || "Research Articles"}</h3>
                       <div className="space-y-2">
-                        {results.articles.map((a: any) => {
-                           const title = a.translations.find((tr: any) => tr.language === locale)?.title || a.translations[0].title;
+                        {results.articles.map((a) => {
+                           const title = a.translations.find((tr) => tr.language === locale)?.title || a.translations[0].title;
                            return (
                             <Link key={a.id} href={`/publications/${a.slug}`} onClick={onClose} className="flex items-center justify-between p-4 hover:bg-white/5 transition-all group rounded-sm">
                               <div className="flex items-center gap-4">
@@ -135,8 +157,8 @@ export default function SearchModal({ isOpen, onClose, locale }: { isOpen: boole
                     <div>
                       <h3 className="text-[10px] font-black text-[#C9A84C] uppercase tracking-[0.4em] mb-6 px-4">{t('sections.publications') || "Scientific Publications"}</h3>
                       <div className="space-y-2">
-                        {results.publications.map((p: any) => {
-                           const title = p.translations.find((tr: any) => tr.language === locale)?.title || p.translations[0].title;
+                        {results.publications.map((p) => {
+                           const title = p.translations.find((tr) => tr.language === locale)?.title || p.translations[0].title;
                            return (
                             <Link key={p.id} href="/publications" onClick={onClose} className="flex items-center justify-between p-4 hover:bg-white/5 transition-all group rounded-sm">
                               <div className="flex items-center gap-4">

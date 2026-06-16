@@ -14,8 +14,8 @@ export async function uploadPublicationMedia(formData: FormData): Promise<{ url?
     const buffer = Buffer.from(await file.arrayBuffer());
     const url = await uploadFile(buffer, file.name, file.type, "publications");
     return { url };
-  } catch (error: any) {
-    return { error: error.message };
+  } catch (error: unknown) {
+    return { error: error instanceof Error ? error.message : "Erreur inconnue" };
   }
 }
 

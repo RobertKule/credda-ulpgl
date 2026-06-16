@@ -28,7 +28,7 @@ export async function PATCH(
     const body = await req.json();
     const data = updateMessageSchema.parse(body);
 
-    const updatePayload: any = { ...data };
+    const updatePayload: Record<string, unknown> = { ...data };
 
     if (data.replyContent && !data.repliedAt) {
       updatePayload.repliedAt = new Date();

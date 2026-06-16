@@ -17,7 +17,7 @@ vi.mock('next/navigation', () => ({
 
 // Mock Custom Navigation Wrapper (next-intl)
 vi.mock('@/navigation', () => ({
-  Link: ({ children, href }: any) => `<a href="${href}">${children}</a>`,
+  Link: ({ children, href }: { children: React.ReactNode; href: string }) => `<a href="${href}">${children}</a>`,
   useRouter: () => ({
     push: vi.fn(),
     replace: vi.fn(),

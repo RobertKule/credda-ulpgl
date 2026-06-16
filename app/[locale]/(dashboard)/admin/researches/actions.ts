@@ -19,7 +19,7 @@ const upsertArticleSchema = z.object({
   translations: z.record(z.string(), translationSchema),
 });
 
-export async function upsertArticle(formData: any) {
+export async function upsertArticle(formData: Record<string, unknown>) {
   // 1. Authentification & Autorisation
   const session = await auth();
   if (!session || !session.user) {
@@ -104,7 +104,7 @@ export async function upsertArticle(formData: any) {
     revalidateTag("articles", "default");
 
     return { success: true, article: result };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[UPSERT_ARTICLE_ERROR]", error);
     return { error: "Erreur lors de l'enregistrement en base de données" };
   }

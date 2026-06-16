@@ -48,8 +48,8 @@ export default function AnnouncementForm() {
       if (res.success) {
         alert("Annonce enregistrée avec succès !");
       }
-    } catch (error: any) {
-      alert(error.message || "Erreur de connexion.");
+    } catch (error: unknown) {
+      alert(error instanceof Error ? error.message : "Erreur de connexion.");
     } finally {
       setIsSubmitting(false);
     }
@@ -134,7 +134,7 @@ export default function AnnouncementForm() {
               {levels.map((lvl) => (
                 <button
                   key={lvl.id}
-                  onClick={() => setLevel(lvl.id as any)}
+                  onClick={() => setLevel(lvl.id as "INFO" | "WARNING" | "URGENT")}
                   className={cn(
                     "w-full flex items-center gap-4 p-4 rounded-[1.25rem] border transition-all text-left",
                     level === lvl.id 

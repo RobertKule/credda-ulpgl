@@ -128,7 +128,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   );
 }
 
-function ContactInfoCard({ icon, title, content }: { icon: any, title: string, content: string }) {
+function ContactInfoCard({ icon, title, content }: { icon: React.ReactNode, title: string, content: string }) {
   return (
     <div className="relative group p-[1px] rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
       {/* Animated Border Beam */}

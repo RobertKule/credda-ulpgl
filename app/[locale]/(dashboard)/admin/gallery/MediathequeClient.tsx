@@ -96,27 +96,61 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
   const handleFormSubmit = async (data: MediaFormData) => {
     setIsSubmitting(true);
     try {
-      let uploadedUrl = data.url;
+      let mainUrl = data.url;
+      const finalFiles: { url: string; fileType: string }[] = [];
 
-      // Upload file to Supabase if it's a local file (blob URL)
-      if (data.source === "LOCAL" && data.url.startsWith("blob:")) {
-        try {
-          const response = await fetch(data.url);
-          const blob = await response.blob();
-          const fileExtension = data.type === "IMAGE" ? "jpg" : "mp4";
-          const mimeType = data.type === "IMAGE" ? "image/jpeg" : "video/mp4";
+      // Process and upload all files
+      if (data.source === "LOCAL" && data.files && data.files.length > 0) {
+        for (const fileItem of data.files) {
+          let fileUrl = fileItem.url;
+          if (fileUrl.startsWith("blob:")) {
+            try {
+              const response = await fetch(fileUrl);
+              const blob = await response.blob();
+              const fileExtension = data.type === "IMAGE" ? "jpg" : "mp4";
+              const mimeType = data.type === "IMAGE" ? "image/jpeg" : "video/mp4";
 
-          const formData = new FormData();
-          formData.append("file", new File([blob], `${data.title}.${fileExtension}`, { type: mimeType }));
+              const formData = new FormData();
+              // fileItem.file contains the actual File object if available
+              formData.append("file", fileItem.file || new File([blob], `${data.title}-${Date.now()}.${fileExtension}`, { type: mimeType }));
 
-          const uploadResult = await uploadFileAction(formData);
-          if (uploadResult.error) {
-            throw new Error(uploadResult.error);
+              const uploadResult = await uploadFileAction(formData);
+              if (uploadResult.error) {
+                throw new Error(uploadResult.error);
+              }
+              fileUrl = uploadResult.url || fileUrl;
+            } catch (error) {
+              console.error("Error uploading file to Supabase:", error);
+              throw new Error("Erreur lors de l'upload d'un des fichiers");
+            }
           }
-          uploadedUrl = uploadResult.url || data.url;
-        } catch (error) {
-          console.error("Error uploading file to Supabase:", error);
-          throw new Error("Erreur lors de l'upload du fichier");
+          finalFiles.push({
+            url: fileUrl,
+            fileType: data.type
+          });
+        }
+        mainUrl = finalFiles[0]?.url || data.url;
+      } else {
+        // Fallback for single file or EXTERNAL
+        if (data.source === "LOCAL" && data.url.startsWith("blob:")) {
+            try {
+              const response = await fetch(data.url);
+              const blob = await response.blob();
+              const fileExtension = data.type === "IMAGE" ? "jpg" : "mp4";
+              const mimeType = data.type === "IMAGE" ? "image/jpeg" : "video/mp4";
+
+              const formData = new FormData();
+              formData.append("file", new File([blob], `${data.title}.${fileExtension}`, { type: mimeType }));
+
+              const uploadResult = await uploadFileAction(formData);
+              if (uploadResult.error) {
+                throw new Error(uploadResult.error);
+              }
+              mainUrl = uploadResult.url || data.url;
+            } catch (error) {
+              console.error("Error uploading file to Supabase:", error);
+              throw new Error("Erreur lors de l'upload du fichier");
+            }
         }
       }
 
@@ -124,7 +158,7 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
         // Update existing media
         const result = await updateGalleryImage({
           id: editingMedia.id,
-          src: uploadedUrl,
+          src: mainUrl,
           category: data.category,
           featured: false,
           translations: [
@@ -144,6 +178,7 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
               description: data.description || "",
             },
           ],
+          files: finalFiles.length > 0 ? finalFiles : undefined,
         });
 
         if (result.error) {
@@ -160,9 +195,10 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
                   category: data.category,
                   type: data.type,
                   source: data.source,
-                  url: uploadedUrl,
-                  thumbnailUrl: uploadedUrl,
+                  url: mainUrl,
+                  thumbnailUrl: mainUrl,
                   fileSize: data.fileSize,
+                  files: finalFiles,
                 }
               : item
           )
@@ -171,7 +207,7 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
       } else {
         // Create new media
         const result = await createGalleryImage({
-          src: uploadedUrl,
+          src: mainUrl,
           category: data.category,
           featured: false,
           translations: [
@@ -191,6 +227,7 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
               description: data.description || "",
             },
           ],
+          files: finalFiles.length > 0 ? finalFiles : undefined,
         });
 
         if (result.error) {
@@ -203,11 +240,12 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
           description: data.description || undefined,
           type: data.type,
           source: data.source,
-          url: uploadedUrl,
-          thumbnailUrl: uploadedUrl,
+          url: mainUrl,
+          thumbnailUrl: mainUrl,
           category: data.category,
           fileSize: data.fileSize,
           createdAt: new Date().toISOString(),
+          files: finalFiles,
         };
         setItems((prev) => [newItem, ...prev]);
       }

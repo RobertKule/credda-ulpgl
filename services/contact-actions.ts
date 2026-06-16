@@ -110,7 +110,7 @@ export async function archiveMessage(id: string): Promise<ApiResponse<ContactMes
  */
 export async function getAllMessages(status?: string, limit: number = 20, cursor?: string): Promise<PaginatedResponse<ContactMessage>> {
   return withSafeAction("getAllMessages", async () => {
-    const where: any = {};
+    const where: Record<string, unknown> = {};
     if (status && status !== "all") {
       where.status = status as ContactStatus;
     }

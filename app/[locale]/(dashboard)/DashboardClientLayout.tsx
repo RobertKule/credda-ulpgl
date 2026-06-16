@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import type { Session } from "next-auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
@@ -56,7 +57,7 @@ export default function DashboardClientLayout({
 }: {
   children: React.ReactNode;
   locale: string;
-  session: any;
+  session: Session | null;
 }) {
   const { theme, toggleTheme } = useTheme();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

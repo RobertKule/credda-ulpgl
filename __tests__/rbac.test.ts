@@ -54,7 +54,7 @@ describe("Validation RBAC - Module Clinique", () => {
     });
 
     const { db } = await import("@/lib/db");
-    (db.clinicalCase.findMany as any).mockResolvedValue([
+    (db.clinicalCase.findMany as unknown as ReturnType<typeof vi.fn>).mockResolvedValue([
       { id: "c1", title: "Cas Test" }
     ]);
 
@@ -83,8 +83,8 @@ describe("Validation RBAC - Module Clinique", () => {
     const { db } = await import("@/lib/db");
     const { supabaseAdmin } = await import("@/lib/supabase");
 
-    (db.clinicalCase.findUnique as any).mockResolvedValue({ title: "Affaire Sensible" });
-    (supabaseAdmin.storage.from("").createSignedUrl as any).mockResolvedValue({
+    (db.clinicalCase.findUnique as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({ title: "Affaire Sensible" });
+    (supabaseAdmin.storage.from("").createSignedUrl as unknown as ReturnType<typeof vi.fn>).mockResolvedValue({
       data: { signedUrl: "https://secure.link" },
       error: null
     });

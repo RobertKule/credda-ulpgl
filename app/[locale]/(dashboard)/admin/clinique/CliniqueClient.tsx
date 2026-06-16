@@ -53,12 +53,31 @@ interface FormData {
   beneficiaryPhone: string;
 }
 
-export default function CliniqueClient({ locale, initialData }: { locale: string; initialData: any[] }) {
+export interface ClinicalCase {
+  id: string;
+  title: string;
+  problemType: string;
+  location: string;
+  description: string;
+  actionsTaken: string;
+  expectations: string;
+  urgency: UrgencyLevel;
+  status: CaseStatus;
+  createdAt: string | Date;
+  trackingCode?: string;
+  beneficiary?: {
+    name: string;
+    phone: string;
+  };
+  [key: string]: unknown;
+}
+
+export default function CliniqueClient({ locale, initialData }: { locale: string; initialData: ClinicalCase[] }) {
   const [tab, setTab]             = useState<TabType>("ALL");
   const [search, setSearch]       = useState("");
   const [sortField, setSortField] = useState<SortField>("createdAt");
   const [sortDir, setSortDir]     = useState<SortDir>("desc");
-  const [viewItem, setViewItem]   = useState<any>(null);
+  const [viewItem, setViewItem]   = useState<ClinicalCase | null>(null);
   const [deleting, setDeleting]   = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -67,7 +86,7 @@ export default function CliniqueClient({ locale, initialData }: { locale: string
   const [formData, setFormData]   = useState<FormData>({ title: "", problemType: "", location: "", description: "", actionsTaken: "", expectations: "", urgency: "MEDIUM" as UrgencyLevel, status: "NEW" as CaseStatus, beneficiaryName: "", beneficiaryPhone: "" });
   const [toast, setToast]         = useState<{ msg: string; type: "success"|"error" } | null>(null);
 
-  const setField = (k: keyof FormData, v: any) => setFormData(p => ({ ...p, [k]: v }));
+  const setField = <K extends keyof FormData>(k: K, v: FormData[K]) => setFormData(p => ({ ...p, [k]: v }));
 
   const showToast = (msg: string, type: "success"|"error" = "success") => {
     setToast({ msg, type });
@@ -93,7 +112,7 @@ export default function CliniqueClient({ locale, initialData }: { locale: string
       return true;
     });
     data = [...data].sort((a, b) => {
-      let av = a[sortField] ?? "", bv = b[sortField] ?? "";
+      let av: any = a[sortField] ?? "", bv: any = b[sortField] ?? "";
       if (sortField === "createdAt") { av = new Date(av).getTime(); bv = new Date(bv).getTime(); }
       else { av = String(av).toLowerCase(); bv = String(bv).toLowerCase(); }
       if (av < bv) return sortDir === "asc" ? -1 : 1;
@@ -136,14 +155,14 @@ export default function CliniqueClient({ locale, initialData }: { locale: string
           setIsFormOpen(false);
         }
       }
-    } catch (e: any) {
-      showToast(e.message || "Erreur lors de l'enregistrement.", "error");
+    } catch (e: unknown) {
+      showToast(e instanceof Error ? e.message : "Erreur lors de l'enregistrement.", "error");
     } finally {
       setIsSaving(false);
     }
   };
 
-  const handleEditStart = (item: any) => {
+  const handleEditStart = (item: ClinicalCase) => {
     setEditingId(item.id);
     setFormData({
       title: item.title || "",
@@ -381,7 +400,7 @@ export default function CliniqueClient({ locale, initialData }: { locale: string
                         <label className="block text-xs font-bold text-slate-600 dark:text-zinc-400 uppercase tracking-wider mb-1.5">Urgence</label>
                         <div className="grid grid-cols-4 gap-2">
                           {["LOW","MEDIUM","HIGH","CRITICAL"].map(u => (
-                            <button key={u} onClick={() => setField("urgency", u)}
+                            <button key={u} onClick={() => setField("urgency", u as UrgencyLevel)}
                               className={cn("px-3 py-2 rounded-xl border text-xs font-bold transition-all",
                                 formData.urgency === u ? "bg-green-800 border-green-800 text-white" : "bg-white dark:bg-zinc-900 border-slate-200 dark:border-zinc-700 text-slate-500")}>{u}</button>
                           ))}
