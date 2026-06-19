@@ -52,17 +52,17 @@ export default function MediaCenterHero({ stats }: MediaCenterHeroProps) {
         {/* Glass Overlay for Depth */}
         <div className="absolute inset-0 bg-background/40 dark:bg-background/60 z-20" />
         
-        {/* Subtle Video Background - Lower opacity to favor gradients */}
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-          className="w-full h-full object-cover opacity-[0.02] dark:opacity-[0.08] grayscale contrast-125 select-none pointer-events-none"
-        >
-          <source src="/videos/media-hero-bg.mp4" type="video/mp4" />
-          <img src="/images/media-hero-fallback.jpg" alt="Hero background" className="w-full h-full object-cover" />
-        </video>
+        {/* Subtle animated texture (CSS-only, no missing files) */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 opacity-[0.03] dark:opacity-[0.06] pointer-events-none select-none"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(45deg,currentColor 0,currentColor 1px,transparent 0,transparent 50%)",
+            backgroundSize: "8px 8px",
+            animation: "none",
+          }}
+        />
       </div>
 
       {/* Floating Institutional Orb */}

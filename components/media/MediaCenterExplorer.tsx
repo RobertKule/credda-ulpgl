@@ -17,7 +17,8 @@ interface MediaCenterExplorerProps {
 
 export default function MediaCenterExplorer({ media }: MediaCenterExplorerProps) {
   const t = useTranslations("MediaCenter");
-  const [filter, setFilter] = useState<FilterType>("all");
+
+  const [filter, setFilter] = useState<FilterType>("videos");
   const [itemsPerPage, setItemsPerPage] = useState("10");
   const [videoPage, setVideoPage] = useState(1);
   const [galleryPage, setGalleryPage] = useState(1);
@@ -26,14 +27,25 @@ export default function MediaCenterExplorer({ media }: MediaCenterExplorerProps)
 
   const ITEMS_PER_PAGE = parseInt(itemsPerPage);
 
-  // Normalize media
+  // Normalize media with robust type detection
   const normalizedMedia = useMemo(() => media.map((m, i) => ({
     ...m,
     id: m.id || `m-${i}`,
-    type: m.type || (m.url?.includes("youtube") || m.url?.includes("vimeo") ? "VIDEO" : "IMAGE"),
-    itemType: "media",
+    type:
+      m.type ||
+      (m.coverImageUrl ||
+        m.url?.includes('youtube') ||
+        m.url?.includes('vimeo') ||
+        m.url?.match(/\.(mp4|mov|webm|ogg|mkv)$/i) ||
+        (m.files?.some(f => f.fileType === 'VIDEO'))
+      )
+        ? 'VIDEO'
+        : 'IMAGE',
+    itemType: 'media',
     title: m.title || `Media #${i + 1}`,
-    category: m.category || "General"
+    category: m.category || 'General',
+    // Preserve cover image URL for videos
+    coverImageUrl: m.coverImageUrl,
   })), [media]);
 
   // Split media into Video Reports and Gallery Images
@@ -154,7 +166,7 @@ export default function MediaCenterExplorer({ media }: MediaCenterExplorerProps)
       {(filter === "all" || filter === "videos") && (
         <section className="container mx-auto px-6">
           <div className="flex flex-col items-center mb-16 space-y-4 text-center">
-            <h2 className="text-3xl md:text-5xl font-serif font-black">{t("explorer.videos_title")}</h2>
+            <h2 className="text-3xl md:text-5xl font-serif font-black">Reportages Vidéo</h2>
             <div className="h-1 w-12 bg-primary/40 rounded-full" />
             <p className="text-muted-foreground/60 text-xs font-bold uppercase tracking-[0.3em]">
               {t("explorer.narrative_videos", { count: videoReports.length })}
