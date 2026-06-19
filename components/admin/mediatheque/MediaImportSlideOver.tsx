@@ -633,6 +633,31 @@ export default function MediaImportSlideOver({
                   </div>
                 </motion.div>
               )}
+
+              {step === 3 && (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="space-y-5"
+                >
+                  <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/50 p-5 rounded-2xl flex flex-col items-center text-center space-y-2">
+                    <CheckCircle2 size={40} className="text-emerald-500" />
+                    <h3 className="text-lg font-black text-slate-900 dark:text-white">Tout est prêt !</h3>
+                    <p className="text-sm text-slate-600 dark:text-zinc-400">
+                      Vous allez importer <strong>{form.source === "LOCAL" && form.files ? form.files.length : 1}</strong> média(s) sous la catégorie <strong>{form.category}</strong>.
+                    </p>
+                  </div>
+                  
+                  <div className="bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-5 rounded-2xl space-y-3">
+                    <h4 className="text-xs font-bold uppercase text-slate-500 tracking-widest">Récapitulatif</h4>
+                    <div className="space-y-1">
+                      <p className="text-sm text-slate-700 dark:text-zinc-300"><strong>Titre :</strong> {form.title}</p>
+                      {form.description && <p className="text-sm text-slate-700 dark:text-zinc-300"><strong>Description :</strong> {form.description}</p>}
+                      <p className="text-sm text-slate-700 dark:text-zinc-300"><strong>Type :</strong> {form.type}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
             </div>
 
             <footer className="px-6 py-5 border-t border-slate-100 dark:border-zinc-800 flex gap-3 shrink-0">
