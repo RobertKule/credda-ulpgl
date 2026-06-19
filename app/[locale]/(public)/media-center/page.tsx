@@ -81,8 +81,11 @@ export default async function MediaCenterPage({ params }: { params: Promise<{ lo
     description: gi.translations?.[0]?.description || undefined,
     type: ((gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com")) ? "VIDEO" : "IMAGE") as "VIDEO" | "IMAGE",
     source: "LOCAL" as "LOCAL" | "EXTERNAL",
-    url: gi.src,
-    thumbnailUrl: gi.src,
+    // For videos, `src` stores the cover image; real video URL is the first file (if any)
+    url: ((gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com")) && gi.files?.[0]?.url) ? gi.files[0].url : gi.src,
+    // Preserve cover image URL for video thumbnails
+    coverImageUrl: (gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com")) ? gi.src : undefined,
+    thumbnailUrl: (gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com")) ? gi.src : gi.src,
     category: gi.category || "General",
     createdAt: gi.createdAt,
     files: gi.files || []

@@ -97,6 +97,7 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
     setIsSubmitting(true);
     try {
       let mainUrl = data.url;
+      let resolvedCoverUrl = data.coverImageUrl;
       const finalFiles: { url: string; fileType: string }[] = [];
 
       // Process and upload all files
@@ -154,11 +155,46 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
         }
       }
 
+      // Upload cover image for videos
+      if (data.type === "VIDEO" && data.coverImageFile) {
+        try {
+          const coverFormData = new FormData();
+          coverFormData.append("file", data.coverImageFile);
+          const coverUpload = await uploadFileAction(coverFormData);
+          if (coverUpload.error) {
+            throw new Error(coverUpload.error);
+          }
+          resolvedCoverUrl = coverUpload.url || resolvedCoverUrl;
+        } catch (error) {
+          console.error("Error uploading cover image:", error);
+          // Non-bloquant : on garde la preview locale si l'échec est mineur
+        }
+      } else if (data.type === "VIDEO" && data.coverImageUrl?.startsWith("blob:")) {
+        // blob sans File objet — on tente quand même de l'uploader via fetch
+        try {
+          const response = await fetch(data.coverImageUrl);
+          const blob = await response.blob();
+          const coverFormData = new FormData();
+          coverFormData.append("file", new File([blob], `cover-${data.title}-${Date.now()}.jpg`, { type: "image/jpeg" }));
+          const coverUpload = await uploadFileAction(coverFormData);
+          if (!coverUpload.error) {
+            resolvedCoverUrl = coverUpload.url || resolvedCoverUrl;
+          }
+        } catch {
+          // silencieux
+        }
+      }
+
+      // La src stockée dans la DB :
+      // - Pour une image : c'est l'URL de l'image principale
+      // - Pour une vidéo : c'est la cover image (si disponible), sinon l'URL de la vidéo
+      const dbSrc = data.type === "VIDEO" && resolvedCoverUrl ? resolvedCoverUrl : mainUrl;
+
       if (editingMedia) {
         // Update existing media
         const result = await updateGalleryImage({
           id: editingMedia.id,
-          src: mainUrl,
+          src: dbSrc,
           category: data.category,
           featured: false,
           translations: [
@@ -196,7 +232,8 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
                   type: data.type,
                   source: data.source,
                   url: mainUrl,
-                  thumbnailUrl: mainUrl,
+                  thumbnailUrl: dbSrc,
+                  coverImageUrl: resolvedCoverUrl,
                   fileSize: data.fileSize,
                   files: finalFiles,
                 }
@@ -207,7 +244,7 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
       } else {
         // Create new media
         const result = await createGalleryImage({
-          src: mainUrl,
+          src: dbSrc,
           category: data.category,
           featured: false,
           translations: [
@@ -241,7 +278,8 @@ export default function MediathequeClient({ initialItems }: MediathequeClientPro
           type: data.type,
           source: data.source,
           url: mainUrl,
-          thumbnailUrl: mainUrl,
+          thumbnailUrl: dbSrc,
+          coverImageUrl: resolvedCoverUrl,
           category: data.category,
           fileSize: data.fileSize,
           createdAt: new Date().toISOString(),

@@ -15,20 +15,30 @@ interface AdminMediaLightboxProps {
   onPrev?: () => void;
 }
 
-function getEmbedUrl(url: string): string {
+function getEmbedUrl(url: string): string | null {
+  // youtube.com/watch?v=ID
   if (url.includes("youtube.com/watch")) {
-    const videoId = new URL(url).searchParams.get("v");
-    return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+    try {
+      const videoId = new URL(url).searchParams.get("v");
+      return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : null;
+    } catch { return null; }
   }
+  // youtu.be/ID
   if (url.includes("youtu.be/")) {
     const videoId = url.split("youtu.be/")[1]?.split("?")[0];
-    return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : null;
   }
+  // youtube.com/shorts/ID
+  if (url.includes("youtube.com/shorts/")) {
+    const videoId = url.split("/shorts/")[1]?.split("?")[0];
+    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : null;
+  }
+  // vimeo.com/ID
   if (url.includes("vimeo.com/")) {
     const videoId = url.split("vimeo.com/")[1]?.split("?")[0];
-    return videoId ? `https://player.vimeo.com/video/${videoId}` : url;
+    return videoId ? `https://player.vimeo.com/video/${videoId}?autoplay=1` : null;
   }
-  return url;
+  return null; // Not an embeddable external URL — use <video> tag
 }
 
 export default function AdminMediaLightbox({
@@ -56,11 +66,13 @@ export default function AdminMediaLightbox({
     setCurrentFileIndex((prev) => (prev - 1 + files.length) % files.length);
   };
 
-  const isVideoUrl = (url: string) => {
-    return url?.includes("youtube.com") || url?.includes("youtu.be") || url?.includes("vimeo.com");
-  };
+  const isVideoUrl = (url: string) =>
+    url?.includes("youtube.com") || url?.includes("youtu.be") || url?.includes("vimeo.com");
 
+  // Pour une vidéo, la vraie URL de lecture est media.url (pas currentFile.url qui peut être la cover)
+  const videoPlayUrl = media.type === "VIDEO" ? media.url : currentFile.url;
   const isImage = currentFile.fileType === "IMAGE" && !isVideoUrl(currentFile.url);
+  const embedUrl = !isImage ? getEmbedUrl(videoPlayUrl) : null;
 
   return (
     <AnimatePresence>
@@ -114,17 +126,23 @@ export default function AdminMediaLightbox({
                   alt={media.title}
                   className="w-full h-full object-contain"
                 />
-              ) : media.source === "EXTERNAL" || isVideoUrl(currentFile.url) ? (
+              ) : embedUrl ? (
+                // Vidéo externe (YouTube / Vimeo) → iframe
                 <iframe
-                  src={getEmbedUrl(currentFile.url)}
+                  key={embedUrl}
+                  src={embedUrl}
                   className="w-full h-full min-h-[280px] aspect-video"
                   allowFullScreen
+                  allow="autoplay; encrypted-media; picture-in-picture"
                   title={media.title}
                 />
               ) : (
+                // Vidéo locale → balise video native
                 <video
-                  src={currentFile.url}
+                  key={videoPlayUrl}
+                  src={videoPlayUrl}
                   controls
+                  autoPlay
                   className="w-full h-full object-contain"
                 />
               )}

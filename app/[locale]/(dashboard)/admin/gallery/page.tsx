@@ -18,36 +18,53 @@ async function getMediaItems(): Promise<MediaItem[]> {
 
   return galleryImages.map((img) => {
     const translation = img.translations[0];
-    
-    // Legacy support: src is the primary image if there are no files, or if files exist, we still treat src as primary
+
+    // Détecter le type : VIDEO si au moins un fichier a fileType VIDEO,
+    // ou si le src ressemble à une URL vidéo (mp4/webm/mov)
+    const hasVideoFile = img.files.some(f =>
+      f.fileType === "VIDEO" ||
+      /\.(mp4|webm|mov)$/i.test(f.url)
+    );
+    const mediaType = hasVideoFile ? "VIDEO" : "IMAGE";
+
     const allFiles = img.files.map(f => ({
       url: f.url,
       thumbnailUrl: f.url,
-      fileName: f.url.split('/').pop(),
-      fileType: f.fileType
+      fileName: f.url.split("/").pop(),
+      fileType: f.fileType,
     }));
 
     if (img.src && allFiles.length === 0) {
       allFiles.push({
         url: img.src,
         thumbnailUrl: img.src,
-        fileName: img.src.split('/').pop(),
-        fileType: "IMAGE"
+        fileName: img.src.split("/").pop(),
+        fileType: mediaType,
       });
     }
+
+    // Pour les vidéos : img.src contient la cover image uploadée
+    // Pour les images : img.src est l'image principale
+    const isVideo = mediaType === "VIDEO";
+    const primaryUrl = isVideo
+      ? (allFiles[0]?.url || img.src) // URL de la vidéo réelle
+      : img.src;
+    const coverImageUrl = isVideo ? img.src : undefined;
+    const thumbnailUrl = isVideo ? (img.src || primaryUrl) : img.src;
 
     return {
       id: img.id,
       title: translation?.title || img.category,
       description: translation?.description || undefined,
-      type: "IMAGE" as const,
+      type: mediaType as "IMAGE" | "VIDEO",
       source: "LOCAL" as const,
-      url: img.src,
-      thumbnailUrl: img.src,
+      url: primaryUrl,
+      thumbnailUrl,
+      coverImageUrl,
       category: img.category,
       fileSize: undefined,
       createdAt: img.createdAt.toISOString(),
-      files: allFiles
+      files: allFiles,
     };
   });
 }

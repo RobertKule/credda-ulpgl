@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   Loader2,
   Plus,
+  Clapperboard,
 } from "lucide-react";
 import type { MediaItem, MediaSource, MediaType } from "@/lib/mediatheque/types";
 import { MEDIA_CATEGORIES } from "@/lib/mediatheque/types";
@@ -35,6 +36,10 @@ export interface MediaFormData {
   source: MediaSource;
   url: string;
   thumbnailUrl: string;
+  /** Image de couverture personnalisée pour les vidéos */
+  coverImageUrl?: string;
+  /** Fichier File brut de la cover (avant upload) */
+  coverImageFile?: File;
   fileSize?: string;
   files?: MediaFile[];
 }
@@ -47,6 +52,8 @@ const EMPTY_FORM: MediaFormData = {
   source: "LOCAL",
   url: "",
   thumbnailUrl: "",
+  coverImageUrl: undefined,
+  coverImageFile: undefined,
   files: [],
 };
 
@@ -80,6 +87,8 @@ export default function MediaImportSlideOver({
         source: editingMedia.source,
         url: editingMedia.url,
         thumbnailUrl: editingMedia.thumbnailUrl,
+        coverImageUrl: editingMedia.coverImageUrl,
+        coverImageFile: undefined,
         fileSize: editingMedia.fileSize,
         files: editingMedia.files?.map(f => ({
           url: f.url,
@@ -135,6 +144,24 @@ export default function MediaImportSlideOver({
     disabled: form.type === "VIDEO" && form.source === "EXTERNAL",
   });
 
+  // Dropzone dédié à l'image de couverture des vidéos
+  const onDropCover = useCallback((acceptedFiles: File[]) => {
+    const file = acceptedFiles[0];
+    if (!file) return;
+    const previewUrl = URL.createObjectURL(file);
+    updateForm({ coverImageUrl: previewUrl, coverImageFile: file });
+  }, []);
+
+  const {
+    getRootProps: getCoverRootProps,
+    getInputProps: getCoverInputProps,
+    isDragActive: isCoverDragActive,
+  } = useDropzone({
+    onDrop: onDropCover,
+    accept: { "image/jpeg": [".jpg", ".jpeg"], "image/png": [".png"], "image/webp": [".webp"] },
+    multiple: false,
+  });
+
   const handleExternalUrlChange = (url: string) => {
     updateForm({ url, source: "EXTERNAL", fileSize: undefined, files: [] });
     setExternalThumbnailGenerated(false);
@@ -179,6 +206,10 @@ export default function MediaImportSlideOver({
     setForm(EMPTY_FORM);
     setExternalThumbnailGenerated(false);
     setViewingFile(null);
+  };
+
+  const removeCoverImage = () => {
+    updateForm({ coverImageUrl: undefined, coverImageFile: undefined });
   };
 
   return (
@@ -501,6 +532,105 @@ export default function MediaImportSlideOver({
                       )}
                     </div>
                   )}
+
+                  {/* === Image de couverture pour les vidéos === */}
+                  {form.type === "VIDEO" && (
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-zinc-500 flex items-center gap-1.5">
+                          <Clapperboard size={13} />
+                          Image de couverture
+                        </label>
+                        {form.coverImageUrl && (
+                          <button
+                            type="button"
+                            onClick={removeCoverImage}
+                            className="text-[10px] font-bold text-red-500 hover:text-red-700 transition-colors flex items-center gap-1"
+                          >
+                            <X size={11} /> Supprimer
+                          </button>
+                        )}
+                      </div>
+
+                      {form.coverImageUrl ? (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.97 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="relative w-full aspect-video rounded-2xl overflow-hidden border border-slate-200 dark:border-zinc-700 group"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={form.coverImageUrl}
+                            alt="Image de couverture"
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div
+                              {...getCoverRootProps()}
+                              className="cursor-pointer"
+                            >
+                              <input {...getCoverInputProps()} />
+                              <span className="text-white text-sm font-bold bg-white/20 px-4 py-2 rounded-xl backdrop-blur-sm">
+                                Changer la couverture
+                              </span>
+                            </div>
+                          </div>
+                          <div className="absolute top-2 left-2 flex items-center gap-1.5 bg-black/60 text-white text-[10px] font-bold px-2 py-1 rounded-full backdrop-blur-sm">
+                            <CheckCircle2 size={11} className="text-emerald-400" />
+                            Couverture définie
+                          </div>
+                        </motion.div>
+                      ) : (
+                        <div
+                          {...getCoverRootProps()}
+                          className={cn(
+                            "relative flex flex-col items-center justify-center w-full h-40 border-2 border-dashed rounded-2xl cursor-pointer transition-all gap-3",
+                            isCoverDragActive
+                              ? "border-violet-500 bg-violet-50/50 dark:bg-violet-950/20"
+                              : "border-slate-300 dark:border-zinc-700 bg-slate-50 dark:bg-zinc-900 hover:border-violet-400 hover:bg-violet-50/30 dark:hover:bg-violet-950/10"
+                          )}
+                        >
+                          <input {...getCoverInputProps()} />
+                          <div className="w-12 h-12 bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400 rounded-full flex items-center justify-center">
+                            <Clapperboard size={22} />
+                          </div>
+                          <div className="text-center">
+                            <p className="text-sm font-bold text-slate-700 dark:text-zinc-300">
+                              {isCoverDragActive ? "Déposez l'image ici" : "Ajouter une image de couverture"}
+                            </p>
+                            <p className="text-xs mt-0.5 text-slate-400">
+                              JPG, PNG ou WebP • Recommandé : 16/9
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
+              {step === 3 && (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="space-y-5"
+                >
+                  <div className="bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-100 dark:border-emerald-900/50 p-5 rounded-2xl flex flex-col items-center text-center space-y-2">
+                    <CheckCircle2 size={40} className="text-emerald-500" />
+                    <h3 className="text-lg font-black text-slate-900 dark:text-white">Tout est prêt !</h3>
+                    <p className="text-sm text-slate-600 dark:text-zinc-400">
+                      Vous allez importer <strong>{form.source === "LOCAL" && form.files ? form.files.length : 1}</strong> média(s) sous la catégorie <strong>{form.category}</strong>.
+                    </p>
+                  </div>
+                  
+                  <div className="bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 p-5 rounded-2xl space-y-3">
+                    <h4 className="text-xs font-bold uppercase text-slate-500 tracking-widest">Récapitulatif</h4>
+                    <div className="space-y-1">
+                      <p className="text-sm text-slate-700 dark:text-zinc-300"><strong>Titre :</strong> {form.title}</p>
+                      {form.description && <p className="text-sm text-slate-700 dark:text-zinc-300"><strong>Description :</strong> {form.description}</p>}
+                      <p className="text-sm text-slate-700 dark:text-zinc-300"><strong>Type :</strong> {form.type}</p>
+                    </div>
+                  </div>
                 </motion.div>
               )}
 
