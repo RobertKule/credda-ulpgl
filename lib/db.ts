@@ -20,7 +20,7 @@ const buildUrl = () => {
   try {
     const url = new URL(base);
     url.searchParams.set('pgbouncer', 'true');
-    url.searchParams.set('connection_limit', '2');
+    url.searchParams.set('connection_limit', '5');
     return url.toString();
   } catch {
     return base;

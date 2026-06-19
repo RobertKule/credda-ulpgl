@@ -2,10 +2,40 @@
 
 import React from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
-import { X, ChevronLeft, ChevronRight, Info } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Info, Play } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { MediaItem } from "@/lib/mediatheque/types";
+
+function getEmbedUrl(url: string): string | null {
+  if (url.includes("youtube.com/watch")) {
+    try {
+      const videoId = new URL(url).searchParams.get("v");
+      return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : null;
+    } catch { return null; }
+  }
+  if (url.includes("youtu.be/")) {
+    const videoId = url.split("youtu.be/")[1]?.split("?")[0];
+    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : null;
+  }
+  if (url.includes("youtube.com/shorts/")) {
+    const videoId = url.split("/shorts/")[1]?.split("?")[0];
+    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : null;
+  }
+  if (url.includes("vimeo.com/")) {
+    const videoId = url.split("vimeo.com/")[1]?.split("?")[0];
+    return videoId ? `https://player.vimeo.com/video/${videoId}?autoplay=1` : null;
+  }
+  return null;
+}
+
+/** Extrait la miniature YouTube depuis une URL YT */
+function getYoutubeThumbnail(url: string): string | null {
+  const ytRegex =
+    /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+  const match = url.match(ytRegex);
+  return match?.[1] ? `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg` : null;
+}
 
 interface MediaLightboxProps {
   isOpen: boolean;
@@ -18,29 +48,35 @@ interface MediaLightboxProps {
 export default function MediaLightbox({ isOpen, onClose, media, onNext, onPrev }: MediaLightboxProps) {
   const t = useTranslations("MediaCenter.modal");
   const [currentFileIndex, setCurrentFileIndex] = React.useState(0);
+  const [isPlaying, setIsPlaying] = React.useState(false);
 
+  // Reset play state when media changes
   React.useEffect(() => {
+    setIsPlaying(false);
     setCurrentFileIndex(0);
   }, [media]);
 
   if (!media) return null;
 
-  const files = media.files && media.files.length > 0 ? media.files : [{ url: media.url, fileType: media.type }];
+  const files = media.files && media.files.length > 0
+    ? media.files
+    : [{ url: media.url, fileType: media.type }];
   const currentFile = files[currentFileIndex];
 
   const handleNextFile = () => {
     setCurrentFileIndex((prev) => (prev + 1) % files.length);
+    setIsPlaying(false);
   };
 
   const handlePrevFile = () => {
     setCurrentFileIndex((prev) => (prev - 1 + files.length) % files.length);
+    setIsPlaying(false);
   };
 
-  const isVideoUrl = (url: string) => {
-    return url.includes("youtube.com") || url.includes("youtu.be") || url.includes("vimeo.com");
-  };
-
-  const isImage = currentFile.fileType === "IMAGE" && !isVideoUrl(currentFile.url);
+  const isVideo = media.type === "VIDEO";
+  const videoPlayUrl = isVideo ? media.url : currentFile.url;
+  const isImage = currentFile.fileType === "IMAGE";
+  const embedUrl = isVideo ? getEmbedUrl(videoPlayUrl) : null;
 
   return (
     <AnimatePresence>
@@ -52,7 +88,7 @@ export default function MediaLightbox({ isOpen, onClose, media, onNext, onPrev }
           className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 md:p-12"
         >
           {/* CLOSE BUTTON */}
-          <button 
+          <button
             onClick={onClose}
             className="absolute top-8 right-8 z-[110] text-white/50 hover:text-white transition-colors p-2 bg-white/5 rounded-full"
           >
@@ -61,9 +97,9 @@ export default function MediaLightbox({ isOpen, onClose, media, onNext, onPrev }
 
           {/* MAIN CONTENT */}
           <div className="relative w-full h-full max-w-6xl mx-auto flex flex-col md:flex-row gap-12 items-center justify-center overflow-y-auto md:overflow-hidden">
-            
+
             {/* MEDIA DISPLAY */}
-            <motion.div 
+            <motion.div
               layoutId={`media-${media.id}`}
               className="relative flex-1 w-full h-full min-h-[300px] max-h-[60vh] md:max-h-[80vh] rounded-md overflow-hidden bg-black shadow-2xl group"
             >
@@ -74,17 +110,53 @@ export default function MediaLightbox({ isOpen, onClose, media, onNext, onPrev }
                   fill
                   className="object-contain"
                 />
-              ) : (
+              ) : embedUrl ? (
+                // Vidéo externe (YouTube / Vimeo) → iframe
                 <div className="w-full h-full flex items-center justify-center bg-black">
-                  <iframe 
-                    src={currentFile.url.replace("watch?v=", "embed/")} 
+                  <iframe
+                    key={embedUrl}
+                    src={embedUrl}
                     className="w-full aspect-video md:h-full"
                     allowFullScreen
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    title={media.title}
                   />
+                </div>
+              ) : (
+                // Vidéo locale → poster + play overlay
+                <div className="w-full h-full flex items-center justify-center bg-black relative">
+                  {/* Poster Image */}
+                  <Image
+                    src={media.coverImageUrl || media.thumbnailUrl || currentFile.url}
+                    alt={media.title}
+                    fill
+                    className="object-cover"
+                  />
+                  {/* Play Overlay */}
+                  {!isPlaying && (
+                    <button
+                      type="button"
+                      onClick={() => setIsPlaying(true)}
+                      className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+                      aria-label="Play video"
+                    >
+                      <Play size={64} className="text-white" />
+                    </button>
+                  )}
+                  {/* When playing, render actual video */}
+                  {isPlaying && (
+                    <video
+                      key={videoPlayUrl}
+                      src={videoPlayUrl}
+                      controls
+                      autoPlay
+                      className="w-full h-full object-contain"
+                    />
+                  )}
                 </div>
               )}
 
-              {/* UNIFIED NAVIGATION ARROWS */}
+              {/* NAVIGATION ARROWS */}
               <>
                 <button
                   type="button"
@@ -117,7 +189,7 @@ export default function MediaLightbox({ isOpen, onClose, media, onNext, onPrev }
             </motion.div>
 
             {/* INFO PANEL */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               className="w-full md:w-80 flex flex-col gap-6 text-white max-h-[80vh]"
@@ -130,7 +202,8 @@ export default function MediaLightbox({ isOpen, onClose, media, onNext, onPrev }
                 <h2 className="text-2xl md:text-3xl font-serif font-bold mb-4">{media.title}</h2>
                 <div className="h-px w-12 bg-primary/40 mb-6" />
                 <p className="text-white/60 text-sm font-light leading-relaxed mb-8">
-                  {media.description || "Une archive visuelle vivante des activités du CREDDA, documentant l'impact de la recherche et de l'action clinique sur le terrain."}
+                  {media.description ||
+                    "Une archive visuelle vivante des activités du CREDDA, documentant l'impact de la recherche et de l'action clinique sur le terrain."}
                 </p>
 
                 <div className="pt-8 border-t border-white/10 space-y-4">
@@ -142,12 +215,24 @@ export default function MediaLightbox({ isOpen, onClose, media, onNext, onPrev }
                     <span className="text-white/30">Type</span>
                     <span className="font-bold">{media.type}</span>
                   </div>
+                  {/* Bouton re-lire si déjà en lecture */}
+                  {isVideo && isPlaying && (
+                    <button
+                      type="button"
+                      onClick={() => setIsPlaying(false)}
+                      className="w-full mt-2 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white/70 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors"
+                    >
+                      ← Retour à la couverture
+                    </button>
+                  )}
                 </div>
               </div>
 
               {files.length > 1 && (
                 <div className="flex-1 overflow-y-auto pr-2 custom-scrollbar border-t border-white/10 pt-6 mt-2">
-                  <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-4">Contenu de l'album</p>
+                  <p className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-4">
+                    Contenu de l&apos;album
+                  </p>
                   <div className="grid grid-cols-3 gap-3">
                     {files.map((f: { url: string; fileType: string }, i: number) => (
                       <button
@@ -155,7 +240,9 @@ export default function MediaLightbox({ isOpen, onClose, media, onNext, onPrev }
                         type="button"
                         onClick={() => setCurrentFileIndex(i)}
                         className={`relative aspect-square rounded-md overflow-hidden border-2 transition-all ${
-                          currentFileIndex === i ? "border-primary scale-105" : "border-transparent opacity-50 hover:opacity-100"
+                          currentFileIndex === i
+                            ? "border-primary scale-105"
+                            : "border-transparent opacity-50 hover:opacity-100"
                         }`}
                       >
                         {f.fileType === "IMAGE" ? (
@@ -169,7 +256,6 @@ export default function MediaLightbox({ isOpen, onClose, media, onNext, onPrev }
                 </div>
               )}
             </motion.div>
-
           </div>
         </motion.div>
       )}

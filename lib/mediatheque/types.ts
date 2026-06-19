@@ -9,6 +9,8 @@ export interface MediaItem {
   source: MediaSource;
   url: string;
   thumbnailUrl: string;
+  /** Image de couverture personnalisée (surtout pour les vidéos) */
+  coverImageUrl?: string;
   category: string;
   fileSize?: string;
   createdAt: string | Date;
