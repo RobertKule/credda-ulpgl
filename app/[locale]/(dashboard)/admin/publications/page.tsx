@@ -78,7 +78,7 @@ export default async function PublicationsPage({ params }: { params: Promise<{ l
         </div>
       </div>
 
-      <PublicationsClient locale={locale} initialData={initialData} />
+      <PublicationsClient locale={locale} initialData={initialData} userRole={session.user.role} />
     </div>
   );
 }

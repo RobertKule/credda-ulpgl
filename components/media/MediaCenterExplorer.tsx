@@ -28,10 +28,10 @@ export default function MediaCenterExplorer({ media }: MediaCenterExplorerProps)
   const ITEMS_PER_PAGE = parseInt(itemsPerPage);
 
   // Normalize media with robust type detection
-  const normalizedMedia = useMemo(() => media.map((m, i) => ({
+  const normalizedMedia = useMemo<MediaItem[]>(() => media.map((m, i) => ({
     ...m,
     id: m.id || `m-${i}`,
-    type:
+    type: (
       m.type ||
       (m.coverImageUrl ||
         m.url?.includes('youtube') ||
@@ -40,13 +40,13 @@ export default function MediaCenterExplorer({ media }: MediaCenterExplorerProps)
         (m.files?.some(f => f.fileType === 'VIDEO'))
       )
         ? 'VIDEO'
-        : 'IMAGE',
-    itemType: 'media',
+        : 'IMAGE'
+    ) as "VIDEO" | "IMAGE",
     title: m.title || `Media #${i + 1}`,
     category: m.category || 'General',
     // Preserve cover image URL for videos
     coverImageUrl: m.coverImageUrl,
-  })), [media]);
+  }) as MediaItem), [media]);
 
   // Split media into Video Reports and Gallery Images
   const videoReports = useMemo(() => normalizedMedia.filter(m => m.type === "VIDEO"), [normalizedMedia]);

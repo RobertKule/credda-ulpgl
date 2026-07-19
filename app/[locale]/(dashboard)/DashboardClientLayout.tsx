@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import type { Session } from "next-auth";
+import NextImage from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
@@ -20,12 +21,13 @@ import {
   Moon,
   ChevronDown,
   Globe,
-  Mail
+  Mail,
+  Briefcase
 } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { useTheme } from "@/components/shared/ThemeProvider";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { m as motion, AnimatePresence } from "framer-motion";
 
 function cn(...inputs: ClassValue[]) {
@@ -40,14 +42,15 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { name: "Vue d'ensemble", href: "/admin", icon: LayoutDashboard, roles: ["RESEARCHER", "ADMIN", "EDITOR", "SUPERADMIN"] },
-  { name: "Publications", href: "/admin/publications", icon: FileText, roles: ["RESEARCHER", "ADMIN", "EDITOR", "SUPERADMIN"] },
-  { name: "Clinique Juridique", href: "/admin/clinique", icon: Scale, roles: ["ADMIN", "EDITOR", "SUPERADMIN"] },
+  { name: "Vue d'ensemble", href: "/admin", icon: LayoutDashboard, roles: ["USER", "ADMIN", "EDITOR", "SUPERADMIN"] },
+  { name: "Publications", href: "/admin/publications", icon: FileText, roles: ["USER", "ADMIN", "EDITOR", "SUPERADMIN"] },
+  { name: "Clinique Juridique", href: "/admin/clinique", icon: Scale, roles: ["USER", "ADMIN", "EDITOR", "SUPERADMIN"] },
   { name: "Annonces", href: "/admin/announcements", icon: Megaphone, roles: ["ADMIN", "EDITOR", "SUPERADMIN"] },
   { name: "Galerie", href: "/admin/gallery", icon: ImageIcon, roles: ["ADMIN", "EDITOR", "SUPERADMIN"] },
   { name: "Messages", href: "/admin/messages", icon: Mail, roles: ["ADMIN", "SUPERADMIN"] },
+  { name: "Équipe", href: "/admin/team", icon: Briefcase, roles: ["ADMIN", "SUPERADMIN"] },
   { name: "Gestion des Accès", href: "/admin/users", icon: Users, roles: ["SUPERADMIN"] },
-  { name: "Mon Profil", href: "/admin/profile", icon: UserCircle, roles: ["RESEARCHER", "ADMIN", "EDITOR", "SUPERADMIN"] },
+  { name: "Mon Profil", href: "/admin/profile", icon: UserCircle, roles: ["USER", "ADMIN", "EDITOR", "SUPERADMIN"] },
 ];
 
 export default function DashboardClientLayout({
@@ -62,8 +65,13 @@ export default function DashboardClientLayout({
   const { theme, toggleTheme } = useTheme();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const pathname = usePathname();
-  const userRole = session?.user?.role || "USER";
+  // useSession gives live client-side data (reflects update() calls)
+  const { data: liveSession } = useSession();
+  const userRole = liveSession?.user?.role || session?.user?.role || "USER";
+  const userName = liveSession?.user?.name || session?.user?.name || "Chercheur";
+  const userImage = liveSession?.user?.image || session?.user?.image || null;
 
   const filteredNavItems = NAV_ITEMS.filter(item => item.roles.includes(userRole));
 
@@ -79,14 +87,14 @@ export default function DashboardClientLayout({
         <div className="p-6 flex items-center justify-between">
           {isSidebarOpen ? (
             <div className="flex items-center gap-2 font-bold text-xl tracking-tight">
-              <div className="bg-green-800 p-1.5 rounded-lg">
-                <ShieldCheck className="w-6 h-6 text-white" />
+              <div className="bg-white/10 dark:bg-white/5 p-1 rounded-lg">
+                <NextImage src="/logocredda.png" alt="CREDDA Logo" width={24} height={24} className="object-contain" />
               </div>
               <span>CREDDA</span>
             </div>
           ) : (
-            <div className="bg-green-800 p-1.5 rounded-lg mx-auto">
-              <ShieldCheck className="w-6 h-6 text-white" />
+            <div className="bg-white/10 dark:bg-white/5 p-1 rounded-lg mx-auto">
+              <NextImage src="/logocredda.png" alt="CREDDA Logo" width={24} height={24} className="object-contain" />
             </div>
           )}
         </div>
@@ -128,8 +136,8 @@ export default function DashboardClientLayout({
       {/* Main Area */}
       <div className="flex-1 flex flex-col min-w-0">
         <header className="md:hidden flex items-center justify-between p-4 border-b border-slate-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-          <div className="flex items-center gap-2 font-bold text-green-800">
-            <ShieldCheck className="w-6 h-6" />
+          <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
+            <NextImage src="/logocredda.png" alt="CREDDA Logo" width={28} height={28} className="object-contain" />
             <span>CREDDA</span>
           </div>
           <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
@@ -177,31 +185,46 @@ export default function DashboardClientLayout({
             <div className="w-px h-6 bg-slate-200 dark:bg-zinc-800 mx-2" />
 
             {/* User Profile Dropdown */}
-            <div className="flex items-center gap-3 pr-2 group cursor-pointer relative">
-              <div className="text-right hidden sm:block">
-                <div className="text-xs font-bold text-slate-900 dark:text-white">{session?.user?.name || "Chercheur"}</div>
-                <div className="text-[10px] text-slate-500 uppercase tracking-widest font-black leading-none">{userRole}</div>
-              </div>
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-green-700 to-green-400 dark:from-green-800 dark:to-green-500 border-2 border-white dark:border-green-900 shadow-sm flex items-center justify-center text-white font-bold overflow-hidden">
-                 {session?.user?.image ? (
-                   <img src={session.user.image} alt="Avatar" className="w-full h-full object-cover" />
-                 ) : (
-                   session?.user?.name?.[0] || "C"
-                 )}
-              </div>
+            <div className="relative">
+              <button 
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+                className="flex items-center gap-3 pr-2 cursor-pointer rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800/50 p-1 transition-colors"
+              >
+                <div className="text-right hidden sm:block">
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">{userName}</div>
+                  <div className="text-[10px] text-slate-500 uppercase tracking-widest font-black leading-none mt-0.5">{userRole}</div>
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-green-700 to-green-400 dark:from-green-800 dark:to-green-500 border-2 border-white dark:border-green-900 shadow-sm flex items-center justify-center text-white font-bold overflow-hidden">
+                   {userImage ? (
+                     <img src={userImage} alt="Avatar" className="w-full h-full object-cover" />
+                   ) : (
+                     userName?.[0] || "C"
+                   )}
+                </div>
+                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
+              </button>
               
-              {/* Simple Tooltip-like dropdown on hover for now */}
-              <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-300 z-50 p-2 transform translate-y-2 group-hover:translate-y-0">
-                 <Link href={`/${locale}/admin/profile`} className="flex items-center gap-2 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 text-xs font-semibold">
-                    <UserCircle className="w-4 h-4" /> Profil
-                 </Link>
-                 <button 
-                  onClick={() => signOut({ callbackUrl: `/${locale}/login` })}
-                  className="w-full flex items-center gap-2 p-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 text-red-600 text-xs font-semibold"
-                 >
-                    <LogOut className="w-4 h-4" /> Déconnexion
-                 </button>
-              </div>
+              <AnimatePresence>
+                {isProfileOpen && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl shadow-xl z-50 p-2"
+                  >
+                     <Link href={`/${locale}/admin/profile`} onClick={() => setIsProfileOpen(false)} className="flex items-center gap-2 p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-zinc-800 text-xs font-semibold text-slate-700 dark:text-zinc-300">
+                        <UserCircle className="w-4 h-4" /> Profil
+                     </Link>
+                     <button 
+                      onClick={() => { setIsProfileOpen(false); signOut({ callbackUrl: `/${locale}/login` }); }}
+                      className="w-full flex items-center gap-2 p-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-500/10 text-red-600 text-xs font-semibold"
+                     >
+                        <LogOut className="w-4 h-4" /> Déconnexion
+                     </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </header>
@@ -217,8 +240,8 @@ export default function DashboardClientLayout({
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden flex flex-col bg-white dark:bg-zinc-900 animate-in slide-in-from-top duration-300">
           <div className="p-4 flex items-center justify-between border-b border-slate-200 dark:border-zinc-800">
-            <div className="flex items-center gap-2 font-bold text-green-800">
-              <ShieldCheck className="w-6 h-6" />
+            <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
+              <NextImage src="/logocredda.png" alt="CREDDA Logo" width={28} height={28} className="object-contain" />
               <span>CREDDA</span>
             </div>
             <button onClick={() => setIsMobileMenuOpen(false)}>

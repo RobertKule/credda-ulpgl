@@ -18,7 +18,7 @@ export default function ResearchCard({ article, delay = 0 }: ResearchCardProps) 
     const imageUrl = article.coverImage || article.image || "/images/hero-poster.webp";
     const category = article.category?.name || "Recherche";
     const date = article.createdAt ? new Date(article.createdAt).toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' }) : "";
-    const slug = article.slug || "#";
+    const linkId = article.id || article.slug || "#";
 
     return (
         <motion.div
@@ -60,7 +60,7 @@ export default function ResearchCard({ article, delay = 0 }: ResearchCardProps) 
 
                 <div className="mt-auto pt-8 border-t border-border/30">
                     <Link
-                        href={`/publications/${slug}`}
+                        href={`/publications/${linkId}`}
                         className="inline-flex items-center gap-3 text-primary font-bold text-[11px] uppercase tracking-widest group/link"
                     >
                         Lire l'article

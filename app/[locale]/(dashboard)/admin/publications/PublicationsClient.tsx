@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useTransition } from "react";
+import React, { useState, useMemo, useRef, useTransition, useEffect } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Domain, ContentStatus } from "@prisma/client";
 import { createArticleAction, updateArticleAction, deleteArticleAction, uploadPublicationMedia } from "./actions";
 import {
@@ -48,9 +48,35 @@ interface PublicationItem {
   createdAt: string;
 }
 
-export default function PublicationsClient({ locale, initialData }: { locale: string, initialData: PublicationItem[] }) {
+export default function PublicationsClient({ locale, initialData, userRole }: { locale: string, initialData: PublicationItem[], userRole?: string }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    if (searchParams.get("action") === "new") {
+      if (userRole === "USER") {
+        setToast({ message: "Vous n'avez pas l'autorisation requise.", type: "error" });
+      } else {
+        setEditingItem(null);
+        setFormData({
+          title: "",
+          type: Domain.RESEARCH,
+          categorySlug: "",
+          shortDescription: "",
+          content: "",
+          status: ContentStatus.DRAFT,
+          imageUrl: "",
+          pdfUrl: ""
+        });
+        setFormStep(1);
+        setEditorMode("WRITE");
+        setIsFormOpen(true);
+      }
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, userRole]);
 
   // Tabs & Search
   const [activeTab, setActiveTab] = useState<"ALL" | "RESEARCH" | "CLINICAL">("ALL");
@@ -202,6 +228,10 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
   };
 
   const handleOpenForm = (item?: PublicationItem) => {
+    if (userRole === "USER") {
+      showToast("Vous n'avez pas l'autorisation requise pour effectuer cette opération. Veuillez contacter l'admin.", "error");
+      return;
+    }
     if (item) {
       setEditingItem(item);
       setFormData({
@@ -252,6 +282,10 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
   };
 
   const handleDelete = (id: string) => {
+    if (userRole === "USER") {
+      showToast("Vous n'avez pas l'autorisation requise pour effectuer cette opération. Veuillez contacter l'admin.", "error");
+      return;
+    }
     startTransition(async () => {
       try {
         await deleteArticleAction(id);
@@ -494,7 +528,13 @@ export default function PublicationsClient({ locale, initialData }: { locale: st
                           <Edit2 className="w-4 h-4" />
                         </button>
                         <button 
-                          onClick={() => setIsDeleteModalOpen(item.id)}
+                          onClick={() => {
+                            if (userRole === "USER") {
+                              showToast("Vous n'avez pas l'autorisation requise pour effectuer cette opération. Veuillez contacter l'admin.", "error");
+                              return;
+                            }
+                            setIsDeleteModalOpen(item.id)
+                          }}
                           className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                           title="Supprimer"
                         >

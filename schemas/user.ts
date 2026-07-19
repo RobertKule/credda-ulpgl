@@ -17,6 +17,7 @@ export const updateUserProfileSchema = z.object({
   email: z.string().email("Email invalide").optional(),
   phone: z.string().optional().nullable(),
   bio: z.string().optional().nullable(),
+  image: z.string().optional().nullable(),
 });
 
 export const updateUserPasswordSchema = z.object({

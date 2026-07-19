@@ -64,7 +64,7 @@ export default async function PublicationsPage({
       FROM "Article" a
       WHERE EXISTS (
         SELECT 1 FROM "ArticleTranslation" t 
-        WHERE t."articleId" = a.id AND t.language = ${locale} AND t.status = 'PUBLISHED'
+        WHERE t."articleId" = a.id AND t.language = ${locale} AND t.status::text = 'PUBLISHED'
       )
       ORDER BY a."createdAt" DESC
     `.catch(() => []),

@@ -75,21 +75,30 @@ export default async function MediaCenterPage({ params }: { params: Promise<{ lo
   const galleryImages = galleryImagesData as unknown as GalleryImage[];
 
   // MAPPING DATA FOR EXPLORER
-  const mappedMedia = galleryImages.map(gi => ({
-    id: gi.id,
-    title: gi.translations?.[0]?.title || `Média ${gi.category}`,
-    description: gi.translations?.[0]?.description || undefined,
-    type: ((gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com")) ? "VIDEO" : "IMAGE") as "VIDEO" | "IMAGE",
-    source: "LOCAL" as "LOCAL" | "EXTERNAL",
-    // For videos, `src` stores the cover image; real video URL is the first file (if any)
-    url: ((gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com")) && gi.files?.[0]?.url) ? gi.files[0].url : gi.src,
-    // Preserve cover image URL for video thumbnails
-    coverImageUrl: (gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com")) ? gi.src : undefined,
-    thumbnailUrl: (gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com")) ? gi.src : gi.src,
-    category: gi.category || "General",
-    createdAt: gi.createdAt,
-    files: gi.files || []
-  }));
+  const mappedMedia = galleryImages.map(gi => {
+    const isVideo = gi.src?.includes("youtube.com") || gi.src?.includes("youtu.be") || gi.src?.includes("vimeo.com");
+    
+    const media: any = {
+      id: gi.id,
+      title: gi.translations?.[0]?.title || `Média ${gi.category}`,
+      type: isVideo ? "VIDEO" : "IMAGE",
+      source: "LOCAL",
+      url: (isVideo && gi.files?.[0]?.url) ? gi.files[0].url : gi.src,
+      thumbnailUrl: isVideo ? gi.src : gi.src,
+      category: gi.category || "General",
+      createdAt: gi.createdAt ? new Date(gi.createdAt).toISOString() : new Date().toISOString(),
+      files: gi.files || []
+    };
+
+    if (gi.translations?.[0]?.description) {
+      media.description = gi.translations[0].description;
+    }
+    if (isVideo) {
+      media.coverImageUrl = gi.src;
+    }
+
+    return media;
+  });
 
   const stats = {
     events: 0,

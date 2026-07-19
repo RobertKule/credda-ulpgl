@@ -2,28 +2,17 @@ import React from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { getUsersAndTeam } from "./actions";
-import UsersClient from "./UsersClient";
+import { getUsersAndTeam } from "../users/actions";
+import UsersClient from "../users/UsersClient";
 
 export const dynamic = "force-dynamic";
 
-export default async function UsersPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function TeamPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   const session = await getServerSession(authOptions);
 
   if (!session?.user) {
     redirect(`/${locale}/login`);
-  }
-
-  if (session.user.role !== 'SUPERADMIN') {
-    return (
-      <div className="flex flex-col items-center justify-center h-[60vh] text-center">
-        <h2 className="text-2xl font-black text-rose-600 mb-4">Accès Refusé</h2>
-        <p className="text-slate-600 dark:text-zinc-400 font-medium max-w-md">
-          Vous n'avez pas l'autorisation requise pour accéder à cet espace. Veuillez contacter l'admin.
-        </p>
-      </div>
-    );
   }
 
   // Fetch real users and team members from DB (with auto-seeding)
@@ -79,10 +68,10 @@ export default async function UsersPage({ params }: { params: Promise<{ locale: 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black uppercase tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
-            <span>Gestion Utilisateurs & Équipe</span>
+            <span>Gestion de l'Équipe</span>
           </h1>
           <p className="text-sm text-slate-500 dark:text-zinc-400 mt-1">
-            Gérez les comptes administratifs et configurez l'annuaire public des chercheurs du CREDDA.
+            Configurez l'annuaire public des membres et chercheurs du CREDDA.
           </p>
         </div>
       </div>
@@ -90,7 +79,8 @@ export default async function UsersPage({ params }: { params: Promise<{ locale: 
       <UsersClient 
         locale={locale} 
         initialUsers={mappedUsers} 
-        initialMembers={mappedMembers} 
+        initialMembers={mappedMembers}
+        defaultTab="TEAM"
         userRole={session.user.role}
       />
     </div>

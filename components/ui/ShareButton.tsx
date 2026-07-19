@@ -14,26 +14,12 @@ export default function ShareButton({ title, label, copiedLabel }: ShareButtonPr
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
-    const shareData = {
-      title: title,
-      text: `Checkout this research publication: ${title}`,
-      url: window.location.href,
-    };
-
     try {
-      if (navigator.share && navigator.canShare(shareData)) {
-        await navigator.share(shareData);
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      }
-    } catch (err) {
-      console.error("Error sharing:", err);
-      // Fallback to clipboard
       await navigator.clipboard.writeText(window.location.href);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Error copying to clipboard:", err);
     }
   };
 

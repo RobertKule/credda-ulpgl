@@ -62,7 +62,7 @@ export default async function SearchResultsPage({
                 </h3>
                 <div className="grid gap-6">
                   {results.articles.map((a: any) => (
-                    <Link key={a.id} href={`/publications/${a.slug}`} className="bg-white p-8 border border-slate-100 hover:shadow-xl transition-all group flex justify-between items-center">
+                    <Link key={a.id} href={`/publications/${a.id}`} className="bg-white p-8 border border-slate-100 hover:shadow-xl transition-all group flex justify-between items-center">
                       <div className="space-y-2">
                         <Badge variant="outline" className="rounded-md text-[9px] uppercase tracking-widest">{a.domain}</Badge>
                         <h4 className="text-2xl font-serif font-bold text-slate-900">

@@ -2,11 +2,14 @@ import React from "react";
 import { Scale } from "lucide-react";
 import CliniqueClient from "./CliniqueClient";
 import { getClinicalCases } from "./actions";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function CliniquePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const session = await getServerSession(authOptions);
 
   let cases: Awaited<ReturnType<typeof getClinicalCases>> = [];
   try {
@@ -29,7 +32,7 @@ export default async function CliniquePage({ params }: { params: Promise<{ local
         </div>
       </div>
 
-      <CliniqueClient locale={locale} initialData={cases as unknown as import("./CliniqueClient").ClinicalCase[]} />
+      <CliniqueClient locale={locale} initialData={cases as unknown as import("./CliniqueClient").ClinicalCase[]} userRole={session?.user?.role || "USER"} />
     </div>
   );
 }

@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useMemo, useState, useTransition } from "react";
+import React, { useMemo, useState, useTransition, useEffect } from "react";
 import { m as motion } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Search,
   UploadCloud,
@@ -38,8 +38,18 @@ interface MediathequeClientProps {
 
 export default function MediathequeClient({ initialItems }: MediathequeClientProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const [items, setItems] = useState<MediaItem[]>(initialItems);
+
+  useEffect(() => {
+    if (searchParams.get("action") === "new") {
+      setEditingMedia(null);
+      setIsImportOpen(true);
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
   const [activeTab, setActiveTab] = useState<MediaTab>("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("ALL");

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Scale, Gavel, ShieldAlert, Search, Plus, Edit2, Trash2, Eye, AlertTriangle, CheckCircle2, Briefcase, ChevronUp, ChevronDown, X, ChevronRight } from "lucide-react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { clsx, type ClassValue } from "clsx";
@@ -72,9 +72,26 @@ export interface ClinicalCase {
   [key: string]: unknown;
 }
 
-export default function CliniqueClient({ locale, initialData }: { locale: string; initialData: ClinicalCase[] }) {
+export default function CliniqueClient({ locale, initialData, userRole }: { locale: string; initialData: ClinicalCase[]; userRole?: string }) {
   const [tab, setTab]             = useState<TabType>("ALL");
   const [search, setSearch]       = useState("");
+
+  const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+
+  useEffect(() => {
+    if (searchParams?.get("action") === "new") {
+      if (userRole === "USER") {
+        setToast({ msg: "Vous n'avez pas l'autorisation requise.", type: "error" });
+      } else {
+        setFormData({ title: "", problemType: "", location: "", description: "", actionsTaken: "", expectations: "", urgency: "MEDIUM", status: "NEW", beneficiaryName: "", beneficiaryPhone: "" }); 
+        setEditingId(null); 
+        setFormStep(1); 
+        setIsFormOpen(true);
+      }
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams?.get("action"), userRole]);
   const [sortField, setSortField] = useState<SortField>("createdAt");
   const [sortDir, setSortDir]     = useState<SortDir>("desc");
   const [viewItem, setViewItem]   = useState<ClinicalCase | null>(null);
@@ -163,6 +180,10 @@ export default function CliniqueClient({ locale, initialData }: { locale: string
   };
 
   const handleEditStart = (item: ClinicalCase) => {
+    if (userRole === "USER") {
+      showToast("Vous n'avez pas l'autorisation requise pour effectuer cette opération. Veuillez contacter l'admin.", "error");
+      return;
+    }
     setEditingId(item.id);
     setFormData({
       title: item.title || "",
@@ -218,7 +239,13 @@ export default function CliniqueClient({ locale, initialData }: { locale: string
           ))}
         </div>
         <button
-          onClick={() => { setFormData({ title: "", problemType: "", location: "", description: "", actionsTaken: "", expectations: "", urgency: "MEDIUM", status: "NEW", beneficiaryName: "", beneficiaryPhone: "" }); setEditingId(null); setFormStep(1); setIsFormOpen(true); }}
+          onClick={() => { 
+            if (userRole === "USER") {
+              showToast("Vous n'avez pas l'autorisation requise pour effectuer cette opération. Veuillez contacter l'admin.", "error");
+              return;
+            }
+            setFormData({ title: "", problemType: "", location: "", description: "", actionsTaken: "", expectations: "", urgency: "MEDIUM", status: "NEW", beneficiaryName: "", beneficiaryPhone: "" }); setEditingId(null); setFormStep(1); setIsFormOpen(true); 
+          }}
           className="px-6 py-4 bg-green-800 hover:bg-green-900 text-white rounded-2xl font-bold shadow-lg shadow-green-800/20 transition-all flex items-center gap-2 whitespace-nowrap w-full lg:w-auto justify-center"
         >
           <Plus className="w-5 h-5" />
@@ -296,7 +323,13 @@ export default function CliniqueClient({ locale, initialData }: { locale: string
                             className="p-2 text-slate-400 hover:text-green-800 hover:bg-green-50 dark:hover:bg-green-700/10 rounded-lg transition-colors">
                             <Edit2 className="w-4 h-4" />
                           </button>
-                          <button onClick={() => setDeleting(item.id)} title="Supprimer"
+                          <button onClick={() => {
+                            if (userRole === "USER") {
+                              showToast("Vous n'avez pas l'autorisation requise pour effectuer cette opération. Veuillez contacter l'admin.", "error");
+                              return;
+                            }
+                            setDeleting(item.id)
+                          }} title="Supprimer"
                             className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-colors">
                             <Trash2 className="w-4 h-4" />
                           </button>
