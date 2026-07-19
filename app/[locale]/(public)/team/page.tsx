@@ -2,7 +2,7 @@
 import type { Metadata } from "next";
 import { localePageMetadata } from "@/lib/page-metadata";
 import { sql } from "@/lib/db";
-import { Users, Mail, Linkedin, ChevronRight, SearchX } from "lucide-react";
+import { Users, Mail, Linkedin, ChevronRight, SearchX, Twitter, Facebook, Youtube, MessageCircle, Globe, Music } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
@@ -30,6 +30,13 @@ export default async function TeamPage({ params }: Props) {
     slug: string;
     image?: string | null;
     email?: string | null;
+    facebook?: string | null;
+    linkedin?: string | null;
+    twitter?: string | null;
+    whatsapp?: string | null;
+    youtube?: string | null;
+    website?: string | null;
+    tiktok?: string | null;
     order: number;
     translations: { role: string; bio: string }[];
   }
@@ -145,15 +152,45 @@ function MemberCard({ member, content, locale }: { member: any; content: any; lo
         <div className="h-[1px] w-8 bg-primary/30 transition-all group-hover:w-full duration-700 my-1" />
 
         {/* Links Only */}
-        <div className="flex items-center gap-4 mt-auto pt-2">
+        <div className="flex flex-wrap items-center gap-3 mt-auto pt-2">
           {member.email && (
-            <a href={`mailto:${member.email}`} className="text-muted-foreground/50 hover:text-primary transition-colors">
+            <a href={`mailto:${member.email}`} title="Email" className="text-muted-foreground/50 hover:text-primary transition-colors">
               <Mail size={16} />
             </a>
           )}
           {member.linkedin && (
-             <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="text-muted-foreground/50 hover:text-primary transition-colors">
+             <a href={member.linkedin} title="LinkedIn" target="_blank" rel="noopener noreferrer" className="text-muted-foreground/50 hover:text-[#0a66c2] transition-colors">
                <Linkedin size={16} />
+             </a>
+          )}
+          {member.twitter && (
+             <a href={member.twitter} title="X (Twitter)" target="_blank" rel="noopener noreferrer" className="text-muted-foreground/50 hover:text-foreground transition-colors">
+               <Twitter size={16} />
+             </a>
+          )}
+          {member.facebook && (
+             <a href={member.facebook} title="Facebook" target="_blank" rel="noopener noreferrer" className="text-muted-foreground/50 hover:text-[#0866ff] transition-colors">
+               <Facebook size={16} />
+             </a>
+          )}
+          {member.whatsapp && (
+             <a href={`https://wa.me/${member.whatsapp.replace(/[^0-9]/g, '')}`} title="WhatsApp" target="_blank" rel="noopener noreferrer" className="text-muted-foreground/50 hover:text-[#25D366] transition-colors">
+               <MessageCircle size={16} />
+             </a>
+          )}
+          {member.youtube && (
+             <a href={member.youtube} title="YouTube" target="_blank" rel="noopener noreferrer" className="text-muted-foreground/50 hover:text-[#FF0000] transition-colors">
+               <Youtube size={16} />
+             </a>
+          )}
+          {member.tiktok && (
+             <a href={member.tiktok} title="TikTok" target="_blank" rel="noopener noreferrer" className="text-muted-foreground/50 hover:text-foreground transition-colors">
+               <Music size={16} />
+             </a>
+          )}
+          {member.website && (
+             <a href={member.website} title="Website" target="_blank" rel="noopener noreferrer" className="text-muted-foreground/50 hover:text-primary transition-colors">
+               <Globe size={16} />
              </a>
           )}
         </div>

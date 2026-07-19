@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useMemo, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useMemo, useTransition, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { 
   Users, 
   UserCheck, 
@@ -44,6 +44,7 @@ import {
   deleteTeamMember,
   uploadTeamMemberImage 
 } from "./actions";
+import { ModernMarkdownEditor } from "@/components/admin/shared/ModernMarkdownEditor";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -72,7 +73,49 @@ interface TeamMember {
   bioFr: string;
   bioEn: string;
   bioSw: string;
+  educationFr: string;
+  educationEn: string;
+  educationSw: string;
+  expertiseFr: string;
+  expertiseEn: string;
+  expertiseSw: string;
+  facebook?: string;
+  linkedin?: string;
+  twitter?: string;
+  whatsapp?: string;
+  youtube?: string;
+  website?: string;
+  tiktok?: string;
 }
+
+interface MemberFormData {
+  name: string;
+  email?: string;
+  imageUrl?: string;
+  order: number;
+  slug: string;
+  userId?: string;
+  titleFr: string;
+  titleEn: string;
+  titleSw: string;
+  bioFr: string;
+  bioEn: string;
+  bioSw: string;
+  educationFr: string;
+  educationEn: string;
+  educationSw: string;
+  expertiseFr: string;
+  expertiseEn: string;
+  expertiseSw: string;
+  facebook?: string;
+  linkedin?: string;
+  twitter?: string;
+  whatsapp?: string;
+  youtube?: string;
+  website?: string;
+  tiktok?: string;
+}
+
 
 type MainTab = "ACCOUNTS" | "TEAM";
 type StatusFilter = "ALL" | "PENDING" | "ACTIVE" | "SUSPENDED";
@@ -80,17 +123,38 @@ type StatusFilter = "ALL" | "PENDING" | "ACTIVE" | "SUSPENDED";
 export default function UsersClient({
   locale,
   initialUsers,
-  initialMembers
+  initialMembers,
+  defaultTab = "ACCOUNTS",
+  userRole
 }: {
   locale: string;
   initialUsers: UserAccount[];
   initialMembers: TeamMember[];
+  defaultTab?: MainTab;
+  userRole?: string;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
+  useEffect(() => {
+    if (searchParams.get("action") === "new") {
+      setUserFormData({
+        name: "",
+        email: "",
+        role: "USER",
+        status: "PENDING",
+        password: ""
+      });
+      setEditingUserId(null);
+      setIsUserFormOpen(true);
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
   // Tab State
-  const [activeTab, setActiveTab] = useState<MainTab>("ACCOUNTS");
+  const [activeTab, setActiveTab] = useState<MainTab>(defaultTab);
 
   // Accounts Filters
   const [accountStatusFilter, setAccountStatusFilter] = useState<StatusFilter>("ALL");
@@ -119,24 +183,37 @@ export default function UsersClient({
 
   const [isMemberFormOpen, setIsMemberFormOpen] = useState(false);
   const [editingMemberId, setEditingMemberId] = useState<string | null>(null);
-  const [memberFormStep, setMemberFormStep] = useState<1 | 2 | 3>(1);
+  const [memberFormStep, setMemberFormStep] = useState<1 | 2 | 3 | 4>(1);
   const [memberFormLangTab, setMemberFormLangTab] = useState<"fr" | "en" | "sw">("fr");
   const [uploadProgress, setUploadProgress] = useState(false);
 
-  const [memberFormData, setMemberFormData] = useState({
-    name: "",
-    email: "",
-    imageUrl: "",
-    order: 0,
-    slug: "",
-    userId: "",
-    titleFr: "",
-    titleEn: "",
-    titleSw: "",
-    bioFr: "",
-    bioEn: "",
-    bioSw: "",
-  });
+  const [memberFormData, setMemberFormData] = useState<MemberFormData>({
+  name: "",
+  email: "",
+  imageUrl: "",
+  order: 1,
+  slug: "",
+  userId: "",
+  titleFr: "",
+  titleEn: "",
+  titleSw: "",
+  bioFr: "",
+  bioEn: "",
+  bioSw: "",
+  educationFr: "",
+  educationEn: "",
+  educationSw: "",
+  expertiseFr: "",
+  expertiseEn: "",
+  expertiseSw: "",
+  facebook: "",
+  linkedin: "",
+  twitter: "",
+  whatsapp: "",
+  youtube: "",
+  website: "",
+  tiktok: ""
+});
 
   const [toast, setToast] = useState<{ msg: string; type: "success" | "error" } | null>(null);
 
@@ -363,12 +440,27 @@ export default function UsersClient({
       bioFr: m.bioFr,
       bioEn: m.bioEn,
       bioSw: m.bioSw,
+      educationFr: (m as any).educationFr || "",
+      educationEn: (m as any).educationEn || "",
+      educationSw: (m as any).educationSw || "",
+      expertiseFr: (m as any).expertiseFr || "",
+      expertiseEn: (m as any).expertiseEn || "",
+      expertiseSw: (m as any).expertiseSw || "",
+      facebook: (m as any).facebook || "",
+      linkedin: (m as any).linkedin || "",
+      twitter: (m as any).twitter || "",
+      whatsapp: (m as any).whatsapp || "",
+      youtube: (m as any).youtube || "",
+      website: (m as any).website || "",
+      tiktok: (m as any).tiktok || "",
     });
     setEditingMemberId(m.id);
     setMemberFormStep(1);
     setMemberFormLangTab("fr");
     setIsMemberFormOpen(true);
   };
+
+  
 
   const handleCreateNewMember = () => {
     setMemberFormData({
@@ -384,6 +476,19 @@ export default function UsersClient({
       bioFr: "",
       bioEn: "",
       bioSw: "",
+      educationFr: "",
+      educationEn: "",
+      educationSw: "",
+      expertiseFr: "",
+      expertiseEn: "",
+      expertiseSw: "",
+      facebook: "",
+      linkedin: "",
+      twitter: "",
+      whatsapp: "",
+      youtube: "",
+      website: "",
+      tiktok: "",
     });
     setEditingMemberId(null);
     setMemberFormStep(1);
@@ -447,7 +552,7 @@ export default function UsersClient({
 
       {/* Main Switcher Tabs */}
       <div className="flex border-b border-slate-200 dark:border-zinc-800 mb-8 relative">
-        {(["ACCOUNTS", "TEAM"] as MainTab[]).map(tab => (
+        {(["ACCOUNTS", "TEAM"] as MainTab[]).filter(tab => tab === "TEAM" || userRole === "SUPERADMIN").map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -994,10 +1099,10 @@ export default function UsersClient({
 
               {/* Progress Steps Indicators */}
               <div className="px-6 py-4.5 bg-slate-50/30 dark:bg-zinc-900/5 border-b border-slate-100 dark:border-zinc-900 flex items-center justify-between">
-                {[1, 2, 3].map(step => (
+                {[1, 2, 3, 4].map(step => (
                   <button
                     key={step}
-                    onClick={() => setMemberFormStep(step as 1 | 2 | 3)}
+                    onClick={() => setMemberFormStep(step as 1 | 2 | 3 | 4)}
                     className="flex items-center gap-2 text-left focus:outline-none cursor-pointer"
                   >
                     <span className={cn(
@@ -1017,6 +1122,7 @@ export default function UsersClient({
                       {step === 1 && "Identité"}
                       {step === 2 && "Biographie"}
                       {step === 3 && "Visuels"}
+                      {step === 4 && "Réseaux Sociaux"}
                     </span>
                   </button>
                 ))}
@@ -1149,18 +1255,35 @@ export default function UsersClient({
                               className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white font-medium"
                             />
                           </div>
-                          <div>
-                            <label className="block text-xs font-black text-slate-600 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
-                              Biographie publique (FR) <span className="text-rose-500">*</span>
-                            </label>
-                            <textarea
-                              rows={5}
+                          <div className="space-y-8">
+                            <ModernMarkdownEditor
+                              label="Biographie publique (FR) *"
                               value={memberFormData.bioFr}
-                              onChange={e => setMemberField("bioFr", e.target.value)}
+                              onChange={v => setMemberField("bioFr", v)}
                               placeholder="Courte description de ses travaux de recherche au CREDDA..."
-                              className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white leading-relaxed font-medium"
                             />
+
+                            <ModernMarkdownEditor
+                              label="Parcours académique & professionnel (FR)"
+                              value={memberFormData.educationFr}
+                              onChange={v => setMemberField("educationFr", v)}
+                              placeholder="Décrivez le parcours (formations, postes...)"
+                            />
+
+                            <div>
+                              <label className="block text-xs font-black text-slate-600 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                                Domaines d'Expertise (FR)
+                              </label>
+                              <textarea
+                                rows={3}
+                                value={memberFormData.expertiseFr}
+                                onChange={e => setMemberField("expertiseFr", e.target.value)}
+                                placeholder="Gouvernance Foncière, Changement Climatique..."
+                                className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white leading-relaxed font-medium"
+                              />
+                            </div>
                           </div>
+
                         </motion.div>
                       )}
 
@@ -1184,18 +1307,35 @@ export default function UsersClient({
                               className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white font-medium"
                             />
                           </div>
-                          <div>
-                            <label className="block text-xs font-black text-slate-600 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
-                              Public Biography (EN)
-                            </label>
-                            <textarea
-                              rows={5}
+                          <div className="space-y-8">
+                            <ModernMarkdownEditor
+                              label="Public Biography (EN)"
                               value={memberFormData.bioEn}
-                              onChange={e => setMemberField("bioEn", e.target.value)}
+                              onChange={v => setMemberField("bioEn", v)}
                               placeholder="Short description of research work..."
-                              className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white leading-relaxed font-medium"
                             />
+
+                            <ModernMarkdownEditor
+                              label="Academic & Professional Background (EN)"
+                              value={memberFormData.educationEn}
+                              onChange={v => setMemberField("educationEn", v)}
+                              placeholder="Describe education and career..."
+                            />
+
+                            <div>
+                              <label className="block text-xs font-black text-slate-600 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                                Areas of Expertise (EN)
+                              </label>
+                              <textarea
+                                rows={3}
+                                value={memberFormData.expertiseEn}
+                                onChange={e => setMemberField("expertiseEn", e.target.value)}
+                                placeholder="Land Governance, Climate Change..."
+                                className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white leading-relaxed font-medium"
+                              />
+                            </div>
                           </div>
+
                         </motion.div>
                       )}
 
@@ -1219,17 +1359,33 @@ export default function UsersClient({
                               className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white font-medium"
                             />
                           </div>
-                          <div>
-                            <label className="block text-xs font-black text-slate-600 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
-                              Wasifu wa Umma (SW)
-                            </label>
-                            <textarea
-                              rows={5}
+                          <div className="space-y-8">
+                            <ModernMarkdownEditor
+                              label="Wasifu wa Umma (SW)"
                               value={memberFormData.bioSw}
-                              onChange={e => setMemberField("bioSw", e.target.value)}
+                              onChange={v => setMemberField("bioSw", v)}
                               placeholder="Maelezo mafupi ya kazi ya utafiti..."
-                              className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white leading-relaxed font-medium"
                             />
+
+                            <ModernMarkdownEditor
+                              label="Historia ya Elimu na Kazi (SW)"
+                              value={memberFormData.educationSw}
+                              onChange={v => setMemberField("educationSw", v)}
+                              placeholder="Eleza historia ya elimu na kazi..."
+                            />
+
+                            <div>
+                              <label className="block text-xs font-black text-slate-600 dark:text-zinc-400 uppercase tracking-wider mb-1.5">
+                                Maeneo ya Utaalamu (SW)
+                              </label>
+                              <textarea
+                                rows={3}
+                                value={memberFormData.expertiseSw}
+                                onChange={e => setMemberField("expertiseSw", e.target.value)}
+                                placeholder="Utawala wa Ardhi, Mabadiliko ya Tabianchi..."
+                                className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white leading-relaxed font-medium"
+                              />
+                            </div>
                           </div>
                         </motion.div>
                       )}
@@ -1299,6 +1455,45 @@ export default function UsersClient({
                   </motion.div>
                 )}
 
+                {/* STEP 4: Réseaux Sociaux */}
+                {memberFormStep === 4 && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="space-y-5"
+                  >
+                    <div className="p-4 bg-emerald-50/50 dark:bg-emerald-950/10 rounded-2xl border border-emerald-150/40 dark:border-emerald-900/20 flex gap-3">
+                      <Globe size={18} className="text-emerald-600 shrink-0 mt-0.5" />
+                      <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
+                        Ajoutez les liens vers les réseaux sociaux du membre pour les afficher sur son profil public. Laissez vide si non applicable.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {[
+                        { label: 'Facebook', key: 'facebook', placeholder: 'https://facebook.com/...' },
+                        { label: 'LinkedIn', key: 'linkedin', placeholder: 'https://linkedin.com/in/...' },
+                        { label: 'Compte X (Twitter)', key: 'twitter', placeholder: 'https://twitter.com/...' },
+                        { label: 'WhatsApp', key: 'whatsapp', placeholder: '+243...' },
+                        { label: 'YouTube', key: 'youtube', placeholder: 'https://youtube.com/channel/...' },
+                        { label: 'TikTok', key: 'tiktok', placeholder: 'https://tiktok.com/...' },
+                        { label: 'Site Web Personnel', key: 'website', placeholder: 'https://mon-site.com' },
+                      ].map(field => (
+                        <div key={field.key}>
+                          <label className="block text-xs font-black text-slate-600 dark:text-zinc-400 uppercase tracking-wider mb-1.5">{field.label}</label>
+                          <input
+                            type={field.key === 'whatsapp' ? 'tel' : 'url'}
+                            value={memberFormData[field.key as keyof typeof memberFormData] || ''}
+                            onChange={e => setMemberField(field.key as any, e.target.value)}
+                            placeholder={field.placeholder}
+                            className="w-full px-3.5 py-3 bg-slate-50 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 dark:text-white font-medium"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+
               </form>
 
               {/* Footer Buttons */}
@@ -1306,7 +1501,7 @@ export default function UsersClient({
                 {memberFormStep > 1 ? (
                   <button
                     type="button"
-                    onClick={() => setMemberFormStep((memberFormStep - 1) as 1 | 2 | 3)}
+                    onClick={() => setMemberFormStep((memberFormStep - 1) as 1 | 2 | 3 | 4)}
                     className="px-5 py-2.5 border border-slate-200 dark:border-zinc-800 rounded-xl text-xs font-bold text-slate-600 dark:text-zinc-400 hover:bg-slate-50 dark:hover:bg-zinc-900/50 transition-all cursor-pointer"
                   >
                     Précédent
@@ -1316,10 +1511,10 @@ export default function UsersClient({
                 )}
 
                 <div className="flex items-center gap-2">
-                  {memberFormStep < 3 ? (
+                  {memberFormStep < 4 ? (
                     <button
                       type="button"
-                      onClick={() => setMemberFormStep((memberFormStep + 1) as 1 | 2 | 3)}
+                      onClick={() => setMemberFormStep((memberFormStep + 1) as 1 | 2 | 3 | 4)}
                       className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-1.5 cursor-pointer"
                     >
                       <span>Suivant</span>

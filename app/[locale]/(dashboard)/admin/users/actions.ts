@@ -171,6 +171,19 @@ export async function createTeamMember(data: {
   bioFr: string;
   bioEn: string;
   bioSw: string;
+  educationFr?: string;
+  educationEn?: string;
+  educationSw?: string;
+  expertiseFr?: string;
+  expertiseEn?: string;
+  expertiseSw?: string;
+  facebook?: string;
+  linkedin?: string;
+  twitter?: string;
+  whatsapp?: string;
+  youtube?: string;
+  website?: string;
+  tiktok?: string;
 }) {
   const session = await auth();
   if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) {
@@ -184,12 +197,19 @@ export async function createTeamMember(data: {
       image: data.imageUrl || null,
       order: data.order,
       slug: data.slug,
+      facebook: data.facebook || null,
+      linkedin: data.linkedin || null,
+      twitter: data.twitter || null,
+      whatsapp: data.whatsapp || null,
+      youtube: data.youtube || null,
+      website: data.website || null,
+      tiktok: data.tiktok || null,
       translations: {
         createMany: {
           data: [
-            { language: "fr", role: data.titleFr, bio: data.bioFr },
-            { language: "en", role: data.titleEn, bio: data.bioEn },
-            { language: "sw", role: data.titleSw, bio: data.bioSw }
+            { language: "fr", role: data.titleFr, bio: data.bioFr, education: data.educationFr || null, expertise: data.expertiseFr || null },
+            { language: "en", role: data.titleEn, bio: data.bioEn, education: data.educationEn || null, expertise: data.expertiseEn || null },
+            { language: "sw", role: data.titleSw, bio: data.bioSw, education: data.educationSw || null, expertise: data.expertiseSw || null }
           ]
         }
       }
@@ -213,6 +233,19 @@ export async function updateTeamMember(id: string, data: {
   bioFr: string;
   bioEn: string;
   bioSw: string;
+  educationFr?: string;
+  educationEn?: string;
+  educationSw?: string;
+  expertiseFr?: string;
+  expertiseEn?: string;
+  expertiseSw?: string;
+  facebook?: string;
+  linkedin?: string;
+  twitter?: string;
+  whatsapp?: string;
+  youtube?: string;
+  website?: string;
+  tiktok?: string;
 }) {
   const session = await auth();
   if (!session?.user || !ALLOWED_ROLES.includes(session.user.role)) {
@@ -227,13 +260,20 @@ export async function updateTeamMember(id: string, data: {
       image: data.imageUrl || null,
       order: data.order,
       slug: data.slug,
+      facebook: data.facebook || null,
+      linkedin: data.linkedin || null,
+      twitter: data.twitter || null,
+      whatsapp: data.whatsapp || null,
+      youtube: data.youtube || null,
+      website: data.website || null,
+      tiktok: data.tiktok || null,
     }
   });
 
   const translations = [
-    { language: "fr", role: data.titleFr, bio: data.bioFr },
-    { language: "en", role: data.titleEn, bio: data.bioEn },
-    { language: "sw", role: data.titleSw, bio: data.bioSw }
+    { language: "fr", role: data.titleFr, bio: data.bioFr, education: data.educationFr || null, expertise: data.expertiseFr || null },
+    { language: "en", role: data.titleEn, bio: data.bioEn, education: data.educationEn || null, expertise: data.expertiseEn || null },
+    { language: "sw", role: data.titleSw, bio: data.bioSw, education: data.educationSw || null, expertise: data.expertiseSw || null }
   ];
 
   for (const tr of translations) {
@@ -246,13 +286,17 @@ export async function updateTeamMember(id: string, data: {
       },
       update: {
         role: tr.role,
-        bio: tr.bio
+        bio: tr.bio,
+        education: tr.education,
+        expertise: tr.expertise,
       },
       create: {
         memberId: id,
         language: tr.language,
         role: tr.role,
-        bio: tr.bio
+        bio: tr.bio,
+        education: tr.education,
+        expertise: tr.expertise,
       }
     });
   }

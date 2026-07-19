@@ -5,26 +5,13 @@ declare global {
 }
 
 if (!process.env.DATABASE_URL) {
-  throw new Error(
-    '❌ DATABASE_URL manquante.\n' +
-    'Ajouter dans .env.local:\n' +
-    'DATABASE_URL="postgresql://postgres:[pass]@db.[ref].supabase.co:6543/postgres?pgbouncer=true"'
-  )
+  throw new Error('❌ DATABASE_URL manquante dans .env')
 }
 
-// Always use the pooler URL (pgbouncer=true, port 6543 = transaction mode).
-// connection_limit is capped at 2 so multiple Next.js HMR workers don't
-// collectively exceed Supabase's pool_size of 15.
+// Neon/Supabase pooler: keep pgbouncer=true so Prisma doesn't use
+// prepared statements (incompatible with pgBouncer transaction mode).
 const buildUrl = () => {
-  const base = process.env.DATABASE_URL!;
-  try {
-    const url = new URL(base);
-    url.searchParams.set('pgbouncer', 'true');
-    url.searchParams.set('connection_limit', '5');
-    return url.toString();
-  } catch {
-    return base;
-  }
+  return process.env.DATABASE_URL!;
 };
 
 export const db =

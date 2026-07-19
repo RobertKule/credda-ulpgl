@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
 import { Badge } from "@/components/ui/badge";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Props {
   params: Promise<{ slug: string; locale: string }>;
@@ -227,9 +229,7 @@ export default async function MemberDetailPage({ params }: Props) {
                 </h3>
                 <div className="text-lg text-muted-foreground font-outfit font-light leading-relaxed space-y-6">
                    {content.bio ? (
-                     content.bio.split('\n').map((para, i) => (
-                       <p key={i}>{para}</p>
-                     ))
+                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{content.bio}</ReactMarkdown>
                    ) : (
                      <p className="italic opacity-40">Aucune biographie disponible pour ce membre.</p>
                    )}
@@ -245,9 +245,9 @@ export default async function MemberDetailPage({ params }: Props) {
                           <GraduationCap size={24} />
                        </div>
                        <h4 className="font-serif font-black uppercase text-xs tracking-widest text-foreground">Formation Académique</h4>
-                       <p className="text-sm text-muted-foreground font-light leading-relaxed whitespace-pre-line">
-                          {content.education}
-                       </p>
+                       <div className="text-sm text-muted-foreground font-light leading-relaxed prose prose-sm prose-invert max-w-none">
+                          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content.education}</ReactMarkdown>
+                       </div>
                     </div>
                   )}
                   

@@ -3,10 +3,10 @@
 import Image from "next/image";
 import { Link, usePathname } from "./../../navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { Menu, X, ArrowUpRight, Sun, Moon, ChevronDown, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowUpRight, Sun, Moon, ChevronDown, ArrowRight, LayoutDashboard, UserCircle, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useTheme } from "./ThemeProvider";
 import AnnouncementBell from "./AnnouncementBell";
 
@@ -25,6 +25,7 @@ export default function Navbar({ announcements = [] }: { announcements?: Announc
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { data: session } = useSession();
   const { theme, toggleTheme } = useTheme();
 
@@ -200,17 +201,75 @@ export default function Navbar({ announcements = [] }: { announcements?: Announc
             </button>
 
             {/* Auth Action */}
-            <div className="flex items-center gap-2">
-              <Link
-                href={session ? "/admin" : "/login"}
-                className={`flex items-center gap-2 font-bold transition-all duration-500 overflow-hidden ${
-                  isScrolled 
-                    ? "w-8 h-8 rounded-full bg-primary text-white justify-center hover:scale-105" 
-                    : "px-6 py-2.5 rounded-full text-[13px] bg-primary text-white hover:opacity-90 shadow-md"
-                }`}
-              >
-                {isScrolled ? <ArrowUpRight size={16} /> : (session ? "Dashboard" : "Connexion")}
-              </Link>
+            <div className="flex items-center gap-2 relative">
+              {session ? (
+                <>
+                  <button 
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                    className={`flex items-center gap-2 transition-all duration-300 rounded-full border border-border/20 p-1 pr-3 ${isScrolled ? "bg-muted/40" : "bg-white/5"} hover:bg-muted/60`}
+                  >
+                    <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white font-bold overflow-hidden text-xs">
+                      {session.user?.image ? (
+                        <img src={session.user.image} alt="Avatar" className="w-full h-full object-cover" />
+                      ) : (
+                        session.user?.name?.[0] || "U"
+                      )}
+                    </div>
+                    {!isScrolled && (
+                      <div className="text-left hidden xl:block">
+                        <div className="text-[11px] font-bold text-foreground leading-tight truncate max-w-[100px]">{session.user?.name || "Utilisateur"}</div>
+                        <div className="text-[9px] text-muted-foreground uppercase font-black">{session.user?.role || "USER"}</div>
+                      </div>
+                    )}
+                    <ChevronDown size={14} className={`text-muted-foreground transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  <AnimatePresence>
+                    {isProfileOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute top-full right-0 mt-3 w-56 bg-popover/95 backdrop-blur-3xl border border-border/50 rounded-2xl shadow-2xl p-2 z-50 flex flex-col gap-1"
+                      >
+                        <Link 
+                          href="/admin" 
+                          onClick={() => setIsProfileOpen(false)}
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold text-foreground/80 hover:text-primary hover:bg-primary/5 transition-colors"
+                        >
+                          <LayoutDashboard size={16} /> Tableau de Bord
+                        </Link>
+                        <Link 
+                          href="/admin/profile" 
+                          onClick={() => setIsProfileOpen(false)}
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold text-foreground/80 hover:text-primary hover:bg-primary/5 transition-colors"
+                        >
+                          <UserCircle size={16} /> Mon Profil
+                        </Link>
+                        <div className="h-px w-full bg-border/20 my-1" />
+                        <button 
+                          onClick={() => { setIsProfileOpen(false); signOut({ callbackUrl: `/${locale}/login` }); }}
+                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-semibold text-red-600 hover:bg-red-500/10 transition-colors w-full text-left"
+                        >
+                          <LogOut size={16} /> Déconnexion
+                        </button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  className={`flex items-center gap-2 font-bold transition-all duration-500 overflow-hidden ${
+                    isScrolled 
+                      ? "w-8 h-8 rounded-full bg-primary text-white justify-center hover:scale-105" 
+                      : "px-6 py-2.5 rounded-full text-[13px] bg-primary text-white hover:opacity-90 shadow-md"
+                  }`}
+                >
+                  {isScrolled ? <ArrowUpRight size={16} /> : "Connexion"}
+                </Link>
+              )}
             </div>
           </div>
 

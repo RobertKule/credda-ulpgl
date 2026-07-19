@@ -9,6 +9,7 @@ import { createUserSchema, updateUserProfileSchema, updateUserPasswordSchema, us
 import { SafeUser, Role, AccountStatus } from "@/types/user";
 import { auth } from "@/lib/auth";
 import bcrypt from "bcryptjs";
+import { uploadFile } from "@/lib/storage";
 
 export async function createUser(rawData: unknown): Promise<ApiResponse<SafeUser>> {
   const session = await auth();
@@ -137,4 +138,17 @@ export async function updateUserPassword(id: string, rawData: unknown): Promise<
       data: { password: hashedPassword }
     });
   }, "Erreur lors de la mise à jour du mot de passe");
+}
+
+export async function uploadUserProfileImage(formData: FormData): Promise<{ url?: string; error?: string }> {
+  try {
+    const file = formData.get("file") as File;
+    if (!file) return { error: "Aucun fichier sélectionné" };
+
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const url = await uploadFile(buffer, file.name, file.type, "team");
+    return { url };
+  } catch (error: unknown) {
+    return { error: error instanceof Error ? error.message : "Erreur inconnue" };
+  }
 }

@@ -55,7 +55,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           (SELECT json_agg(t) FROM "ArticleTranslation" t WHERE t."articleId" = a.id AND t.language = ${locale}) as translations,
           (SELECT json_agg(ct) FROM "CategoryTranslation" ct WHERE ct."categoryId" = a."categoryId" AND ct.language = ${locale}) as category_translations
         FROM "Article" a
-        WHERE a.domain = 'RESEARCH' AND a.published = true
+        WHERE a.published = true
         ORDER BY a."createdAt" DESC LIMIT 4
       `,
       // latestReports
@@ -84,8 +84,8 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       sql`SELECT count(*) FROM "Article" WHERE published = true`,
       sql`SELECT count(*) FROM "Publication"`,
       sql`SELECT count(*) FROM "Member"`,
-      sql`SELECT count(*) FROM "Article" WHERE domain = 'RESEARCH' AND published = true`,
-      sql`SELECT count(*) FROM "Article" WHERE domain = 'CLINICAL' AND published = true`,
+      sql`SELECT count(*) FROM "Article" WHERE domain::text = 'RESEARCH' AND published = true`,
+      sql`SELECT count(*) FROM "Article" WHERE domain::text = 'CLINICAL' AND published = true`,
       sql`SELECT count(*) FROM "ClinicalCase"`,
       sql`SELECT count(*) FROM "GalleryImage"`
     ])) as [

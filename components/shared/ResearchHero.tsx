@@ -62,7 +62,7 @@ export default function ResearchHero({ featuredArticle, locale }: ResearchHeroPr
             </div>
 
             <Link 
-              href={`/publications/${featuredArticle.slug}`}
+              href={`/publications/${featuredArticle.id}`}
               className="group relative inline-flex items-center gap-4 px-10 py-5 bg-white text-primary font-heading font-black uppercase tracking-widest text-[10px] overflow-hidden"
             >
               <span className="relative z-10 flex items-center gap-2">

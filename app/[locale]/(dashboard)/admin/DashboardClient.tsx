@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { useRouter } from "next/navigation";
 import {
   FileText,
   Scale,
@@ -17,7 +18,7 @@ import {
   AlertTriangle,
   ChevronRight
 } from "lucide-react";
-import { DashboardModals } from "./DashboardModals";
+
 
 interface Props {
   kpis: {
@@ -353,8 +354,7 @@ export default function DashboardClient({
   locale
 }: Props) {
   const t = useTranslations("AdminDashboard.home");
-
-  const [activeModal, setActiveModal] = useState<"publication" | "clinique" | "media" | "invitation" | null>(null);
+  const router = useRouter();
   const [activeChartTab, setActiveChartTab] = useState<"publications" | "cases" | "gallery">("publications");
 
   // Selection list for evolution chart
@@ -400,24 +400,35 @@ export default function DashboardClient({
         <motion.div 
           variants={cardVariants}
           whileHover={{ y: -4, transition: { duration: 0.2 } }}
-          className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group"
+          className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group flex flex-col justify-between"
         >
-          <div className="flex items-start justify-between">
-            <div className="p-3 bg-green-50 dark:bg-green-800/10 rounded-2xl text-green-800 dark:text-green-500">
-              <FileText className="w-6 h-6" />
+          <div>
+            <div className="flex items-start justify-between">
+              <div className="p-3 bg-green-50 dark:bg-green-800/10 rounded-2xl text-green-800 dark:text-green-500">
+                <FileText className="w-6 h-6" />
+              </div>
+              <span className="flex items-center gap-1 text-[10px] font-black text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-800/20 py-1 px-2.5 rounded-full">
+                <TrendingUp className="w-3.5 h-3.5" />
+                {kpis.publications.trend}
+              </span>
             </div>
-            <span className="flex items-center gap-1 text-[10px] font-black text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-800/20 py-1 px-2.5 rounded-full">
-              <TrendingUp className="w-3.5 h-3.5" />
-              {kpis.publications.trend}
-            </span>
+            <div className="mt-5">
+              <h3 className="text-3xl font-black text-slate-900 dark:text-white tabular-nums leading-none">
+                {kpis.publications.value}
+              </h3>
+              <p className="text-xs font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest mt-2">
+                {t("kpis.publications")}
+              </p>
+            </div>
           </div>
-          <div className="mt-5">
-            <h3 className="text-3xl font-black text-slate-900 dark:text-white tabular-nums leading-none">
-              {kpis.publications.value}
-            </h3>
-            <p className="text-xs font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest mt-2">
-              {t("kpis.publications")}
-            </p>
+          <div className="mt-6 pt-4 border-t border-slate-100 dark:border-zinc-800/50">
+            <button 
+              onClick={() => router.push(`/${locale}/admin/publications?action=new`)}
+              className="flex items-center gap-2 text-xs font-bold text-green-700 dark:text-green-500 hover:text-green-800 dark:hover:text-green-400 transition-colors cursor-pointer"
+            >
+              <PenTool className="w-4 h-4" />
+              {t("quick_actions.new_publication")}
+            </button>
           </div>
         </motion.div>
 
@@ -425,23 +436,34 @@ export default function DashboardClient({
         <motion.div 
           variants={cardVariants}
           whileHover={{ y: -4, transition: { duration: 0.2 } }}
-          className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group"
+          className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group flex flex-col justify-between"
         >
-          <div className="flex items-start justify-between">
-            <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-2xl text-green-700 dark:text-green-400">
-              <Scale className="w-6 h-6" />
+          <div>
+            <div className="flex items-start justify-between">
+              <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-2xl text-green-700 dark:text-green-400">
+                <Scale className="w-6 h-6" />
+              </div>
+              <span className="text-[10px] font-black text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-900/20 py-1 px-2.5 rounded-full uppercase tracking-wider">
+                {kpis.cases.trend}
+              </span>
             </div>
-            <span className="text-[10px] font-black text-green-700 bg-green-50 dark:text-green-400 dark:bg-green-900/20 py-1 px-2.5 rounded-full uppercase tracking-wider">
-              {kpis.cases.trend}
-            </span>
+            <div className="mt-5">
+              <h3 className="text-3xl font-black text-slate-900 dark:text-white tabular-nums leading-none">
+                {kpis.cases.value}
+              </h3>
+              <p className="text-xs font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest mt-2">
+                {t("kpis.cases")}
+              </p>
+            </div>
           </div>
-          <div className="mt-5">
-            <h3 className="text-3xl font-black text-slate-900 dark:text-white tabular-nums leading-none">
-              {kpis.cases.value}
-            </h3>
-            <p className="text-xs font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest mt-2">
-              {t("kpis.cases")}
-            </p>
+          <div className="mt-6 pt-4 border-t border-slate-100 dark:border-zinc-800/50">
+            <button 
+              onClick={() => router.push(`/${locale}/admin/clinique?action=new`)}
+              className="flex items-center gap-2 text-xs font-bold text-green-700 dark:text-green-400 hover:text-green-800 dark:hover:text-green-300 transition-colors cursor-pointer"
+            >
+              <Scale className="w-4 h-4" />
+              {t("quick_actions.new_case")}
+            </button>
           </div>
         </motion.div>
 
@@ -449,23 +471,34 @@ export default function DashboardClient({
         <motion.div 
           variants={cardVariants}
           whileHover={{ y: -4, transition: { duration: 0.2 } }}
-          className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group"
+          className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group flex flex-col justify-between"
         >
-          <div className="flex items-start justify-between">
-            <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-2xl text-green-800 dark:text-green-300">
-              <Users className="w-6 h-6" />
+          <div>
+            <div className="flex items-start justify-between">
+              <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-2xl text-green-800 dark:text-green-300">
+                <Users className="w-6 h-6" />
+              </div>
+              <span className="text-[10px] font-black text-green-800 bg-green-50 dark:text-green-300 dark:bg-green-900/20 py-1 px-2.5 rounded-full uppercase tracking-wider">
+                {kpis.members.trend}
+              </span>
             </div>
-            <span className="text-[10px] font-black text-green-800 bg-green-50 dark:text-green-300 dark:bg-green-900/20 py-1 px-2.5 rounded-full uppercase tracking-wider">
-              {kpis.members.trend}
-            </span>
+            <div className="mt-5">
+              <h3 className="text-3xl font-black text-slate-900 dark:text-white tabular-nums leading-none">
+                {kpis.members.value}
+              </h3>
+              <p className="text-xs font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest mt-2">
+                {t("kpis.members")}
+              </p>
+            </div>
           </div>
-          <div className="mt-5">
-            <h3 className="text-3xl font-black text-slate-900 dark:text-white tabular-nums leading-none">
-              {kpis.members.value}
-            </h3>
-            <p className="text-xs font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest mt-2">
-              {t("kpis.members")}
-            </p>
+          <div className="mt-6 pt-4 border-t border-slate-100 dark:border-zinc-800/50">
+            <button 
+              onClick={() => router.push(`/${locale}/admin/users?action=new`)}
+              className="flex items-center gap-2 text-xs font-bold text-green-800 dark:text-green-300 hover:text-green-900 dark:hover:text-green-200 transition-colors cursor-pointer"
+            >
+              <UserPlus className="w-4 h-4" />
+              {t("quick_actions.invite_researcher")}
+            </button>
           </div>
         </motion.div>
 
@@ -473,99 +506,37 @@ export default function DashboardClient({
         <motion.div 
           variants={cardVariants}
           whileHover={{ y: -4, transition: { duration: 0.2 } }}
-          className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group"
+          className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group flex flex-col justify-between"
         >
-          <div className="flex items-start justify-between">
-            <div className="p-3 bg-[#D4AF37]/10 dark:bg-[#D4AF37]/10 rounded-2xl text-[#b8932a] dark:text-[#D4AF37]">
-              <ImageIcon className="w-6 h-6" />
+          <div>
+            <div className="flex items-start justify-between">
+              <div className="p-3 bg-[#D4AF37]/10 dark:bg-[#D4AF37]/10 rounded-2xl text-[#b8932a] dark:text-[#D4AF37]">
+                <ImageIcon className="w-6 h-6" />
+              </div>
+              <span className="text-[10px] font-black text-[#b8932a] bg-[#D4AF37]/10 dark:text-[#D4AF37] dark:bg-[#D4AF37]/10 py-1 px-2.5 rounded-full uppercase tracking-wider">
+                {kpis.media.trend}
+              </span>
             </div>
-            <span className="text-[10px] font-black text-[#b8932a] bg-[#D4AF37]/10 dark:text-[#D4AF37] dark:bg-[#D4AF37]/10 py-1 px-2.5 rounded-full uppercase tracking-wider">
-              {kpis.media.trend}
-            </span>
+            <div className="mt-5">
+              <h3 className="text-3xl font-black text-slate-900 dark:text-white tabular-nums leading-none">
+                {kpis.media.value}
+              </h3>
+              <p className="text-xs font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest mt-2">
+                {t("kpis.media")}
+              </p>
+            </div>
           </div>
-          <div className="mt-5">
-            <h3 className="text-3xl font-black text-slate-900 dark:text-white tabular-nums leading-none">
-              {kpis.media.value}
-            </h3>
-            <p className="text-xs font-bold text-slate-400 dark:text-zinc-500 uppercase tracking-widest mt-2">
-              {t("kpis.media")}
-            </p>
+          <div className="mt-6 pt-4 border-t border-slate-100 dark:border-zinc-800/50">
+            <button 
+              onClick={() => router.push(`/${locale}/admin/gallery?action=new`)}
+              className="flex items-center gap-2 text-xs font-bold text-[#b8932a] dark:text-[#D4AF37] hover:text-[#9e7d23] dark:hover:text-[#F3CD59] transition-colors cursor-pointer"
+            >
+              <Camera className="w-4 h-4" />
+              {t("quick_actions.add_media")}
+            </button>
           </div>
         </motion.div>
       </motion.div>
-
-      {/* ── Section 2 : Quick Actions Grid ── */}
-      <div className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-3xl p-6">
-        <h2 className="text-xs font-black text-slate-400 dark:text-zinc-500 uppercase tracking-widest mb-4">
-          {t("quick_actions.title")}
-        </h2>
-        
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {/* Action 1 : Nouvelle Publication */}
-          <button 
-            onClick={() => setActiveModal("publication")}
-            className="flex flex-col items-start p-5 rounded-2xl bg-slate-50 hover:bg-green-50/20 dark:bg-zinc-800/40 dark:hover:bg-green-950/10 border border-slate-100 dark:border-zinc-800 hover:border-green-500/30 transition-all text-left group hover-lift shrink-0 cursor-pointer"
-          >
-            <div className="p-3 bg-white dark:bg-zinc-800 rounded-xl text-green-700 dark:text-green-500 group-hover:scale-110 transition-transform shadow-sm">
-              <PenTool className="w-5 h-5" />
-            </div>
-            <span className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight mt-4">
-              {t("quick_actions.new_publication")}
-            </span>
-            <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 mt-1 flex items-center gap-0.5">
-              Recherche Académique <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </span>
-          </button>
-
-          {/* Action 2 : Créer un Cas Clinique */}
-          <button 
-            onClick={() => setActiveModal("clinique")}
-            className="flex flex-col items-start p-5 rounded-2xl bg-slate-50 hover:bg-emerald-50/20 dark:bg-zinc-800/40 dark:hover:bg-emerald-950/10 border border-slate-100 dark:border-zinc-800 hover:border-emerald-500/30 transition-all text-left group hover-lift shrink-0 cursor-pointer"
-          >
-            <div className="p-3 bg-white dark:bg-zinc-800 rounded-xl text-emerald-600 dark:text-emerald-500 group-hover:scale-110 transition-transform shadow-sm">
-              <Scale className="w-5 h-5" />
-            </div>
-            <span className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight mt-4">
-              {t("quick_actions.new_case")}
-            </span>
-            <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 mt-1 flex items-center gap-0.5">
-              Clinique Juridique <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </span>
-          </button>
-
-          {/* Action 3 : Ajouter un Média */}
-          <button 
-            onClick={() => setActiveModal("media")}
-            className="flex flex-col items-start p-5 rounded-2xl bg-slate-50 hover:bg-green-50/30 dark:bg-zinc-800/40 dark:hover:bg-green-950/10 border border-slate-100 dark:border-zinc-800 hover:border-green-600/30 transition-all text-left group hover-lift shrink-0 cursor-pointer"
-          >
-            <div className="p-3 bg-white dark:bg-zinc-800 rounded-xl text-green-700 dark:text-green-400 group-hover:scale-110 transition-transform shadow-sm">
-              <Camera className="w-5 h-5" />
-            </div>
-            <span className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight mt-4">
-              {t("quick_actions.add_media")}
-            </span>
-            <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 mt-1 flex items-center gap-0.5">
-              Médiathèque / Galerie <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </span>
-          </button>
-
-          {/* Action 4 : Inviter un Chercheur */}
-          <button 
-            onClick={() => setActiveModal("invitation")}
-            className="flex flex-col items-start p-5 rounded-2xl bg-slate-50 hover:bg-green-50/30 dark:bg-zinc-800/40 dark:hover:bg-green-950/10 border border-slate-100 dark:border-zinc-800 hover:border-green-600/30 transition-all text-left group hover-lift shrink-0 cursor-pointer"
-          >
-            <div className="p-3 bg-white dark:bg-zinc-800 rounded-xl text-[#b8932a] dark:text-[#D4AF37] group-hover:scale-110 transition-transform shadow-sm">
-              <UserPlus className="w-5 h-5" />
-            </div>
-            <span className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-tight mt-4">
-              {t("quick_actions.invite_researcher")}
-            </span>
-            <span className="text-[10px] font-bold text-slate-400 dark:text-zinc-500 mt-1 flex items-center gap-0.5">
-              Gestion des Accès <ArrowUpRight className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </span>
-          </button>
-        </div>
-      </div>
 
       {/* ── Section 3 : Charts Grid ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -704,12 +675,6 @@ export default function DashboardClient({
         )}
       </div>
 
-      {/* Modals injection */}
-      <DashboardModals 
-        activeModal={activeModal} 
-        onClose={() => setActiveModal(null)} 
-        locale={locale}
-      />
     </div>
   );
 }

@@ -44,7 +44,7 @@ export default function PublicationCard({ doc, locale, delay = 0 }: PublicationC
       <span className="absolute left-0 top-1/2 w-0.5 h-0 bg-primary group-hover:h-full group-hover:top-0 transition-all duration-500 ease-out z-10" />
       <span className="absolute right-0 top-1/2 w-0.5 h-0 bg-primary group-hover:h-full group-hover:top-0 transition-all duration-500 ease-out z-10" />
 
-      <Link href={`/publications/${doc.slug || doc.id}`} className="flex flex-col h-full">
+      <Link href={`/publications/${doc.id}`} className="flex flex-col h-full">
         {/* IMAGE CONTAINER */}
         <div className="relative aspect-video overflow-hidden">
           <Image

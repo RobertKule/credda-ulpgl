@@ -66,7 +66,7 @@ export default function WordReveal({
     >
       <Tag className={className}>
         {words.map((word, i) => (
-          <span key={i} className="inline-block overflow-hidden">
+          <span key={i} className="inline-block overflow-hidden px-1 -mx-1 pb-1 -mb-1">
             <motion.span
               className="inline-block will-change-transform"
               variants={wordVariants}

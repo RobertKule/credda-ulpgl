@@ -87,7 +87,7 @@ export default function FeaturedResearch({ research }: FeaturedResearchProps) {
                 <span className="absolute left-0 top-1/2 w-0.5 h-0 bg-primary group-hover:h-full group-hover:top-0 transition-all duration-500 ease-out z-10" />
                 <span className="absolute right-0 top-1/2 w-0.5 h-0 bg-primary group-hover:h-full group-hover:top-0 transition-all duration-500 ease-out z-10" />
 
-                <Link href={`/publications/${item.slug}`} className="block space-y-4">
+                <Link href={`/publications/${item.id}`} className="block space-y-4">
                   {/* Image Area */}
                   <div className="relative aspect-video w-full overflow-hidden">
                     <Image 

@@ -132,7 +132,7 @@ export default function ResearchSection({ articles = [] }: { articles: ResearchA
                                     </div>
                                     
                                     <Link
-                                        href={`/publications/${article?.slug || article?.id || '#'}`}
+                                        href={`/publications/${article?.id || article?.slug || '#'}`}
                                         className="relative overflow-hidden group/link px-4 py-2"
                                     >
                                         <span className="text-[10px] font-black uppercase tracking-tighter text-foreground block transition-transform duration-500 group-hover/link:-translate-y-full">
