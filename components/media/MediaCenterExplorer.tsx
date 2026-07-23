@@ -28,25 +28,33 @@ export default function MediaCenterExplorer({ media }: MediaCenterExplorerProps)
   const ITEMS_PER_PAGE = parseInt(itemsPerPage);
 
   // Normalize media with robust type detection
-  const normalizedMedia = useMemo<MediaItem[]>(() => media.map((m, i) => ({
-    ...m,
-    id: m.id || `m-${i}`,
-    type: (
-      m.type ||
-      (m.coverImageUrl ||
+  const normalizedMedia = useMemo<MediaItem[]>(() => media.map((m, i) => {
+    // Determine type: explicit field wins, then video URL signals, then file contents
+    // NOTE: coverImageUrl alone does NOT make something a video — videos can have cover images
+    const resolvedType: "VIDEO" | "IMAGE" = ((): "VIDEO" | "IMAGE" => {
+      if (m.type === "VIDEO" || m.type === "IMAGE") return m.type;
+      // Video URL signals
+      if (
         m.url?.includes('youtube') ||
+        m.url?.includes('youtu.be') ||
         m.url?.includes('vimeo') ||
-        m.url?.match(/\.(mp4|mov|webm|ogg|mkv)$/i) ||
-        (m.files?.some(f => f.fileType === 'VIDEO'))
-      )
-        ? 'VIDEO'
-        : 'IMAGE'
-    ) as "VIDEO" | "IMAGE",
-    title: m.title || `Media #${i + 1}`,
-    category: m.category || 'General',
-    // Preserve cover image URL for videos
-    coverImageUrl: m.coverImageUrl,
-  }) as MediaItem), [media]);
+        m.url?.match(/\.(mp4|mov|webm|ogg|mkv)$/i)
+      ) return "VIDEO";
+      // If any file is a video
+      if (m.files?.some(f => f.fileType === "VIDEO")) return "VIDEO";
+      // Default to IMAGE
+      return "IMAGE";
+    })();
+
+    return {
+      ...m,
+      id: m.id || `m-${i}`,
+      type: resolvedType,
+      title: m.title || `Media #${i + 1}`,
+      category: m.category || 'General',
+      coverImageUrl: m.coverImageUrl,
+    } as MediaItem;
+  }), [media]);
 
   // Split media into Video Reports and Gallery Images
   const videoReports = useMemo(() => normalizedMedia.filter(m => m.type === "VIDEO"), [normalizedMedia]);
