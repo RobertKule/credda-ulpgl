@@ -151,8 +151,9 @@ export default function GalleryGrid({
           >
             {current.map((img, idx) => {
               const isAlbum = img.files && img.files.length > 1;
+              const isVideo = img.type === "VIDEO";
               const globalIdx = page * PAGE_SIZE + idx;
-              const thumbnailUrl = img.thumbnailUrl || getThumbnailUrl(img.url);
+              const thumbnailUrl = !isVideo ? img.thumbnailUrl || getThumbnailUrl(img.url) : "";
               return (
               <motion.div
                 key={img.id}
@@ -173,14 +174,22 @@ export default function GalleryGrid({
                 className="group relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer
                            border border-border/20 dark:border-border/10 bg-card"
               >
-                <Image
-                  src={thumbnailUrl}
-                  alt={img.title || "Galerie CREDDA"}
-                  fill
-                  unoptimized
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                />
+                {isVideo ? (
+                  <div className="w-full h-full bg-gradient-to-br from-violet-950 via-slate-900 to-zinc-900 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-black/60 border border-white/10 flex items-center justify-center shadow-2xl shadow-black/40">
+                      <Play size={28} className="text-white" />
+                    </div>
+                  </div>
+                ) : (
+                  <Image
+                    src={thumbnailUrl}
+                    alt={img.title || "Galerie CREDDA"}
+                    fill
+                    unoptimized
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                  />
+                )}
 
                 {/* Hover overlay */}
                 <motion.div
