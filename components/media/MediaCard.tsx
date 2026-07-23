@@ -24,18 +24,9 @@ export default function MediaCard({ media, onClick }: MediaCardProps) {
   const isAlbum = media.files && media.files.length > 1;
   const isVideo = media.type === "VIDEO";
 
-  // Ordre de priorité pour l'image affichée sur la carte :
-  // 1. coverImageUrl (couverture manuelle) pour les vidéos
-  // 2. Miniature YouTube auto-générée
-  // 3. thumbnailUrl standard
-  const resolvedThumbnail: string | null = (() => {
-    if (isVideo) {
-      if (media.coverImageUrl) return media.coverImageUrl;
-      const ytThumb = getYoutubeThumbnail(media.url);
-      if (ytThumb) return ytThumb;
-    }
-    return media.thumbnailUrl || null;
-  })();
+  // Pour les vidéos, on n'affiche pas la couverture :
+  // on reste sur un placeholder graphique avec une icône play.
+  const resolvedThumbnail: string | null = isVideo ? null : media.thumbnailUrl || null;
 
   return (
     <motion.div

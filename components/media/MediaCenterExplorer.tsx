@@ -18,7 +18,7 @@ interface MediaCenterExplorerProps {
 export default function MediaCenterExplorer({ media }: MediaCenterExplorerProps) {
   const t = useTranslations("MediaCenter");
 
-  const [filter, setFilter] = useState<FilterType>("videos");
+  const [filter, setFilter] = useState<FilterType>("all");
   const [itemsPerPage, setItemsPerPage] = useState("10");
   const [videoPage, setVideoPage] = useState(1);
   const [galleryPage, setGalleryPage] = useState(1);
