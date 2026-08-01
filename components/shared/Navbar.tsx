@@ -307,7 +307,7 @@ export default function Navbar({ announcements = [] }: { announcements?: Announc
             </div>
             
             {/* Mobile Nav Links */}
-            <nav className="flex-1 overflow-y-auto px-6 py-10 flex flex-col gap-2">
+            <nav className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-1">
               {[...primaryLinks, ...secondaryLinks].map((link, idx) => (
                 <motion.div
                     key={link.href}
@@ -318,12 +318,12 @@ export default function Navbar({ announcements = [] }: { announcements?: Announc
                     <Link
                         href={link.href}
                         onClick={() => setIsOpen(false)}
-                        className={`text-3xl font-black tracking-tight py-3 flex items-center justify-between group ${
-                            pathname === link.href ? "text-primary" : "text-foreground/80"
+                        className={`text-base font-semibold tracking-wide py-3.5 flex items-center justify-between border-b border-border/20 group ${
+                            pathname === link.href ? "text-primary" : "text-foreground/70 hover:text-foreground"
                         }`}
                     >
                         {link.label}
-                        <ArrowRight size={20} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <ArrowRight size={16} className={`transition-all duration-300 ${pathname === link.href ? "opacity-100 text-primary" : "opacity-0 group-hover:opacity-60 group-hover:translate-x-1"}`} />
                     </Link>
                 </motion.div>
               ))}

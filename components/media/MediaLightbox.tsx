@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { createPortal } from "react-dom";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, Play, Film, Images } from "lucide-react";
 import Image from "next/image";
@@ -54,6 +55,11 @@ export default function MediaLightbox({
   const t = useTranslations("MediaCenter.modal");
   const [currentFileIndex, setCurrentFileIndex] = React.useState(0);
   const [isPlaying, setIsPlaying] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Reset state when media changes
   React.useEffect(() => {
@@ -61,8 +67,14 @@ export default function MediaLightbox({
     setCurrentFileIndex(0);
   }, [media]);
 
-  // Keyboard shortcuts
+  // Keyboard shortcuts and body scroll lock
   React.useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
     if (!isOpen) return;
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") { onClose(); return; }
@@ -70,7 +82,10 @@ export default function MediaLightbox({
       if (e.key === "ArrowLeft") { handlePrevGlobal(); return; }
     };
     window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
+    return () => {
+      window.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, media, currentFileIndex]);
 
@@ -107,7 +122,7 @@ export default function MediaLightbox({
 
   // ─── Render ─────────────────────────────────────────────────────────────
 
-  return (
+  const modalContent = (
     <AnimatePresence>
       {isOpen && (
         /*
@@ -121,24 +136,23 @@ export default function MediaLightbox({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[100] flex flex-col items-stretch md:items-center md:justify-center bg-black/95 backdrop-blur-md"
+          className="fixed inset-0 z-[9999] h-[100dvh] w-screen flex flex-col items-stretch md:items-center md:justify-center bg-background/90 backdrop-blur-xl md:overflow-hidden"
           onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
         >
           {/* ── Close button ── */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-[120] p-2 bg-white/5 hover:bg-white/15 text-white/60 hover:text-white rounded-full border border-white/10 transition-colors"
+            className="absolute top-4 right-4 z-[120] p-2 bg-card/40 hover:bg-card/80 text-foreground/60 hover:text-foreground rounded-full border border-border/50 transition-colors backdrop-blur-md"
             aria-label="Fermer"
           >
             <X size={20} />
           </button>
 
-          {/* ── Desktop prev/next (outside card, vertically centered in the media zone) ── */}
+          {/* ── Desktop prev/next (outside card, vertically centered in the viewport) ── */}
           <button
             type="button"
             onClick={handlePrevGlobal}
-            className="absolute left-3 z-[110] p-3 bg-white/5 hover:bg-white/15 text-white/60 hover:text-white rounded-full border border-white/10 transition-all hidden md:flex"
-            style={{ top: "28vh" }}
+            className="absolute left-6 top-1/2 -translate-y-1/2 z-[110] p-3 bg-card/40 hover:bg-card/80 text-foreground/60 hover:text-foreground rounded-full border border-border/50 transition-all hidden md:flex backdrop-blur-md"
             aria-label="Précédent"
           >
             <ChevronLeft size={22} />
@@ -146,8 +160,7 @@ export default function MediaLightbox({
           <button
             type="button"
             onClick={handleNextGlobal}
-            className="absolute right-3 z-[110] p-3 bg-white/5 hover:bg-white/15 text-white/60 hover:text-white rounded-full border border-white/10 transition-all hidden md:flex"
-            style={{ top: "28vh" }}
+            className="absolute right-6 top-1/2 -translate-y-1/2 z-[110] p-3 bg-card/40 hover:bg-card/80 text-foreground/60 hover:text-foreground rounded-full border border-border/50 transition-all hidden md:flex backdrop-blur-md"
             aria-label="Suivant"
           >
             <ChevronRight size={22} />
@@ -155,16 +168,16 @@ export default function MediaLightbox({
 
           {/*
            * CARD
-           * Mobile  : w-full h-full (fills entire screen — no gaps)
-           * Desktop : max-w + max-h, rounded, centered by parent flex
+           * Mobile  : w-full flex-1 min-h-0 overflow-y-auto (fills entire screen, scrolls internally)
+           * Desktop : strict max-h + overflow-y-auto so card never exceeds viewport
            */}
           <motion.div
             layoutId={`media-${media.id}`}
             className="
               relative flex flex-col
-              w-full h-full overflow-hidden bg-zinc-950
-              md:h-auto md:max-h-[94vh] md:w-full md:max-w-2xl
-              md:rounded-2xl md:border md:border-white/10 md:shadow-2xl
+              w-full flex-1 min-h-0 overflow-y-auto overscroll-contain bg-card
+              md:flex-none md:h-auto md:max-h-[88vh] md:w-full md:max-w-5xl md:overflow-y-auto
+              md:rounded-2xl md:border md:border-border/50 md:shadow-2xl
             "
           >
             {/* ══════════════════════════════════════════════════════
@@ -172,18 +185,18 @@ export default function MediaLightbox({
                 flex-shrink-0 so it never collapses when content below is tall
             ══════════════════════════════════════════════════════ */}
             <div
-              className="relative w-full flex-shrink-0 bg-black"
-              style={{ height: "56vw", maxHeight: "56vh", minHeight: "220px" }}
+              className="relative w-full flex-shrink-0 bg-muted/30"
+              style={{ height: "56vw", maxHeight: "65vh", minHeight: "300px" }}
             >
               {/* Type badge */}
-              <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 text-white text-[10px] font-black uppercase tracking-widest">
+              <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-background/60 backdrop-blur-sm border border-border/50 text-foreground text-[10px] font-black uppercase tracking-widest">
                 {isVideo ? <Film size={11} /> : <Images size={11} />}
                 {isVideo ? "Vidéo" : isAlbum ? `Album · ${files.length}` : "Photo"}
               </div>
 
               {/* Album counter */}
               {isAlbum && (
-                <div className="absolute top-3 right-3 z-20 px-3 py-1 rounded-full bg-black/60 backdrop-blur-sm border border-white/10 text-white text-[10px] font-black">
+                <div className="absolute top-3 right-3 z-20 px-3 py-1 rounded-full bg-background/60 backdrop-blur-sm border border-border/50 text-foreground text-[10px] font-black">
                   {currentFileIndex + 1} / {files.length}
                 </div>
               )}
@@ -222,8 +235,8 @@ export default function MediaLightbox({
                             className="absolute inset-0 flex items-center justify-center group"
                             aria-label="Lire la vidéo"
                           >
-                            <div className="w-20 h-20 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/30 flex items-center justify-center shadow-2xl transition-transform duration-300 group-hover:scale-110 group-hover:bg-white/20">
-                              <Play size={36} className="fill-white text-white ml-1" />
+                            <div className="w-20 h-20 rounded-full bg-background/80 backdrop-blur-md border-2 border-border/50 flex items-center justify-center shadow-2xl transition-transform duration-300 group-hover:scale-110 group-hover:bg-background">
+                              <Play size={36} className="fill-foreground text-foreground ml-1" />
                             </div>
                           </button>
                         </>
@@ -244,20 +257,20 @@ export default function MediaLightbox({
 
               {/* ── IMAGE ── */}
               {!isVideo && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black">
+                <div className="absolute inset-0 flex items-center justify-center">
                   {currentFile.url.startsWith("/") ? (
                     <Image
                       src={currentFile.url}
                       alt={media.title}
                       fill
-                      className="object-contain"
-                      sizes="(max-width: 768px) 100vw, 672px"
+                      className="object-contain p-4"
+                      sizes="(max-width: 768px) 100vw, 1024px"
                     />
                   ) : (
                     <img
                       src={currentFile.url}
                       alt={media.title}
-                      className="w-full h-full object-contain"
+                      className="w-full h-full object-contain p-4"
                     />
                   )}
 
@@ -267,7 +280,7 @@ export default function MediaLightbox({
                       <button
                         type="button"
                         onClick={handlePrevFile}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 bg-black/50 hover:bg-black text-white rounded-full transition-colors z-10"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 bg-background/60 hover:bg-background text-foreground rounded-full transition-colors z-10 backdrop-blur-sm border border-border/50"
                         aria-label="Image précédente"
                       >
                         <ChevronLeft size={20} />
@@ -275,7 +288,7 @@ export default function MediaLightbox({
                       <button
                         type="button"
                         onClick={handleNextFile}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 bg-black/50 hover:bg-black text-white rounded-full transition-colors z-10"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 bg-background/60 hover:bg-background text-foreground rounded-full transition-colors z-10 backdrop-blur-sm border border-border/50"
                         aria-label="Image suivante"
                       >
                         <ChevronRight size={20} />
@@ -288,21 +301,20 @@ export default function MediaLightbox({
 
             {/* ══════════════════════════════════════════════════════
                 SECTION 2 — INFO + ALBUM
-                flex-1 = takes remaining height
-                overflow-y-auto = scrolls if content is taller than the space
+                Content will push height, causing the whole card to scroll if too long
             ══════════════════════════════════════════════════════ */}
-            <div className="flex flex-col flex-1 overflow-y-auto">
+            <div className="flex flex-col flex-1 md:flex-none">
 
               {/* Info */}
               <div className="flex flex-col gap-3 px-6 py-5">
                 <span className="self-start text-[9px] font-black uppercase tracking-[0.25em] text-primary px-3 py-1 bg-primary/10 rounded-full border border-primary/20">
                   {media.category}
                 </span>
-                <h2 className="text-white text-xl md:text-2xl font-serif font-bold leading-snug">
+                <h2 className="text-foreground text-xl md:text-2xl font-serif font-bold leading-snug">
                   {media.title}
                 </h2>
                 {media.description && (
-                  <p className="text-white/50 text-sm font-light leading-relaxed">
+                  <p className="text-muted-foreground text-sm font-light leading-relaxed">
                     {media.description}
                   </p>
                 )}
@@ -310,7 +322,7 @@ export default function MediaLightbox({
                   <button
                     type="button"
                     onClick={() => setIsPlaying(false)}
-                    className="self-start mt-1 flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/50 hover:text-white text-xs font-bold uppercase tracking-widest transition-colors border border-white/10"
+                    className="self-start mt-1 flex items-center gap-2 px-4 py-2 rounded-xl bg-muted/50 hover:bg-muted text-muted-foreground hover:text-foreground text-xs font-bold uppercase tracking-widest transition-colors border border-border/50"
                   >
                     ← Retour à la couverture
                   </button>
@@ -319,8 +331,8 @@ export default function MediaLightbox({
 
               {/* Album thumbnail strip */}
               {isAlbum && (
-                <div className="border-t border-white/10 px-6 py-4 overflow-x-auto flex-shrink-0">
-                  <p className="text-[9px] font-bold text-white/30 uppercase tracking-widest mb-3">
+                <div className="border-t border-border/50 px-6 py-4 overflow-x-auto flex-shrink-0">
+                  <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest mb-3">
                     Contenu de l&apos;album
                   </p>
                   <div className="flex gap-2 pb-1">
@@ -343,8 +355,8 @@ export default function MediaLightbox({
                             <img src={f.url} alt="" className="w-full h-full object-cover" />
                           )
                         ) : (
-                          <div className="w-full h-full bg-zinc-800 flex items-center justify-center">
-                            <Play size={16} className="text-white/60" />
+                          <div className="w-full h-full bg-muted flex items-center justify-center">
+                            <Play size={16} className="text-muted-foreground" />
                           </div>
                         )}
                       </button>
@@ -355,20 +367,20 @@ export default function MediaLightbox({
             </div>
 
             {/* ══════════════════════════════════════════════════════
-                SECTION 3 — PREV / NEXT BAR (always pinned at bottom)
+                SECTION 3 — PREV / NEXT BAR (sticky at bottom)
             ══════════════════════════════════════════════════════ */}
-            <div className="flex-shrink-0 flex border-t border-white/10">
+            <div className="flex-shrink-0 flex border-t border-border/50 sticky bottom-0 bg-card z-20">
               <button
                 type="button"
                 onClick={handlePrevGlobal}
-                className="flex-1 py-3 text-white/40 hover:text-white flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-colors border-r border-white/10"
+                className="flex-1 py-3 text-muted-foreground hover:text-foreground hover:bg-muted/30 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-colors border-r border-border/50"
               >
                 <ChevronLeft size={15} /> Précédent
               </button>
               <button
                 type="button"
                 onClick={handleNextGlobal}
-                className="flex-1 py-3 text-white/40 hover:text-white flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-colors"
+                className="flex-1 py-3 text-muted-foreground hover:text-foreground hover:bg-muted/30 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest transition-colors"
               >
                 Suivant <ChevronRight size={15} />
               </button>
@@ -378,4 +390,8 @@ export default function MediaLightbox({
       )}
     </AnimatePresence>
   );
+
+  if (!mounted || typeof window === "undefined") return null;
+
+  return createPortal(modalContent, document.body);
 }
