@@ -38,16 +38,9 @@ function AnimatedNumber({ value, suffix }: { value: number; suffix: string }) {
   );
 }
 
-export default function AboutImpact() {
+export default function AboutImpact({ statsData }: { statsData: Record<string, number> }) {
   const t = useTranslations("AboutPage.impact");
-  const stats = t.raw("stats") as { value: string; label: string }[];
-
-  // Parse numeric value and trailing suffix (e.g. "200+" → 200, "+")
-  function parseStat(raw: string): { num: number; suffix: string } {
-    const match = raw.match(/^(\d+)(.*)$/);
-    if (match) return { num: parseInt(match[1], 10), suffix: match[2] ?? "" };
-    return { num: 0, suffix: raw };
-  }
+  const stats = t.raw("stats") as { id: string; label: string }[];
 
   return (
     <section className="py-24 lg:py-32 relative overflow-hidden bg-card/20 border-y border-border/50">
@@ -77,10 +70,12 @@ export default function AboutImpact() {
         {/* STATS GRID */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
           {stats.map((stat, i) => {
-            const { num, suffix } = parseStat(stat.value);
+            const num = statsData[stat.id] || 0;
+            const suffix = "+"; // Adding a simple plus for aesthetic if you like, or leave empty if exact
+            
             return (
               <motion.div
-                key={i}
+                key={stat.id}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
