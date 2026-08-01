@@ -8,10 +8,6 @@ import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useTranslations, useLocale } from "next-intl";
 
-const AfricaGlobe = dynamic(() => import("@/components/home/AfricaGlobe"), {
-  ssr: false,
-  loading: () => null,
-});
 
 const HeroCarousel = dynamic(() => import("@/components/home/HeroCarousel"), {
   ssr: false,
@@ -88,10 +84,10 @@ export default function Hero({
       {/* ✅ BACKGROUND CAROUSEL LAYER */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <HeroCarousel />
-        
+
         {/* Institutional Vignette & Grid Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-background/90 z-[5]" />
-        
+
         <div
           className="absolute inset-0 opacity-[0.08] dark:opacity-[0.04] z-[6]"
           style={{
@@ -100,17 +96,17 @@ export default function Hero({
             backgroundSize: "100px 100px",
           }}
         />
-        
+
         {/* Top Glow */}
         <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-black/40 to-transparent z-[7] pointer-events-none" />
       </div>
 
       <div className="relative z-10 container mx-auto px-6 w-full flex flex-col justify-end flex-grow pb-12 lg:pb-20">
-        
+
         <div className="flex flex-col lg:flex-row items-end justify-between w-full h-full gap-12">
-          
+
           {/* BOTTOM LEFT: LOGOS & INSTITUTION */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-6 pointer-events-auto scale-90 sm:scale-100 origin-left"
@@ -205,7 +201,7 @@ export default function Hero({
                 </Link>
               </div>
             </div>
-            
+
             {/* Subtle card glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-[60px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
           </motion.div>

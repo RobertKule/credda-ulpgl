@@ -27,7 +27,7 @@ export default function CtaSection() {
             <motion.div style={{ scale }} className="absolute inset-0 z-0">
                 <div
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
-                    style={{ backgroundImage: "url('/images/imgCTA.jpg')" }}
+                    style={{ backgroundImage: "url('/images/home/cta.jpg')" }}
                 />
 
                 {/* CLEAN OVERLAY */}
@@ -49,8 +49,7 @@ export default function CtaSection() {
                         rounded-2xl
                         p-10 md:p-14
 
-                        bg-background/60 dark:bg-background/30
-                        backdrop-blur-2xl
+                        bg-background
 
                         border border-border/20
                         shadow-[0_30px_120px_-40px_rgba(0,0,0,0.35)]
