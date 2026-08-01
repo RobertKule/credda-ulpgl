@@ -20,8 +20,7 @@ import {
 } from "lucide-react";
 import { ScrollReveal } from "@/components/shared/ScrollReveal";
 import { Badge } from "@/components/ui/badge";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import ArticleMarkdown from "@/app/[locale]/(public)/publications/[slug]/ArticleMarkdown";
 
 interface Props {
   params: Promise<{ slug: string; locale: string }>;
@@ -223,13 +222,13 @@ export default async function MemberDetailPage({ params }: Props) {
           </ScrollReveal>
 
           <ScrollReveal delay={0.3} className="space-y-12">
-             <div className="prose prose-invert max-w-none">
+             <div>
                 <h3 className="text-sm font-black uppercase tracking-[0.3em] text-foreground border-l-4 border-primary pl-6 mb-8">
                    {t('detail.biographyTitle')}
                 </h3>
-                <div className="text-lg text-muted-foreground font-outfit font-light leading-relaxed space-y-6">
+                <div className="text-lg font-outfit font-light leading-relaxed text-justify">
                    {content.bio ? (
-                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{content.bio}</ReactMarkdown>
+                     <ArticleMarkdown content={content.bio} />
                    ) : (
                      <p className="italic opacity-40">Aucune biographie disponible pour ce membre.</p>
                    )}
@@ -238,28 +237,28 @@ export default async function MemberDetailPage({ params }: Props) {
 
              {/* BENTO GRID INFOS */}
              {(content.education || content.researchAxes) && (
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+               <div className={`grid grid-cols-1 ${content.education && content.researchAxes ? 'md:grid-cols-2' : ''} gap-8 mt-12`}>
                   {content.education && (
-                    <div className="p-8 bg-card border border-border space-y-4 hover:border-primary/30 transition-all group">
+                    <div className="p-8 bg-card border border-border space-y-4 hover:border-primary/30 transition-all group flex flex-col items-center text-center">
                        <div className="w-12 h-12 bg-primary/10 text-primary flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform">
                           <GraduationCap size={24} />
                        </div>
                        <h4 className="font-serif font-black uppercase text-xs tracking-widest text-foreground">Formation Académique</h4>
-                       <div className="text-sm text-muted-foreground font-light leading-relaxed prose prose-sm prose-invert max-w-none">
-                          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content.education}</ReactMarkdown>
+                       <div className="w-full text-justify font-light leading-relaxed">
+                          <ArticleMarkdown content={content.education} />
                        </div>
                     </div>
                   )}
                   
                   {content.researchAxes && (
-                    <div className="p-8 bg-card border border-border space-y-4 hover:border-primary/30 transition-all group">
+                    <div className="p-8 bg-card border border-border space-y-4 hover:border-primary/30 transition-all group flex flex-col items-center text-center">
                        <div className="w-12 h-12 bg-primary/10 text-primary flex items-center justify-center rounded-2xl group-hover:scale-110 transition-transform">
                           <Microscope size={24} />
                        </div>
                        <h4 className="font-serif font-black uppercase text-xs tracking-widest text-foreground">Axes de Recherche</h4>
-                       <p className="text-sm text-muted-foreground font-light leading-relaxed whitespace-pre-line">
-                          {content.researchAxes}
-                       </p>
+                       <div className="w-full text-justify font-light leading-relaxed">
+                          <ArticleMarkdown content={content.researchAxes} />
+                       </div>
                     </div>
                   )}
                </div>

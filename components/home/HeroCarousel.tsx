@@ -7,16 +7,18 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const heroSlides = [
-  "/images/hero/ProfKenendyWithEtudiant.jpeg",
+  "/images/hero/bureauCredda.jpg",
+  "/images/hero/especedeCredda.jpg",
+  "/images/hero/foret.jpg",
+  "/images/hero/foretCredda.jpg",
   "/images/hero/onSiteCredda.jpeg",
   "/images/hero/profKenedyHero.jpeg",
   "/images/hero/profKenedyHero2.jpeg",
   "/images/hero/profKenedyWithEtudiant2.jpeg",
   "/images/hero/profKenedyWithEtudiant3.jpeg",
-  "/images/hero/profKenedyWithEtudiant4.jpeg",
-  "/images/hero/profKenedyWithEtudiant5.jpeg",
   "/images/hero/profKenedyWithEtudiant6.jpeg",
-  "/images/hero/theCreddaSite.jpeg",
+  "/images/hero/seanceCredda.jpg",
+  "/images/hero/surlaClinique.jpg",
 ];
 
 export default function HeroCarousel() {

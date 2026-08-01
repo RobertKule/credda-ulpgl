@@ -110,7 +110,7 @@ function TestimonialCard({
         </div>
 
         {/* TEXT PREVIEW */}
-        <p className="text-xl font-serif italic text-foreground/90 leading-relaxed mb-10 line-clamp-4">
+        <p className="text-lg font-serif italic text-foreground/90 leading-relaxed mb-10">
           “{testimonial.text}”
         </p>
 
