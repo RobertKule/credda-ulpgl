@@ -80,8 +80,8 @@ export default function PublicationExplorer({
   return (
     <div className="space-y-12">
       {/* TOOLBAR */}
-      <div className="sticky top-28 z-30 mx-auto max-w-5xl w-full">
-        <div className="flex flex-col lg:flex-row gap-6 items-center justify-between bg-card/40 backdrop-blur-xl px-10 py-6 rounded-full border border-border/50 shadow-xl shadow-black/10">
+      <div className="sticky top-28 z-30 mx-auto max-w-5xl w-full border border-primary">
+        <div className="flex flex-col lg:flex-row gap-4 items-center justify-between bg-card/40 backdrop-blur-xl p-4 rounded-md border border-border/50">
         
         {/* SEARCH */}
         <div className="relative w-full lg:max-w-md group">
@@ -91,7 +91,7 @@ export default function PublicationExplorer({
             placeholder="Search publications..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-background/50 border border-border/60 rounded-full py-3 pl-12 pr-10 outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all font-light text-sm"
+            className="w-full bg-background/50 border border-border/60 rounded-md py-3 pl-12 pr-10 outline-none focus:border-primary/40 focus:ring-4 focus:ring-primary/5 transition-all font-light text-sm"
           />
           {search && (
             <button
@@ -110,7 +110,7 @@ export default function PublicationExplorer({
              <select
                value={selectedCategory}
                onChange={(e) => setSelectedCategory(e.target.value)}
-               className="appearance-none bg-background/50 border border-border/60 rounded-full py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
+               className="appearance-none w-full lg:w-48 bg-background/50 border border-border/60 rounded-md py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
              >
                <option value="all">All Categories</option>
                {categories.map(cat => (
@@ -125,7 +125,7 @@ export default function PublicationExplorer({
              <select
                value={sortBy}
                onChange={(e) => setSortBy(e.target.value as "newest" | "oldest" | "title")}
-               className="appearance-none bg-background/50 border border-border/60 rounded-full py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
+               className="appearance-none w-full lg:w-48 bg-background/50 border border-border/60 rounded-md py-3 pl-6 pr-12 outline-none focus:border-primary/40 transition-all font-bold text-[10px] uppercase tracking-widest cursor-pointer"
              >
                <option value="newest">Newest First</option>
                <option value="oldest">Oldest First</option>

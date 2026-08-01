@@ -64,11 +64,6 @@ export default async function TeamPage({ params }: Props) {
             <span className="text-2xl font-serif font-bold text-primary leading-none">{members.length}</span>
             <span className="text-[9px] uppercase font-bold tracking-widest text-muted-foreground/50">Chercheurs</span>
           </div>
-          <div className="w-[1px] h-10 bg-border/50" />
-          <div className="flex flex-col">
-            <span className="text-2xl font-serif font-bold text-primary leading-none">24+</span>
-            <span className="text-[9px] uppercase font-bold tracking-widest text-muted-foreground/50">Expertises</span>
-          </div>
         </div>
       </div>
 
@@ -102,6 +97,7 @@ export default async function TeamPage({ params }: Props) {
         subtitle={t_cta('collaboration')}
         buttonText={t_cta('partner')}
         href="/contact"
+        bgImage="/images/home/cta.jpg"
       />
     </main>
   );

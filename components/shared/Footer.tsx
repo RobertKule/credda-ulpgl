@@ -2,7 +2,7 @@
 "use client";
 
 import { Link, usePathname } from "../../navigation"; 
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, ArrowUpRight } from "lucide-react";
+import { Mail, Phone, MapPin, Globe, Facebook, Twitter, Linkedin, ArrowUpRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 export default function Footer() {
@@ -120,6 +120,14 @@ export default function Footer() {
                 </div>
                 <a href={`mailto:${t('contact.email')}`} className="text-sm text-muted-foreground font-outfit font-light hover:text-foreground transition-colors">
                   {t('contact.email')}
+                </a>
+              </div>
+              <div className="flex items-center gap-4 group">
+                <div className="w-12 h-12 bg-muted flex items-center justify-center shrink-0 group-hover:bg-primary transition-all duration-500">
+                  <Globe size={18} className="text-primary group-hover:text-primary-foreground transition-colors" />
+                </div>
+                <a href={t('contact.website')} target="_blank" rel="noopener noreferrer" className="text-sm text-muted-foreground font-outfit font-light hover:text-foreground transition-colors break-all">
+                  {t('contact.website').replace('https://', '')}
                 </a>
               </div>
             </div>

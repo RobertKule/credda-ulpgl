@@ -4,7 +4,6 @@ import { usePathname as useNextPathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import dynamic from "next/dynamic";
-import PersistentGlobeBackground from "@/components/home/PersistentGlobeBackground";
 import FooterTickerBar from "./FooterTickerBar";
 
 import { useState, useEffect } from "react";
@@ -45,7 +44,6 @@ export default function MainLayoutWrapper({
         {!mounted && <GlobalLoader />}
       </AnimatePresence>
       <Navbar announcements={announcements} />
-      {!isHome && !isAuthPage && <PersistentGlobeBackground />}
       <div className="relative z-10 m-0 p-0 mt-20 min-h-screen bg-transparent text-foreground transition-all duration-500 overflow-x-hidden">
         {children}
       </div>

@@ -72,19 +72,6 @@
       "articles": "Makala ya Utafiti",
       "members": "Wanachama wa Timu"
     },
-    "vision": {
-      "badge": "URITHI WA KIAKADEMIA",
-      "title": "Kufafanua Upya Mustakabali wa <highlight>Utafiti</highlight> na <highlight>Haki</highlight> katika RDC.",
-      "main_description": "Maabara ya mawazo na kichocheo cha mageuzi, inayochanganya ubora wa kisayansi na ushirikiano wa kijamii.",
-      "card_vision_badge": "Maono Yetu",
-      "card_vision_text": "Kuunganisha ubora wa kitaaluma na athari za kijamii kwa Afrika ya kesho.",
-      "card_readiness_title": "Ubora na Ushiriki",
-      "card_readiness_text": "CREDDA inafunza viongozi wanaochanganya ukamilifu wa kisayansi na kutatua changamoto za kweli.",
-      "pillar1_title": "Utafiti wa Sheria",
-      "pillar1_text": "Uzalishaji wa maarifa ya hali ya juu na machapisho mashuhuri.",
-      "pillar2_title": "Kliniki ya Sheria",
-      "pillar2_text": "Ulinzi wa haki za binadamu na upatikanaji wa haki kwa wote."
-    },
     "about": {
       "badge": "Urithi wa Kiakademia",
       "title": "Kufafanua Mustakabali wa <span>Utafiti wa Kisheria</span>",
@@ -273,6 +260,33 @@
         }
       }
     },
+    "piliers": {
+      "badge": "HUDUMA ZETU",
+      "title": "Nguzo 4 za Hatua",
+      "subtitle": "CREDDA inatekeleza utaalamu wake kupitia huduma nne za msingi kwa utafiti na maendeleo barani Afrika.",
+      "items": [
+        {
+          "title": "Ubunifu, Usimamizi na Uratibu wa Miradi",
+          "desc": "Kutoka wazo hadi utekelezaji, tunaongoza miradi ya utafiti na maendeleo yenye athari kubwa.",
+          "icon": "FolderKanban"
+        },
+        {
+          "title": "Utafiti, Ukusanyaji, Uchambuzi na Usindikaji wa Data",
+          "desc": "Utaalamu mkali katika utafiti wa kimajaribio, tafiti za uwanjani na uchambuzi wa data.",
+          "icon": "BarChart3"
+        },
+        {
+          "title": "Mikutano, Semina na Mafunzo",
+          "desc": "Kupanga matukio ya kisayansi na programu za kuimarisha uwezo kwa wadau wa uwanjani.",
+          "icon": "GraduationCap"
+        },
+        {
+          "title": "Ushirikiano na Mtandao",
+          "desc": "Kujenga na kuhuisha mtandao wa kimataifa wa vyuo vikuu, NGO na taasisi washirika.",
+          "icon": "Network"
+        }
+      ]
+    },
     "cta": {
       "badge": "JIUNGE NASI",
       "title": "Wacha Kujenga <span>Mustakabali</span> Pamoja.",
@@ -346,11 +360,12 @@
       "breadcrumb": "Taasisi > Kuhusu"
     },
     "story": {
-      "badge": "Sisi ni nani?",
-      "title": "Kuhadithia Ubora wa Afrika kupitia Utafiti.",
-      "p1": "CREDDA ni nguzo ya akili ya kiakademia nchini RDC. Inashirikiana na ULPGL-Goma, tunabadilisha utafiti kuwa hatua ya kijamii ya moja kwa moja.",
-      "p2": "Ikiwa kimkakati katika mkoa wa Maziwa Makuu, tunatoa sauti huru ya kisayansi juu ya masuala ya haki na maendeleo endelevu.",
-      "image_label": "Mwili wa Kiakademia na Ubora",
+      "badge": "Mwanzo Wetu",
+      "title": "Historia Iliyoandikwa kwa Utafiti na Vitendo.",
+      "p1": "Yote yalianza mwaka wa 2008, katika kitovu cha mkoa uliokumbwa na ukosefu wa utulivu na migogoro ya mara kwa mara: Maziwa Makuu ya Afrika. CREDDA ilizaliwa kutokana na imani thabiti: hitaji kamili la tafakari ya ndani, ya kisayansi, na kali ili kuelewa na kutatua migogoro ya ndani.",
+      "p2": "Katika Chuo Kikuu Huria cha Nchi za Maziwa Makuu (ULPGL-Goma), kundi la watafiti wenye maono waliamua kuondoka kwenye kumbi za mihadhara ili kukabiliana na ukweli uwanjani. Walijenga daraja kati ya wasomi na jamii, wakibadilisha ujuzi wa kinadharia kuwa nguvu kwa hatua za kijamii.",
+      "p3": "Leo, CREDDA haichambui tu. Inachukua hatua. Kutoka kwa kutoa msaada wa kisheria bure kwa jamii zilizo hatarini hadi kulinda mazingira kwa nguvu dhidi ya mabadiliko ya tabianchi, kituo chetu kimekuwa kiongozi wa haki ya mazingira na utawala bora nchini RDC.",
+      "image_label": "Urithi na Ubora",
       "highlights": {
         "title": "Athari Zetu katika Takwimu",
         "items": [
@@ -367,16 +382,16 @@
       "desc": "Tunapitisha utaalamu wetu kupitia nguzo tatu za kimsingi ili kubadilisha changamoto kuwa fursa.",
       "cards": {
         "research": {
-          "title": "Utafiti wa Hali ya Juu",
-          "desc": "Kuzalisha maarifa asilia na madhubuti ili kuelekeza sera za umma."
+          "title": "Migogoro ya silaha na rasilimali za asili",
+          "desc": "Katikati mwa Maziwa Makuu ya Afrika, unyonyaji haramu wa rasilimali za asili unafadhili na kuendeleza migogoro ya silaha yenye uharibifu. CREDDA inafanya utafiti wa kimajaribio kuchambua mienendo hii tata, kunakili ukiukwaji wa haki za binadamu unaotokana nayo, na kupendekeza mifumo ya utawala uwazi inayokuza ufuatiliaji na usawa, ili kuvunja mzunguko wa vurugu zinazohusishwa na madini ya migogoro."
         },
         "innovation": {
-          "title": "Ubunifu wa Kijamii",
-          "desc": "Kubuni suluhisho za kisheria na kijamii zinazoendana na mabadiliko ya bara."
+          "title": "Haki, mazingira na mabadiliko ya hali ya hewa",
+          "desc": "Kukabiliana na dharura ya hali ya hewa na uharibifu wa kutisha wa mifumo ikolojia ya Bonde la Kongo, CREDDA inajiweka kama ngao ya kisheria. Kupitia Kliniki yetu ya Sheria ya Mazingira, tunatetea haki za msingi za jamii za mitaa na watu wa asili, huku tukitetea kwa uthabiti mpito wa haki wa kiikolojia na uwajibikaji kwa uhalifu wa mazingira."
         },
         "impact": {
-          "title": "Athari za Jamii",
-          "desc": "Kuhakikisha daraja kati ya akademia na jamii kwa ajili ya haki inayopatikana."
+          "title": "Amani, usalama na utawala bora",
+          "desc": "Utulivu wa kikanda unategemea taasisi dhabiti za kidemokrasia na usalama wa uhakika wa binadamu. Watafiti wetu wanachambua mizizi ya ukosefu wa utulivu wa kisiasa na kitaasisi. Tunafanya kazi kuimarisha utawala wa sheria, kukuza utawala shirikishi na kutatua migogoro kwa amani, na hivyo kuweka msingi wa amani ya kudumu na maendeleo jumuishi katika kanda."
         }
       }
     },
@@ -443,29 +458,40 @@
       }
     },
     "impact": {
-      "title": "Mwangaza usio na mipaka.",
+      "title": "Takwimu Muhimu",
       "stats": [
-        {
-          "value": "16",
-          "label": "Miaka ya Utaalamu"
-        },
-        {
-          "value": "200+",
-          "label": "Machapisho Yaliyothibitishwa"
-        },
-        {
-          "value": "15",
-          "label": "Washirika wa Kimataifa"
-        },
-        {
-          "value": "1200+",
-          "label": "Kesi za Kliniki"
-        }
+        { "id": "partners", "label": "Washirika wa Kimataifa" },
+        { "id": "articles", "label": "Makala na Uchambuzi" },
+        { "id": "cases", "label": "Kesi za Kliniki Zilizoshughulikiwa" },
+        { "id": "researchers", "label": "Watafiti na Wataalamu" }
       ]
     },
     "vision": {
       "title": "Kujenga Akili ya Kisasa ya Afrika.",
       "text": "CREDDA haitazami tu mabadiliko ya ulimwengu; tunatayarisha akili kuyatarajia. Maono yetu ni bara la Afrika linaloweza kuzalisha sayansi yake yenyewe kutatua changamoto zake yenyewe, katika mazungumzo ya kudumu na ulimwengu."
+    },
+    "cde": {
+      "badge": "Kliniki ya Sheria ya Mazingira",
+      "title": "Mihimili 4 ya Kimkakati",
+      "subtitle": "Ikishirikiana na CREDDA-ULPGL, CDE inatekeleza ujuzi wake kupitia mihimili mine kwa haki endelevu ya mazingira.",
+      "axes": [
+        {
+          "title": "Haki za Mazingira",
+          "desc": "Utetezi na kukuza haki za msingi zinazohusiana na mazingira kwa jamii za mitaa na watu wa asili."
+        },
+        {
+          "title": "Haki ya Hali ya Hewa na Mazingira",
+          "desc": "Madai ya kimkakati na utetezi wa usawa mbele ya athari za mabadiliko ya hali ya hewa nchini RDC."
+        },
+        {
+          "title": "Haki za Ardhi na Upatikanaji wa Rasilimali za Asili",
+          "desc": "Msaada wa kisheria kwa usalama wa ardhi na ulinzi wa upatikanaji sawa wa rasilimali za asili."
+        },
+        {
+          "title": "Kupambana na Uchafuzi na Uharibifu wa Mazingira",
+          "desc": "Hatua za kisheria na kampeni za uhamasishaji dhidi ya uchafuzi wa viwanda, migodi na kilimo."
+        }
+      ]
     },
     "cta": {
       "title": "Jiunge na kizazi kipya cha watafiti na watendaji wa mabadiliko.",
@@ -1098,10 +1124,9 @@
     "expertise": {
       "title": "Nyanja za Utaalamu",
       "items": [
-        "Demokrasia na Uchaguzi",
-        "Utawala wa Ardhi",
-        "Haki ya Mazingira",
-        "Amani na Utatuzi wa Migogoro"
+        "Migogoro ya silaha na rasilimali za asili",
+        "Haki, mazingira na mabadiliko ya hali ya hewa",
+        "Amani, usalama na utawala bora"
       ]
     },
     "resources": {
@@ -1133,7 +1158,8 @@
         "line2": "Goma, Kivu Kaskazini, RDC."
       },
       "phone": "+243 812 345 678",
-      "email": "contact@credda-ulpgl.org"
+      "email": "creddaulpgl2008@gmail.com",
+      "website": "https://credda.ulpgl.net"
     },
     "bottom": {
       "copyright": "© {year} CREDDA-ULPGL. Haki zote zimehifadhiwa.",

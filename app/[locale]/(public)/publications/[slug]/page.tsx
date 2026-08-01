@@ -79,7 +79,7 @@ export default async function PublicationDetailPage({
       FROM "Article" a
       WHERE (a.slug != ${slug} AND a.id != ${slug}) AND a.published = true
       ORDER BY a."createdAt" DESC
-      LIMIT 3
+      LIMIT 5
     `.catch(() => [])
   ]);
 
@@ -125,7 +125,7 @@ export default async function PublicationDetailPage({
           </div>
 
           {/* Titre */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-foreground leading-[1.08] tracking-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground leading-[1.1] tracking-tight">
             <WordReveal text={content?.title || ""} as="span" className="text-foreground" stagger={0.04} />
           </h1>
         </div>
@@ -197,12 +197,12 @@ export default async function PublicationDetailPage({
       {/* ── IMAGE DE COUVERTURE ── */}
       {article.mainImage && (
         <section className="py-8">
-          <div className="container mx-auto px-6 max-w-5xl">
-            <div className="aspect-video w-full relative rounded-2xl overflow-hidden shadow-2xl border border-border/20">
+          <div className="container mx-auto px-6 max-w-4xl">
+            <div className="w-full relative rounded-2xl overflow-hidden shadow-xl border border-border/20 bg-muted/10">
               <img
                 src={article.mainImage}
                 alt={content?.title || "Image de couverture"}
-                className="w-full h-full object-cover"
+                className="w-full h-auto max-h-[600px] object-contain"
               />
             </div>
           </div>
@@ -214,8 +214,8 @@ export default async function PublicationDetailPage({
         <section className="py-12 border-b border-border/30">
           <div className="container mx-auto px-6 max-w-4xl">
             <div className="relative pl-6 border-l-2 border-primary/30">
-              <span className="absolute -left-3 -top-2 text-5xl font-serif text-primary/15 select-none leading-none">"</span>
-              <p className="text-lg md:text-xl text-foreground/75 font-serif italic leading-relaxed">
+              <span className="absolute -left-3 -top-2 text-4xl font-serif text-primary/15 select-none leading-none">"</span>
+              <p className="text-base md:text-lg text-foreground/80 font-serif italic leading-relaxed">
                 {content.excerpt}
               </p>
             </div>

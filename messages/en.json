@@ -74,19 +74,6 @@
       "articles": "Research Articles",
       "members": "Team Members"
     },
-    "vision": {
-      "badge": "ACADEMIC HERITAGE",
-      "title": "Redefining the Future of <highlight>Research</highlight> and <highlight>Justice</highlight> in DRC.",
-      "main_description": "A think tank and catalyst for reform, combining scientific excellence with social engagement.",
-      "card_vision_badge": "Our Vision",
-      "card_vision_text": "Uniting academic excellence with social impact for tomorrow's Africa.",
-      "card_readiness_title": "Excellence & Engagement",
-      "card_readiness_text": "CREDDA trains leaders combining scientific rigor with solving real-world challenges.",
-      "pillar1_title": "Legal Research",
-      "pillar1_text": "Production of high-level knowledge and influential publications.",
-      "pillar2_title": "Legal Clinic",
-      "pillar2_text": "Defense of human rights and direct access to justice for all."
-    },
     "about": {
       "badge": "Academic Heritage",
       "title": "Defining the Future of  <span>Legal Research</span>",
@@ -275,6 +262,33 @@
         }
       }
     },
+    "piliers": {
+      "badge": "OUR SERVICES",
+      "title": "4 Action Pillars",
+      "subtitle": "CREDDA deploys its expertise through four fundamental services for research and development in Africa.",
+      "items": [
+        {
+          "title": "Project Design, Management and Coordination",
+          "desc": "From ideation to implementation, we pilot research and development projects with high impact.",
+          "icon": "FolderKanban"
+        },
+        {
+          "title": "Study, Data Collection, Analysis and Processing",
+          "desc": "Rigorous expertise in empirical research, field surveys and quantitative and qualitative data analysis.",
+          "icon": "BarChart3"
+        },
+        {
+          "title": "Conferences, Seminars and Training",
+          "desc": "Organizing scientific events and capacity-building programs for field stakeholders.",
+          "icon": "GraduationCap"
+        },
+        {
+          "title": "Partnership, Networking",
+          "desc": "Building and animating an international network of partner universities, NGOs and institutions.",
+          "icon": "Network"
+        }
+      ]
+    },
     "cta": {
       "badge": "JOIN US",
       "title": "Let's Build the <span>Future</span> Together.",
@@ -348,11 +362,12 @@
       "breadcrumb": "Institution > About"
     },
     "story": {
-      "badge": "Who are we?",
-      "title": "Narrating African Excellence through Research.",
-      "p1": "CREDDA is a pillar of academic intelligence in the DRC. Affilié à l'ULPGL-Goma, we transform research into direct social action.",
-      "p2": "Strategically located in the Great Lakes, we provide an independent scientific voice on justice and sustainable development issues.",
-      "image_label": "Academic Body & Excellence",
+      "badge": "Our Genesis",
+      "title": "A History Written by Research and Action.",
+      "p1": "It all began in 2008, in the heart of a region marked by instability and recurring conflicts: the African Great Lakes. CREDDA was born from a profound conviction: the absolute necessity for an endogenous, scientific, and rigorous reflection to understand and resolve local crises.",
+      "p2": "At the Free University of the Great Lakes Countries (ULPGL-Goma), a handful of visionary researchers decided to leave the lecture halls to face the reality on the ground. They built a bridge between academia and society, transforming theoretical knowledge into a powerful lever for social action.",
+      "p3": "Today, CREDDA no longer merely analyzes. It acts. From providing free legal assistance to vulnerable communities to fiercely protecting the environment against climate change, our center has become the spearhead of environmental justice and good governance in the DRC.",
+      "image_label": "Legacy & Excellence",
       "highlights": {
         "title": "Our Impact in Numbers",
         "items": [
@@ -369,16 +384,16 @@
       "desc": "We channel our expertise through three fundamental axes to transform challenges into opportunities.",
       "cards": {
         "research": {
-          "title": "Cutting-edge Research",
-          "desc": "Producing original and rigorous knowledge to inform public policy."
+          "title": "Armed conflicts & natural resources",
+          "desc": "At the heart of the African Great Lakes, the illicit exploitation of natural resources finances and perpetuates devastating armed conflicts. CREDDA conducts empirical research to analyze these complex dynamics, document resulting human rights violations, and propose transparent governance frameworks promoting traceability and equity, to break the cycle of violence linked to conflict minerals."
         },
         "innovation": {
-          "title": "Social Innovation",
-          "desc": "Designing legal and social solutions adapted to the continent's transitions."
+          "title": "Justice, environment & climate",
+          "desc": "Faced with the climate emergency and the alarming degradation of the Congo Basin ecosystems, CREDDA positions itself as a legal shield. Through our Environmental Law Clinic, we defend the fundamental rights of local communities and indigenous peoples, while rigorously advocating for a just ecological transition and accountability for environmental crimes."
         },
         "impact": {
-          "title": "Community Impact",
-          "desc": "Ensuring a bridge between academia and populations for accessible justice."
+          "title": "Peace, security & governance",
+          "desc": "Regional stability depends on solid democratic institutions and guaranteed human security. Our researchers deconstruct the roots of political and institutional instability. We work to strengthen the rule of law, promote participatory governance, and peacefully resolve disputes, thereby laying the groundwork for lasting peace and inclusive development in the region."
         }
       }
     },
@@ -445,29 +460,40 @@
       }
     },
     "impact": {
-      "title": "A global influence without boundaries.",
+      "title": "Key Figures",
       "stats": [
-        {
-          "value": "16",
-          "label": "Years of Expertise"
-        },
-        {
-          "value": "200+",
-          "label": "Certified Publications"
-        },
-        {
-          "value": "15",
-          "label": "Global Partners"
-        },
-        {
-          "value": "1200+",
-          "label": "Clinical Cases Treated"
-        }
+        { "id": "partners", "label": "Global Partners" },
+        { "id": "articles", "label": "Articles & Analyses" },
+        { "id": "cases", "label": "Clinical Cases Handled" },
+        { "id": "researchers", "label": "Researchers & Experts" }
       ]
     },
     "vision": {
       "title": "Building Modern African Intelligence.",
       "text": "CREDDA does not just observe world changes; we prepare minds to anticipate them. Our vision is that of an Africa capable of producing its own science to solve its own challenges, in permanent dialogue with the world."
+    },
+    "cde": {
+      "badge": "Environmental Law Clinic",
+      "title": "4 Strategic Axes",
+      "subtitle": "Affiliated with CREDDA-ULPGL, the CDE deploys its expertise through four axes for lasting environmental justice.",
+      "axes": [
+        {
+          "title": "Environmental Rights",
+          "desc": "Defense and promotion of fundamental rights related to the environment for local communities and indigenous peoples."
+        },
+        {
+          "title": "Climate and Environmental Justice",
+          "desc": "Strategic litigation and advocacy for equity in the face of climate change impacts in the DRC."
+        },
+        {
+          "title": "Land Rights and Access to Natural Resources",
+          "desc": "Legal assistance for land security and protection of equitable access to natural resources."
+        },
+        {
+          "title": "Fighting Pollution and Environmental Degradation",
+          "desc": "Legal actions and awareness campaigns against industrial, mining and agricultural pollution threatening ecosystems."
+        }
+      ]
     },
     "cta": {
       "title": "Join a new generation of researchers and changemakers.",
@@ -1049,10 +1075,9 @@
     "expertise": {
       "title": "Areas of Expertise",
       "items": [
-        "Democracy and Elections",
-        "Land Governance",
-        "Environmental Justice",
-        "Peace and Conflict Resolution"
+        "Armed conflicts and natural resources",
+        "Justice, environment and climate change",
+        "Peace, security and good governance"
       ]
     },
     "resources": {
@@ -1084,7 +1109,8 @@
         "line2": "Goma, North Kivu, DRC."
       },
       "phone": "+243 812 345 678",
-      "email": "contact@credda-ulpgl.org"
+      "email": "creddaulpgl2008@gmail.com",
+      "website": "https://credda.ulpgl.net"
     },
     "bottom": {
       "copyright": "© {year} CREDDA-ULPGL. All Rights Reserved.",
