@@ -72,19 +72,6 @@
       "articles": "Articles de Recherche",
       "members": "Membres de l'Équipe"
     },
-    "vision": {
-      "badge": "HÉRITAGE ACADÉMIQUE",
-      "title": "Redéfinir l'Avenir de la <highlight>Recherche</highlight> et de la <highlight>Justice</highlight> en RDC.",
-      "main_description": "Laboratoire d'idées et catalyseur de réformes, alliant excellence scientifique et engagement social.",
-      "card_vision_badge": "Notre Vision",
-      "card_vision_text": "Unir l'excellence académique à l'impact social pour l'Afrique de demain.",
-      "card_readiness_title": "Excellence & Engagement",
-      "card_readiness_text": "Le CREDDA forme des leaders alliant rigueur scientifique et résolution des défis réels.",
-      "pillar1_title": "Recherche Juridique",
-      "pillar1_text": "Production de connaissances de haut niveau et publications influentes.",
-      "pillar2_title": "Clinique de Droit",
-      "pillar2_text": "Défense des droits humains et accès direct à la justice pour tous."
-    },
     "research": {
       "badge": "NOTRE RECHERCHE",
       "badge_insight": "— Découvrez des Perspectives Clés",
@@ -209,7 +196,7 @@
     "video": {
       "badge": "Présentation Vidéo",
       "title": "Découvrez <primary>l'Impact</primary> du CREDDA",
-      "title_alt": "<line1>EXCELLENCE</line1> <line2>ACADÉÉMIQUE</line2>",
+      "title_alt": "<line1>EXCELLENCE</line1> <line2>ACADÉMIQUE</line2>",
       "description": "Plongez au cœur de nos initiatives à travers cette présentation. Nous œuvrons pour l'excellence académique et l'innovation sociale en République Démocratique du Congo.",
       "since": "Depuis",
       "institution": "Institution",
@@ -266,6 +253,33 @@
           "description": "Lancement de la plateforme unifiée, digitalisation complète des services et vision internationale."
         }
       }
+    },
+    "piliers": {
+      "badge": "NOS SERVICES",
+      "title": "4 Piliers d'Action",
+      "subtitle": "Le CREDDA déploie son expertise à travers quatre services fondamentaux pour la recherche et le développement en Afrique.",
+      "items": [
+        {
+          "title": "Conception, gestion et coordination de projets",
+          "desc": "De l'idéation à l'implémentation, nous pilotons des projets de recherche et de développement à fort impact.",
+          "icon": "FolderKanban"
+        },
+        {
+          "title": "Étude, collecte, analyse et traitement des données",
+          "desc": "Expertise rigoureuse en recherche empirique, enquêtes de terrain et analyse quantitative et qualitative des données.",
+          "icon": "BarChart3"
+        },
+        {
+          "title": "Conférences, séminaires et formations",
+          "desc": "Organisation d'événements scientifiques et de programmes de renforcement des capacités pour les acteurs de terrain.",
+          "icon": "GraduationCap"
+        },
+        {
+          "title": "Partenariat, réseautage et networking",
+          "desc": "Construction et animation d'un réseau international d'universités, d'ONG et d'institutions partenaires.",
+          "icon": "Network"
+        }
+      ]
     },
     "cta": {
       "badge": "REJOIGNEZ-NOUS",
@@ -907,10 +921,9 @@
     "expertise": {
       "title": "Domaines d'Expertise",
       "items": [
-        "Démocratie et Élections",
-        "Gouvernance Foncière",
-        "Justice Environnementale",
-        "Paix et Résolution des Conflits"
+        "Conflits armés et ressources naturelles",
+        "Justice, environnement et changements climatiques",
+        "Paix, sécurité et bonne gouvernance"
       ]
     },
     "resources": {
@@ -942,7 +955,8 @@
         "line2": "Goma, Nord-Kivu, RDC."
       },
       "phone": "+243 812 345 678",
-      "email": "contact@credda-ulpgl.org"
+      "email": "creddaulpgl2008@gmail.com",
+      "website": "https://credda.ulpgl.net"
     },
     "bottom": {
       "copyright": "© {year} CREDDA-ULPGL. Tous droits réservés.",
@@ -1400,11 +1414,12 @@
       "breadcrumb": "Institution > À Propos"
     },
     "story": {
-      "badge": "Qui sommes-nous ?",
-      "title": "Raconter l'Excellence Africaine par la Recherche.",
-      "p1": "Le CREDDA est un pilier de l'intelligence académique en RDC. Affilié à l'ULPGL-Goma, nous transformons la recherche en action sociale directe.",
-      "p2": "Stratégiquement situé dans les Grands Lacs, nous portons une voix scientifique indépendante sur les enjeux de justice et de développement durable.",
-      "image_label": "Corps Académique & Excellence",
+      "badge": "Notre Genèse",
+      "title": "Une Histoire Écrite par la Recherche et l'Action.",
+      "p1": "Tout commence en 2008, au cœur d'une région marquée par l'instabilité et les conflits récurrents : les Grands Lacs Africains. Le CREDDA est né d'une conviction profonde : la nécessité absolue d'une réflexion endogène, scientifique et rigoureuse pour comprendre et résoudre les crises locales.",
+      "p2": "À l'Université Libre des Pays des Grands Lacs (ULPGL-Goma), une poignée de chercheurs visionnaires ont décidé de sortir des amphithéâtres pour affronter la réalité du terrain. À travers notre clinique juridique, ils ont bâti un pont entre l'académie et la société, transformant le savoir théorique en action sociale directe.",
+      "p3": "Aujourd'hui, le CREDDA ne se contente plus d'analyser. Il agit. De l'assistance juridique gratuite aux plus vulnérables jusqu'à la protection acharnée de l'environnement face au changement climatique, notre centre est devenu le fer de lance de la justice environnementale et de la bonne gouvernance en RDC.",
+      "image_label": "Héritage & Excellence",
       "highlights": {
         "title": "Notre Impact en Chiffres",
         "items": [
@@ -1416,21 +1431,21 @@
       }
     },
     "mission": {
-      "badge": "Notre Mission",
+      "badge": "Thématiques Principales",
       "title": "Un impact ancré dans la science.",
-      "desc": "Nous canalisons nos expertises à travers trois axes fondamentaux pour transformer les défis en opportunités.",
+      "desc": "Nous articulons notre recherche autour de trois thématiques fondamentales pour répondre aux défis du continent.",
       "cards": {
         "research": {
-          "title": "Recherche de Pointe",
-          "desc": "Produire des connaissances originales et rigoureuses pour éclairer les politiques publiques."
+          "title": "Conflits armés & ressources naturelles",
+          "desc": "Au cœur de l'Afrique des Grands Lacs, l'exploitation illicite des ressources naturelles finance et perpétue des conflits armés dévastateurs. Le CREDDA mène des recherches empiriques pour analyser ces dynamiques complexes, documenter les violations des droits humains qui en découlent, et proposer des cadres de gouvernance transparents favorisant la traçabilité et l'équité, afin de briser le cycle de la violence liée aux minerais de sang."
         },
         "innovation": {
-          "title": "Innovation Sociale",
-          "desc": "Concevoir des solutions juridiques et sociales adaptées aux transitions du continent."
+          "title": "Justice, environnement & climat",
+          "desc": "Face à l'urgence climatique et à la dégradation alarmante des écosystèmes du bassin du Congo, le CREDDA se positionne comme un bouclier juridique. Par le biais de notre Clinique de Droit de l'Environnement, nous défendons les droits fondamentaux des communautés locales et des peuples autochtones, tout en menant un plaidoyer rigoureux pour une transition écologique juste et une responsabilisation face aux crimes environnementaux."
         },
         "impact": {
-          "title": "Impact Communautaire",
-          "desc": "Assurer un pont entre l'académie et les populations pour une justice accessible."
+          "title": "Paix, sécurité & gouvernance",
+          "desc": "La stabilité régionale dépend d'institutions démocratiques solides et d'une sécurité humaine garantie. Nos chercheurs déconstruisent les racines de l'instabilité politique et institutionnelle. Nous œuvrons pour le renforcement de l'État de droit, la promotion d'une gouvernance participative et la résolution pacifique des différends, posant ainsi les jalons d'une paix durable et d'un développement inclusif dans la région."
         }
       }
     },
@@ -1497,29 +1512,40 @@
       }
     },
     "impact": {
-      "title": "Un rayonnement sans frontières.",
+      "title": "Chiffres Clés",
       "stats": [
-        {
-          "value": "16",
-          "label": "Années d'Expertise"
-        },
-        {
-          "value": "200+",
-          "label": "Publications Certifiées"
-        },
-        {
-          "value": "15",
-          "label": "Partenaires Globaux"
-        },
-        {
-          "value": "1200+",
-          "label": "Cas Cliniques Traités"
-        }
+        { "id": "partners", "label": "Partenaires Institutionnels" },
+        { "id": "articles", "label": "Articles & Analyses" },
+        { "id": "cases", "label": "Cas Cliniques Traités" },
+        { "id": "researchers", "label": "Chercheurs & Experts" }
       ]
     },
     "vision": {
       "title": "Bâtir l'Intelligence Africaine Moderne.",
       "text": "Le CREDDA ne se contente pas d'observer les changements du monde ; nous préparons les esprits à les anticiper. Notre vision est celle d'une Afrique capable de produire sa propre science pour résoudre ses propres défis, dans un dialogue permanent avec le monde."
+    },
+    "cde": {
+      "badge": "Clinique de Droit de l'Environnement",
+      "title": "4 Axes Stratégiques",
+      "subtitle": "Afférée au CREDDA-ULPGL, la CDE déploie ses compétences à travers quatre axes pour une justice environnementale durable.",
+      "axes": [
+        {
+          "title": "Droits environnementaux",
+          "desc": "Défense et promotion des droits fondamentaux liés à l'environnement pour les communautés locales et peuples autochtones."
+        },
+        {
+          "title": "Justice climatique et environnementale",
+          "desc": "Contentieux stratégique et plaidoyer pour une équité face aux impacts des changements climatiques en RDC."
+        },
+        {
+          "title": "Droits fonciers et accès aux ressources naturelles",
+          "desc": "Assistance juridique pour la sécurisation des terres et la protection de l'accès équitable aux ressources naturelles."
+        },
+        {
+          "title": "Lutte contre la pollution et la dégradation de l'environnement",
+          "desc": "Actions légales et sensibilisation contre la pollution industrielle, minière et agricole qui menacent les écosystèmes."
+        }
+      ]
     },
     "cta": {
       "title": "Rejoignez une nouvelle génération de chercheurs et d’acteurs du changement.",
