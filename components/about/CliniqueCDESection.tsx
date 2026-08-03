@@ -26,7 +26,7 @@ export default function CliniqueCDESection() {
         style={{ backgroundImage: "url('/images/home/cta.jpg')" }}
       />
       {/* Overlay */}
-      <div className="absolute inset-0 bg-background/80 dark:bg-background/85" />
+      <div className="absolute inset-0 bg-black/55" />
 
       <div className="container mx-auto px-6 relative z-10 max-w-5xl">
 
@@ -38,19 +38,28 @@ export default function CliniqueCDESection() {
           transition={{ duration: 0.7, ease: EASE }}
           className="text-center mb-14"
         >
-          <div className="inline-flex items-center gap-3 mb-5">
-            <div className="w-6 h-px bg-primary/60" />
-            <span className="text-[10px] font-black tracking-[0.35em] uppercase text-primary">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-3">
+            <div className="w-6 h-px bg-primary" />
+            <span className="text-xs font-black tracking-[0.35em] uppercase text-primary bg-background/60 backdrop-blur-sm px-2 py-0.5 rounded-sm">
               {t("badge")}
             </span>
-            <div className="w-6 h-px bg-primary/60" />
+            <div className="w-6 h-px bg-primary" />
           </div>
 
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-foreground mb-4 leading-tight">
+          {/* Ligne vide */}
+          <div className="h-6" />
+
+          {/* Titre */}
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white leading-tight">
             {t("title")}
           </h2>
 
-          <p className="text-sm md:text-base text-muted-foreground font-light leading-relaxed max-w-xl mx-auto">
+          {/* Ligne vide */}
+          <div className="h-5" />
+
+          {/* Sous-titre */}
+          <p className="text-base md:text-lg text-white/75 font-light leading-relaxed max-w-xl mx-auto">
             {t("subtitle")}
           </p>
         </motion.div>
