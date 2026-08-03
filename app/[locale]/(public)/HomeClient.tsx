@@ -96,7 +96,7 @@ export default function HomeClient({
           <GalleryGrid images={galleryImages.slice(0, 10)} totalCount={totalGalleryImages} />
         </div>
 
-        {/* 8. HISTOIRE & PARCOURS (TIMELINE) */}
+        {/* 8. HISTOIRE & PARCOURS (en TIMELINE) */}
         <section
           id="history"
           className="relative z-20 py-20 lg:py-32 bg-primary/[0.04] dark:bg-primary/[0.08] border-b border-primary/30 dark:border-primary/15 backdrop-blur-sm"
