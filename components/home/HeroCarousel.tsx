@@ -26,14 +26,6 @@ export default function HeroCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Préchargement de toutes les images en arrière-plan dès le montage
-  useEffect(() => {
-    HERO_SLIDES.slice(1).forEach((src) => {
-      const img = new window.Image();
-      img.src = src;
-    });
-  }, []);
-
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES.length);
   }, []);
@@ -116,21 +108,25 @@ export default function HeroCarousel() {
       </div>
 
       {/* Navigation Dots */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-[30] flex gap-3">
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[30] flex gap-2">
         {HERO_SLIDES.map((_, index) => (
           <button
             key={index}
             onClick={() => {
               setCurrentIndex(index);
             }}
-            className={cn(
-              "h-1.5 rounded-full transition-all duration-700",
-              currentIndex === index
-                ? "w-8 bg-primary shadow-[0_0_12px_rgba(var(--primary),0.5)]"
-                : "w-2 bg-white/40 hover:bg-white/60"
-            )}
+            className="w-11 h-11 flex items-center justify-center group focus:outline-none"
             aria-label={`Go to slide ${index + 1}`}
-          />
+          >
+            <div
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-700",
+                currentIndex === index
+                  ? "w-8 bg-primary shadow-[0_0_12px_rgba(var(--primary),0.5)]"
+                  : "w-2 bg-white/80 group-hover:bg-white"
+              )}
+            />
+          </button>
         ))}
       </div>
     </div>

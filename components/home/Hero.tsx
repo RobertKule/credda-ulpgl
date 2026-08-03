@@ -149,7 +149,7 @@ export default function Hero({
               {/* BADGE */}
               <div className="inline-flex items-center gap-2 bg-primary/20 px-3 py-1 md:px-4 md:py-1.5 rounded-full border border-primary/30 mb-4 md:mb-6 transition-transform group-hover/card:scale-105">
                 <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary animate-pulse" />
-                <span className="text-primary text-[9px] md:text-[10px] font-bold uppercase tracking-widest">
+                <span className="text-foreground text-[9px] md:text-[10px] font-bold uppercase tracking-widest">
                   {t("hero.badge")}
                 </span>
               </div>
