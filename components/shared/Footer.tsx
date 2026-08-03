@@ -52,9 +52,9 @@ export default function Footer() {
 
           {/* Column 2: Expertise */}
           <div className="space-y-10">
-            <h4 className="text-[11px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
+            <h2 className="text-[11px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
               {t('expertise.title')}
-            </h4>
+            </h2>
     <ul className="space-y-5">
       {Array.isArray(expertiseItems) && expertiseItems.map((item: string) => (
         <li key={item} className="group">
@@ -69,9 +69,9 @@ export default function Footer() {
 
   {/* Column 3: Resources */}
   <div className="space-y-10">
-    <h4 className="text-[11px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
+    <h2 className="text-[11px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
       {t('resources.title')}
-    </h4>
+    </h2>
     <ul className="space-y-5 text-sm text-muted-foreground">
       {Array.isArray(resourceItems) && resourceItems.map((item: { label: string; href: string }, index: number) => (
         <li key={index}>
@@ -94,9 +94,9 @@ export default function Footer() {
 
           {/* Column 4: Contact */}
           <div className="space-y-10">
-            <h4 className="text-[11px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
+            <h2 className="text-[11px] font-outfit font-bold uppercase tracking-[0.3em] text-primary">
               {t('contact.title')}
-            </h4>
+            </h2>
             <div className="space-y-8">
               <div className="flex items-start gap-4 group">
                 <div className="w-12 h-12 bg-muted flex items-center justify-center shrink-0 group-hover:bg-primary transition-all duration-500">

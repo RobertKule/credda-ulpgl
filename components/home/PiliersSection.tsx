@@ -1,6 +1,7 @@
 "use client";
 
 import { m as motion } from "framer-motion";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import {
   FolderKanban,
@@ -33,9 +34,12 @@ export default function PiliersSection() {
     >
       {/* Background image — full bleed, NO overlay on outer section */}
       <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: "url('/images/arbres/arbresl.jpg')" }}
+        <Image
+          src="/images/arbres/arbresl.jpg"
+          alt=""
+          fill
+          className="object-cover"
+          quality={75}
         />
       </div>
 

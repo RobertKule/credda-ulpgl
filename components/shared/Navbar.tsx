@@ -195,6 +195,7 @@ export default function Navbar({ announcements = [] }: { announcements?: Announc
 
             <button
                 onClick={toggleTheme}
+                aria-label="Changer de thème"
                 className="w-8 h-8 flex items-center justify-center rounded-full transition-colors text-muted-foreground hover:text-primary bg-muted/40 border border-border/10"
             >
                 {theme === "dark" ? <Sun size={14} /> : <Moon size={14} />}
@@ -276,6 +277,7 @@ export default function Navbar({ announcements = [] }: { announcements?: Announc
           {/* MOBILE TOGGLE */}
           <button
             onClick={() => setIsOpen(true)}
+            aria-label="Ouvrir le menu"
             className={`lg:hidden flex items-center justify-center rounded-full transition-all duration-500 ${
               isScrolled ? "w-9 h-9 bg-primary text-white" : "w-10 h-10 bg-muted text-foreground border border-border"
             }`}
@@ -300,6 +302,7 @@ export default function Navbar({ announcements = [] }: { announcements?: Announc
                <span className="font-serif font-black text-2xl tracking-tighter text-primary">CREDDA</span>
                <button 
                   onClick={() => setIsOpen(false)}
+                  aria-label="Fermer le menu"
                   className="w-12 h-12 flex items-center justify-center bg-muted rounded-full text-foreground"
                >
                   <X size={24} />

@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { Link } from "@/navigation";
 import { useTranslations } from "next-intl";
 import { m as motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import { FormattedHTML } from "@/components/ui/FormattedHTML";
 
 export default function CtaSection() {
@@ -25,9 +26,12 @@ export default function CtaSection() {
         >
             {/* BACKGROUND IMAGE */}
             <motion.div style={{ scale }} className="absolute inset-0 z-0">
-                <div
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
-                    style={{ backgroundImage: "url('/images/home/cta.jpg')" }}
+                <Image
+                    src="/images/home/cta.jpg"
+                    alt=""
+                    fill
+                    className="object-cover scale-105"
+                    quality={75}
                 />
 
                 {/* CLEAN OVERLAY */}

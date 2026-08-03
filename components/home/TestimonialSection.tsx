@@ -116,9 +116,9 @@ function TestimonialCard({
 
         {/* FOOTER */}
         <div className="mt-auto">
-           <h4 className="text-2xl font-serif font-black text-foreground tracking-tight transition-colors">
+           <h3 className="text-2xl font-serif font-black text-foreground tracking-tight transition-colors">
             {testimonial.name}
-          </h4>
+          </h3>
           <p className="text-primary font-black text-[11px] uppercase tracking-[0.4em] mt-1 opacity-80">
             {testimonial.role}
           </p>
@@ -170,9 +170,9 @@ function TestimonialCard({
                  animate={{ y: 0, opacity: 1 }}
                  transition={{ delay: 0.3 }}
                >
-                 <h4 className="text-3xl font-serif font-black text-foreground mb-1">
+                 <h3 className="text-3xl font-serif font-black text-foreground mb-1">
                    {testimonial.name}
-                 </h4>
+                 </h3>
                  <p className="text-primary font-black text-[12px] uppercase tracking-[0.5em]">
                    {testimonial.role}
                  </p>
