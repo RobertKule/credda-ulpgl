@@ -11,6 +11,18 @@ import { useTranslations, useLocale } from "next-intl";
 
 const HeroCarousel = dynamic(() => import("@/components/home/HeroCarousel"), {
   ssr: false,
+  loading: () => (
+    <div className="absolute inset-0 w-full h-full">
+      <Image
+        src="/images/hero/bureauCredda.jpg"
+        alt="Hero background"
+        fill
+        priority
+        className="object-cover"
+        sizes="100vw"
+      />
+    </div>
+  ),
 });
 
 const Typewriter = ({ text }: { text: string }) => {
@@ -85,20 +97,21 @@ export default function Hero({
       <div className="absolute inset-0 z-0 overflow-hidden">
         <HeroCarousel />
 
-        {/* Institutional Vignette & Grid Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-background/90 z-[5]" />
+        {/* Overlay sombre */}
+        <div className="absolute inset-0 bg-black/35 z-[4]" />
 
+        {/* Grille en carreau */}
         <div
-          className="absolute inset-0 opacity-[0.08] dark:opacity-[0.04] z-[6]"
+          className="absolute inset-0 opacity-[0.10] z-[5] pointer-events-none"
           style={{
             backgroundImage:
-              "linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)",
+              "linear-gradient(white 1px, transparent 1px), linear-gradient(90deg, white 1px, transparent 1px)",
             backgroundSize: "100px 100px",
           }}
         />
 
-        {/* Top Glow */}
-        <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-black/40 to-transparent z-[7] pointer-events-none" />
+        {/* Cinematic bottom gradient */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent z-[6]" />
       </div>
 
       <div className="relative z-10 container mx-auto px-6 w-full flex flex-col justify-end flex-grow pb-12 lg:pb-20">
@@ -111,17 +124,17 @@ export default function Hero({
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-6 pointer-events-auto scale-90 sm:scale-100 origin-left"
           >
-            <div className="flex items-center gap-3 md:gap-4 bg-white/10 backdrop-blur-md p-3 md:p-4 rounded-2xl border border-white/20">
+            <div className="flex items-center gap-3 md:gap-4 bg-background p-3 md:p-4 rounded-2xl border border-border shadow-lg">
               <div className="relative w-10 h-10 md:w-12 md:h-12">
                 <Image src="/logocredda.png" alt="CREDDA Logo" fill className="object-contain" />
               </div>
-              <div className="w-[1px] h-6 md:h-8 bg-white/20" />
+              <div className="w-[1px] h-6 md:h-8 bg-border" />
               <div className="relative w-10 h-10 md:w-12 md:h-12">
                 <Image src="/logoulpgl.webp" alt="ULPGL Logo" fill className="object-contain" />
               </div>
               <div className="ml-1 md:ml-2 flex flex-col">
-                <span className="text-white text-base md:text-lg font-bold leading-none tracking-tight">CREDDDA</span>
-                <span className="text-white/60 text-[10px] font-medium uppercase tracking-wider">ULPGL GOMA</span>
+                <span className="text-foreground text-base md:text-lg font-bold leading-none tracking-tight">CREDDA</span>
+                <span className="text-muted-foreground text-[10px] font-medium uppercase tracking-wider">ULPGL GOMA</span>
               </div>
             </div>
           </motion.div>
@@ -130,19 +143,19 @@ export default function Hero({
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full lg:max-w-xl bg-white/5 dark:bg-black/20 backdrop-blur-xl p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] border border-white/10 shadow-2xl pointer-events-auto relative overflow-hidden group/card"
+            className="w-full lg:max-w-xl bg-background p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] border border-border shadow-2xl pointer-events-auto relative overflow-hidden group/card"
           >
             <div className="relative z-10">
               {/* BADGE */}
               <div className="inline-flex items-center gap-2 bg-primary/20 px-3 py-1 md:px-4 md:py-1.5 rounded-full border border-primary/30 mb-4 md:mb-6 transition-transform group-hover/card:scale-105">
                 <span className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-primary animate-pulse" />
-                <span className="text-primary text-[9px] md:text-[10px] font-bold uppercase tracking-widest">
+                <span className="text-foreground text-[9px] md:text-[10px] font-bold uppercase tracking-widest">
                   {t("hero.badge")}
                 </span>
               </div>
 
               {/* TITLE */}
-              <h1 className="font-serif text-3xl md:text-5xl font-black leading-tight text-white mb-4 md:mb-6">
+              <h1 className="font-serif text-3xl md:text-5xl font-black leading-tight text-foreground mb-4 md:mb-6">
                 <span>{t("hero.title_prefix")}</span>{" "}
                 {/*
                   Ghost spacer technique: the invisible span always occupies the
@@ -179,23 +192,23 @@ export default function Hero({
               </h1>
 
               {/* SUBTITLE */}
-              <p className="text-white/80 font-medium text-sm md:text-base mb-6 md:mb-8 max-w-lg leading-relaxed">
+              <p className="text-muted-foreground font-medium text-sm md:text-base mb-6 md:mb-8 max-w-lg leading-relaxed">
                 {t("hero.institutional_description")}
               </p>
 
               {/* CTA */}
-              <div className="flex flex-wrap gap-3 md:gap-4">
+              <div className="flex gap-3">
                 <Link
                   href="/publications"
-                  className="bg-primary text-white px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl text-sm md:text-base font-bold hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(var(--primary),0.4)] transition-all flex items-center gap-2"
+                  className="flex-1 bg-primary text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(var(--primary),0.4)] transition-all flex items-center justify-center gap-2"
                 >
                   {t("hero.discover")}
-                  <ArrowUpRight className="w-4 h-4" />
+                  <ArrowUpRight className="w-4 h-4 shrink-0" />
                 </Link>
 
                 <Link
                   href="/about"
-                  className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 md:px-8 md:py-4 rounded-xl md:rounded-2xl text-sm md:text-base font-bold backdrop-blur-sm border border-white/10 transition-all"
+                  className="flex-1 bg-muted hover:bg-muted/80 text-foreground px-4 py-2.5 rounded-xl text-sm font-bold border border-border transition-all flex items-center justify-center"
                 >
                   {t("cta.about")}
                 </Link>

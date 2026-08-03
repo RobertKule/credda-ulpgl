@@ -5,17 +5,17 @@ import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
 
 import HeroSkeleton from "@/components/home/HeroSkeleton";
-import PartnerSection from "@/components/home/PartnerSection";
-import StatsSection from "@/components/home/StatsSection";
-import PiliersSection from "@/components/home/PiliersSection";
-import FeaturedResearch from "@/components/home/FeaturedResearch";
-import AboutVideoSection from "@/components/home/AboutVideoSection";
-import GalleryGrid from "@/components/home/GalleryGrid";
-import Timeline from "@/components/home/Timeline";
-import TeamSection from "@/components/home/TeamSection";
-import TestimonialSection from "@/components/home/TestimonialSection";
-import FAQSection from "@/components/home/FAQSection";
-import CtaSection from "@/components/home/CtaSection";
+const PartnerSection = dynamic(() => import("@/components/home/PartnerSection"));
+const StatsSection = dynamic(() => import("@/components/home/StatsSection"));
+const PiliersSection = dynamic(() => import("@/components/home/PiliersSection"));
+const FeaturedResearch = dynamic(() => import("@/components/home/FeaturedResearch"));
+const AboutVideoSection = dynamic(() => import("@/components/home/AboutVideoSection"));
+const GalleryGrid = dynamic(() => import("@/components/home/GalleryGrid"));
+const Timeline = dynamic(() => import("@/components/home/Timeline"));
+const TeamSection = dynamic(() => import("@/components/home/TeamSection"));
+const TestimonialSection = dynamic(() => import("@/components/home/TestimonialSection"));
+const FAQSection = dynamic(() => import("@/components/home/FAQSection"));
+const CtaSection = dynamic(() => import("@/components/home/CtaSection"));
 
 const Hero = dynamic(() => import("@/components/home/Hero"), {
   ssr: false,

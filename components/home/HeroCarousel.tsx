@@ -6,7 +6,8 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const heroSlides = [
+// Liste statique — ajouter/retirer une image ici suffit
+const HERO_SLIDES = [
   "/images/hero/bureauCredda.jpg",
   "/images/hero/especedeCredda.jpg",
   "/images/hero/foret.jpg",
@@ -23,17 +24,14 @@ const heroSlides = [
 
 export default function HeroCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
   const nextSlide = useCallback(() => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % heroSlides.length);
+    setCurrentIndex((prev) => (prev + 1) % HERO_SLIDES.length);
   }, []);
 
   const prevSlide = useCallback(() => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+    setCurrentIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
   }, []);
 
   useEffect(() => {
@@ -45,32 +43,24 @@ export default function HeroCarousel() {
   }, [nextSlide, isHovered]);
 
   const variants: Variants = {
-    initial: {
-      opacity: 0,
-    },
+    initial: { opacity: 0 },
     animate: {
       opacity: 1,
-      transition: {
-        duration: 2,
-        ease: "easeInOut",
-      },
+      transition: { duration: 1.2, ease: "easeInOut" },
     },
     exit: {
       opacity: 0,
-      transition: {
-        duration: 2,
-        ease: "easeInOut",
-      },
+      transition: { duration: 1.2, ease: "easeInOut" },
     },
   };
 
   return (
-    <div 
+    <div
       className="absolute inset-0 w-full h-full overflow-hidden"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <AnimatePresence mode="popLayout" initial={false}>
+      <AnimatePresence mode="sync" initial={false}>
         <motion.div
           key={currentIndex}
           variants={variants}
@@ -78,16 +68,17 @@ export default function HeroCarousel() {
           animate="animate"
           exit="exit"
           className="absolute inset-0 w-full h-full"
+          style={{ zIndex: 1 }}
         >
-          {/* Cinematic Zoom Effect */}
+          {/* Ken Burns — exactement 6s pour couvrir toute la durée du slide */}
           <motion.div
-            initial={{ scale: 1.1 }}
+            initial={{ scale: 1.08 }}
             animate={{ scale: 1 }}
-            transition={{ duration: 8, ease: "linear" }}
+            transition={{ duration: 6, ease: "linear" }}
             className="absolute inset-0 w-full h-full"
           >
             <Image
-              src={heroSlides[currentIndex]}
+              src={HERO_SLIDES[currentIndex]}
               alt={`Hero Slide ${currentIndex + 1}`}
               fill
               priority={currentIndex === 0}
@@ -98,11 +89,8 @@ export default function HeroCarousel() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Subtle Vignette for depth (Optional, and much lighter) */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-[1] pointer-events-none" />
-
       {/* Navigation Arrows */}
-      <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 z-[30] flex justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 lg:group-hover:opacity-100">
+      <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 z-[30] flex justify-between pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
         <button
           onClick={prevSlide}
           className="p-4 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white pointer-events-auto hover:bg-white/20 transition-all active:scale-95"
@@ -120,22 +108,25 @@ export default function HeroCarousel() {
       </div>
 
       {/* Navigation Dots */}
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-[30] flex gap-3">
-        {heroSlides.map((_, index) => (
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-[30] flex gap-2">
+        {HERO_SLIDES.map((_, index) => (
           <button
             key={index}
             onClick={() => {
-              setDirection(index > currentIndex ? 1 : -1);
               setCurrentIndex(index);
             }}
-            className={cn(
-              "h-1.5 rounded-full transition-all duration-700",
-              currentIndex === index 
-                ? "w-8 bg-primary shadow-[0_0_12px_rgba(var(--primary),0.5)]" 
-                : "w-2 bg-white/40 hover:bg-white/60"
-            )}
+            className="w-11 h-11 flex items-center justify-center group focus:outline-none"
             aria-label={`Go to slide ${index + 1}`}
-          />
+          >
+            <div
+              className={cn(
+                "h-1.5 rounded-full transition-all duration-700",
+                currentIndex === index
+                  ? "w-8 bg-primary shadow-[0_0_12px_rgba(var(--primary),0.5)]"
+                  : "w-2 bg-white/80 group-hover:bg-white"
+              )}
+            />
+          </button>
         ))}
       </div>
     </div>

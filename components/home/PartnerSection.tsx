@@ -26,7 +26,8 @@ export default function PartnerSection({ partners = [] }: { partners?: string[] 
                                     <Image 
                                         src={srcPath} 
                                         alt={`Partner ${i}`} 
-                                        fill 
+                                        fill
+                                        sizes="128px" 
                                         className="object-contain" 
                                     />
                                 </div>
