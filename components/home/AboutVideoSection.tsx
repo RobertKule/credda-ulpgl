@@ -88,6 +88,7 @@ export default function AboutVideoSection() {
             className={`w-full h-full object-contain transition-transform duration-1000 ${isHovered ? 'md:scale-105' : 'scale-100'}`}
           >
             <source src="/video/hero-bg.mp4" type="video/mp4" />
+            <track kind="captions" srcLang="fr" label="Français" />
           </video>
           
           {/* Dynamic Overlay */}
@@ -145,6 +146,7 @@ export default function AboutVideoSection() {
             {/* MUTE TOGGLE */}
             <button 
               onClick={toggleMute} 
+              aria-label={isMuted ? "Activer le son" : "Mettre en sourdine"}
               className="flex items-center gap-3 text-foreground md:text-white hover:text-primary transition-colors uppercase text-[9px] md:text-[10px] font-black tracking-widest"
             >
               {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
@@ -169,6 +171,7 @@ export default function AboutVideoSection() {
             {/* PLAY/PAUSE TOGGLE */}
             <button 
               onClick={togglePlay} 
+              aria-label={isPlaying ? "Mettre en pause" : "Lancer la lecture"}
               className="flex items-center gap-3 text-foreground md:text-white hover:text-primary transition-colors uppercase text-[9px] md:text-[10px] font-black tracking-widest"
             >
               {isPlaying ? <Pause size={16} /> : <Play size={16} />}
